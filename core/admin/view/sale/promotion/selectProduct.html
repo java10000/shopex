@@ -1,0 +1,91 @@
+<form id='SelectProductForm'  method='post' action='index.php?ctl=sale/promotion&act=doSelectProduct' class="tableform">
+<div class="division">
+<table  border="0" cellspacing="0" cellpadding="0" id='select_mac'>
+  <{if $pmt.type eq 'order'}>
+  <tr>
+    <th><input type='radio' value='0' name='pmt_bond_type' <{if $pmt.pmt_bond_type eq 0}>checked='checked'<{/if}>/></th>
+    <td><{t}>所有商品<{/t}></td>
+  </tr>
+  <{/if}>
+  <{if $pmt.type eq 'goods'}>
+  <tr>
+    <td><input type='radio' value='1' name='pmt_bond_type' <{if $pmt.pmt_bond_type eq 1}>checked='checked'<{/if}>/></td>
+    <td><{t}>选择商品<{/t}></td>
+  </tr>
+  <!--
+  <tr>
+    <td><input type='radio' value='2' name='pmt_bond_type' <{if $pmt.type eq 'order'}> disabled='disabled'<{/if}><{if $pmt.pmt_bond_type eq 2}>checked='checked'<{/if}>/></td>
+    <td><{t}>分类加品牌<{/t}></td>
+  </tr>-->
+  <{/if}>
+</table>
+</div>
+  
+<div id='s_p' style='display:none'><{input cols='name' value=$pmt.bind_goods type="object:goods/products" name="bind_goods" multiple="1"}></div>
+<div id='s_cb' style='display:none'><{t}>静待佳音...<{/t}></div>
+
+
+<div class="table-action">
+<{button label="上一步" href="index.php?ctl=sale/promotion&act=writePromotionRule"}>
+<{button label="下一步" type="submit"}>
+<{button label="取消"}>
+</div>
+
+</form>
+
+<script>
+  var ii=0;
+  $ES('input', 'select_mac').each(function(item){
+    if(item.checked) {
+      switch (item.value)
+      {
+        case '0': 
+          $('s_p').setStyle('display','none');
+          $('s_cb').setStyle('display','none');
+          break;
+
+        case '1': 
+          $('s_p').setStyle('display','');
+          $('s_cb').setStyle('display','none');
+          break;
+        case '2':
+          $('s_p').setStyle('display','none');
+          $('s_cb').setStyle('display','');
+          break;
+      }
+    }
+  });
+  
+  $ES('input', 'select_mac').each(function(item){
+
+
+    item.addEvent('click',function(e){
+      switch (item.value)
+      {
+        case '0': 
+          $('s_p').setStyle('display','none');
+          $('s_cb').setStyle('display','none');
+          break;
+        case '1': 
+
+          $('s_p').setStyle('display','');
+          $('s_cb').setStyle('display','none');
+          break;
+        case '2':
+          $('s_p').setStyle('display','none');
+          $('s_cb').setStyle('display','');
+          break;
+      }
+    });
+
+  });
+  
+  
+  $ES('.btn[type=button]','#SelectProductForm').getLast().addEvent('click',function(e){
+		if($E('body[id=shopadmin]')){
+			W.page('index.php?ctl=sale/activity&act=index');
+		}else{
+			window.close();
+		}	
+	})
+</script>

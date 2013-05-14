@@ -1,0 +1,38 @@
+<h4><{$theme}>/<{$file}></h4>
+<form class="tableform" method="post" action="index.php?ctl=system/template&act=saveContent"  id='template-sedit-from'>
+<input type="hidden" name="theme" value="<{$theme}>" />
+<input type="hidden" name="file" value="<{$file}>" />
+<input type="hidden" name="type" value="<{$type}>" />
+<input type="hidden" name="file_name" value="<{$file_name}>" />
+<{input type="textarea" rows="30" style="width:98%" value=$content name="content"}>
+
+<{if !constant('SHOP_DEMO') && count($bakfile) > 0}>
+<div class="division">文件修改历史：
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+<{foreach from=$bakfile item=bakfile}>
+<tr>
+  <th><{$bakfile.tpl_name}></th>
+  <td><a href="index.php?ctl=system/template&act=recoverSource&p[0]=<{$theme}>&p[1]=<{$bakfile.tpl_name}>&p[2]=<{$file}>"><{t}>还原<{/t}></a>
+    <span style="cursor: pointer" onclick="if(confirm('确认删除？')) delImage('<{$bakfile.tpl_name}>');"><{t}>删除<{/t}></span></td>
+</tr>
+<{/foreach}>
+</table>
+</div>
+<{/if}>
+
+<center style='padding:5px'><input type="checkbox" name="isbak" value="1" checked="checked"><{t}>保留备份<{/t}></center>
+</form>
+<{area inject='.mainFoot'}>
+<center style='padding:5px'>
+<{if constant('SHOP_DEMO')}>
+<input type='button' value='DEMO站禁止'/>
+<{else}>
+<input type='button' value='保存' onclick='$("template-sedit-from").fireEvent("submit")'>
+<{/if}>
+</center>
+<{/area}>
+<script>
+  function delImage(imgname){
+    W.page('index.php?ctl=system/template&act=removePage&p[0]=<{$theme}>&p[1]='+imgname,{data:$('template-sedit-from'),update:$('template-sedit-from'),method:'post'});
+  }
+</script>

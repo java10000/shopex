@@ -1,0 +1,1 @@
+ <script type="text/javascript" src="js/package/tools.js"></script> <script type="text/javascript" src="js/package/component.js"></script> <script type="text/javascript" src="js/package/wysiwyg.js"></script> <script type="text/javascript" src="js/package/goodsedit.js"></script> 

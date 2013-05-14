@@ -1,0 +1,120 @@
+<table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
+  <!--<tr> 
+    <td align="right" nowrap width="20%"><{t}>配送地区：<{/t}></td>
+    <td width="80%"><{$area.name}></td>
+  </tr>
+  <tr> 
+    <td align="right" nowrap width="20%"><{t}>配送公式：<{/t}></td>
+    <td width="80%"><input type="text" id="dlg_expressions" value="<{$expressions}>" size="50" /></td>
+  </tr> -->
+  <tr>
+    <td colspan=2 nowrap>
+      <FIELDSET><LEGEND align="top"><{t}>公式验算<{/t}></LEGEND> 
+
+      <div class='notice'>
+                您可以在这里测试配送公式是否计算正确、有效
+            </div>
+          <table width="98%" border="0" cellspacing="0" cellpadding="2">
+            <tr> 
+              <td width="70%" nowrap>配送公式：
+                <input type="text" id="dlg_expressions" value="<{$expressions}>" size="50" />
+              </td>
+            </tr>
+            <tr> 
+              <td width="70%" nowrap>商品重量：
+                <input type="text" id="weight" name="weight" class="inputstyle" maxlength="20" size="8" value="0">
+                克 </td>
+              <td width="30%" nowrap rowspan="3"> 
+                <p><button onclick="countexp();" class='sysiconBtnNoIcon'><{t}>计算<{/t}></button></p>
+              </td>
+            </tr>
+            <tr>
+              <td width="70%" nowrap>订单价格：
+                <{input type="money" id="orderprice" name="orderprice" class="inputstyle" maxlength="20" size="8" value="0"}>
+              </td>
+            </tr>
+            <tr> 
+              <td width="70%" nowrap>
+                <span id="result"></span>
+              </td>
+            </tr>
+          </table>
+          </FIELDSET></td>
+  </tr>
+</table>
+<div class='mainFoot' style='height:40px;width:80px;margin:0 auto;'>
+  
+ 
+  
+    
+ <div class="table-action">
+	<{button type="button" onclick='countexp(this)' label="确定"}>
+</div>
+    
+    
+</div>
+
+
+<script language="javascript">
+function getval(expval){
+  if (eval(expval) > 0.000001){
+    return 1;
+  }else if (eval(expval) >-0.000001&&eval(expval)< 0.000001){
+    return 1/2;
+  }else{
+    return 0;
+  }
+}
+
+function getceil(expval){
+  if (eval(expval) > 0){
+    return Math.ceil(eval(expval)-0.000001);
+  }else{
+    return 0;
+  }
+}
+
+function countexp(qd){
+  var bds = $('dlg_expressions').value;
+  if (!qd){
+      if (bds == ''){
+        $('dlg_expressions').focus();
+        alert("请输入配送公式");
+        return;
+      }
+   }
+  var re = new RegExp("/^[^\]\[\}\{\)\(0-9WwPp\+\-\/\*]+$/");
+  if (re.test(bds)){
+    alert("公式中含有非法字符");
+    $('dlg_expressions').focus();
+    return ;
+  }
+  
+  var price = $('orderprice').value;
+  var weight = $('weight').value;
+  var str ;
+    str = bds.replace(/(\[)/g, "getceil(");
+    str = str.replace(/(\])/g, ")");
+    str = str.replace(/(\{)/g, "getval(");
+    str = str.replace(/(\})/g, ")");
+    str = str.replace(/(W)/g, weight);
+    str = str.replace(/(w)/g, weight);
+    str = str.replace(/(P)/g, price);
+    str = str.replace(/(p)/g, price);
+    try {
+      eval(str);
+    }
+    catch(e){
+      alert("公式格式不正确");
+      return;
+    }
+  $('result').set('html','<b><{t}>计算结果：'+Math.floor(eval(str)*100+0.01)/100+'<{/t}></b>');
+
+
+  if(!qd)return;
+  qd=$(qd);
+  var dialog=qd.getParent(".dialog");
+  dialog.retrieve("targetIpt").set("value",$("dlg_expressions").getValue());
+  dialog.getElement('.dialog-btn-close').fireEvent('click');
+}
+</script>

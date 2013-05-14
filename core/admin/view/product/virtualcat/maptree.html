@@ -1,0 +1,71 @@
+<form action="index.php?ctl=goods/virtualcat&act=update" id="catEditor" method="post">
+<div class="action-bar mainHead"><span class="sysiconBtn addorder" onclick="W.page('index.php?ctl=goods/virtualcat&act=addNew')"><{t}>添加分类<{/t}></span></div>
+
+<table cellspacing="0" cellpadding="0" class="gridlist" style="width:800px">
+<col class="Colauto"></col>
+<col class="Coloption_2b"></col>
+<col class="Coloption_1b"></col>
+<col class="Coloption_1b"></col>
+<col class="Coloption_1b"></col>
+<col class="Coloption_1b"></col>
+<col class="Coloption_1b"></col>
+<thead>
+<tr>
+<th><{t}>分类名称<{/t}></th>
+<th><{t}>类型<{/t}></th>
+<th><{t}>添加子类<{/t}></th>
+<th><{t}>编辑<{/t}></th>
+<th><{t}>删除<{/t}></th>
+<th><{t}>查看商品<{/t}></th>
+<th><{t}>预览<{/t}></th>
+</thead>
+<tbody>
+<{foreach from=$tree item=item key=iLoop name="item"}>
+<tr parentid="<{$item.pid}>">
+<td style=" text-align:left; width:300px; overflow:hidden;">
+<div style="padding-left:<{$item.step*25}>px;border:0;">
+     <span class="quiet"><{t}>排序:<{/t}></span><input class="orderTextStyle" type="number" size="2"  name="p_order[<{$item.virtual_cat_id}>]" value="<{$item.p_order}>"> <{img class="imgTree" onclick="clickTree(this)" id=$item.virtual_cat_id src="images/menu-sub.png" }>
+    <a style="font-weight:700; color:#000; text-decoration:none;padding-right:15px;" href='index.php?ctl=goods/virtualcat&act=edit&p[0]=<{$item.virtual_cat_id}>'><{$item.virtual_cat_name}></a>
+	</div>
+    </th>
+  <td style="text-align:left;width:150px"><span class="quiet" style="font-weight:normal;padding:0 5px"><{if $item.type_name}>[<{$item.type_name}>]<{/if}></span></td>
+  <td style="width:50px"><{assign var="cat_id" value=$item.virtual_cat_id}>
+    <span class="opt" onClick='W.page("index.php?ctl=goods/virtualcat&act=addNew&p[0]=<{$item.virtual_cat_id}>")'><{img src="images/bundle/addcate.gif" alt="添加子分类"}></span>
+    </td>
+    <td style="width:50px"><span class="opt" onClick='W.page("index.php?ctl=goods/virtualcat&act=edit&p[0]=<{$item.virtual_cat_id}>")'><{img src="images/bundle/editcate.gif" alt="编辑"}></span></td>
+    <td style="width: 50px"><span class="opt" onclick="javascript: if(confirm('您确定要删除该分类？')){ W.page('index.php?ctl=goods/virtualcat&act=toRemove&p[0]=<{$item.virtual_cat_id}>',{method:'get'});}"><{img src="images/bundle/delecate.gif" alt="删除"}></span></Td>
+    <td style="width: 50px"><span class="opt" onClick='W.page("index.php?ctl=goods/product&act=show&p[0]=<{$item.virtual_cat_id}>")'><{img src="images/bundle/showcate.gif" alt="查看此分类下商品"}></span></td>
+<td><a class="opt" href='<{$item.url}>' target="_blank"><{img src="images/bundle/zoom_btn.gif" alt="跳转前台查看该"}></a></td></tr>
+<{/foreach}>
+</tbody>
+</table>
+  <div class="mainFoot">
+    <div class="footer">
+     <table cellspacing="0" cellpadding="0" align="center" class="table-action">
+  <tr>
+    <td><b class="submitBtn"><input onclick="$('catEditor').fireEvent('submit',{type:'submit',target:$('catEditor')})" type="submit" value="保存排序" /></b></td>
+  </tr>
+</table> 
+    </div>
+  </div>
+</form>
+<{img id=imgTreeC style="display:none" src="images/menu-sub.png" }>
+<{img id=imgTreeO style="display:none" src="images/menu-open.png" }>
+<script>
+function clickTree(ipt){
+  var obj = $(ipt).getParentMatch(function(e){return !e.getAttribute('parentid');});
+  if($(ipt).src == $('imgTreeC').src && (!obj.getNext() || !obj.getNext().get('readstatus'))){
+    new Element('tr',{'readstatus':1}).adopt(new Element('td').setProperties({'colspan':'7','style':'border:none'})).injectAfter(obj);
+    W.page('index.php?ctl=goods/virtualcat&act=getChildCat',{update:obj.nextSibling.firstChild,method:'post',data:'pid='+$(ipt).id});
+  }else{
+      if($(ipt).src == $('imgTreeC').src){
+        obj.getNext().style.display = '';
+      }else{
+        obj.getNext().style.display = 'none';
+      }
+  }
+
+  if($(ipt).src == $('imgTreeC').src) $(ipt).src = $('imgTreeO').src;
+  else $(ipt).src = $('imgTreeC').src;
+}
+</script>

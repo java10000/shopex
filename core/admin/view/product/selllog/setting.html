@@ -1,0 +1,37 @@
+<form method="post" action="index.php?ctl=goods/selllog&act=toSetting">
+  <div class="tableform">
+    <h4><{t}>销售记录设置<{/t}></h4>
+    <div class="division">
+      <table>
+        <tr>
+          <th ><{t}>是否显示销售记录:<{/t}></th>
+          <td><{html_radios name="selllog[switch]" options=$setting.aSwitch checked=$setting.display separator="" onclick="disSetting(this.value)"}></td>
+        </tr>
+        <tr class="selllog-display-setting">
+          <th><{t}>低于多少条不显示销售记录:<{/t}></th>
+          <td><{input type="digits" maxlength="3" size=5  required="true" name="selllog[limit]" value=$setting.limit}><{t}>条<{/t}></td>
+        </tr>
+        <tr class="selllog-display-setting">
+          <th><{t}>每页显示条数:<{/t}></th>
+          <td><{input type="digits" maxlength="3" size=5  required="true" name="selllog[listnum]" value=$setting.listnum}><{t}>条<{/t}></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+<script>
+var disSetting = function(aswitch){
+    tdis=(aswitch=='on'?'':'none');
+    $$('tr[class=selllog-display-setting]').each(
+        function(v,k){v.style.display=tdis}
+    )
+}
+disSetting('<{$setting.display}>');
+</script>
+
+
+
+    <div class="table-action">
+	<{button type="submit"  label="保存"}>
+</div>
+</form>

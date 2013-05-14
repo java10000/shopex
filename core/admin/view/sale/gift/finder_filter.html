@@ -1,0 +1,13 @@
+<table>
+<tr>
+  <td valign="top"><label for="f_member_lv">赠品分类
+  </label>
+    <select id="f_giftcat_id" name="giftcat_id[]" size="5" multiple="multiple">
+      <option style="font-weight:bold" value="_ANY_" selected="selected"><{t}>所有分类<{/t}></option>
+      <{foreach from=$filter.giftcat_ids item=items name="_s"}>
+      <option<{if $smarty.foreach._s.iteration is odd}> class="row2"<{/if}> value="<{$items.giftcat_id}>"><{$items.cat}></option>
+      <{/foreach}>
+    </select>
+  </td>
+</tr>
+</table>

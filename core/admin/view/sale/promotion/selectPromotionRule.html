@@ -1,0 +1,28 @@
+<form id='SelectPromotionRuleForm' method='post' action='index.php?ctl=sale/promotion&act=doSelectPromotionRule' class="tableform">
+<div class="division">
+  <table border="0" cellspacing="0" cellpadding="0" >
+    <{foreach key=key from=$scheme.list item=item}>
+    <tr>      
+      <th style="width:10px;"><input type='radio' id="pmts_id_<{$key}>" name='pmts_id' value='<{$key}>' <{if $key==$scheme.pmts_id}>checked='checked'<{/if}>></th>
+      <td><label for="pmts_id_<{$key}>"><{$item.name}></label></td>
+    </tr>
+    <{/foreach}>
+  </table>
+  
+  
+<div class="table-action">
+<{button label="下一步" type="submit"}>
+<{button label="取消"}>
+</div>
+
+
+</form>  
+<script>
+	$ES('.btn[type=button]','#SelectPromotionRuleForm').addEvent('click',function(e){	
+		if($E('body[id=shopadmin]')){
+			W.page('index.php?ctl=sale/activity&act=index');
+		}else{
+			window.close();
+		}	
+	})
+</script>

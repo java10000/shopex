@@ -1,0 +1,97 @@
+<h3>数据库的相关信息配置</h3>
+<form method="post" action="index.php?step=ready" id="db_setting" onsubmit ='return checkdbname()'>
+    <table width="100%" border="0">
+  <tr>
+      <th width="22%" align="right"><label for="db_host">数据库主机:</label></th>
+      <td width="30%"><input class="txt" id="db_host" name="dbhost" size="25" value="<{$host|default:'localhost'}>" type="text" onchange='checkdbInfo()'></td>
+      <td width="48%">如果数据库服务器与WEBSERVER不在同一台主机上,请设置为数据库服务器的地址。</td>
+    </tr>
+    <tr>
+      <th align="right" scope="row"><label for="db_uname">数据库用户名:</label></th>
+      <td><input id="db_uname" class="txt" name="uname" size="25" value="" type="text" onchange='checkdbInfo()'></td>
+      <td rowspan="2" id="db_check_result" style="display:none">
+      <img src="images/db_succ.gif" />
+      </td>
+    </tr>
+    <tr>
+      <th align="right" scope="row"><label for="db_passwd">数据库密码:</label></th>
+      <td><input id="db_passwd" class="txt" type="password" name="pwd" size="25" value="" type="text" onchange='checkdbInfo()'></td>
+    </tr>
+        <tr>
+      <th align="right" scope="row"><label for="db_name">数据库名:</label></th>
+      <td id="db_selector"><input class="txt" style="width:120px" id="db_name" name="dbname" size="25" value="" type="text">
+      <span id="btn_check_db" onclick="checkdbInfo()"><span style="text-decoration: underline;  cursor: pointer;color:#00f;">测试连接&raquo;</span></span>
+      </td>
+      <td></td>
+    </tr>
+    <tr>
+      <th align="right" scope="row"><label for="db_prefix">安装数据表前缀:</label></th>
+      <td><input class="txt" id="db_prefix" name="prefix" id="prefix" value="sdb_" size="25" type="text"></td>
+      <td>一般您不需要修改数据表前缀。</td>
+    </tr>
+    <tr>
+      <th align="right" scope="row"><label for="db_PREFIX">选择您的服务器时区</label></th>
+      <td colspan="2">
+        <select name="stimezone" style="width:300px">
+          <{html_options options=$timezone selected=$default_timezone}>
+        </select>
+      </td>
+    </tr>
+    <tr><td colspan='3' align='center'><input style="margin:10px;cursor:pointer;"  value="保存并进入下一步 &raquo;" type="submit" /></td></tr>
+</table>
+</form>
+<script>
+var checkdbname = function(){
+    var dbname = document.getElementById('db_name');
+    if(!!!dbname.value){
+        alert('请指定正确的数据库名称!');
+        return false;
+    }
+    return true;
+};
+void function(){
+   
+   var dbNameInput=_$('db_selector').innerHTML;
+   
+    checkdbInfo=function(){
+       var bakvalue =_$('db_name').value;
+       var dbHost=_$('db_host').value;
+       var dbUname=_$('db_uname').value;
+       var dbPass=_$('db_passwd').value;
+       if(!XHR)return;
+       if($('btn_check_db'))$('btn_check_db').innerHTML='<img src="images/ajax-loader.gif" />';
+       XHR.open('post','index.php?step=checkdb',true);
+       XHR.onreadystatechange=function(){
+       
+           if (XHR.readyState != 4)return;
+           
+   
+           XHR.onreadystatechange=function(){};
+           
+          if ((XHR.status >= 200) && (XHR.status < 300)){
+                 _$('db_selector').innerHTML=XHR.responseText;
+                 _$('db_check_result').style.display='';
+          
+          }else{
+             
+               _$('db_check_result').style.display='none';
+               _$('db_selector').innerHTML=dbNameInput;
+               _$('db_name').value = bakvalue;
+             
+          }
+           
+       
+       
+       };
+       
+       XHR.setRequestHeader('X-Requested-With','XMLHttpRequest');
+       XHR.setRequestHeader('Accept','text/javascript, text/html, application/xml, text/xml, */*');
+       XHR.setRequestHeader('Content-type', 'application/x-www-form-urlencoded charset=utf-8');
+       XHR.send('dbhost='+dbHost+'&uname='+encodeURIComponent(dbUname)+'&pwd='+encodeURIComponent(dbPass));
+    };
+
+}();
+
+
+
+</script>

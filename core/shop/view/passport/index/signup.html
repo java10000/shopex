@@ -1,0 +1,95 @@
+<form method="post" action='<{link ctl="passport" act="create"}>' class='signupform'>
+	<div class="RegisterWrap">
+      <h4><{t}>用户注册<{/t}></h4>
+      <div class="intro"><div class="customMessages">{register_message}</div></div>
+      <div class="form">
+        <input name="forward" type="hidden" value="<{$options.url}>">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <th><i>*</i><{t}>用户名：<{/t}></th>
+            <td><input type="text" class="inputstyle _x_ipt" name="uname" vtype="required" required="true" id="reg_user" maxlength="50" onchange="nameCheck(this)"><span></span></td>
+          </tr>
+          <tr>
+            <th><i>*</i><{t}>密码：<{/t}></th>
+            <td><{input class="inputstyle" name="passwd" type="password" required="true" id="reg_passwd"}></td>
+          </tr>
+          <tr>
+            <th><i>*</i><{t}>确认密码：<{/t}></th>
+            <td><{input class="inputstyle" name="passwd_r" type="password" required="true" id="reg_passwd_r"}></td>
+          </tr>
+          <tr>
+            <th><i>*</i><{t}>电子邮箱：<{/t}></th>
+            <td><input type="text" vtype="email" required="true" name="email" id="reg_email" class="inputstyle _x_ipt" />
+           </td>
+          </tr>
+          <{if $SignUpvalideCode}>
+          <tr>
+            <th><i>*</i><{t}>验证码：<{/t}></th>
+            <td><{input size="8" class="inputstyle"  type="digits" required="true" name="signupverifycode" id="iptsingup"}>
+                <span class='verifyCode' style='display:none;'><img src="#" codesrc='<{link ctl="passport" act="verifyCode" arg0="s"}>' border="1" /><a href="javascript:void(0)"><{t}>&nbsp;看不清楚?换个图片<{/t}></a>
+               </span>
+             </td>
+          </tr>
+          <{/if}>
+          <tr>
+            <th></th>
+            <td><label for="license" class="nof" style="width:auto; text-align:left; font-weight:normal;">
+          <input type="checkbox" id="license" name="license" value="agree" checked="checked"/>
+          我已阅读并同意 <a href="<{link ctl=page act=license}>" id="terms_error" class="lnk" target='_blank'><span class="FormText" id="terms_error_sym"><{t}>会员注册协议<{/t}></span></a><{t}>和<{/t}><a href="<{link ctl=page act=privacy}>" id="privacy_error" class="lnk" target='_blank'><span class="FormText" id="privacy_error_sym"><{t}>隐私保护政策<{/t}></span></a>。
+          </label></td>
+          </tr>          
+          <tr>
+            <th></th>
+            <td>
+        <input class="actbtn btn-register" type="submit" value="注册新用户" />
+        <input type="hidden" name="forward" value="<{$forward}>">
+              </td>
+          </tr>
+        </table>
+        <{$redirectInfo}> </div>
+
+<!--    <div class="righttop" style=" margin-top:20px;"><h4><{t}>会员登录<{/t}></h4>
+      <div class="intro"><{t}>如果您已经是本站会员，请登录<{/t}></div>
+      <a style="margin-top:9px;" class="actbtn btn-login" href="<{link ctl='passport' act='login'}>"><{t}>立即注册<{/t}></a>
+      
+      </div>
+    <div class="rightbottom"><h4><{t}>忘记密码？<{/t}></h4>
+      <div class="intro"><{t}>如果您忘记密码，请点击下面按钮取回密码<{/t}></div>
+      <a style="margin-top:9px;"  class="actbtn btn-forgetpass" href="<{link ctl='passport' act='lost'}>"><{t}>取回密码<{/t}></a>
+      </div>-->
+</div>
+ <{if $to_buy}><input type='hidden' name='regType' value='buy'> <{/if}>
+  <{if $isfastbuy}><input type='hidden' name='isfastbuy' value='yes'><{/if}>
+</form>
+<{if $SignUpvalideCode}>
+<script>
+   void function(formclz){
+         var vcodeBox = $E('.'+formclz+' .verifyCode');
+         var vcodeImg  =vcodeBox.getElement('img');
+         var refreshVcodeBtn  = vcodeBox.getElement('a').addEvent('click',function(e){
+              e.stop();
+              vcodeImg.src = vcodeImg.get('codesrc')+'?'+$time();
+         });
+         $$('.'+formclz+' input').addEvent('focus',function(){
+             if (this.form.retrieve('showvcode',false))return;
+             vcodeBox.show();
+             refreshVcodeBtn.fireEvent('click',{stop:$empty});
+             this.form.store('showvcode',true);
+         });
+   		 $E('.'+formclz+'').addEvent('submit',function(e){
+		 		var str=$("reg_user").value.trim();
+				var len = 0;  
+				for (var i = 0; i < str.length; i++) {  
+					if(str.charCodeAt(i) > 255)len = 1;  
+				} 			
+				if(!len&&str.length<3)return false;
+		 });
+   }('signupform');
+</script>
+<{/if}>
+<script>
+function nameCheck(input){
+  
+  new Request.HTML({update:$(input).getNext(),data:'name='+encodeURIComponent(input.value=input.value.trim())}).post('<{link ctl=passport act=namecheck}>');
+}
+</script>

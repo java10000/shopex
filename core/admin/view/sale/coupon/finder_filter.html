@@ -1,0 +1,14 @@
+<table>
+<tr>
+  <{if !$_finder.params.cpns_type}>
+  <td width="100%" valign="top"><label for="f_cpns_type">优惠券类型
+  </label>
+    <select id="f_cpns_type" name="cpns_type[]" size="5" multiple="multiple">
+      <option style="font-weight:bold" value="_ANY_" selected="selected"><{t}>任意类型<{/t}></option>
+      <option value="0"><{t}>可无限使用的优惠券<{/t}></option>
+      <option value="1" class="row2"><{t}>只能使用一次的优惠券<{/t}></option>
+    </select>
+  </td>
+  <{/if}>
+</tr>
+</table>

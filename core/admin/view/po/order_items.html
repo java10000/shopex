@@ -1,0 +1,39 @@
+<div class="tableform">
+  <{if count($POrder) > 0}>
+  <{foreach from=$POrder item=item name=item}>
+  <div class="division">
+    <div class="table-grid">
+    <div class="fontcolorBlue" style=" padding:0 0 6px 0; border-bottom:1px solid #ccc;"><span style="padding-right:10px;">供应商：<b><{$item.supplier_id}></b></span>订单状态：<{$item.po_status}></div>
+      <table cellspacing="0" cellpadding="0" border="0" width="100%" class="finderInform">
+     <!-- <colgroup class="Colgoodsid"/>
+      <colgroup class="textleft"/>     
+     
+      <colgroup span="3" class="Colamount"/>-->
+        <thead>
+          <th><{t}>货号<{/t}></th>
+          <th><{t}>商品名称<{/t}></th>
+          <th><{t}>代销价格<{/t}></th>
+          <th><{t}>购买量<{/t}></th>
+          <th><{t}>已发货量<{/t}></th>
+        
+      </thead>
+      <tbody><{foreach from=$item.items item=val name=val}>
+        <tr>
+          <td><{$val.bn}></td>
+          <td class="textleft">
+          <a target="_blank" href="../index.php?ctl=product&act=index&p[0]=<{$val.goods_id}>"><{$val.name}></a><{if $val.small_pic}><a style='text-decoration:none;' class='x-view-img' href='javascript:void(0);' onclick='viewIMG("<{$val.small_pic|storager}>",this);this.blur();'  title='点击查看图片'> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a><{/if}></td>
+        
+          <td class="Colamount">￥<{$val.price}></td>
+          <td class="Colamount"><{$val.nums}></td>
+          <td class="Colamount"><{$val.sendnum}></td>
+        </tr>
+        <{/foreach}>
+              </tbody>
+      </table>
+    </div>
+  </div>
+  <{/foreach}>
+  <{else}>
+  <div style="padding: 2px 0 0 4px;">暂无采购单</div>
+  <{/if}>
+</div>

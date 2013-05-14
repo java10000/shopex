@@ -1,0 +1,53 @@
+<!-- right-->
+<div class="MemberMain">
+<div style="margin-right:175px;">
+
+<form method="post" action="<{link ctl=member act=toAddOrderMsg }>">
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="liststyle data">
+<{if $msgType == 1}>
+<tr>
+    <td style="text-align:right" width="15%"><div class="title"><{t}>付款金额：<{/t}></div></td>
+    <td><{input type="positive" name="msg[paymoney]" required='true' maxlength=20 }><{t}>元<{/t}></td>
+</tr>
+<tr>
+    <td style="text-align:right"><div class="title"><{t}>付款方式：<{/t}></div></td>
+    <td><{input type="text" name="msg[payments]" required='true' maxlength=20 }></td>
+</tr>
+<tr>
+    <td style="text-align:right"><div class="title"><{t}>付款时间：<{/t}></div></td>
+    <td><{input type="date" name="msg[paydate][]" required=true maxlength=20 readonly=true }> &nbsp;
+    <{input type="select" name="msg[paydate][]" options=$timeHours }>&nbsp;时 &nbsp;
+    <{input type="select" name="msg[paydate][]" options=$timeMins }>&nbsp;分
+    </td>
+</tr>
+<tr>
+    <td style="text-align:right"><div class="title"><{t}>备注：<{/t}></div></td>
+    <td><{input type="textarea" name="msg[message]" rows=3 style="width:40%" }></td>
+</tr>
+<tr>
+    <td style="text-align:right">&nbsp;</td>
+    <td><input type="submit" value="提交"/>&nbsp;<input type="button"  onclick="javascript:history.go(-1)" value="取消"/></td>
+</tr>
+<{else}>
+<tr>
+    <td style="text-align:right"><div class="title"><{t}>标题：<{/t}></div></td>
+    <td><{input type="text" name="msg[subject]" required=true maxlength=20 }></td>
+</tr>
+<tr>
+    <td style="text-align:right"><div class="title"><{t}>内容：<{/t}></div></td>
+    <td><{input type="textarea" name="msg[message]" rows=3 style="width:40%" }></td>
+</tr>
+<tr>
+    <td style="text-align:right">&nbsp;</td>
+    <td><input type="submit" value="提交留言"/></td>
+</tr>
+<{/if}>
+</table>
+<input type="hidden" name="msg[orderid]" value="<{$orderId}>"/>
+<input type="hidden" name="msg[msgType]" value="<{$msgType}>"/>
+</form>
+
+</div>
+</div>
+<!-- right-->

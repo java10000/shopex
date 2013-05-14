@@ -1,0 +1,20 @@
+<{foreach from=$info.data item=group key=groupname}>
+<table>
+<caption><{$groupname}></caption>
+<{if $group.type eq "require"}>
+  <{foreach from=$group.items item=item key=key}>
+      <tr><td width="50%"><{$key}></td><td width="40%"><{$item.value}></td><td>
+      <{if $item.result}>
+        <{img src="images/bundle/enabled.gif"}>
+      <{else}>
+        <{img src="images/bundle/disabled.gif"}>
+      <{/if}>
+      </td></tr>
+  <{/foreach}>
+<{else}>
+  <{foreach from=$group.items item=item key=key}>
+      <tr><td width="50%"><{$key}></td><td><{$item}></td></tr>
+  <{/foreach}>
+<{/if}>
+</table>
+<{/foreach}>

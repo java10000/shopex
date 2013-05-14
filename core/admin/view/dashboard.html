@@ -1,0 +1,249 @@
+<div class="note" style='border:none;'>
+   <{t}><{$templete|default:'欢迎登录ShopEx商店系统'}><{/t}>
+   <{if $logintime}><{t}>，您的上次登录时间为<{/t}><{$logintime|cdate:'SDATE_FTIME'}>。<{/if}>
+</div>
+<div class="notice" style='display:<{if $systeminfo.price || $systeminfo.pay || $systeminfo.sender || $systeminfo.area || $shopinfo.newversion || $shopinfo.backupalert}>block<{else}>none<{/if}>;' >
+    <ul class='list'>
+            <{if $systeminfo.price}>
+            <li><a href='index.php?ctl=system/cur&act=index'><{t}>商店缺少默认货币，将会影响商店正常结算，请点此添加。<{/t}></a></li>
+            <{/if}>
+            <{if $systeminfo.pay}>
+            <li><a href='index.php?ctl=trading/payment&act=index'><{t}>商店缺少支付方式，顾客将无法下订单，请点此添加。<{/t}></a></li>
+            <{/if}>
+            <{if $systeminfo.sender}>
+            <li><a href='index.php?ctl=trading/delivery&act=index'><{t}>商店缺少配送方式，顾客将无法下订单，请点此添加。<{/t}></a></li>
+            <{/if}>
+            <{if $systeminfo.area}>
+            <li></b><a href='index.php?ctl=trading/delivery&act=dlAreaList'><{t}>商店缺少配送地区，顾客将无法下订单，请点此添加。<{/t}></a></li>
+            <{/if}>
+            <{if $systeminfo.cat}>
+            <li><a href='index.php?ctl=goods/category&act=addNew'><{t}>商店缺少商品分类<{/t}></a></li>
+            <{/if}>
+		<{if $systeminfo.backupalert}>
+		<li><span><{t}>商店数据已经有<{$systeminfo.backupalert}>天 没有备份过，为了您的安全运营，建议及时备份商店数据，<{/t}><a href="index.php?ctl=system/backup&act=index"><{t}>请点击此处备份<{/t}></a></span></li>
+		<{/if}>
+
+      <{if $systeminfo.imageneed}>
+            <li><span><{t}>GD或imagemaigck模块未加载：商品缩略图与商品水印将无法生成<{/t}></span></li>
+            <{/if}>  
+      <{if $shopinfo.newversion}>
+      <li><b><{t}>可升级新版本：<{/t}></b><a href="<{$shopinfo.newversion}>" target="_blank">shopex 4.8</a></li>
+            <{/if}> 
+    </ul>
+</div>
+
+
+<div class="dashboard" id="dashboard_main">
+<table border="0" cellspacing="0" cellpadding="0" class="frame">
+  <tr>
+    <td><div class="serviceitems">
+     <h3><{t}>待处理事务<{/t}></h3>
+      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tbody>
+          <tr>
+            <th><a style="text-decoration:none;" href="index.php?ctl=order/order&act=index&view=1"><{t}>未处理订单<{/t}></a></th>
+            <td><a href="index.php?ctl=order/order&act=index&view=1"
+                    <{if
+                    $affairinfo.ORDER_NEW==0}>class="dashboard_empty"<{else}>class="dashboard_number"<{/if}>><{$affairinfo.ORDER_NEW+0}><{t}>
+                    个<{/t}></a></td>
+          </tr>
+
+          <tr>
+            <th><a style="text-decoration:none;" href="index.php?ctl=order/order&act=new_order_message_list"><{t}>新留言订单<{/t}></span></th>
+            <td><a href="index.php?ctl=order/order&act=new_order_message_list"
+                    <{if $affairinfo.order_message==0}>
+                    class="dashboard_empty"<{else}>class="dashboard_number"<{/if}>><{$affairinfo.order_message|default:0}><{t}>
+                    个<{/t}></a></td>
+          </tr>
+          
+
+          <tr>
+            <th><span onclick="W.page('index.php?ctl=order/return_product&act=new_msg','')"><{t}>待处理售后服务<{/t}></span></th>
+            <td><span
+                    onclick="W.page('index.php?ctl=order/return_product&act=new_msg','')"
+                    <{if
+                    $affairinfo.return_product==0}>class="dashboard_empty"<{else}>class="dashboard_number"<{/if}>><{$affairinfo.return_product|default:0}><{t}> 个<{/t}></span></td>
+          </tr>
+
+          <tr>
+            <th><span onclick="W.page('index.php?ctl=goods/gnotify&act=index','')"><{t}>未处理缺货登记<{/t}></span></th>
+            <td><span
+                    onclick="W.page('index.php?ctl=goods/gnotify&act=index','')"
+                    <{if
+                    $affairinfo.GNOTIFY==0}>class="dashboard_empty"<{else}>class="dashboard_number"<{/if}>><{$affairinfo.GNOTIFY+0}><{t}> 条<{/t}></span></td>
+          </tr>
+        
+    
+          <tr>
+            <th><span onclick="W.page('index.php?ctl=goods/product&act=goodsAlert',{data:'a=a',method:'post'})"><{t}>商品库存报警<{/t}></span></th>
+            <td><span
+                    onclick="W.page('index.php?ctl=goods/product&act=goodsAlert',{data:'a=a',method:'post'});"
+                    <{if
+                    $affairinfo.goods_alert==0}>class="dashboard_empty"<{else}>class="dashboard_number"<{/if}>><{$affairinfo.goods_alert+0}><{t}> 条<{/t}></span></td>
+          </tr>
+        
+   
+        
+   
+          <tr>
+            <th><span onclick="W.page('index.php?ctl=member/gask&act=index','');"><{t}>未处理购买咨询<{/t}></span></th>
+            <td><span
+                    onclick="W.page('index.php?ctl=member/gask&act=index','');"
+                    <{if
+                    $affairinfo.GASK==0}>class="dashboard_empty"<{else}>class="dashboard_number"<{/if}>><{$affairinfo.GASK+0}><{t}> 条<{/t}></span></td>
+          </tr>
+    
+          <tr>
+            <th><span onclick="W.page('index.php?ctl=goods/discuss&act=index','')"><{t}>未处理商品评论<{/t}></span></th>
+            <td><span
+                    onclick="W.page('index.php?ctl=goods/discuss&act=index','')"
+                    <{if
+                    $affairinfo.GDISCUSS==0}>class="dashboard_empty"<{else}>class="dashboard_number"<{/if}>><{$affairinfo.GDISCUSS+0}><{t}> 条<{/t}></span></td>
+          </tr>
+       
+  
+         <tr>
+            <th><span onclick="W.page('index.php?ctl=member/shopbbs&act=index','');"><{t}>商店新留言<{/t}></span></th>
+      
+            <td><span
+                    onclick="W.page('index.php?ctl=member/shopbbs&act=index','');"
+                    <{if
+                    $affairinfo.MESSAGES==0}>class="dashboard_empty"<{else}>class="dashboard_number"<{/if}>><{$affairinfo.MESSAGES+0}><{t}> 条<{/t}></span></td>
+          </tr>
+      
+        </tbody>            
+      </table>
+    </div></td>
+    <td><div class="serviceitems"> 
+       <h3><{t}>今日业务量<{/t}></h3>
+      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+
+      <tbody>
+        <tr> 
+            <th><{t}>今日订单量<{/t}></th>
+            <td><span <{if
+                    $affairinfo.todaysorder==0}>class="dashboard_empty"<{else}>class="dashboard_number"
+                    style="cursor:default;text-decoration:none;"<{/if}>><{$affairinfo.todaysorder+0}><{t}> 个<{/t}></span></td>
+      </tr>
+      <tr> 
+            <th><{t}>待付款订单<{/t}></th>
+            <td><span <{if
+                    !$affairinfo.ORDER_TO_PAY}>class="dashboard_empty"<{else}>class="dashboard_number"
+                    style="cursor:default;text-decoration:none;"
+                    <{/if}>><{$affairinfo.ORDER_TO_PAY+0}><{t}> 个<{/t}></span></td>
+      </tr>
+      <tr> 
+            <th><{t}>已付款待发货订单<{/t}></th>
+            <td><span <{if
+                    !$affairinfo.ORDER_TO_DLY}>class="dashboard_empty"<{else}>class="dashboard_number"
+                    style="cursor:default;text-decoration:none;"
+                    <{/if}>><{$affairinfo.ORDER_TO_DLY+0}><{t}> 个<{/t}></span></td>
+      </tr>
+      <tr> 
+            <th><{t}>今日新增会员<{/t}></th>
+            <td><span <{if
+                    $affairinfo.memberadd==0}>class="dashboard_empty"<{else}>class="dashboard_number"
+                    style="cursor:default;text-decoration:none;"
+                    <{/if}>><{$affairinfo.memberadd+0}><{t}> 位<{/t}></span></td>
+      </tr>
+      <tr> 
+            <th><{t}>今日过生日会员<{/t}></th>
+            <td><span <{if
+                    $affairinfo.birthday==0}>class="dashboard_empty"<{else}>class="dashboard_number"
+                    style="cursor:default;text-decoration:none;"
+                    <{/if}>><{$affairinfo.birthday+0}><{t}> 位<{/t}></span></td>
+      </tr>
+
+      <tr> 
+            <th><{t}>昨日订单量<{/t}></th>
+            <td><span <{if
+                    $affairinfo.yesterday_order==0}>class="dashboard_empty"<{else}>class="dashboard_number"
+                    style="cursor:default;text-decoration:none;"
+                    <{/if}>><{$affairinfo.yesterday_order+0}><{t}> 个<{/t}></span></td>
+      </tr>
+      <tr> 
+            <th><{t}>昨日成交订单<{/t}></th>
+            <td><span <{if
+                    $affairinfo.yesterday_order_execution==0}>class="dashboard_empty"<{else}>class="dashboard_number"
+                    style="cursor:default;text-decoration:none;"
+                    <{/if}>><{$affairinfo.yesterday_order_execution+0}><{t}> 个<{/t}></span></td>
+      </tr>
+
+      <tr> 
+            <th><{t}>昨日新增会员<{/t}></th>
+            <td><span <{if
+                    $affairinfo.yesterday_new_member==0}>class="dashboard_empty"<{else}>class="dashboard_number"
+                    style="cursor:default;text-decoration:none;"
+                    <{/if}>><{$affairinfo.yesterday_new_member+0}><{t}> 位<{/t}></span></td>
+      </tr>
+
+            </tbody>
+        </table>  
+        </div></td>
+    <td>
+	 <div class="serviceitems" style="width:590px;">
+        <div style='height:195px;padding:0;width:306px;float:left;'>
+            <div><{adv id=$_request_.action.ident index=1}></div>
+        </div>
+        <div style='height:195px;padding:0;width:284px;float:left;'>
+            <div><{adv id=$_request_.action.ident index=2}></div>
+        </div>
+    </div>
+  </td>
+  </tr>
+</table>
+
+<table border="0" cellspacing="0" cellpadding="0" class="frame">
+  <tr>
+    <td>
+        <div class="serviceitems">
+            <h3><{t}>商店信息<{/t}></h3>
+
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tbody>
+                    <tr> 
+                        <th><{t}>上架商品<{/t}></th>
+                        <td><span <{if $affairinfo.GOODS_ONLINE==0}>class="dashboard_number_black"<{else}>class="dashboard_number_black"<{/if}>><{$affairinfo.GOODS_ONLINE}><{t}> 件<{/t}></span></td>
+                    </tr>
+                    <tr> 
+                        <th><{t}>已下架商品<{/t}></th>
+                        <td><span <{if $affairinfo.GOODS_HIDDEN==0}>class="dashboard_number_black"<{else}>class="dashboard_number_black"<{/if}>><{$affairinfo.GOODS_HIDDEN}><{t}> 件<{/t}></span></td>
+                    </tr>
+                    <{if !$env.const.SAAS_MODE}>
+                    <tr> 
+                        <th class="dashboard_number_orange"><{t}>当前版本<{/t}></th>
+                        <td><span class="dashboard_number_orange"><{$version.app}>.<{$version.rev}></span></td>
+                    </tr>
+                    <{/if}>
+                </tbody>
+            </table>
+
+            <{if !$env.const.SAAS_MODE}>
+                <iframe frameborder="0" src="http://top.shopex.cn/promotion/version/version.php?function=view&version=<{$version.app|escape:url}>&versionno=<{$version.rev|escape:url}>" width="180" height="109" scrolling="auto"></iframe>
+            <{/if}>
+        </div>
+    </td>
+    <td>
+        <div class="serviceitems">
+            <h3><{t}>新手帮助<{/t}></h3>
+            <div class="contentbg" style="height:193px;padding:0;">
+                <iframe frameborder="0" src="http://top.shopex.cn/promotion/softwareHelp/" width="100%" height="100%" scrolling="auto"></iframe>
+            </div>
+        </div>
+    </td>
+
+    <td>
+        <div class="serviceitems" style=" width:590px;background:#E2E8EB; border:1px solid #ccc; overflow:hidden">
+        <div class="contentbg">
+            <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,29,0" name="dayReport" width="680" height="220" id="dayReport">
+                <param name="wmode" value="transparent">
+                <param name="movie" value="images/linechart.swf?fillcolor=0xFF9933&reporttype=day&header=visible&linecolor=0x784016&backcolor=0xffffff&raycolor=0xF5E1AA&xml=<{$day}>">
+                <embed src="images/linechart.swf" wmode="transparent" quality="high" pluginspage="http://www.macromedia.com/go/getflashplayer" flashvars="fillcolor=0xFF9933&linesize=2&reporttype=day&header=visible&linecolor=0x784016&backcolor=0xffffff&raycolor=0xF5E1AA&xml=<{$day}>" type="application/x-shockwave-flash" width="600" height="220" name="dayReport" wmode="transparent"></embed>
+            </object>
+        </div>
+    </div>
+    </td>
+  </tr>
+</table>
+
+</div>

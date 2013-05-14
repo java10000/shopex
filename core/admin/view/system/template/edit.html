@@ -1,0 +1,241 @@
+<script>
+function yanzheng(){
+	if($('toCreate').value=='--'){
+			alert('请先选择页面');
+		}else if($('page_name').value==''){
+			alert('页面名称不能为空');
+		}else if(($('page_name').value).match(/[\'||\"]/)){
+			alert('页面名称中不能含有单引号或双引号');
+		}else if(($('extend_file_name').value).match(/^[\u4e00-\u9fa5]/g)){
+			alert('文件名不能含有中文字符');
+		}else if(($('extend_file_name').value!='')&&($('extend_file_name').value).match(/[\'||\"]/)){
+			alert('文件名中不能含有单引号或双引号');
+		}else{
+	var sendvalue=$('toCreate').value+'&p[2]='+($('extend_file_name').value?encodeURIComponent($('extend_file_name').value):new Date().getTime() )+'&p[3]='+encodeURIComponent($('page_name').value);
+	W.page(sendvalue);}
+
+}
+</script>
+<{area inject=".mainHead"}>
+<div class="action-bar clearfix">
+<div class="span-9 actionItems">
+<div class="span-auto" ><h4><{t}><{$templetename}><{/t}></h4></div>
+<a target="download" href="index.php?ctl=system/template&act=dlpkg&p[0]=<{$theme}>" class="sysiconBtnNoIcon"><{t}>下载模板<{/t}></a><a class="sysiconBtnNoIcon" href="index.php?ctl=system/tmpimage&act=index&theme=<{$theme}>"><{t}>模板文件管理<{/t}></a>
+   <br />
+   
+    <span class="sysiconBtnNoIcon"  onClick="
+    if(window.confirm('确认恢复模板默认状态么？')){
+      W.page('index.php?ctl=system/template&act=reset&p[0]=<{$theme}>');
+    }"><{t}>恢复默认<{/t}></span><a class="sysiconBtnNoIcon" href='index.php?ctl=system/tmpimage&act=index&_systmpl=1'><{t}>功能区块管理<{/t}></a></div>
+ <div class="span-auto">
+ <div style=" *margin:0.6em 0 0.3em">
+创建新页面：<select name="toCreate" id="toCreate">
+              <option value="--"><{t}>--请选择--<{/t}></option>
+              <{foreach from=$template item=item}>
+              <option value="index.php?ctl=system/template&act=editor&p[0]=<{$theme}>&p[1]=<{$item.file}>"><{$item.name}></option>
+              <{/foreach}>
+            </select>
+</div>
+&nbsp;&nbsp;&nbsp;&nbsp;页面名称：<input name="page_name" id="page_name" type="text"  style="width:80px;"/>
+&nbsp;&nbsp;  文件名：<input name="extend_file_name" id="extend_file_name" type="text" style="width:80px;"/><span class="info" style="color:#a7a7a7; margin:0 10px 0 2px;"><{t}>留空则自动生成<{/t}></span>
+
+<span class="sysiconBtn addorder"  onClick="yanzheng();" >创建</span>
+</div>
+</div>
+<div class="gridlist">
+    <div class="gridlist-head">
+        <div class="span-5">页面名称</div>
+        <div class="span-6">文件名</div>
+        <div class="span-2" style="width:60px;">可视编辑</div>
+        <div class="span-2" style="width:60px;">源码编辑</div>
+        <div class="span-2" style="width:60px;">添加相似</div>
+        <div class="span-2" style="width:60px;">设为默认</div>
+        <div class="span-2" style="width:60px;">删除</div>
+    </div>
+</div>
+
+<{/area}>
+
+
+
+<div class="gridlist">
+
+<div id="cat_tree" class="gridlist-list">
+<{foreach from=$page_list key=pKey item=pItem}>
+    <{if $show_list[$pKey]}>
+
+       <div class="clear_<{$item.p_node_id}> row">
+     <div class='row-line'>
+       <div class='span-5'>
+          <div style="padding-left:20px;"><{img src="images/bundle/folder_page.gif"}><{$pItem}><input type="text" style="visibility:hidden; height:14px;" /></div>
+     </div>
+         </div>
+     </div>
+
+        <{foreach from=$show_list[$pKey] key=key item=item}>
+
+            <div class="clear_<{$item.p_node_id}> row">
+        <div class="row-line">
+                <div  class="span-5" style="text-align:left;"><div style="padding-left:30px;" class="pageEdit"><{img src="images/bundle/blue-dot.gif" }>
+                <{if $default_theme[$pKey]==$item.tpl_file}>
+                <strong><span class="pageName"><{$item.tpl_name}></span><{t}>(默认)<{/t}></strong>
+                <{else}><span class="pageName">
+                <{$item.tpl_name}></span>
+                <{/if}><input type="text" style="visibility:hidden; height:12px;" />
+                 </div></div>
+                 <div  class="span-6" style="text-align:left; "><{$item.tpl_file}></div>
+
+                     <div  class="span-2" style="width:60px;"><a class='opt' href="index.php?ctl=system/template&act=widgetsSet&p[0]=<{$theme}>&p[1]=<{$item.tpl_file}>" target='_blank'><{img src="images/bundle/page_edit.gif"}></a></div>
+                     <div  class="span-2" style="width:60px;"><a class='opt'  href="index.php?ctl=system/template&act=editor&p[0]=<{$theme}>&p[1]=<{$item.tpl_file}>"><{img src="images/bundle/page_script.gif"}></a></div>
+        <div  class="span-2" style="width:60px;"><a class='opt' href="index.php?ctl=system/template&act=copy_tpl&p[0]=<{$theme}>&p[1]=<{$item.tpl_file}>&p[2]=<{$pKey}>"><{img src="images/bundle/page_new.gif"}></a></div>
+        <div  class="span-2" style="width:60px;">
+         <{if $default_theme[$pKey]==$item.tpl_file}>
+         <span class="opt" style="cursor:auto;"><{img src="images/bundle/ok.gif"}></span>
+         <{else}>
+         <a class='opt' href="index.php?ctl=system/template&act=setTemplateDefault&p[0]=<{$theme}>&p[1]=<{$pKey}>&p[2]=<{$item.tpl_file}>"><{img src="images/bundle/hidden.gif"}></a>
+         <{/if}>
+         </div>
+
+         <{if $item.tpl_file!='default.html' && !SHOP_DEMO}>
+         <div class="span-2" style="width:60px;"><span class='opt' href="#" onclick="if(window.confirm('删除后将无法恢复，请在删除前下载备份模版，确认要删除吗？'))W.page('index.php?ctl=system/template&act=removePage&p[0]=<{$theme}>&p[1]=<{$item.tpl_file}>');"><{img src="images/bundle/delecate.gif"}></span></div>
+         <{else}>
+         <div class="span-2" style="width:60px;"><span class='opt'>禁止</span></div>
+         <{/if}>
+       </div>
+       </div>
+   <{/foreach}>
+<{/if}>
+    <{/foreach}>
+</div>
+</div>
+<div class='tableform' style='margin:0;'>
+<h4 style="color:#369"><{t}>信息提示：此处备份和应用功能只为模板设计师在制作模板时使用，一般用户无需使用。<{/t}></h4>
+  <div class="division">
+    <form action="index.php?ctl=system/template&act=backTemplate&template=<{$theme}>" method="post" target="{update:'messagebox'}">
+        <table width="100%" cellspacing="0" cellpadding="0" border="0">
+           <tbody>
+              <tr>
+                <th>备份模板：</th>
+                <td><input type="submit" value="备份"></td>
+              </tr>
+           </tbody>
+        </table>
+    </form>
+    </div>
+
+    <div class="division">
+    <form action="index.php?ctl=system/template&act=doBak&p[0]=<{$theme}>" method="post" target="{update:'messagebox'}">
+        <table width="100%" cellspacing="0" cellpadding="0" border="0">
+               <tbody>
+                  <tr>
+                    <th>应用模板：</th>
+                    <td> <select name="validtemplate">
+              <{foreach from=$themeslist item=item}>
+              <option value='<{$item}>'><{if $item=='theme.xml'}><{t}>默认<{/t}><{/if}><{if $item=='theme-bak.xml'}><{t}>备份<{/t}><{/if}></option>
+              <{/foreach}>
+            </select></td>
+                    <td><input type="submit"  value="应用"></td>
+                  </tr>
+               </tbody>
+            </table>
+    </form>
+  </div>
+<{if $config}>
+<form class="tableform" action="index.php?ctl=system/template&act=saveConfig" method="post" >
+  <div class="division">
+   <h5><{t}>模板全局参数设置<{/t}></h5>
+   <table width="100%" cellspacing="0" cellpadding="0" border="0">
+      <{foreach from=$config item=item key=key}>
+      <{if $item.label}>
+      <tr>
+        <th><{$item.label}>：</th>
+        <td><{if $item.type=='select' && $item.images}>
+		<{foreach from=$item.options item="optitem" key=optkey}>
+		<label style="float:left;margin:10px;text-align:center;padding:0;display:block;width:auto" for="cfg-<{$theme}>-<{$key}>-<{$optkey}>"><img style="height:50px;width:50px" src="../themes/<{$theme}>/<{$item.images[$optkey]}>" /><br />
+			<{if $optitem==$item.value}>checked="checked"<{/if}> type="radio" id="cfg-<{$theme}>-<{$key}>-<{$optkey}>"><{$optitem}>
+		<input name="config[<{$item.key}>]" value="<{$optkey}>" <{if $optitem==$item.value}>checked="checked"<{/if}> type="radio" id="cfg-<{$theme}>-<{$key}>-<{$optkey}>"><{$optitem}>
+		</label>
+		<{/foreach}>
+		<{else}><{input name="config[{$item.key}]" params=$item }><{/if}>
+		</td>
+      </tr>
+      <{/if}>
+      <{/foreach}>
+    </table>
+    <center><b class="submitBtn">
+        <input type="submit" value="保存配置信息">
+        </b></center>
+  </div>
+</form>
+<{/if}>
+</div>
+<{area inject='.mainFoot'}>
+
+<{/area}>
+
+<div action="index.php?ctl=<{$env.get.ctl}>&act=tempalte_rename" class='cell-edit-action' id="cell-edit-action" style="visibility:hidden;position:absolute;border:3px solid #6ea3f8; padding:8px; background:#eff6ff;z-index:66666;">
+<input type="hidden" value="" name="p[0]" /><input type="text" class="x-input " name="p[1]" autocomplete="off"/>
+<input type="hidden" value="<{$theme}>" name="p[2]"/> <br/>
+<{button label="保存" type="submit" icon="ok.gif"}>
+<{button label="取消" type="button" style="margin-left:3em"}>
+</div>
+
+<script>
+var editInput=new Class({
+	Implements:[Events],
+	initialize:function(options){
+    	this.editObj=options.edit;
+		this.input=$E(options.input,this.editObj);
+		this.button=$E(options.button,this.editObj);
+		this.cancel=$E(options.cancel,this.editObj);
+		this.init();
+	},
+	init:function(){
+		var that=this;
+		this.editObj.addEvents({
+			'show':function(target){
+				this.setStyles({visibility:'visible',opacity:0});
+				var leftSpace=target.getPosition().x+100;
+				var topSpace=target.getPosition().y;
+				this.retrieve('fx',new Fx.Styles(this,{link:'cancel',duration:400,transition:Fx.Transitions.Quint.easeOut})).start({opacity:1});
+				this.setStyles({'left':leftSpace,'top':topSpace});
+				this.getElement('input[type=hidden]').set('value',target.get('text'));
+				that.input.set('value',target.get('text'));
+				this.store('getobj',target);
+			},
+			'hide':function(){
+				this.setStyle('visibility','hidden');
+			}
+		});
+
+		this.button.addEvent('click',function(e){
+			var data=this.editObj.toQueryString();
+			var inputValue=this.input.get('value').trim();
+			if(!inputValue){MessageBox.error('请输入页面名称!');return;}
+			if(inputValue.match(/[\'||\"]/)){MessageBox.error('页面名称中不能含有单引号或双引号!');return;}
+			var that=this;
+			W.page(this.editObj.get('action'),{update:'messagebox',method: 'get', data:data,
+				onComplete:function(){
+					that.editObj.retrieve('getobj').set('text',that.input.get('value'));
+					$('loadMask').hide();
+				}
+			});
+			this.editObj.fireEvent('hide');
+		}.bind(this));
+
+		this.cancel.addEvent('click',function(e){
+			this.editObj.fireEvent('hide');
+		}.bind(this));
+	}
+});
+
+var options={'edit':$('cell-edit-action'),'input':'input[type=text]','button':'button[type=submit]','cancel':'button[type=button]'};
+var edit=new editInput(options);
+
+$ES('#cat_tree .pageEdit').addEvent('dblclick',function(e){
+	$('cell-edit-action').fireEvent('show',this.getElement('.pageName'));
+});
+
+
+</script>
+

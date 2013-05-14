@@ -1,0 +1,18 @@
+<div id="dialogContent">
+
+  <{include file="product/batchEdit.html"}>
+<{include file="product/batchEditDifferencePriceList.html"}>
+</div>
+
+</div>
+<{area inject='.mainFoot'}>
+<div class="mainFoot">
+<table cellspacing="0" cellpadding="0" border="0" align="center" class="table-action">
+  <tr>
+  <td>
+    <button onclick="batchEdit(<{$finder}>,this.parentNode)" class="sysiconBtnNoIcon"><{t}>保存<{/t}></button>      
+    <button class="sysiconBtnNoIcon" isCloseDialogBtn='true'><{t}>取消<{/t}></button>
+    </td>
+  </tr>
+</table></div>
+<{/area}>

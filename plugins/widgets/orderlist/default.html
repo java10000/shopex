@@ -1,0 +1,75 @@
+<div id="ors_<{$widgets_id}>" class="OrderList" style='overflow:hidden;height:40px'>
+  <ul>
+    <{foreach name=outer item=contact from=$data key=key}>
+    <li> <{if $setting.smallPic==6 }>
+      <{if $setting.picaddress}> <img src="<{$setting.picaddress}>" /> <{/if}>
+      <{elseif $setting.smallPic}>
+      <{img src=$setting.smallPic path="icons"}>
+      <{/if}> 感谢<span class="OrderListName"><{$data.$key.ship_name}><{if $data.$key.sex==='0'}>女士<{/if}><{if $data.$key.sex==1}>先生<{/if}></span> 于<span class="OrderListDate"><{$data.$key.date}></span>完成交易额为<span class="OrderListPrice"><{$data.$key.total_amount|cur}></span>的订单<!--<span class="OrderListId"><{$data.$key.order_id}></span>-->  </li>
+    <{/foreach}>
+  </ul>
+</div>
+<script>
+(function(){
+   if(window.roll_effect)return;
+   window.roll_effect = new Class({
+    options:{
+       viewheight:130,
+       speed:2000,
+       childTag:'li'
+    },
+    initialize: function(src,options){
+        options=options||{};
+        if(options.speed)options.speed=options.speed.limit(this.options.speed,5000);
+        if(options.viewheight)options.viewheight=options.viewheight.limit(40,700);
+        options=$extend(this.options,options);
+        var _this=this;
+        this.el=$(src);
+        if(!this.el)return;
+        this.el.effect('height').start(options.viewheight).chain(function(){
+           var sz=_this.el.getSize();
+           if(sz.y>=sz.scrollSize.y)return;
+           <{if $setting.suspend=='on'}>
+           _this.el.addEvents({
+               'mouseenter':function(){
+                  _this.stop();
+               },
+               'mouseleave':function(){
+                  _this.begin();
+               }
+            });
+            <{/if}>
+            _this.scEffect=new Fx.Scroll(_this.el,{duration:options.speed,link:'chain'});
+            _this.begin();
+        });
+    },
+    stop:function(){
+      this.pause=true;
+    },
+    begin:function(){
+      this.pause=false;
+      this.ref=this.start()
+    },
+    start:function(){
+      if(this.pause)return;
+      var _this=this;
+      var first=$E(this.options.childTag,this.el);
+      if(!first)return;
+      var h=$E(this.options.childTag,this.el).getSize().y;
+      this.scEffect.start(0,h).chain(function(){
+        first.injectBottom(first.getParent());
+        this.set(0,0);
+        fn.call(_this);
+      });
+      var fn= arguments.callee;
+    }
+  }); 
+
+})();
+
+</script>
+<script>
+  window.addEvent('domready', function(){
+    new roll_effect('ors_<{$widgets_id}>',{viewheight:<{$setting.height|default:130}>,speed:<{$setting.roll_speed|default:20}>00});
+  });
+</script>

@@ -1,0 +1,53 @@
+<form method="POST" action="index.php?ctl=trading/delivery&act=saveCorp" id="corpform" class="tableform">
+<div class="division">
+<input type="hidden" name="corp_id" value="<{$corp.corp_id}>">
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <th><{t}>物流公司选择:<{/t}></th>
+    <td><select name="type" id="select_crop">
+      <{foreach from=$ctype item=corps}>
+      <option crop_name="<{$corps.2}>" value="<{$corps.0}>"  <{if $corp.type == $corps.0}>selected<{/if}> ><{$corps.1}>
+      <{/foreach}>
+    </select></td>
+  </tr>
+  <tr>
+    <th><{t}>物流公司全称:<{/t}></th>
+    <td><{input type="text" name="name" style="width:120px" value=$corp.name vtype="required" class="_x_ipt" id="corp_whole_name"}></td>
+  </tr>
+  <tr>
+    <th><{t}>物流公司网址:<{/t}></th>
+    <td><input type="text" name="website" style="width:240px" id="website" value="<{$corp.website}>"></td>
+  </tr>
+  <tr>
+    <th><{t}>排序:<{/t}></th>
+    <td><{input style="width:50px;" name="ordernum" value=$corp.ordernum type="unsigned" class="_x_ipt"}></td>
+  </tr>
+  </table></div>
+
+
+        <div class="table-action">
+	<{button type="submit" label="提交"}>
+</div>
+</form>
+
+<script>
+$('select_crop').addEvent('change',function(){
+	$('corp_whole_name').value=$('select_crop').options[$('select_crop').selectedIndex].text;
+	try{
+		$('website').value=$('select_crop').options[$('select_crop').selectedIndex].get('crop_name');
+	}catch(e){
+		$('website').value=$('select_crop').options[$('select_crop').selectedIndex].crop_name;
+	}
+});
+</script>
+<{if $env.get._finder_name}>
+
+<script>
+ $('corpform').store('target',{
+    update:'messagebox',
+    onComplete:function(){
+      finderGroup['<{$env.get._finder_name}>'].refresh();
+    }
+ });
+ </script>
+  <{/if}>

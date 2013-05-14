@@ -1,0 +1,263 @@
+<!-- right-->
+  <div class="MemberMain">
+  <div style="margin-right:175px;">
+    <div class="MemberMain-title">
+      <div class="title" style="float:left;" ><{t}>您好，<{if $mem.name==''}><{$mem.uname}><{else}><{$mem.name}><{if $mem.sex == 1}>先生<{else}>女士<{/if}><{/if}>，欢迎进入用户中心<{/t}></div>
+      <div style="float:right">您目前是[<{$member.levelname}>]，您的积分为：<span class="point"><{$member.point}></span>，经验值为：<span class="point"><{$member.experience}></span></div>
+      <div class="clear">
+       
+      </div>
+    </div>
+    
+    <div class="MemberMain-basicinfo">
+    
+    
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td >
+    
+     <div class="info">
+     <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td class="left"></td>
+            <td width="135" style="padding-left:5px;"><{t}>您的帐户目前总积分：<{/t}></td>
+            <td><span class="point"><{$wel.pNum}></span><{t}>分<{/t}></td>
+            <td width="90" ><li><a class="lnk" href="<{link ctl=member act=pointHistory}>"><{t}>查看积分历史<{/t}></a></li></td>
+            <td class="right"></td>
+          </tr>
+        </table>
+      </div>
+    
+    </td>
+    <td >
+    
+      <div class="info">
+     <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td class="left"></td>
+            <td width="135" style="padding-left:5px;"><{t}>您的订单交易总数量：<{/t}></td>
+            <td><span class="point"><{$wel.totalOrder}></span>个</td>
+            <td width="90"><li><a class="lnk" href="<{link ctl=member act=orders}>"><{t}>进入订单列表<{/t}></a></li></td>
+            <td class="right"></td>
+          </tr>
+        </table>
+      </div>
+    
+    </td>
+  </tr>
+  <tr>
+    <td>
+    
+      <div class="info  sel">
+     <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td class="left"></td>
+            <td width="135" style="padding-left:5px;"><{t}>预存款余额：<{/t}></td>
+            <td><span class="point"><{$wel.aNum|cur}></span>元</td>
+            <td width="90" style="padding:4px 5px 0 0;" align="right"><a class="lnk" href="<{link ctl=member act=deposit}>"><img src="statics/btn_charge.gif" alt="充值" /></a></td>
+            <td class="right"></td>
+          </tr>
+        </table>
+      </div>
+    
+    </td>
+    <td>
+    
+      <div class="info">
+     <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td class="left"></td>
+            <td width="135" style="padding-left:5px;"><{t}>已回复的评论与咨询：<{/t}></td>
+            <td><span class="point"><{$wel.commentRNum}></span>个</td>
+            <td width="90"><li><a class="lnk" href="<{link ctl=member act=comment}>"><{t}>立即查看<{/t}></a></li></td>
+            <td class="right"></td>
+          </tr>
+        </table>
+      </div>
+    
+    </td>
+  </tr>
+</table>  
+    
+    </div>
+     
+    <br /><br />
+
+<{if !$orders}>
+<div class="title">我的订单</div>
+<div class="noinfo">暂无订单</div>
+<{else}>   
+     
+<div class="title">我的订单</div>
+  <table class="memberlist" width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <th>商品名称</th>
+    <th>订单号</th>
+    <th>下单日期</th>
+    <th>总金额</th>
+    <th>订单状态</th>
+  </tr>
+  <{foreach from=$orders item="order" name=orders}>
+  <tr>
+    <td width="40%"><a class="intro" href="<{link ctl=member act=orderdetail arg0=$order.order_id}>" ><{$order.tostr}></a></td>
+    <td><a href="<{link ctl=member act=orderdetail arg0=$order.order_id}>"><{$order.order_id}></a></td>
+    <td><{$order.createtime|cdate:FDATE_STIME}></td>
+    <td><{$order.final_amount|cur:$order.currency:false:true}></td>
+    <td><span class="point">
+  <{if $order.status == 'finish'}>已完成
+  <{elseif $order.status == 'dead'}>已作废
+  <{else}>
+  <{if $order.pay_status==1}>已付款
+    [<{if $order.ship_status==1}>
+    已发货
+    <{elseif $order.ship_status==2}>
+    部分发货
+    <{elseif $order.ship_status==3}>
+    部分退货
+    <{elseif $order.ship_status==4}>
+    已退货
+    <{else}>
+    正在备货...
+    <{/if}>]
+  <{elseif $order.pay_status==2}>
+    已付款至担保方
+  <{elseif $order.pay_status==3}>
+    <a href="<{link ctl=member act=orderpay arg0=$order.order_id}>" ><{t}>等待补款<{/t}></a>
+    <{if $order.ship_status==1}>
+    [已发货]
+    <{elseif $order.ship_status==2}>
+    [部分发货]
+    <{elseif $order.ship_status==3}>
+    [部分退货]
+    <{elseif $order.ship_status==4}>
+    [已退货]
+    <{/if}>
+  <{elseif $order.pay_status==4}>
+    部分退款
+    [<{if $order.ship_status==1}>
+    已发货
+    <{elseif $order.ship_status==2}>
+    部分发货
+    <{elseif $order.ship_status==4}>
+    已退货
+    <{elseif $order.ship_status==0}>
+    未发货
+    <{/if}>]
+  <{elseif $order.pay_status==5}>
+    已退款
+    [<{if $order.ship_status==1}>
+    已发货
+    <{elseif $order.ship_status==2}>
+    部分发货
+    <{elseif $order.ship_status==4}>
+    已退货
+    <{elseif $order.ship_status==0}>
+    未发货
+    <{/if}>]
+  <{else}>
+    <a href="<{link ctl=member act=orderpay arg0=$order.order_id}>" ><{t}>等待付款<{/t}></a>
+    <{if $order.ship_status==1}>
+    [已发货]
+    <{elseif $order.ship_status==2}>
+    [部分发货]
+    <{elseif $order.ship_status==3}>
+    [部分退货]
+    <{elseif $order.ship_status==4}>
+    [已退货]
+    <{/if}>
+  <{/if}>
+  <{/if}>
+  </span></td>
+  </tr>
+<{/foreach}>
+
+</table>
+<div class="more"><a class="lnk" href="<{link ctl=member act=orders}>">更多订单>></a></div>
+<{/if}>     
+     
+     <br />
+<br />
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="49%">
+    <div class="title" style="float:left;">我的收藏</div><div style="float:right; padding-top:5px;"><a class="lnk" href="<{link ctl=member act=favorite}>">更多收藏>></a></div>
+    <div style="clear:both;"></div>
+    
+    <div class="favorites">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="bg-lt"></td>
+    <td class="bg-t"></td>
+    <td class="bg-rt"></td>
+  </tr>
+  <tr>
+    <td class="bg-lm"></td>
+    <td class="bg-m">
+    <table class="favorites-list" width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <{foreach from=$favorite item=good key=key name=good}>
+        <{if $smarty.foreach.good.iteration<=3}>
+        <td align="center">
+          <a style="display:block;<{if $env.conf.site.thumbnail_pic_width !=0 && $env.conf.site.thumbnail_pic_height !=0}> width:<{$env.conf.site.thumbnail_pic_width}>px;height:<{$env.conf.site.thumbnail_pic_height}>px;<{/if}>" href="<{link ctl="product" act="index" arg0=$good.goods_id}>" title="<{$good.name}>"><img src="<{$good.thumbnail|default:$env.conf.site.default_thumbnail_pic|storager}>"  alt="<{$good.name}>"/></a>
+          <br />
+          <a href="<{link ctl="product" act="index" arg0=$good.goods_id}>" title="<{$good.name}>"><{$good.name}></a>
+<br />
+<span class="point"><{$good.price|cur}></span> 
+      &nbsp;
+       </td>
+       <{/if}>
+       <{/foreach}>
+       <{if $favorite|count < 3}><td>&nbsp;</td><{/if}>
+      </tr>
+    </table>
+    </td>
+    <td class="bg-rm"></td>
+  </tr>
+  <tr>
+    <td class="bg-lb"></td>
+    <td class="bg-b"></td>
+    <td class="bg-rb"></td>
+  </tr>
+</table>
+</div>
+    
+    </td>
+    <td width="2%"></td>
+    <td width="49%"><div class="title" >促销活动</div>
+    
+    
+    <div class="activity">
+      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td class="bg-lt"></td>
+          <td class="bg-t"></td>
+          <td class="bg-rt"></td>
+        </tr>
+        <tr>
+          <td class="bg-lm"></td>
+          <td class="bg-m">
+          
+          <ul>
+          <{foreach from=$wel.pa item=key}>
+            <li><{$key.pmta_name}>--<{$key.pmta_describe}></li>
+          <{/foreach}>
+
+          </ul>
+          
+          </td>
+          <td class="bg-rm"></td>
+        </tr>
+        <tr>
+          <td class="bg-lb"></td>
+          <td class="bg-b"></td>
+          <td class="bg-rb"></td>
+        </tr>
+      </table>
+      </div>
+      
+      </td>
+  </tr>
+</table>
+  </div>
+  </div>
+<!-- right-->

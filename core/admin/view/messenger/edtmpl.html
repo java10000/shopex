@@ -1,0 +1,50 @@
+<div class="tableform">
+<h4><{$msg_desc}><{t}>发送模板编辑: <{/t}><{$action_desc}></h4>
+
+<form action="index.php?ctl=member/messenger&act=saveTmpl" method="post" >
+<input type="hidden" name="messenger" value="<{$messenger}>">
+<input type="hidden" name="actdo" value="<{$action}>">
+  <{if $hasTitle}>
+  <div class="division">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <th><{t}>变量标签：<{/t}></th>
+    <td><{$varmap}></td>
+  </tr>
+</table>
+</div>
+<{/if}>
+<div class="division">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <{if $messenger != 'sms'}>
+    <tr>
+        <th>
+            <{t}>
+                <{if $messenger=="email"}>
+                    邮件标题：
+                <{elseif $messenger=="msgbox"}>
+                    站内信标题：
+                <{/if}>
+                <{/t}>
+        </th>
+        <td><{input type="text" name="title" style="width:360px" value=$title}></td>
+    </tr>
+    <{/if}>
+    <tr>
+        <th><{t}>内容模板：<{/t}></th>
+        <td><{input type=$type value=$body name="content" cols=50 rows=20}></td>
+    </tr>
+
+</table>
+</div>
+
+
+<div class="table-action">
+	<{button label="保存模板" type="submit"}>
+</div>
+
+
+</form>
+
+
+</div>

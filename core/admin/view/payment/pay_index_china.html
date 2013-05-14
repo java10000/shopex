@@ -1,0 +1,20 @@
+            <div style="overflow-y:auto; overflow-x:hidden; height:280px">
+                <table class="gridlist">
+                    <tbody>
+            <{foreach from=$allPay item=item key=key}>
+            <{if $item.pay_type =='china'}>
+                        </tr><{assign var="name" value=$item.pay_name|urlencode}>
+                            <td width="15%"><img height="25" src="http://esb.shopex.cn/payments/logos/<{$item.pay_ident}>.gif"></td>
+                            <td width="15%"><strong><{$item.pay_name}></strong></td>
+                            <td width="56%"><{$item.pay_intro}></td>
+
+                            <{if $item.disable =='true'}>
+                            <td><{button type="button" label="启用" onclick="W.page('index.php?ctl=trading/payment&act=do_install&p[0]={$item.pay_ident}',{onRequest:function(){window.mainwidth=$('main').getStyle('width')}})" icon="btn_add.gif"}></td>
+                            <{else}>
+                            <td><{button type="button" label="添加" onclick="W.page('index.php?ctl=trading/payment&act=editPayment&p[0]={$item.id}&p[1]={$name}&p[2]={$item.pay_ident}',{onRequest:function(){window.mainwidth=$('main').getStyle('width')}})" icon="btn_add.gif"}></td>
+                             <{/if}>
+                       </tr>
+            <{/if}>
+            <{/foreach}>
+                </table>
+         </div>

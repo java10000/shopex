@@ -1,0 +1,27 @@
+<div class="tableform">
+<p class="notice"><{t}>说明：您可以在此处备份商店的整站数据库结构和数据，一旦商店数据意外损坏，您可以通过数据库恢复功能恢复所备份的数据。<{/t}><br />
+<span class="loud"><{t}>备份分卷大小：1024 K<{/t}></span><br><span class="loud"><{t}>备份过程中请勿进行其他页面操作。<{/t}></span><br/>
+<span class="loud"><{t}>上次备份时间：<{/t}><{if !$time}><{t}>从未备份<{/t}><{else}><{$time}><{/if}></span>
+
+</p>
+<BR>
+<div id="BackupProgess" align='center'></div>
+
+
+    
+    
+       <div id="backupbtn" class="table-action">
+	<{button type="button" label="开始备份" onclick='runbackup("")'}>
+</div>
+    
+</div>
+<script>
+function runbackup(url){
+  if(!url) {
+    $('BackupProgess').innerHTML = '正在备份第1卷，请勿进行其他页面操作。';
+    $('backupbtn').innerHTML = '';
+  }
+  if(!url) url = 'index.php?ctl=system/backup&act=backup&sizelimit=1024&fileid=0&tableid=0&startid=-1';
+  new Ajax(url,{update:'BackupProgess',data:'a=a',evalScripts:true}).request();
+}
+</script>

@@ -1,0 +1,128 @@
+<script>
+if(!extra_validator['subPackage']){
+  extra_validator['subPackage'] ={
+    'checkForm':['',function(f,i){
+        var checkNum = 0;
+        $ES('input[type="hidden"]',"packageItem").each(function(item, index, itobj){
+          if(item.value > 0) checkNum++;
+        });
+        if(checkNum <= 1){
+          alert('捆绑商品必须为两件或两件以上！');
+          return false;
+        }else{
+          return true;
+        }
+      }]
+  };
+}
+</script>
+<form id='pkgForm'  method='post' action='index.php?ctl=goods/package&act=addPackage' extra="subPackage">
+<div style="display:none"><{input type="checkForm" }></div>
+<div class="tableform">
+<div class="division">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <th><{t}>捆绑商品编号：<{/t}></th>
+      <td><{input type='text' value=$package.package_bn name='bn' required='true'}></td>
+    </tr>
+    <tr>
+      <th><{t}>捆绑商品名称：<{/t}></th>
+      <td><{input type='text' value=$package.name name='name' required='true'}></td>
+    </tr>
+      <tr>
+      <th><{t}>捆绑商品简介：<{/t}></th>
+      <td><{input type='textarea' value=$package.intro name='intro' width='70%'}></td>
+    </tr>
+    </table>
+</div> 
+<div class="division">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <th><{t}>是否上架销售：<{/t}></th>
+    <td><label><input type='radio' name='marketable' value='true' <{if $package.marketable == 'true'}>checked='checked'<{/if}> /><{t}>是<{/t}></label> &nbsp; &nbsp; 
+      <label><input type='radio' name='marketable' value='false' <{if $package.marketable == 'false'}>checked='checked'<{/if}> /><{t}>否<{/t}></label></td>
+    </tr>
+    <tr>
+      <th><{t}>库存：<{/t}></th>
+      <td><{input type='unsignedint' value=$package.store name='p_store' style="width:50px" required='true'}></td>
+    </tr>
+    <tr>
+      <th><{t}>重量：<{/t}></th>
+      <td><{input type='text' value=$package.weight style="width:50px" name='weight'}><{t}>克(g)<{/t}></td>
+    </tr>
+    <tr>
+      <th><{t}>原价格：<{/t}></th>
+      <td><span class='pkg-mktprice'><{$package.mktprice}></span><{input type='hidden' style="width:50px" value=$package.mktprice name='mktprice'}></td>
+    </tr>
+    <tr>
+      <th><{t}>捆绑销售价：<{/t}></th>
+      <td><{input type='money' value=$package.price name='price' style="width:80px" required='true'}></td>
+    </tr>
+    <{if $point_setting == 2}>
+    <tr>
+      <th><{t}>积分：<{/t}></th>
+      <td><{input type="unsignedint" name="score" style="width:50px" value=$package.score }></td>
+    </tr>
+    <{/if}>
+    <tr>
+      <th><{t}>排序顺序：<{/t}></th>
+      <td><{input type='unsignedint' value=$package.p_order style="width:50px" name='p_order'}></td>
+    </tr>
+  </table>
+  </div>
+<div class="division">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" id='pkg-item'>
+    <tr>
+      <th><{t}>商品选择：<{/t}></th>
+      <td id='packageItem'>
+        <{input cols="product_id,name,bn,price" value=$package.products type="object:goods/finderPdt" name="goods" view="product/package/pkg_items.html" multiple="1"}></td>
+    </tr>
+    </table>
+</div>
+  <{if $package.goods_id}>
+  <input type='hidden' value='<{$package.goods_id}>' name='goods_id' />
+  <{/if}>
+  
+  <div class="table-action">
+<{button label="完成" type="submit"}>
+</div>
+
+<script>
+var checkallcost = (function(){
+    var allcost = 0;
+    $ES('#pkg-item .pkg-item-price').each(function(ee){
+        if( allcost === '' )
+            return;
+        var tnum = ee.getParent('div').getElement('input[name^=pkgnum[]').get('value');
+        if(isNaN(tnum)){
+            allcost = '';
+            return;
+        }
+        allcost += tnum*ee.get('value');
+    });
+    if(allcost === ''){
+        return;
+    }
+    $E('#pkgForm .pkg-mktprice').set('text',allcost).getNext('input[name^=mktprice]').set('value',allcost);
+});
+/*document.getElementsByClassName('handle').addEvent('click', function(){
+    alert('clicked!');
+});*/
+
+document.addEvent('domready',function(){
+   var getdiv = document.getElement('[id^=sel_el]').getElements('div');
+   var parent = getdiv.getParent();
+   var parentid = parent.getProperty('id');
+   var getid = parentid[0].split('_');
+   var id = getid[1];
+
+   var parentHtml = "<div onclick=\"Cookie.set('LOCALGOODS', 1, {duration: 0});new Dialog('index.php?ctl=editor&amp;act=selectobj&amp;type=object&amp;id=sel_"+id+"&amp;select=checkbox&amp;object=goods%2FfinderPdt',{width:550,title:'选择...',onClose:function(){Cookie.remove('LOCALGOODS');},callback:obj_finder_call_back.bind($('sel_"+id+"'))})\" class=\"label\">请选择...</div><div onclick=\"Cookie.set('LOCALGOODS', 1, {duration: 0});new Dialog('index.php?ctl=editor&amp;act=selectobj&amp;type=object&amp;id=sel_"+id+"&amp;select=checkbox&amp;object=goods%2FfinderPdt',{width:550,title:'选择...',onClose:function(){Cookie.remove('LOCALGOODS');},callback:obj_finder_call_back.bind($('sel_"+id+"'))})\" class=\"handle\">&nbsp;</div>";
+   //console.info(parent);
+   parent.set('html',parentHtml);
+
+
+});
+
+
+</script>
+</form>

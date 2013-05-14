@@ -1,0 +1,12 @@
+<div class="success">
+<{if $result eq 'true'}>
+    域名绑定已经提交审核，请等待相关部门审核域名是否备案成功，此过程大概需要1-2个工作日。审核通过后，域名绑定将会自动生效。<br />请点击”确定“按钮返回商店管理后台。
+    <{else}>
+    <{$msg}>
+<{/if}>
+</div>
+
+
+<div class="table-action">
+<{button label="确定" onclick='this.getParent(".dialog").getElement(".dialog-btn-close").fireEvent("click");W.page(location.href.replace("#","?"))'}>
+</div>

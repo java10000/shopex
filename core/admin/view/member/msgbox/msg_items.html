@@ -1,0 +1,77 @@
+<div class="tableform">
+<h4><{t}>会员信息<{/t}></h4>
+<div class="division">
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+<tr>
+  <th ><{t}>姓名：<{/t}></th>
+  <td><{$message.msg_from|escape:'html'}></td>
+</tr>
+<tr>
+  <th><{t}>电话：<{/t}></th>
+  <td><{$member.tel}></td>
+</tr>
+<tr>
+  <th><{t}>性别：<{/t}></th>
+  
+  <td><{if $member.sex == 1}><{t}>男<{/t}><{elseif $member.sex == ''}> <{else}><{t}>女<{/t}><{/if}></td>
+</tr>
+<tr>
+  <th>E-mail：</th>
+  <td><{$member.email|escape:'html'}></td>
+</tr>
+<tr>
+  <th><{t}>时间：<{/t}></th>
+  <td><{$message.date_line|cdate:SDATE_STIME}></td>  
+</tr>
+<tr>
+  <th><{t}>标题：<{/t}></th>
+  <td><{$message.subject|escape:'html'}><span><a href="index.php?ctl=member/msgbox&act=toDisplay&p[0]=<{$message.msg_id}>&p[1]=<{$message.is_sec}>"><{if $message.is_sec=='true'}><{t}>作为商店留言<{/t}><{else}><{t}>取消作为商店留言<{/t}><{/if}></a></span></td>
+</tr>
+<tr>
+  <th><{t}>内容：<{/t}></th>
+  <td><{$message.message|escape:'html'}></td>
+</tr>
+</table>
+</div>
+<{foreach item=rvt key=key from=$revert}>
+<div class="division">
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+<tr>
+  <th><{t}>回复时间：<{/t}></td>
+  <td><{$rvt.date_line|cdate:SDATE_STIME}></td>
+</tr>
+<tr>
+  <th><{t}>回复标题：<{/t}></th>
+  <td><{$rvt.subject|escape:'html'}><span><a href="index.php?ctl=member/msgbox&act=toDisplay&p[0]=<{$rvt.msg_id}>&p[1]=<{$rvt.is_sec}>&p[2]=<{$message.msg_id}>"><{if $rvt.is_sec=='true'}><{t}>作为商店留言<{/t}><{else}><{t}>取消作为商店留言<{/t}><{/if}></a><a href="index.php?ctl=member/msgbox&act=delete&msg_id[]=<{$rvt.msg_id}>&f_id=<{$message.msg_id}>"><{t}>删除此回复<{/t}></a></span></td>
+</tr>
+<tr>
+  <th><{t}>回复内容：<{/t}></th>
+  <td><{$rvt.message|escape:'html'}></td>
+</tr>
+</table>
+</div>
+<{/foreach}>
+
+<h4><{t}>快速回复：<{/t}></h4>
+<div id="message-revert-area-<{$message.msg_id}>" class="division">
+<input type="hidden" name="for_id" value="<{$message.msg_id}>">
+<input type="hidden" name="to_id" value="<{$message.from_id}>">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <th><{t}>标题：<{/t}></thd>
+    <td><input type="text" name="subject" size="50" value="Re: <{$message.subject|escape:'html'}>" ></td>
+  </tr>
+  <tr>
+    <th><{t}>内容：<{/t}></th>
+    <td><textarea name="message" rows="5" cols="50"></textarea></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td class="table-action">
+    <{button label="回复" onclick="W.page('index.php?ctl=member/msgbox&act=revert', {data:$('message-revert-area-{$message.msg_id}'),method:'post'}, this)"}>
+    </td>
+  </tr>
+</table>
+
+</div>
+</div>

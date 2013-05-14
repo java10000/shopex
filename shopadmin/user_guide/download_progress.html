@@ -1,0 +1,42 @@
+<div class="tableform notice">
+<strong>注意：</strong>下载过程中请勿关闭此页面！
+</div>
+
+<div  style=" margin:80px auto; text-align:center; width:255px;">
+<span id="id_download_info"></span>
+
+<div class="process"><img src="images/process.gif" width="70" height="1" id="id_down_progress"/></div>
+
+<div style="text-align:right;"><{button icon="delete.gif" label="取消安装" }></div>
+
+</div>
+
+<script>
+function download(url){
+	new XHR({method:'post',
+		onSuccess:function(re){
+			if(re=='error'){
+				$('info').setText('下载出错');
+			}else if(re=='success'){
+				$('info').setText('下载成功');
+			}else{
+				var result=re.split('|');
+				if(result.length==5){
+					if(result[3]){
+						$('id_down_progress').setStyle('width',result[3]);
+					}
+					if($result[4]){
+						$('id_download_info').setHTML(result[4]);
+					}
+					var targeturl=top.SHOPADMINDIR+'index.php?ctl=service/download&act=downloading&p[0]='+result[0]+'&p[1]='+result[1]+'&p[2]='+result[2];
+					download(targeturl);
+				}
+			}
+		}
+    }).send(url);
+}
+window.addEvent('domready', function(){
+	download('<{$download_url}>');
+});
+
+</script>

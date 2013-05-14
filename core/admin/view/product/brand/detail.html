@@ -1,0 +1,139 @@
+
+<{capture name="header"}>
+  <{include file="common/header.meta.html"}>   
+<{/capture}>
+
+<form id="brandForm" action="index.php?ctl=goods/brand&act=save"  method="POST" enctype="multipart/form-data" extra="subBrand" target="{update:'messagebox'}">
+<input type="hidden" name="brand_id" value="<{$brandInfo.brand_id}>">
+<div style="display:none"><{input type="checkForm" }></div>
+<div class="division">
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+<tr>
+  <th><{t}>品牌名称：<{/t}></th>
+  <td><{input type="text" name="brand_name" style="width:120px" required="true" value=$brandInfo.brand_name}><em><font color='red'>*</font></em></td>
+</tr>
+<tr>
+  <th><{t}>排序：<{/t}></th>
+  <td><{input style="width:50px;" type="unsigned" name="ordernum"  value=$brandInfo.ordernum}></td>
+</tr>
+
+
+<{if $brandInfo.brand_id > 0}>
+<tr>
+  <th><{t}>品牌别名：<{/t}></th>
+  <td><{input type="text" name="brand_keywords" value=$brandInfo.brand_keywords}><{t}>（|分隔，以|开头与结尾）<{/t}></td>
+</tr>
+<{/if}>
+</table>
+</div>
+
+<div class="division">
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+<tr>
+  <th><{t}>网址：<{/t}></th>
+  <td><{input type="text" name="brand_url" style="width:240px" value=$brandInfo.brand_url}></td>
+</tr>
+<tr>
+  <th>LOGO：</th>
+  <td>
+  <{input type="file" name="brand_logo" value=$brandInfo.brand_logo}></td>
+</tr>
+
+<{if $brandInfo.brand_logo}>
+<tr>
+  <th>&nbsp;</th>
+  <td><img src="<{$brandInfo.brand_logo|storager}>"></td>
+</tr>
+<{/if}>
+
+<tr>
+  <th><{t}>模板：<{/t}></th>
+  <td>
+  <{template_filter type="brand" id=$brandInfo.brand_id name="brand_template" source_type="brand"}></td>
+</tr>
+
+</table>
+</div>
+
+    <div class="division">
+      <table cellpadding="0" cellspacing="0" border="0">
+	  <tr>
+          <th><{t}>TITLE<br>
+            (页面标题)<{/t}></th>
+          <td><input type="text" name="seo_title" style="width:360px" maxlength="255" value="<{$seo.title}>"></td>
+        </tr>
+          <tr>
+          <th><{t}>META_KEYWORDS<br>
+            (页面关键词)<{/t}></th>
+          <td><input type="text" name="seo_keywords" style="width:360px" maxlength="255" value="<{$seo.keywords}>"></td>
+        </tr>
+        <tr>
+          <th><{t}>META_DESCRIPTION<br>
+            (页面描述)<{/t}></th>
+          <td><textarea name="seo_description" rows=4 style="width:360px" cols=35 maxlength=255/><{$seo.descript}></textarea></td>
+        </tr>
+      </table>
+    </div>    
+
+<{if $gtype.status > 0}>
+<div class="division">
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+<tr>
+  <th><{t}>商品类型关联：<{/t}></th>
+  <td>
+  <{if $type.default.type_id}>
+    <fieldset><LEGEND><{t}>通用商品类型<{/t}></LEGEND>
+    <label><input type="checkbox" name="gtype[]" class="gType" <{if $brandInfo.type[$type.default.type_id]}>checked="checked"<{/if}> value="<{$type.default.type_id}>"><{t}>通用商品类型<{/t}></label></fieldset>
+  <{else}>
+<label><{t}>您没有系统默认的通用商品类型，请联系您的超级管理员<{/t}></label>
+  <{/if}>
+  <fieldset><LEGEND><{t}>自定义商品类型<{/t}></LEGEND>
+    <{foreach from=$type.custom item=row}>
+    <label><input type="checkbox" name="gtype[]" class="gType" <{if $brandInfo.type[$row.type_id]}>checked="checked"<{/if}> value="<{$row.type_id}>"><{$row.name}> &nbsp; 
+  <{/foreach}></label>
+    </fieldset>
+  </td>
+</tr>
+</table>
+</div>
+<{else}>
+<input type="hidden" class="gType" name="gtype[]" value="<{$type.default.type_id}>">
+<{/if}>
+<div class="division">
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+<tr>
+  <th><{t}>详细说明：<{/t}></th>
+  <td><{input type="html" name="brand_desc" value=$brandInfo.brand_desc}></td>
+</tr>
+</table>
+</div>
+
+
+  <div class="table-action">
+	<{button type="submit"  label="保存"}>
+</div>
+
+</form>
+<script>
+var extra_validator={};
+if(!extra_validator['subBrand']){
+  extra_validator['subBrand'] ={
+    'checkForm':['',function(f,i){
+        var checkNum = 0;
+        $ES('.gType',"brandForm").each(function(item, index, itobj){
+          if(item.checked == true || item.type == 'hidden') checkNum++;
+        });
+        if(checkNum == 0){
+          if(confirm('您未选择关联类型，这样将导致商品无法使用该品牌。是否确认保存')){
+            return true;
+          }else{
+            return false;
+          }
+        }else{
+          return true;
+        }
+      }]
+  };
+}
+</script>
+

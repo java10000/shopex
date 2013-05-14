@@ -1,0 +1,1 @@
+var Splash=new Abstract({go:function(c,b,a){$$($("loadMaks"),MODALPANEL).hide();(function(){var f=$$($("successSplash"),$("noticeSplash"),$("failedSplash"));var e;var d=f.some(function(g){if($chk(g)){e=g;return true}});if(e){W.page(c,JSON.decode(a),e)}}).delay(b.toInt())}});

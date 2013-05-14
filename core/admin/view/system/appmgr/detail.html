@@ -1,0 +1,25 @@
+<div class="tableform">	<h4>基本属性</h4>	<div class="division">		<table>			<tr>				<th>名称：</th>				<td><{$app.prop.name}></td>			</tr>			<{if $app.icon}>			<tr>				<th>logo：</th>				<td><img src="<{$app.icon}>" /></td>			</tr>			<{/if}>			<{foreach from=$app.prop item=item key=key}>
+			<{if isset($propmap[$key])}>
+			<tr>
+				<th><{$propmap[$key]}></th><td><{$item}></td>
+			</tr>
+			<{/if}>
+			<{/foreach}>			<{if $app.prop.desc}>			<tr>				<th>简介：</th>				<td><{$app.prop.desc}></td>			</tr>			<{/if}>		</table>	</div>	
+	<{if $app.dbtables}>	<h4>数据库表</h4>	<div class="division">		<table>
+		<{foreach from=$app.dbtables item=item key=key}>
+		<tr>
+			<th><{$key}></th><td><{$item}></td>
+		</tr>
+		<{/foreach}>		</table>	</div>	<{/if}>
+	<{if $app.listener}>	<h4>事件侦听</h4>	<div class="division">		<table>
+		<{foreach from=$app.listener item=item key=key}>
+		<tr>
+			<th><{$key}></th><td><{$item}></td>
+		</tr>
+		<{/foreach}>		</table>	</div>	<{/if}>		<{if $app.output_modifiers}>	<h4>输出修改器</h4>	<div class="division">
+		<table>		<{foreach from=$app.output_modifiers item=item key=key}>
+		<tr>
+			<th><{$key}></th><td><{$item}></td>
+		</tr>
+		<{/foreach}>		</table>	</div>
+	<{/if}>	</div></div>

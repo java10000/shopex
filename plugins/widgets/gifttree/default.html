@@ -1,0 +1,18 @@
+<div>
+<{foreach from=$data item=data key=key }>
+<ul>
+  <li class="c-cat-depth-1">
+    <a href="<{link ctl=gift act=showList arg0=$data.link}>"><{$key}></a>
+  <{if $data.sub && $setting.showson=="enable"}>
+  <ul>
+    <{foreach from=$data.sub item=sData key=sKey }>
+    <li class="c-cat-depth-2">
+      <a href="<{link ctl=gift act=index arg0=$sData.gift_id}>"><{$sData.name|cut:$setting.maxlength}></a>
+    </li>
+    <{/foreach}>
+  </ul>
+  <{/if}>
+  </li>
+</ul>
+<{/foreach}>
+</div>

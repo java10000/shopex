@@ -1,0 +1,110 @@
+<div class="GoodsCategoryWrap">
+  <ul class="s-cat-depth-1">
+  <{foreach from=$data item=parent key=parentId}>
+    <{if $parent.sub}>
+      <li>
+        <span><a href="<{$parent.url}>"><{$parent.label}></a></span>
+                <{if $setting.showCatDepth_dropdown == '3'}>
+        <ul class="s-cat-depth-2">
+          <{foreach from=$parent.sub item=child key=childId}>
+                    
+            <{if $child.sub }>
+                                    <li>
+                                       <span><a href="<{$child.url}>"><{$child.label}></a></span>
+                                        <ul class="s-cat-dropdown">
+                                        <{foreach from=$child.sub item=gChild key=gChildId}>
+                                            <li><a href="<{$child.url}>"><{$gChild.label}></a></li>
+                                        <{/foreach}>
+                                        </ul>
+                                        
+                                    </li>
+            <{else}>
+                  <li>
+                                      <a href="<{$child.url}>"><{$child.label}></a>
+                                    </li>
+            <{/if}>
+          <{/foreach}>
+        </ul>
+                <{elseif $setting.showCatDepth_dropdown == '2'}>
+                <ul class="s-cat-dropdown">
+                  <{foreach from=$parent.sub item=child key=childId}>
+                                  <li>
+                                        <a href="<{$child.url}>"><{$child.label}></a>
+                                    </li>
+                    <{/foreach}>
+                </ul>
+                <{/if}>
+      </li>
+    <{else}>
+      <li><a href="<{$parent.url}>"><{$parent.label}></a></li>
+    <{/if}>
+  <{/foreach}>
+  </ul>
+</div>
+
+
+
+<script>
+  
+var CatDropDown = new Class({
+  initialize: function(){
+    this.ie = window.ie ? true : false;
+    var depth = <{$setting.showCatDepth_dropdown}> - 1;
+    this.handlers = $ES('.s-cat-depth-'+depth+' span','<{$widgets_id}>');
+    this.handlers.each(function(handler, index){
+      var view = handler.getNext();
+      var section = handler.getParent();
+      leftPos = this.ie? section.getSize().size.x - $E('a', handler).getStyle('padding-left').toInt() + 'px' : section.getSize().size.x + 'px';
+      view.setStyles({
+        'position': 'absolute',
+        'left': leftPos,
+        'top': 0,
+        'display': 'none'
+      });
+      section.setStyles({
+        'position': 'relative',
+        'cursor': 'pointer'
+        })
+        .addEvents({
+        'mouseenter': this.show.bindAsEventListener(this,view),
+        'mouseleave': this.hide.bindAsEventListener(this,view)
+      });
+    },this);
+  },
+  show: function(e,view){
+    view.setStyle('display','');
+    if(this.ie) this.addFix(view);
+  },
+  hide: function(e,view){
+    view.setStyle('display','none');
+    if(this.ie) this.removeFix(view);
+  },
+  addFix: function(el){
+    if(!this.fix){
+      this.fix = new Element('iframe', {
+        properties: {
+          frameborder: '0',
+          scrolling: 'no',
+          src: 'javascript:false;'
+        },
+        styles: {
+          position: 'absolute',
+          border: 'none',
+          filter: 'progid:DXImageTransform.Microsoft.Alpha(opacity=0)'
+        }
+      }).injectAfter(el);
+    }
+    this.fix.setStyles($extend(el.getCoordinates(),{
+      display: 'block',
+      zIndex: (el.getStyle('zIndex') || 1) - 1
+    }));
+  },
+  removeFix: function(el){
+    this.fix.setStyle('display','none');
+  }
+});
+
+
+
+var CatDropDown_<{$widgets_id}> = new CatDropDown();
+</script>

@@ -1,0 +1,7 @@
+<div class="AdvBanner">
+<{if $setting.ad_text_link}>
+	<a href="<{$setting.ad_text_link}>" style="<{if $setting.ad_text_color}>color:<{$setting.ad_text_color}>;<{/if}><{if $setting.border}>font-weight: bold;<{/if}><{if $setting.ad_text_size}>font-size:<{$setting.ad_text_size}>px;<{/if}>"><{$setting.ad_content}></a>
+<{else}>
+	<span style="<{if $setting.ad_text_color}>color:<{$setting.ad_text_color}>;<{/if}><{if $setting.ad_text_size}>font-size: <{$setting.ad_text_size}>px;<{/if}><{if $setting.border}>font-weight: bold;<{/if}><{if $setting.ad_text_size}>font-size:<{$setting.ad_text_size}>px;<{/if}>"><{$setting.ad_content}></span>
+<{/if}>
+</div>

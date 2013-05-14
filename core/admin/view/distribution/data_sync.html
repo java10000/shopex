@@ -1,0 +1,88 @@
+<style type="text/css">
+.actionBar {
+background:#F0F0F0 none repeat scroll 0 0;
+border-bottom:3px solid #6F777A;
+border-top:1px solid #FFFFFF;
+line-height:30px;
+padding:0 8px;
+}
+.sysiconBtn {margin:0; padding:0; margin:1px 3px 0 0; padding:4px 4px 2px 20px; line-height:24px; cursor: pointer; color: #000; text-decoration: none; border-top: 1px solid #fff; border-left: 1px solid #fff; border-right: 2px solid #bec6ce; border-bottom: 2px solid #bec6ce; outline:none; display:inline; font-weight: normal; cursor:pointer; }
+</style>
+<div id="" style="padding-left: 0pt;" class="actionBar mainHead"><table cellspacing="0" cellpadding="0" border="0" width="100%"><tbody><tr><td>
+
+<div class="actionItems" style="border-right:none; height:70px;">
+<table id='data_sync_form'>
+  <tbody><tr>
+    <td class="functop"><span style="text-align:left;">搜索选项：
+
+    <select name='update_content' id='update_content'>
+    	<option value='0'>- 选择更新内容 -</option>
+<option value='1'>新增商品</option>
+<option value='2'>商品更新</option>
+<option value='3'>商品上架</option>
+<!--
+<option value='4'>货品库存紧张</option>
+-->
+<option value='5'>货品库存变更</option>
+<option value='6'>货品库存为0</option>
+<option value='7'>商品下架</option>
+<option value='8'>商品删除</option>
+<option value='9'>货品更新</option>
+<option value='10'>商品图片更新</option>
+    </select>&nbsp;&nbsp;
+
+    <select name='ctrl_status' id='ctrl_status'>
+    	<option value='0'>- 选择操作状态 -</option>
+<!--<option value='1' class="ColColorBlue"> 已下载未编辑</option>-->
+<!--<option value='2' class="ColColorBlue">未操作</option>
+<option value='3'>--上游新品到货，我未新增</option>
+<option value='4'>--上游更新商品信息，我未更新</option>
+<option value='5'>--上游恢复供货，我未上架</option>
+<option value='6'>--上游修改库存，我未同步</option>
+<option value='7'>--上游停止供货，我未下架</option>-->
+<option value='8' class="ColColorBlue">已操作</option>
+<option value='9'>--已新增</option>
+<option value='10'>--已上架</option>
+<option value='11'>--已同步库存</option>
+<option value='12'>--已下架</option>
+<!--<option value='13'>--已删除</option>
+<option value='14'>--已更新</option>-->
+    </select>
+
+    &nbsp;&nbsp;更新时间：<{input type="date" size="10" name='s_update_time' value="" readonly='true' }> 至<{input type="date" size="10" name='e_update_time' value="" readonly='true'}></span></td>
+  </tr>
+  <tr>
+    <td class="func">商品名称或货号：<input type="text" size="40" name='search_name' id='search_name'/><span class="sysiconBtnNoIcon " style="padding-left: 15px;padding-right: 15px;" id='syncDataSearchBtn'>搜索</span></td>
+  </tr>
+</tbody></table>
+</div>
+</td>
+
+</tr></tbody></table>
+</div>
+
+<div id='t_sync_data_list'>
+<{include file='distribution/data_sync_list.html'}>
+</div>
+
+<script>
+
+var turnd = function(p){
+	W.page("index.php?ctl=distribution/supplier&act=getSyncDataList&supplier_id=<{$supplier_id}>", {update:$('t_sync_data_list'), data:'page='+p+'&'+$('data_sync_form').toQueryString(), method:'post',                                    onComplete:function(){
+	        if($defined($('finder-foot-datasync-list'))){
+    	        $('finder-foot-datasync-list').set('html',$('finder-foot-datasync-list').get('html'));
+    	        /*$('finder-foot-datasync-list').empty();*/
+	        }
+        }.bind(this)
+    });
+	
+};
+
+(function(){
+    $('syncDataSearchBtn').addEvent('click',function(){
+        turnd(1);
+    });
+})();
+</script>
+
+</div>

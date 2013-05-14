@@ -1,0 +1,11 @@
+<{if $sItem.po}>
+<div class="table-grid" id="polist-<{$supplier_id}>">
+  <{include file="order/po_items_supplier.html"}>
+</div>
+<{/if}>
+
+<{if $sItem.local}>
+<div class="tableform k_one table-grid" id="enquiry-<{$supplier_id}>" style="margin:10px 0px 0px; border-left-width: 4px;">
+  <{include file="order/po_items_local.html"}>
+</div>
+<{/if}>

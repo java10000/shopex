@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- For iis7.0 -->
+<configuration>
+    <system.webServer>
+        <rewrite>
+            <rules>
+                <rule name="disableDownloadThemeHtml">
+                    <match url="^themes/.*\.(html|xml)$" ignoreCase="false" />
+                    <action type="CustomResponse" url="/" statusCode="403" statusReason="Forbidden" statusDescription="Forbidden" />
+                </rule>
+                <rule name="urlRewrite">
+                    <match url="^(.*)$" ignoreCase="false" />
+                    <conditions logicalGrouping="MatchAll">
+                        <add input="{REQUEST_FILENAME}" pattern="\.(html|xml|json|htm|php|php2|php3|php4|php5|phtml|pwml|inc|asp|aspx|ascx|jsp|cfm|cfc|pl|cgi|shtml|shtm|phtm)$" ignoreCase="false" />
+                        <add input="{REQUEST_FILENAME}" matchType="IsFile" negate="true" pattern="" ignoreCase="false" />
+                        <add input="{REQUEST_FILENAME}" matchType="IsDirectory" negate="true" pattern="" ignoreCase="false" />
+                    </conditions>
+                    <action type="Rewrite" url="index.php?{R:1}" appendQueryString="false" />
+                </rule>
+            </rules>
+        </rewrite>
+    </system.webServer>
+</configuration>

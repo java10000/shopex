@@ -1,0 +1,45 @@
+<{if count($swfs)>0}>
+<div style='padding:2px;border:1px #999 solid;height:100%;overflow:hidden'>
+&nbsp;请点击选择要使用的文件<br />
+<{foreach from=$swfs item=swf}>
+  <a class="swf-item" href='<{$swf.file_ident|storager}>' target='_blank' title="<{$swf.file_name}>"><img src="images/weiget_flash.gif" border=0/><{$swf.file_name}></a>
+<{/foreach}>
+<div style="clear:both;text-align:center">
+<{pager data=$pager}>
+</div>
+</div>
+<script>
+(function(){
+var swfs=$ES('.swf-item','swfViewLibBox');
+var unseletedSTYLES={
+    'border':'3px solid #ccc',
+  'padding':1,
+  'background':'#F1F1F1',
+  'text-decoration':'none',
+  'display':'block',
+  'width':50,
+  'height':50,
+  'float':'left',
+  'margin':3,
+  'overflow':'hidden',
+  'text-align':'center',
+  'opacity':.7
+};
+var seletedSTYLES=$merge(seletedSTYLES,{
+    'border':'3px solid #ff6600',
+  'opacity':1
+});
+swfs.setStyles(unseletedSTYLES).removeClass('swf-item-selected');
+swfs.addEvent('click',function(e){
+  e= new Event(e).stop();
+  this.blur();
+  swfs.setStyles(unseletedSTYLES).removeClass('swf-item-selected');
+  this.setStyles(seletedSTYLES).addClass('swf-item-selected');
+});
+
+})();
+
+</script>
+<{else}>
+<strong><{t}>库中没有文件。<{/t}></strong>
+<{/if}>

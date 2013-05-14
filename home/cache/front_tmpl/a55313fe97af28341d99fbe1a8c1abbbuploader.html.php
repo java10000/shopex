@@ -1,0 +1,1 @@
+<button type="button" id="fix_fl10upload_panel" style="float:left;" class="btn"><span><span><img src="images/transparent.gif" class="imgbundle icon" style="width:15px;height:16px;background-position:0 -133px;" />上传图片</span></span></button> 

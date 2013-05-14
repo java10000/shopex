@@ -1,0 +1,9 @@
+<{foreach from=$item.items item=list}>
+  <div style="border-bottom:1px solid #efefef; border-top:1px solid #fff;padding-left:<{math equation="(x-1)*20" x=$depth}>px" tid="<{$list.id}>" depth="<{$depth}>">
+        <{if $list.has_child}><img src="images/transparent.gif" class="x-tnode-handle x-tnode-close" tree="<{$item.model}>"  style="float:left"/>
+        <{else}>
+        <img src="images/transparent.gif" width="16" height="0" style="float:left" />
+        <{/if}>
+        <a  menugrp="<{$item.model}>" menuid="<{$list.id}>" href="<{$item.actions.default}><{$list.id}>"><{$list.text}></a>
+    </div>
+<{/foreach}>

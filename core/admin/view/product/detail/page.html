@@ -1,0 +1,88 @@
+<{capture name="header"}>
+    <{include file="common/header.meta.html"}>
+
+    <{if $supplier_id && ($commandtype == 4)}>
+    <div class="spage-main-box" style="height:300px;margin:0;overflow:auto;" id="b2bview">
+       <{include file='distribution/goods/goods_info.html'}>
+    </div>
+    <{/if}>
+<{/capture}>
+
+<{capture name="title"}>
+<h1><{img src="images/bundle/spage_editing.gif"}><{if $env.get.act == 'addNew'}>新增商品<{else}><strong><{t}>正在编辑:<{/t}></strong><{t}>商品 - <{/t}><{$goods.name}><{/if}></h1>
+<ul class="btn-bar">
+	<li><{button label="退出编辑" class="btn-quit" onclick="if(confirm('确定退出?'))window.close()"}></li>
+	<li><{button label="保　存" type="button" dropmenu="drop-save" class="btn-save" onclick='subGoodsForm(3,this)' }></li>
+	
+	<{if $supplier_id && ($commandtype == 4)}>
+	<li><{button label="隐  藏" type="button" id="b2bview_btn" class="btn-save" onclick='B2BView.hide(this);' }></li>
+	<li><{button label="覆盖本地数据" id='cover-data' type="button" class="btn-save" style="width:120px;" }></li>
+	<{/if}>
+</ul>
+<ul id="drop-save" class="x-drop-menu">
+	<li onclick='subGoodsForm(1,this)'><span class="info" title="设为默认"><{img src="images/bundle/savesetdef.gif" alt="设为默认"}></span><span><{img src="images/bundle/saveaddsame.gif"}><{t}>并添加相似商品<{/t}></span></li>
+	<li onclick='subGoodsForm(2,this)'><span class="info" title="设为默认"><{img src="images/bundle/savesetdef.gif" alt="设为默认"}></span><span><{img src="images/bundle/savetolist.gif"}><{t}>并返回列表<{/t}></span></li>
+</ul>
+<{/capture}>
+
+<{capture name="sidebar"}>
+<div class="spage-side-nav">
+	<ul>
+		<li class="l-handle all cur" ><span><{t}>商品总览<{/t}></span></li>
+		<{foreach from=$sections item=section name="sec"}>
+            <{if $env.foreach.sec.iteration neq 1}>
+            <li class="l-handle" ><span><{$section.label}></span></li>
+            <{/if}>
+		<{/foreach}>
+	</ul>
+</div>
+
+<div class="spage-side-box">
+	<div class="tp"><h3><span class="t-handler" title="折叠/展开"><{t}>折叠/展开<{/t}></span><{t}>商品标签<{/t}></h3></div>
+	<div class="bd"><{t}><{tag tag_id="{$tag_id}"}><{/t}></div>
+</div>
+
+<script>
+$E('.spage-side-box span.t-handler').addEvent('click',function(e){
+		$E('.spage-side-box div.bd').toggleDisplay();
+});
+
+</script>
+<{/capture}>
+
+<{foreach from=$sections item=section}>
+<div class="spage-main-box">
+  <{include file=$section.file}>
+</div>
+<{/foreach}>
+
+<{capture name='footbar'}>
+<table cellspacing="5" cellpadding="0" style="margin:0 auto; height:50px; width:520px;" class="tableAction">
+<tbody>
+    <tr valign="middle">
+        <td>
+            <b class="submitBtn">
+                <button onclick="subGoodsForm(2,this)">
+                    <span class="iconbutton savetolist">保存并关闭窗口</span>
+                </button>
+            </b>
+            <b class="submitBtn blue">
+                <button onclick="subGoodsForm(1,this)">
+                    <span class="iconbutton saveaddsame">保存并添加相似商品</span>
+                </button>
+            </b>
+
+            <b class="submitBtn blue">
+                <button onclick="subGoodsForm(3,this)">
+                    <span class="iconbutton savebutton">保存当前</span>
+                </button>
+            </b>
+
+            <b isclosedialogbtn="true" class="submitBtn blue">
+                <button onclick="if(confirm('确定退出?'))window.close()"><span>关闭</span></button>
+            </b>
+        </td>
+    </tr>
+</tbody>
+</table>
+<{/capture}>

@@ -1,0 +1,84 @@
+<table>
+<tr>
+  <td valign="top"><label for="f_member_lv">会员等级
+  </label>
+    <select id="f_member_lv" name="member_lv_id[]" size="5" multiple="multiple">
+      <option style="font-weight:bold" value="_ANY_" selected="selected"><{t}>任意会员等级<{/t}></option>
+      <{foreach from=$filter.member_lv item=items name="_s"}><option<{if $smarty.foreach._s.iteration is odd}> class="row2"<{/if}> value="<{$items.member_lv_id}>"><{$items.name}></option><{/foreach}>
+    </select>
+  </td>
+  <td valign="top"><label for="f_score">积分
+  </label>
+    <select id="f_score" name="point[]" size="5" multiple="multiple">
+      <option style="font-weight:bold" value="_ANY_" selected="selected"><{t}>任意积分<{/t}></option>
+      <{foreach from=$filter.score item=item name="_s"}><option<{if $smarty.foreach._s.iteration is odd}> class="row2"<{/if}> value="<{$item.0}>-<{$item.1}>"><{$item.0}> - <{$item.1}></option><{/foreach}>
+    </select>
+  </td>
+<!--  <td valign="top"><label for="f_advance">预存款
+  </label>
+    <select id="f_advance" name="advance[]" size="5" multiple="multiple">
+      <option style="font-weight:bold" value="_ANY_" selected="selected"><{t}>任意预存款<{/t}></option>
+      <{foreach from=$filter.advance item=item name="_s"}><option<{if $smarty.foreach._s.iteration is odd}> class="row2"<{/if}> value="<{$item.0}><{$item.1}>"><{$item.0}> - <{$item.1}></option><{/foreach}>
+    </select>
+  </td>
+  <td valign="top"><label for="aaa">注册时间
+  </label>
+    <select id="regtime" name="regtime[]" size="5" multiple="multiple">
+      <option style="font-weight:bold" value="_ANY_" selected="selected"><{t}>任意时间<{/t}></option>
+      <{foreach from=$filter.regtime item=items name="_s"}><option<{if $smarty.foreach._s.iteration is odd}> class="row2"<{/if}> value="<{$items.id}>"><{$items.custom_name}></option><{/foreach}>
+    </select>
+  </td>-->
+  <td valign="top" style="vertical-align:top;"><label for="aaa">标签
+  </label>
+    <select id="f_tag" name="tag[]" size="5" multiple="multiple">
+      <option style="font-weight:bold" value="_ANY_" selected="selected"><{t}>全部会员<{/t}></option>
+      <{foreach from=$filter.tags item=tag name="_s"}><option<{if $smarty.foreach._s.iteration is odd}> class="row2"<{/if}> value="<{$tag.tag_id}>"><{$tag.tag_name}></option><{/foreach}>
+    </select>
+  </td>
+  <td valign="top" style="vertical-align:top;"><label for="for_sex">性别
+  </label>
+  <select id="f_sex" name="sex[]" size="5" multiple="multiple">
+    <option style="font-weight:bold" value="_ANY_" selected="selected"><{t}>全部性别<{/t}></option>
+    <{foreach from=$filter.sex item=sex name="_s"}><option<{if $smarty.foreach._s.iteration is odd}> class="row2"<{/if}> value="<{$sex.key}>"><{$sex.val}></option><{/foreach}>
+  </select>
+  </td>
+  <{foreach from=$filter.custom item=custom name="_custom"}>
+   <td valign="top" style="vertical-align:top;"><label><{$custom.name}>&nbsp;</label>
+  <select id="<{$custom.attr_id}>" name="attrsearch___<{$custom.attr_id}>[]" size="5" multiple="multiple">
+   <option style="font-weight:bold" value="_ANY_" selected="selected"><{t}>全部选择<{/t}></option>
+    <{foreach from=$custom.option item=option name="option"}>
+    
+    <option value='<{$option}>'><{$option}></option>
+    
+    
+    
+    <{/foreach}>
+    
+    </select>
+   
+  
+  
+  
+  
+  
+  </td>
+  <{/foreach}>
+  
+  
+ </tr> 
+ <tr>
+  <td colspan="4">
+    会&nbsp;员&nbsp;地&nbsp;区：<{input type="region" name="area" value=''}>
+  </td>
+</tr>
+ <tr>
+  <td colspan="4">
+    注&nbsp;册&nbsp;时&nbsp;间：从&nbsp;&nbsp;<{input type="date" name="minregtime" size="8"}>&nbsp;&nbsp;至&nbsp;&nbsp;<{input type="date" name="maxregtime" size="8"}>
+  </td>
+</tr>
+ <tr>
+  <td colspan="4">
+    预存款余额：从&nbsp;&nbsp;<input type="text" name="minadvance" size="6"><{t}>&nbsp;&nbsp;至&nbsp;&nbsp;<{/t}><input type="text" name="maxadvance" size="6">
+  </td>
+</tr>
+</table>

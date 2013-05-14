@@ -1,0 +1,38 @@
+<{assign var="disabledElement" value=true}>
+<form id='PublishForm' method='post' action='index.php?ctl=sale/coupon&act=doPublish'>
+<div class="tableform">
+<h4><{t}>请确认优惠券信息<{/t}></h4>
+<div class="division">
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <th><{t}>名称：<{/t}></th>
+    <td><{input type='text' value=$data.cpns_name name='cpns_name' disabled='true'}></td>
+  </tr>
+  <tr>
+    <th><{t}>开始时间：<{/t}></th>
+    <td><{input type='date' value=$data.pmt_time_begin name='pmt_time_begin' disabled='true'}></td>
+  </tr>
+  <tr>
+    <th><{t}>结束时间：<{/t}></th>
+    <td><{input type='date' value=$data.pmt_time_end name='pmt_time_end' disabled='true'}></td>
+  </tr><tr>
+    <th><{t}>描述：<{/t}></th>
+    <td><{input type='textarea' name='pmta_describe' cols='50' rows='10' value=$data.pmt_describe disabled='true'}></textarea></td>
+  </tr>
+</table>
+</div>
+
+<div class="table-action">
+<{button label="上一步" href="index.php?ctl=sale/coupon&act=selectProduct"}>
+<{button label="保存优惠券" type="submit"}>
+<{button label="取消" href="index.php?ctl=sale/coupon&act=index"}>
+</div>
+
+
+
+
+</div>
+
+  
+</form>
+</script>

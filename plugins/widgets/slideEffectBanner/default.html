@@ -1,0 +1,116 @@
+<{if $setting.pic}>
+<script>
+
+var FxScroll=new Class({
+	Implements:[Options],
+	options:{		
+		duration:2000,
+		direction:'Left',
+		controlEvent:'mouseover'
+	},
+	initialize:function(options){
+		this.setOptions(options);
+		this.FxContain=options.FxContain;   
+		this.FxItems=$ES('li',this.FxContain);	
+		this.curClass=options.curClass;
+		if(!this.FxItems.length)return;
+		this.ItemParent=this.FxItems[0].getParent();  	
+		this.control=options.control;	
+		this.controlItems=$ES('a',this.control);	
+		this.controlEvent();		
+		this.init();
+	},	
+	init:function(){			
+		if(this.options.direction=='Left'){
+			this.ItemSpace=this.FxItems[0].offsetWidth+this.FxItems[0].getStyle('marginLeft').toInt()
+			     +this.FxItems[0].getStyle('marginRight').toInt();		
+			var ItemParentW=this.ItemSpace*this.FxItems.length;
+			this.ItemParent.setStyle('width',ItemParentW);
+		}else{
+			this.ItemSpace=this.FxItems[0].offsetHeight+this.FxItems[0].getStyle('marginTop').toInt()
+			     +this.FxItems[0].getStyle('marginBottom').toInt();	
+			var ItemParentH=this.ItemSpace*this.FxItems.length;			
+		}
+		this.controlItems[0].addClass(this.curClass);
+		this.start();
+	},
+	start:function(){			
+		this.timer=this.scroll.periodical(this.options.duration,this);
+	},
+	stop:function(){	
+		if(this.timer)$clear(this.timer);
+	},
+	controlEvent:function(){
+		var that=this;
+		this.controlItems.each(function(el,index){
+			el.addEvents({
+			'mouseover':function(e){				
+				that.stop();				
+			},		
+			'<{$setting.mousetype}>':function(e){		
+				that.stop();
+				if(that.turnTime)$clear(that.turnTime);			
+				that.turnTime=that.scroll.delay(500,that,index);
+			},			
+			'mouseleave':function(e){				
+				that.start();					
+			}			
+			});
+		});			
+	},	
+	scroll:function(index){			
+		var space=this.FxContain.retrieve('space',this.ItemSpace);	
+		var myFx=new Fx.Scroll(this.FxContain,{'link':'cancel'});	
+		if(space>=this.FxItems.length*this.ItemSpace)space=0;					
+		if($chk(index)){space=index*this.ItemSpace;cur=index}	
+		var cur=(space/this.ItemSpace).toInt();
+		this.controlClass(cur);
+			if(this.options.direction=='Left'){var spaceY=0;var spaceX=space;}
+			else{var spaceY=space;var spaceX=0; }
+		myFx.start(spaceX,spaceY);		
+		this.FxContain.store('space',space+this.ItemSpace);				
+	},
+	controlClass:function(index){			
+		var cur=this.FxContain.retrieve('class',0);		
+        if(!this.controlItems[cur]||!this.controlItems[index])return;
+		this.controlItems[cur].removeClass(this.curClass);	
+		this.controlItems[index].addClass(this.curClass);
+		this.FxContain.store('class',index);	
+	}
+});	
+
+window.addEvent('domready', function(){
+	var options={FxContain:$('slidecontainer'),duration:'<{$setting.stayTime}>',direction:'<{$setting.direction}>',control:$('num_nav'),controlEvent:'<{$setting.mousetype}>',curClass:'active'};
+	var vscroll=new FxScroll(options);
+});
+
+</script>
+<style id="slidewigetsStyle" name="<{$setting.slideTime}>">
+#slidewigetscontrol #num_nav  li{float:left; height:12px; width:25px; font-size:10px; line-height:12px; text-align:center;cursor:pointer;}
+#slidewigetscontrol #num_nav  li a{ display:block; background:#<{$setting.oriBackground}>; color:#<{$setting.orifontcolor}>; text-align:center;}
+#slidewigetscontrol #num_nav  li a.active{ background:#<{$setting.curBackground}>; color:#<{$setting.curfontcolor}>;}
+</style>
+<div id="slidecontainer" style="height:<{$setting.height}>px;overflow:hidden;width:<{$setting.width}>px;">
+<ul class="slideWrap" style="overflow:overflow;height:<{$setting.height}>px;">
+<{foreach from=$setting.pic item=data key=key}>
+  <li class="slideitem" style="<{if $setting.direction=='Left'}> float:left <{/if}>"><a href="<{$data.linktarget}>"><img width="<{$setting.width}>" height="<{$setting.height}>"  src="<{$data.link}>" /></a> </li>
+<{/foreach}>
+</ul> 
+  </div>
+  
+<div id="slidewigetscontrol">
+  <div id="play_btn"> </div>
+    <ul id="num_nav" class="clearfix">
+    <{foreach from=$setting.pic item=data key=key name="item"}>
+  	<li><a href="javascript:void(0)"><{$smarty.foreach.item.iteration }></a></li>
+  <{/foreach}> 
+    </ul>
+</div>
+<script>
+window.addEvent('domready', function() {									 
+    $('slidewigetsStyle').inject($E('link'), 'before');
+    $$('#slidewigetscontrol #num_nav ul li').setStyle('width',($('slidecontainer').getSize().x-1)/$$('#slidewigetscontrol #num_nav ul li').length)
+	
+});
+</script>
+<{/if}>

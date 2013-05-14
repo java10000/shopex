@@ -1,0 +1,45 @@
+<table border="0" cellpadding="0" cellspacing="0">
+<tr>
+  <td><div for="supplier_id"><{t}>供应商<{/t}></div>
+    <select id="supplier_id" name="supplier_id[]" size="5" multiple="multiple">
+      <option style="font-weight:bold" value="_ANY_" selected="selected"><{t}>请选择<{/t}></option>
+      <{foreach from=$suppliers item=val}>
+      <option value="<{$val.supplier_id}>"><{t}><{$val.supplier_brief_name}><{/t}></option>
+      <{/foreach}>
+    </select>
+  </td>
+  <td><div for="aaa"><{t}>采购单基础状态<{/t}></div>
+    <select id="status" name="status[]" size="5" multiple="multiple">
+      <option style="font-weight:bold" value="_ANY_" selected="selected"><{t}>任意状态<{/t}></option>
+<!--      <option value="N"><{t}>未确认<{/t}></option>
+      <option value="Y"><{t}>已确认<{/t}></option>-->
+      <option value="active"><{t}>活动订单<{/t}></option>
+      <option value="pending"><{t}>暂停发货<{/t}></option>
+      <option value="finish"><{t}>已完成<{/t}></option>
+      <option value="dead"><{t}>已作废<{/t}></option>
+    </select>
+  </td>
+  <td><div for="pay_status"><{t}>支付状态<{/t}></div>
+    <select id="pay_status" name="pay_status[]" size="5" multiple="multiple">
+      <option style="font-weight:bold" value="_ANY_" selected="selected"><{t}>任意支付状态<{/t}></option>
+      <option value="0"><{t}>未支付<{/t}></option>
+      <option value="1"><{t}>已支付<{/t}></option>
+      <option value="2"><{t}>处理中<{/t}></option>
+      <option value="3"><{t}>部分付款<{/t}></option>
+      <option value="4"><{t}>部分退款<{/t}></option>
+      <option value="5"><{t}>全额退款<{/t}></option>
+      <option value="6"><{t}>支付中<{/t}></option>
+    </select>
+  </td>
+  <td><div for="aaa"><{t}>发货状态<{/t}></div>
+    <select id="ship_status" name="ship_status[]" size="5" multiple="multiple">
+      <option style="font-weight:bold" value="_ANY_" selected="selected"><{t}>任意状态<{/t}></option>
+      <option value="0"><{t}>未发货<{/t}></option>
+      <option value="2"><{t}>部分发货<{/t}></option>
+      <option value="1"><{t}>已发货<{/t}></option>
+      <option value="3"><{t}>部分退货<{/t}></option>
+      <option value="4"><{t}>已退货<{/t}></option>
+    </select>
+  </td>
+</tr>
+</table>

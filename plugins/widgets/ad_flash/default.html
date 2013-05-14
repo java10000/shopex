@@ -1,0 +1,12 @@
+<div id="AdvBanner_<{$widgets_id}>">Flash广告</div>
+<script>
+window.addEvent('domready', function(){
+  var obj = new Swiff('<{$setting.ad_flash}>', {
+    width:  <{$setting.ad_flash_width}>,
+    height: <{$setting.ad_flash_height|default:350}>,
+    container: $('AdvBanner_<{$widgets_id}>')
+    
+    
+  });
+});
+</script>

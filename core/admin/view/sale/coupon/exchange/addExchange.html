@@ -1,0 +1,51 @@
+<form id='doActivityInfoForm'  method='post' action='index.php?ctl=sale/exchangeCoupon&act=addExchange' >
+  <div class="tableform">
+    <div class="division">
+      <table>
+        <tr>
+          <th><{t}>优惠券名称：<{/t}></th>
+          <td>      
+      <{if $cpns.cpns_id}>
+        <{$cpns.cpns_name}>
+      <{else}>
+      <select name="cpns_id">
+          <{foreach from=$cpns_list item=item }>
+        <option value="<{$item.cpns_id}>"> <{$item.cpns_name}> 
+          <{/foreach}>
+          </select>
+      <{/if}> 
+      </td>
+        </tr>
+        <tr>
+          <th><{t}>积分兑换数额：<{/t}></th>
+           <td><{input type='unsignedint' value=$cpns.cpns_point style="width:50px" name='cpns_point' required='true'}> &nbsp; &nbsp; <{help}><{t}>此处填写兑换上述优惠券需要的积分数量<{/t}><{/help}></td>
+        </tr>
+      </table>
+    </div>
+    
+    <div class="table-action">
+<{button label="提交" type="submit"}>
+<{button label="取消" href="index.php?ctl=sale/exchangeCoupon&act=index"}>
+</div>
+
+
+  </div>
+  <{if $cpns.cpns_id}>
+  <input type="hidden" value='<{$cpns.cpns_id}>' name="cpns_id"/>
+  <{/if}>
+</form>
+<script>
+//初始化日期选择控件
+$ES('.cal','doActivityInfoForm').each(function(i){i.makeCalable()});
+</script>
+
+ <{if $env.get._finder_name}>
+ <script>
+ $('doActivityInfoForm').store('target',{
+    update:'messagebox',
+    onComplete:function(){
+      finderGroup['<{$env.get._finder_name}>'].refresh();
+    }
+ });
+ </script>
+ <{/if}>

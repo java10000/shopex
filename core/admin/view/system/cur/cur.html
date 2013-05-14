@@ -1,0 +1,40 @@
+<div class="finder">
+  <div class="action-bar"><a class="sysiconBtn addorder" href="index.php?ctl=system/cur&act=curDetail"><{t}>添加货币<{/t}></a></div>
+</div>
+
+
+<table border="0" cellpadding="0" cellspacing="0" class="gridlist">
+<col class="Colsn"></col>
+<col></col>
+<col span="4" class="Colamount"></col>
+<col class="Coloption-2b"></col>
+
+  <thead>
+    <tr>
+      <th><{t}>序号<{/t}></th>
+      <th><{t}>货币名称<{/t}></th>
+      <th><{t}>货币代码<{/t}></th>
+      <th><{t}>货币符号<{/t}></th>
+      <th><{t}>兑换汇率<{/t}></th>
+      <th><{t}>默认货币<{/t}></th>
+      <th><{t}>操作<{/t}></th>
+    </tr>
+  </thead>
+  <tbody>
+  <{foreach from=$currency item=aList key=key name="cur"}>
+    <tr>
+    <td><{$key+1}></td>
+    <td><{$aList.cur_name}></td>
+    <td><{$aList.cur_code}></td>
+    <td><{$aList.cur_sign}></td>
+    <td  class="Colamount"><{$aList.cur_rate}></td>
+    <td><{if $aList.def_cur == 'false'}><{t}>否<{/t}><{else}><{t}>是<{/t}><{/if}></td>
+    <td><a class="sysiconBtnNoIcon" href="index.php?ctl=system/cur&act=curDetail&p[0]=<{$aList.cur_code}>"><{t}>编辑<{/t}></a>
+      <span class="sysiconBtnNoIcon" onclick="javascript: if(confirm('您确定要删除该货币？')){ W.page('index.php?ctl=system/cur&act=curDel&p[0]=<{$aList.cur_code}>',{method:'get'});}" style="cursor:pointer"><{t}>删除<{/t}></span></td>
+  </tr>
+  <{/foreach}>
+  </tbody>
+</table>
+<div class="footer">
+  <div class="tf"></div>
+</div>

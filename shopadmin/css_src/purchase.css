@@ -1,0 +1,104 @@
+/* ²É¹ºÖÐÐÄ*/
+img.t-afresh{width: 18px; height: 18px; background: url(../images/sysicon2.gif) no-repeat scroll 4px -122px}
+img.t-view{width: 18px; height: 19px; background-image: url(../images/imagebundle2.gif); background-repeat: no-repeat; background-position: 0pt -1595px;}
+img.t-down{width:24px; height: 19px; background-image: url(../images/sysicon2.gif); background-repeat: no-repeat; background-position:6px 1px;}
+img.t-true{width: 24px; height: 16px; background-repeat: no-repeat; background-position: 0pt -1581px; background-image: url(../images/imagebundle2.gif);}
+img.t-false{width: 24px; height: 16px; background-image: url(../images/imagebundle2.gif); background-repeat: no-repeat; background-position: 0pt -201px;}
+img.t-loading{width: 24px; height: 19px; background:#fff url(../images/0504317.gif) no-repeat scroll 2px 3px;}
+img.t-finish{width: 20px; height: 19px; background:#fff url(../images/success.gif) no-repeat scroll 0px 4px;}
+
+
+.downloadico{
+ background:#E2E8EB url(../images/sysicon2.gif) no-repeat 6px 1px;
+ }
+.arrdownico{
+ background:#E2E8EB url(../images/sysicon2.gif) no-repeat 4px -41px;
+}
+.arrupico{
+ background:#E2E8EB url(../images/sysicon2.gif) no-repeat 4px -83px;
+}
+.tongbuico{
+ background:#E2E8EB url(../images/sysicon2.gif) no-repeat 4px -122px;
+}
+.okico{
+ background:#E2E8EB url(../images/sysicon2.gif) no-repeat 4px -162px;
+  color:#999999;
+}
+.payico{
+ background:#E2E8EB url(../images/sysicon2.gif) no-repeat 2px -230px;
+
+}
+.loadingico{
+ background:#E2E8EB url(../images/0504317.gif) no-repeat 2px 3px;
+ color:#999999;
+}
+
+
+.purchase th{ color:#336699; text-align:right;}
+.purchase td{ text-align:left;}
+.tongbu img{ width:50px; height:50px;}
+.tongbu a{ color:#222}
+.tongbu span a{ text-decoration:none;}
+
+.division .purchase td,.division .purchase th{ border:0px; background:none; font-size:12px; color:#222222}
+
+h4.purchase a,h5.purchase a{ font-size:12px; color:#063E9A; font-weight:normal; text-decoration:none; padding-left:10px;}
+h4.purchase a:hover,h5.purchase a:hover{ text-decoration:underline;}
+
+
+fieldset.b2bpurchase { background-color:#FFFFFF; margin-top:10px; *margin-top:20px;padding:0px 10px 10px;}
+
+legend.b2bpurchase {font-size:14px; color:#336699; font-weight:lighter;}
+
+.division_error{ padding:2px; border:2px solid #FBC2C4; background-color:#fbeeef}
+
+.k_green{ background-color:#cceedd}
+.k_orange{ background-color:#ffd850}
+.k_red{ background-color:#ffa0a0}
+.k_gray{ background-color:#e8e8e8}
+
+
+.k_one{ border-color:#bbb; background-color:#efefef}
+.k_two{ border-color:#C7DBE5; background-color:#ECF2F5}
+.k_three{ border-color:#E5DDC7; background-color:#F5F4EC}
+.k_four{ border-color:#C2D7B2; background-color:#F0F5EC}
+.k_five{ border-color:#bbb; background-color:#efefef}
+
+
+.wd2 {margin:1px 2px 0 0;width:72px;}
+.wd3 {margin:1px 2px 0 0;width:102px;}
+.btn, button {
+height:auto;
+line-height:16px;
+padding:0;
+}
+.finderInform thead th {
+border-color:#FFFFFF #DBE2E7 #CCCCCC #FFFFFF;
+border-style:solid;
+border-width:1px;
+font-size:12px;
+font-weight:700;
+padding:1px 3px;
+text-align:center;
+white-space:nowrap;width:auto;
+}
+
+.pp tr:hover{ background-color:#efefef}
+.tableAction {clear:both;width:auto;}
+
+.sysiconBtnNoIcon {
+background:#E2E8EB none repeat scroll 0 0;
+border-color:#FFFFFF #BEC6CE #BEC6CE #FFFFFF;
+border-style:solid;
+border-width:1px 2px 2px 1px;
+color:#000000;
+cursor:pointer;
+display:inline;
+font-weight:normal;
+margin:0 0 0 0px;
+padding:4px 1px 2px;
+text-decoration:none;
+}
+#single-page-tbar .action-bar-btns input {
+padding:3px 0;
+}

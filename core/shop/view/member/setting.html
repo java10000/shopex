@@ -1,0 +1,142 @@
+<!-- right-->
+  <div class="MemberMain">
+  <div style="margin-right:175px;">
+
+<div class="title"><{t}>个人信息<{/t}></div>
+<form method="post" action="<{link ctl="member" act="saveMember"}>" id='form_saveMember' class="section">
+<div class="FormWrap" style="background:none; border:none; padding:0; margin:0;">
+<div class="division" style="border:none;">
+<table class="forform" width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <th><{t}>货币：<{/t}></th>
+    <td><select name="cur">
+          <{foreach item=cur from=$currency}>
+            <option value="<{$cur.cur_code}>" <{if $member.cur == $cur.cur_code}>selected<{/if}>><{$cur.cur_name}></option>
+          <{/foreach}>
+        </select></td>
+  </tr>
+  <tr>
+    <th><em>*</em>Email：</th>
+    <td><{input class="inputstyle" name="email" type="text" required="true" vtype='email' value=$mem.email }></td>
+  </tr>
+</table>
+</div>
+
+
+<div style="border-top:1px solid #f1f1f1;"></div>
+
+<div class="division" style="border:none;">
+<table class="forform" width="100%" border="0" cellspacing="0" cellpadding="0">
+  <{foreach from=$tree item=item name="item" key='row'}>
+  <tr>
+  <th><{if $item.attr_required eq 'true'}><em>*</em><{/if}><{$item.attr_name}></th>
+  <td>   <{if $item.attr_type =='date'}>
+  <{input class="cal" type='date' name='birthday' value=$item.value }>
+  <{/if}>
+  
+    <{if $item.attr_type =='cal'}>
+  <{input class="cal x-input" type='date' name=$item.attr_id required=$item.attr_required value=$item.value}>
+  <{/if}>
+  
+  
+ 
+  <{if $item.attr_type =='text'}>
+  <input class='inputstyle _x_ipt' name='<{$item.attr_id}>' vtype='<{if $item.attr_required eq 'true'}>required&&<{/if}><{$item.attr_valtype}>' type='text' value='<{$item.value}>'/>
+  <{/if}>
+  
+  
+<{if $item.attr_group =='defalut' && $item.attr_type != 'area' && $item.attr_type != 'sex' && $item.attr_type != 'date'}>
+  <{input class="inputstyle _x_ipt" name=$item.attr_type value=$item.value  required=$item.attr_required}>
+  <{/if}>
+  
+  
+  
+   <{if $item.attr_type =='area'}>
+   <{if $item.rStatus}>
+   <{input type="region" name='area' value=$item.value vtype='area2' }>
+   <{else}>
+   <{input type="region" name='area' vtype='area2' }>
+   <{/if}>
+   <script>
+     addEvent('domready',function(){
+		 validatorMap.set('area2',['你没选择完整的地区',function(el,v){
+				 var els=el.getElements('select');
+				 if(els.length==1&&(els[0].getValue()==''||els[0].getValue()=='_NULL_')){
+					 return true;
+				 }else{
+				   return els.every(function(sel){
+								  var selValue=sel.getValue();
+								  var v=selValue!=''&&selValue!='_NULL_';
+								  if(!v){
+								      sel.focus();
+									  return false;
+								  }
+								  return true;
+							 });
+				 }
+				 return true;
+			 }
+		   ]);
+	   });
+   </script>
+   <{/if}>
+   
+   <{if $item.attr_type =='sex'}>
+  <input type='radio' name='sex' value='1'<{if $item.value==1}>checked<{/if}>><label><{t}>男<{/t}></label>
+  <input type='radio' name='sex' value='0' <{if $item.value==0}>checked<{/if}>><label><{t}>女<{/t}></label>
+   <{/if}>
+   
+   <{if $item.attr_type =='select'}>
+ <select name='<{$item.attr_id}>' <{if $item.attr_required eq 'true'}>class='_x_ipt' vtype='required'<{/if}>>
+  <option value='' <{if $item.value == ''}>selected='true'<{/if}>><{t}>- 请选择 -<{/t}></option>
+ <{foreach from=$item.attr_option item=option name="option"}>
+ <option value='<{$option}>' <{if $item.value == $option}>selected='true'<{/if}>><{$option}></option>
+ <{/foreach}>
+ </select>
+   <{/if}>
+   
+  <{if $item.attr_type =='checkbox'}>
+  <{foreach from=$item.attr_option item=checkbox name="checkbox" }>
+
+ 
+ 
+ <input type='checkbox' name=<{$item.attr_id}>[]" value='<{$checkbox}>' <{foreach from=$item.value item=checkboxvalue name="checkboxvalue" }>
+ <{if $checkboxvalue.value==$checkbox}>
+ checked ='true'
+ <{/if}>
+ <{/foreach}>><label><{$checkbox}></label><br/>
+   <{/foreach}><input type='hidden' name='<{$item.attr_id}>[]' value='%no%'>
+
+<{if $item.attr_required eq 'true'}><input type='hidden' class='_x_ipt' vtype='selectc'/>
+<{/if}>
+   <{/if}></td>
+  </tr>
+  <{/foreach}>  <tr>
+    <th></th>
+    <td><input class="actbtn btn-save" type="submit" value="保存" /></td>
+    </tr>
+</table>
+</div>
+
+</div>
+  </div>
+  </div>
+<!-- right-->
+</form>
+<script>
+
+window.addEvent('domready',function(){
+validatorMap.set('selectc',['本项必填',function(element,value){
+ 
+    var checkboxelement = element.getParent('td').getElements('input[name$=]]');
+    var flag=checkboxelement.some(function(i){
+	  return !!i.checked;
+	});
+	checkboxelement.addEvent('change',function(){
+		validator.removeCaution(element);
+		validator.test($('form_saveMember'),element);
+		checkboxelement.removeEvent('change',arguments.callee);
+	});
+	return flag;
+}])});
+</script>

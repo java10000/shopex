@@ -1,0 +1,104 @@
+<div style='overflow:hidden;'>
+<div class='span-5'>
+   <img src='http://gears.google.com/images/logo_153x43.gif'>
+</div>
+<div class='span-8' style='line-height:46px'>
+   <h5>利用Gears加速ShopEx后台运行速度</h5>
+</div>
+</div>
+<div class='clear'></div>
+<div class='note' style='border:none'>
+   利用<a target='_blank' href='http://gears.google.com/'>Gears</a> LocalServer 同步远程资源到本地由<a target='_blank' href='http://gears.google.com/'>Gears</a>组件管理,从而使您的页面加载速度变的迅速.<br/>
+
+   如果发生什么错误，试试 清空本地同步资源,禁用Gears，然后重新载入页面再同步启用它。
+</div>
+<hr style='border-bottom:1px #e9e9e9 solid;clear:left;margin-top:10px;'/>
+<div class='table-action'>
+<button class="btn"  type="button" onclick='captureSource()'><span><span>同步远程资源到本地</span></span></button>
+<button class="btn"  type="button" onclick='remoteLocalServer("uninstall")'><span><span>清空本地同步资源</span></span></button>
+</div>
+<br class='clear'/>
+<br class='clear'/>
+<div id='gears-progress' style='padding:1px;border:1px #666 solid;display:none'><div class='gp-bar' style='font-size:9px;width:0%;overflow:hidden;line-height:20px;background:#5E97EC;color:#fff;text-align:center'>0%</div></div>
+
+<script>
+void function(){
+
+  var localServer;
+  var STORE_NAME='shopadmin_store';
+  var gstore;
+  var MANIFEST_FILENAME='shopadmin-manifest.php?version='+new Date().toLocaleString();
+  
+  remoteLocalServer=function(uninstall){
+      
+      if(window.google&&google.gears){
+          
+          try{
+              localServer=google.gears.factory.create('beta.localserver');
+             
+          }catch(e){
+              
+              MessageBox.error('抱歉,您当前的环境无法使用Gears应用');
+              return;
+          }
+                  localServer.removeManagedStore(STORE_NAME);
+                  if(uninstall){
+                     $('gears-progress').hide();
+                     return MessageBox.success('成功取消Gears加速.');
+                  }
+           gstore=localServer.createManagedStore(STORE_NAME);
+           
+           $extend(gstore,{
+                
+                onprogress:function(p){
+               
+                   if($('gears-progress')){
+                       var gpbar=$('gears-progress').show();
+                       var ct=(p.filesComplete/p.filesTotal*100).toInt()+'%';
+                       $('gears-progress').getElement('.gp-bar').setStyle('width',ct).set('text',ct);
+                   }
+                   
+                },
+                oncomplete:function(obj){
+               
+                  MessageBox.success('成功更新资源至版本:'+obj.newVersion);
+                },
+                onerror:function(err){
+                
+                    MessageBox.error(err.message);
+                }
+           
+           });
+           
+          
+       return true;
+       
+      }else{
+      
+         if(confirm('要使用Gears加速后台带来快感.必须安装Gears浏览器扩展.是否要安装?')){
+             window.open('http://gears.google.com/'); 
+         }
+         
+         return false;
+      }
+  
+  };
+  
+  
+  
+  captureSource=function(){
+  
+    if(!remoteLocalServer())return;
+   
+    gstore.manifestUrl =MANIFEST_FILENAME;
+   
+    gstore.checkForUpdate();
+  
+  }
+  
+
+}();
+
+
+
+</script>

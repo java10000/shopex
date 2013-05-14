@@ -1,0 +1,221 @@
+<div class="MemberMain">
+<div style="margin-right:175px;">
+<h1 class="title"><{t}>申请售后服务<{/t}></h1>
+<form action="<{link ctl=member act=return_save}>" enctype="multipart/form-data" method="post" name="return_save" id='x-return-form'>
+<div class="FormWrap">
+    <div class="division">
+    <h4><{t}>请输入售后服务标题<{/t}></h4>
+    <{input name="title" id="x-return-title" class='x-inputs' type="text" size="60"}>
+  </div>
+  <div class="division">
+    <h4><{t}>请勾选需要售后服务的商品及数量<{/t}></h4>
+   
+   <div id="x-return-item-list">
+	<{include file="shop:member/return_list_item.html"}>
+	</div>
+
+    <div class="division">
+      <ol id="x-return-item-ol">
+      </ol>
+    </div>
+  </div>
+  <div class="division">
+	<h4><{t}>如果您有相关附件，可以在此提交，格式:jpg,gif,bmp,jpeg,rar,zip，文件不宜过大，可能会上传失败<{/t}></h4>
+	<input type="hidden" name="MAX_FILE_SIZE" value="8300000" />
+    <input type="file" name="file" id="fileField" />
+    </div>
+  </div>
+  <div class="division">
+    <h4><{t}>申请售后的详细原因描述<{/t}></h4>
+    <{input type="textarea" id="x-return-content" name="content" class='x-inputs' cols="80" rows="5" maxlength='500'}>
+  </div>
+  <div class="textcenter">
+    <input type="submit" class="buttonstyle" value="提交申请" />
+  </div>
+</div>
+<input type="hidden" name="order_id" value="<{$order_id}>">
+</form>
+</div>
+</div>
+<script>
+function init_returnlist(){
+	$ES('input[type="checkbox"]','x-return-item-list').addEvent('click',function(e){
+		e = e.target;
+		if(e.checked){
+			var s = '{0} <span class="fontcolorOrange"><input type="hidden" name="products[]" value="{1}"></span>x <{input type="text" product_nums="{2}" class="x-product-nums" name="product_nums[]" value="{3}" size="2" }><{t}> 件<{/t}><button onclick="del_return_item(this,'+e.value+')" ><{t}>删除<{/t}></button><input type="hidden" name="product_name[]" value="{4}"><input type="hidden" name="product_bn[]" value="{5}">';
+            var el = new Element('li',{id:'x-item-'+e.value}).setHTML(s.format($E('.x-pdt-name',e.getParent('tr')).innerHTML,e.value,$E('.x-pdt-num',e.getParent('tr')).innerHTML,$E('.x-pdt-num',e.getParent('tr')).innerHTML,$E('.x-pdt-name',e.getParent('tr')).innerHTML,$E('.x-pdt-bn',e.getParent('tr')).innerHTML)).inject($('x-return-item-ol'));
+			$ES('.x-input[name^=product_nums]','x-return-form').addEvent('mouseover',function(e){
+				e = e.target;
+				var error_el = $E('.x-product-nums-error',e.getParent('li'));
+				if(error_el){
+					error_el.remove();
+				}
+			});
+			var error_el = $('x-return-item-list-error');
+			if( error_el )
+			{
+				error_el.remove();
+			}
+		}else{
+           var el= $('x-item-'+e.value);
+           if(el){
+               el.remove();
+           }
+		}
+	});
+	
+}
+
+function jump_to_return_list(page){
+    new Request.HTML({url:'<{$url}>',method:'post',update:$('x-return-item-list'),data:'page='+page,onSuccess:function(){
+		init_returnlist();
+		var el = $('x-return-item-list');
+		var chk_arr = el.getElements('input[type=checkbox]');
+		chk_arr.each(function(item,index){
+			var elol = $('x-return-item-ol');
+			var inol_arr = elol.getElements('input[type=hidden]');
+			inol_arr.each(function(itemol,indexol){
+				if(item.value == itemol.value){
+					item.checked = true;
+				}
+			});
+		})
+	}}).post();
+}
+
+function del_return_item(e,product_id){
+    var el = $(e).getParent('li');
+    var product_list = $("x-return-item-list");
+	var elchk = product_list.getElement('.x-pdt-chk-'+product_id);
+	if( elchk ){
+		var checked = elchk.checked;
+		if( checked )
+		{
+		   elchk.checked = false;
+		}
+	}
+    el.remove();
+	
+	return false;
+}
+init_returnlist();
+
+
+$ES('.x-inputs','x-return-form').addEvent('focus',function(e){
+	e = e.target;
+	var id = e.get('id');
+	var error_el = $(id+'-error');
+	if( error_el )
+	{
+		error_el.remove();
+	}
+});
+
+
+
+$('x-return-form').addEvent('submit',function(e){
+    
+	if($('x-return-title').value.length == 0){
+		if( !$('x-return-title-error') )
+		{
+			var error_el = new Element('span', {id: 'x-return-title-error'});
+			error_el.inject($('x-return-title'), 'after');
+			var el = $('x-return-title-error');
+			el.addClass('x-vali-error');
+			el.set('html',"请填写售后服务标题");
+		}
+		return false;
+	}
+	if( $('x-return-title').value.length < 2 || $('x-return-title').value.length > 30 )
+	{
+		if( !$('x-return-title-error') )
+		{
+			var error_el = new Element('span', {id: 'x-return-title-error'});
+			error_el.inject($('x-return-title'), 'after');
+			var el = $('x-return-title-error');
+			el.addClass('x-vali-error');
+			el.set('html',"您的填写有误，标题2—20字数之内");
+		}
+		return false;
+	}
+
+	var product_nums_arr = $$('.x-input[name^=product_nums]');
+	if( product_nums_arr.length <=0 ){
+		if( !$('x-return-item-list-error') )
+		{
+			var error_el = new Element('span', {id: 'x-return-item-list-error'});
+			error_el.inject($('x-return-item-list'), 'top');
+			var el = $('x-return-item-list-error');
+			el.addClass('x-vali-error');
+			el.set('html',"您没有选择商品，请先选择商品。");
+		}
+		return false;
+	}
+	
+	var xpn,xpn2;
+	if($ES('.x-input[name^=product_nums]','x-return-form').some(function(item){
+	     xpn=item;
+	     return !/\d/.test(item.value);
+	})){
+	  	if(xpn&&!$E('.x-product-nums-error',xpn.getParent('li')) ){
+				new Element('span')
+				.injectAfter(xpn)
+				.addClass('x-vali-error x-product-nums-error')
+				.set('html','请输入数字');
+		 }
+		 return false;	
+	}
+
+    if($ES('.x-input[name^=product_nums]','x-return-form').some(function(item){
+	     xpn=item;
+	     return item.value <= 0;
+	})){
+	  	if(xpn&&!$E('.x-product-nums-error',xpn.getParent('li')) ){
+				new Element('span')
+				.injectAfter(xpn)
+				.addClass('x-vali-error x-product-nums-error')
+				.set('html','退货数量不能小于0');
+		 }
+		 return false;	
+	}
+
+	if($ES('.x-input[name^=product_nums]','x-return-form').some(function(item){
+	      xpn2=item;
+	      return item.value > item.get('product_nums');
+	})){
+	   if(xpn2&&!$E('.x-product-nums-error',xpn2.getParent('li')) ){
+				new Element('span')
+				.injectAfter(xpn2)
+				.addClass('x-vali-error x-product-nums-error')
+				.set('html','申请售后商品的数量不能大于订购数量');
+		  }
+	    return false;
+	}
+
+	if( $('x-return-content').value.length == 0 ){
+		if(!$('x-return-content-error'))
+		{
+			var error_el = new Element('span', {id: 'x-return-content-error'});
+			error_el.inject($('x-return-content'), 'after');
+			var el = $('x-return-content-error');
+			el.addClass('x-vali-error');
+			el.set('html',"请填写售后服务详细原因");
+		}
+		return false;
+	}
+	if($('x-return-content').value.length < 10 ){
+		if(!$('x-return-content-error'))
+		{
+			var error_el = new Element('span', {id: 'x-return-content-error'});
+			error_el.inject($('x-return-content'), 'after');
+			var el = $('x-return-content-error');
+			el.addClass('x-vali-error');
+			el.set('html',"您的填写有误，详细原因应不小于10个字数");
+		}
+		return false;
+	}
+});
+
+
+
+</script>

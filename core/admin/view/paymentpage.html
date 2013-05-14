@@ -1,0 +1,67 @@
+
+
+<{capture name="body"}>
+<{include file=$_PAGE_}>
+<{/capture}>
+<{$env.capture.header}>
+<script hold="true">
+    var SHOPADMINDIR='<{$shopadmin_dir}>';
+    var SHOPBASE='<{$shop_base}>';
+    
+    var MODALPANEL={};
+    var Setting = {};
+    var Menus = "json from=$mlist";
+    var sess_id = '<{$session_id}>';
+    <{$script}>
+    <{if $statusId}>
+    window.statusId = <{$statusId}>;
+    <{/if}>
+</script>
+<script type="text/javascript" src="js/fixie6.js"></script>
+</head>
+
+<body  class="single-page <{if $env.capture.sidebar}>single-page-col2<{/if}>">
+
+
+<div id="main" class="mainwrap">
+    <{$env.capture.body}>
+</div>
+
+
+<div class="clear"></div>
+<div id='tabernacle'></div>
+    
+<div id='loadMask' class='loading' style='z-index:65535;display:none;'>
+    <span class='loading_msg'>
+ÕýÔÚ¼ÓÔØ...
+    </span>
+</div>   
+<div style="display:none;">
+    <iframe name="download" src="about:blank"></iframe>
+    <div id='elTempBox'></div>
+    <div id="dialogProtoType" >
+        <div class="dialog-box">
+            <div class="dialog-head">
+                <div class="dialog-title"></div>
+                <{img src='images/bundle/close_btn.gif' class="dialog-btn-close" }>
+            </div>
+            <div class="dialog-content-head"></div>
+            <div class="dialog-content-body" container='true'><{t}>ÕýÔÚ¼ÓÔØ...<{/t}></div>
+            <div class="dialog-content-foot"></div>
+            <img class="dialog-btn-resize" src='images/resize-btn.gif'/>
+        </div>
+    </div>
+
+    <div id="frameDialogProtoType">
+        <div class="dialog-box">
+            <div class="dialog-head">
+                <div class="dialog-title"></div>
+                <{img src='images/bundle/close_btn.gif' class="dialog-btn-close" }>
+            </div>
+            <div class="dialog-content-head"></div>
+            <iframe class="dialog-content-body dialog-frame-body" container='true' src='about:blank'></iframe>
+            <div class="dialog-content-foot"></div>
+            <img class="dialog-btn-resize" src='images/resize-btn.gif'/>
+        </div> 
+    </div>
+ </div>

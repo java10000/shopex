@@ -1,0 +1,59 @@
+<table width="100%" border="0" cellpadding="0" cellspacing="0" ><tr><td style="text-align:right;padding-top:3px;padding-right:10px;"><{help docid="76" type="link"}><{t}>点击查看帮助<{/t}><{/help}></td></tr></table><form method="post" action="index.php?ctl=goods/product&act=gettypecsv" class="tableform" target="download">
+  <h4><{t}>第一步：下载商品CSV文件（仅限ShopEx后台和ShopEx小助理使用）<{/t}></h4>
+  <div class="division">
+    <table cellpadding="0" cellspacing="0" border="0">
+      <tr>
+        <th><{t}>请选择商品类型：<{/t}></th>
+        <td><{input type="select" name="gtype" required="true" options=$gtypes}></td>
+      </tr>
+      <tr>
+        <th>&nbsp;</th>
+        <td><{button label="下载" type="submit"}></td>
+      </tr>
+    </table>
+    <div style="margin-top:6px"><{t}>为了更方便地管理商店商品，建议您使用 <a href="http://www.shopex.cn/products/ShopExAssitant_intro.html" target="_blank"><b>ShopEx网店助理</b></a>，同时可实现多种平台的数据转换和交互，如：淘宝、拍拍等<{/t}></div>
+  </div>
+</form>
+<div class="tableform">
+  <h4><{t}>第二步：填写CSV文件<{/t}></h4>
+  <div class="division"><{t}>打开CSV文件，在里面对应写入上传商品的内容。<{/t}><a href="http://www.shopex.cn/help/ShopEx48/goods_6.html" target="_blank"><{t}>使用帮助<{/t}></a><{/t}></div>
+</div>
+<form method="post" action="index.php?ctl=goods/product&act=importer" class="tableform" target="{update:'messagebox'}">
+  <h4><{t}>第三步：上传填写好的CSV文件<{/t}></h4>
+  <input type="hidden" name="type" value="csv">
+  
+  <div class="division">
+  <{if $developing}>
+  <{tabber}>
+  <{tab name="由文件"}>
+  <{t}>上传批量CSV文件：<{/t}>
+  <{input type="file" name="upload"}>
+  <{/tab}>
+  <{tab name="由网络"}>
+  <{t}>请输入网址：<{/t}>
+  <{input type="url" name="url" value=""}>
+  <{/tab}>
+  <{/tabber}>
+  <{else}>
+  <table cellpadding="0" cellspacing="0" border="0">
+    <!--<tr>
+    <th><{t}>请选择：<{/t}></th>
+    <td>  <{foreach from=$importer item=item key=key}>
+    <div><input type="radio" name="type" value="<{$key}>" id="importer-<{$key}>" <{if $key=='csv'}>checked<{/if}>>
+      <label for="importer-<{$key}>"><{$item.name}></label>
+    </div>
+    <{/foreach}></td>
+  </tr> -->
+  <tr>
+    <th><{t}>上传批量CSV文件：<{/t}></th>
+    <td><{input type="file" name="upload"}></td>
+  </tr>
+  <tr>
+    <th>&nbsp;</th>
+    <td><{button label="上传" type="submit"}></td>
+  </tr>
+  </table>
+  <{/if}>
+  </div>
+</form>
+

@@ -1,0 +1,29 @@
+<form method="post" action="index.php?ctl=member/shopbbs&act=toSetting&p[0]=<{$comment.comment_id}>" target="{update:'messagebox'}">
+  <div class="tableform">
+    <h4><{t}>全局设置：<{/t}></h4>
+    <div class="division">        
+       <table width="100%" cellspacing="0" cellpadding="2" border="0">        
+        <tr>
+          <th><{t}>发表时需输入验证码:<{/t}></th>
+          <td><{input type='radio' name="verifyCode[msg]" options=$setting.verifyLCode.msg value=$setting.verifyCode.msg separator=" "}></td>
+        </tr>
+          <tr>
+          <th><{t}>商店留言发布:<{/t}></th>
+          <td><{setting key="system.message.open" namespace="setting"}></td>
+          </tr>
+      </table>
+      </td>
+      </tr>
+      </tbody>
+      </table>
+    </div>
+    
+      <div class="table-action">
+	<{button type="submit"  label="保存"}>
+</div>
+
+
+  </div>
+
+
+</form>

@@ -1,0 +1,78 @@
+<div class="GoodsCategoryWrap">
+<ul>
+  <{foreach from=$data item=parent key=parentId}>
+    <{if $parent.sub}>
+         <li class="c-cat-depth-1"><a href="<{link ctl='gallery' act=$setting.view arg0=$parentId}>"><{$parent.label}></a>
+            <{if $setting.showCatDepth_default == '3'}>
+                    <ul>
+                      <{foreach from=$parent.sub item=child key=childId}>                    
+                        <{if $child.sub }>
+                            <li class="c-cat-depth-2"><a href="<{link ctl='gallery' act=$setting.view arg0=$childId}>"><{$child.label}></a>                                
+                               <ul>
+                                <li class="c-cat-depth-3"> <table>
+                                  <tbody>
+                                  <{if $setting.devide == '0'}>
+                                    <tr><td>
+                                    <{foreach from=$child.sub item=gChild key=gChildId name=gchildloop}>
+                                      <a href="<{link ctl="gallery" act=$setting.view arg0=$gChildId }>"><{$gChild.label}></a> 
+                                        <{if !$smarty.foreach.gchildloop.last}><{$setting.page_devide}><{/if}>
+                                    <{/foreach}>
+                                    </td></tr>
+                                  <{else}>
+                                  <{counter start=1 assign="result" print=false }>
+                                  <{foreach from=$child.sub item=gChild key=gChildId}>
+                                    <{if ($result mod $setting.devide) eq 1 }>
+                                    <tr>
+                                      <td><a href="<{link ctl="gallery" act=$setting.view arg0=$gChildId }>"><{$gChild.label}></a> <{$setting.page_devide}></td>
+                                    <{elseif ($result mod $setting.devide) eq 0}>                  
+                                      <td><a href="<{link ctl="gallery" act=$setting.view arg0=$gChildId }>"><{$gChild.label}></a> <{$setting.page_devide}></td>
+                                    </tr>
+                                     <{else}>      
+                                     <td><a href="<{link ctl="gallery" act=$setting.view arg0=$gChildId }>"><{$gChild.label}></a> <{$setting.page_devide}></td>
+                                    <{/if}>
+                                  <{counter assign="result" print=false }>
+                                  <{/foreach}>                                            	 
+                                   <{/if}>
+                                  </tbody>
+                                </table> </li>
+                            </ul></li>                             
+                        <{else}>
+                            <li class="c-cat-depth-2"><a href="<{link ctl='gallery' act=$setting.view arg0=$childId}>"><{$child.label}></a></li>
+                        <{/if}>
+                        <{/foreach}>
+                    </ul>                                
+            <{elseif $setting.showCatDepth_default == '2'}>
+                    <table class="c-cat-depth-2">
+              <tbody>
+              <{if $setting.devide == "0"}>
+                <tr><td>
+                 <{foreach from=$parent.sub item=child key=childId name=childloop}>
+                  <a href="<{link ctl="gallery" act=$setting.view arg0=$childId }>"><{$child.label}></a> 
+                    <{if !$smarty.foreach.childloop.last}><{$setting.page_devide}><{/if}>
+                 <{/foreach}>
+                 </tr></td>
+              <{else}>
+              <{counter start=1 assign="result" print=false }>
+              <{foreach from=$parent.sub item=child key=childId}>
+              <{if ($result mod $setting.devide) eq 1 }>
+                <tr>
+                  <td><a href="<{link ctl="gallery" act=$setting.view arg0=$childId }>"><{$child.label}></a> <{$setting.page_devide}></td>
+              <{elseif ($result mod $setting.devide) eq 0}>
+                  <td><a href="<{link ctl="gallery" act=$setting.view arg0=$childId }>"><{$child.label}></a> <{$setting.page_devide}></td>
+                </tr>
+              <{else}>
+               <td><a href="<{link ctl="gallery" act=$setting.view arg0=$childId }>"><{$child.label}></a> <{$setting.page_devide}></td>        
+              <{/if}>
+              <{counter assign="result" print=false}>
+              <{/foreach}>
+              <{/if}>
+              </tbody>
+            </table>
+            <{/if}>
+          </li>
+    <{else}>
+		<li class="c-cat-depth-1"><a href="<{link ctl='gallery' act=$setting.view arg0=$parentId}>"><{$parent.label}></a></li>
+	<{/if}>
+  <{/foreach}>
+</ul>
+</div>

@@ -1,0 +1,64 @@
+<form method="POST" action="index.php?ctl=member/level&act=addMemLevel" class="tableform">
+<div class="division">
+<table width="100%" border="0" cellpadding="0" cellspacing="0" >
+<tr>
+  <th><{t}>等级名称：<{/t}></th>
+  <td><{input type="text" name="lv_name" size="20" required="true"}></td>
+</tr>
+</table>
+</div>
+<div class="division">
+<table width="100%" border="0" cellpadding="0" cellspacing="0"id='member_level'>
+<tr>
+  <th><{t}>优惠百分比：<{/t}></th>
+  <td><{input type="unsigned" name="dis_count" style="width:50px" size="20" required="true"}>%
+    <span class="notice-inline"><{t}>如果输入80，表示该会员等级以销售价80%的价格购买。<{/t}></span></td>
+</tr>
+<tr>
+  <th><{t}>是否为会员默认等级：<{/t}></th>
+  <td><label><input type="radio" name="default_lv" value="1"><{t}>是<{/t}></label>&nbsp; &nbsp;<label><input type="radio" name="default_lv" value="0" checked><{t}>否<{/t}></label>&nbsp; <{help}><{t}>如果选择“是”，顾客注册商店会员成功时，初始等级为当前等级<{/t}><{/help}></td>
+</tr>
+<tr>
+  <th><{t}>等级类型：<{/t}></th>
+  <td><label><input type="radio" name="lv_type" value="retail" checked id='retail'><{t}>普通零售会员等级<{/t}></label>&nbsp; &nbsp;<label><input type="radio" name="lv_type" value="wholesale" id='wholesale'><{t}>批发代理会员等级<{/t}></label></td>
+</tr>
+<tr class="member_retail">
+  <{if $levelSwitch}>
+    <{assign var="switchValue" value="经验值"}>
+	<{assign var="switchName" value="experience"}>
+  <{else}>
+	<{assign var="switchValue" value="积分"}>
+	<{assign var="switchName" value="point"}>
+  <{/if}>
+  <th><{t}>所需<{$switchValue}>：<{/t}></th>
+  <td><{input type="unsigned" name=$switchName style="width:50px" size="20" class="_x_input" required="true"}> &nbsp; <span class='notice-inline'><{t}>会员<{$switchValue}>达到此标准后会自动升级为当前等级<{/t}></span> &nbsp; <{help}><{t}><{$switchValue}>=会员历史消费金额累加数，消费1元增加一个<{$switchValue}>，不足1元忽略<{/t}><{/help}></td>
+</tr>
+
+
+</table>
+
+</div>
+
+
+    
+     <div class="table-action">
+	<{button type="submit"  label="保存"}>
+</div>
+
+</form>
+
+
+
+<script>
+
+	window.addEvent('domready',function(){
+		$('retail').addEvent('click',function(e){
+			$ES('#member_level .member_retail').show();
+			$ES('#member_level .member_retail input').set('disabled',false);
+		});
+		$('wholesale').addEvent('click',function(e){
+			$ES('#member_level .member_retail').hide();
+			$ES('#member_level .member_retail input').set('disabled',true);
+		});
+	});
+</script>

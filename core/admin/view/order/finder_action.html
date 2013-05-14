@@ -1,0 +1,16 @@
+<{button href="index.php?ctl=order/order&act=showAdd" wrapimg="true" label="添加新订单" type="link" target="_blank" class="btn-blank" icon="finder_add.gif"}>
+<{button href="index.php?ctl=order/order&act=showOrderFlow" wrapimg="true" label="启用单据" icon="finder_sheet.gif"}>
+<{button href="index.php?ctl=order/order&act=showPrintStyle" wrapimg="true" label="打印样式" icon="finder_print_style.gif"}>
+<{button submit="index.php?ctl=order/order&act=toPrint" wrapimg="true" label="打印选定订单" target="_blank" icon="finder_print.gif"}>
+
+<script>
+function orderPrint(el,type){
+    $(el).className='p_prted';
+    var id = $(el).getParent('.row').getAttribute('item-id');
+    return open('index.php?ctl=order/order&act=printing&p[0]='+type+'&p[1]='+id);
+    new Dialog('index.php?ctl=order/order&act=printing&p[0]='+type+'&p[1]='+id,{frameable:true,
+      width:window.getSize().x*0.9,
+      height:window.getSize().y*0.9
+    });
+}
+</script>

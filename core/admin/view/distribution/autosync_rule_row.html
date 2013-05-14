@@ -1,0 +1,12 @@
+ <th><{t}>请选择供应商:<{/t}></th>
+ <td width="200">
+   <select name="rule[supplier_id][]" onchange="changeSupplier(this);">
+       <option value="0">所有</option>
+       <{foreach from=$supplier_list item=supplier}>
+           <option value="<{$supplier.supplier_id}>"><{$supplier.supplier_brief_name}></option>
+       <{/foreach}>
+   </select>
+ </td>
+ <th width="150" class="_x_to_pline_title"><{t}>针对产品线:<{/t}></th>
+ <td width="200" class="_x_to_pline_value">&nbsp;<select name="rule[pline_id][]" ><option value="0" selected>所有</option></select></td>
+ <td><img style="cursor: pointer;" class="operater" onclick="deleteRuleItem(this)" alt="删除" src="../statics/icons/icon_delete.gif"></td>

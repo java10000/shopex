@@ -1,0 +1,117 @@
+<div class="GoodsCategoryWrap">
+<{if $setting.showCatDepth_default == '3'}>
+<ul>
+  <{foreach from=$data item=parent key=parentId}>
+  <li class="c-cat-depth-1">
+	<{if $setting.show_selected_node=='off' && $setting.virtualcat_id}>
+
+	<{else}>
+	<a href="<{$parent.url}>"><{$parent.label}></a>
+	<{/if}>
+    <{if $parent.sub}>
+    <{foreach from=$parent.sub item=child key=childId}>
+    <ul>
+      <li class="c-cat-depth-2">
+        <a href="<{$child.url}>"><{$child.label}></a>
+        <{if $child.sub}>
+        <ul>
+          <li class="c-cat-depth-3">
+            <table>
+              <tbody>
+              <{if $setting.devide == '0'}>
+                <tr><td>
+                <{foreach from=$child.sub item=gChild key=gChildId name=gchildloop}>
+                  <a href="<{$gChild.url}>"><{$gChild.label}></a> 
+                    <{if !$smarty.foreach.gchildloop.last}><{$setting.page_devide}><{/if}>
+                <{/foreach}>
+                </td></tr>
+              <{else}>
+              <{counter start=1 assign="result" print=false }>
+              <{foreach from=$child.sub item=gChild key=gChildId}>
+                <{if ($result mod $setting.devide) eq 1 }>
+                <tr>
+                  <td><a href="<{$gChild.url}>"><{$gChild.label}></a> <{$setting.page_devide}></td>
+               <{elseif ($result mod $setting.devide) eq 0}>                  
+                  <td><a href="<{$gChild.url}>"><{$gChild.label}></a> <{$setting.page_devide}></td>
+                </tr>
+                 <{else}>      
+                 <td><a href="<{$gChild.url}>"><{$gChild.label}></a> <{$setting.page_devide}></td>
+                <{/if}>
+              <{counter assign="result" print=false }>
+              <{/foreach}>
+                            
+               <{/if}>
+              </tbody>
+            </table>
+          </li>
+        </ul>
+        <{/if}>
+      </li>
+    </ul>
+  <{/foreach}>
+  <{/if}>
+  </li>
+    <{/foreach}>
+</ul>
+
+<{elseif $setting.showCatDepth_default == '2'}>
+<ul>
+<{foreach from=$data item=parent key=parentId}>
+  <li class="c-cat-depth-1">
+  
+   	<{if $setting.show_selected_node=='off' && $setting.virtualcat_id}>
+
+	<{else}>
+	<a href="<{$parent.url}>"><{$parent.label}></a>
+	<{/if}>
+
+    <{if $parent.sub}>
+    <ul>
+      <li class="c-cat-depth-2">
+            <table>
+              <tbody>
+              <{if $setting.devide == "0"}>
+                <tr><td>
+                 <{foreach from=$parent.sub item=child key=childId name=childloop}>
+                  <a href="<{$child.url}>"><{$child.label}></a> 
+                    <{if !$smarty.foreach.childloop.last}><{$setting.page_devide}><{/if}>
+                 <{/foreach}>
+                 </tr></td>
+              <{else}>
+              <{counter start=1 assign="result" print=false }>
+              <{foreach from=$parent.sub item=child key=childId}>
+              <{if ($result mod $setting.devide) eq 1 }>
+                <tr>
+                  <td><a href="<{$child.url}>"><{$child.label}></a> <{$setting.page_devide}></td>
+              <{elseif ($result mod $setting.devide) eq 0}>
+                  <td><a href="<{$child.url}>"><{$child.label}></a> <{$setting.page_devide}></td>
+                </tr>
+              <{else}>
+               <td><a href="<{$child.url}>"><{$child.label}></a> <{$setting.page_devide}></td>
+            
+             <{/if}>
+              <{counter assign="result" print=false}>
+              <{/foreach}>
+              
+              <{/if}>
+              </tbody>
+            </table>
+      </li>
+    </ul>
+    
+    <{/if}>
+  </li>
+  
+<{/foreach}>
+</ul>
+<{elseif $setting.showCatDepth_default == '1'}>
+<ul>
+<{foreach from=$data item=parent key=parentId}>
+  <li class="c-cat-depth-1">
+    <a href="<{$parent.url}>"><{$parent.label}></a>
+  </li>
+<{/foreach}>
+</ul>
+
+<{/if}>
+</div>

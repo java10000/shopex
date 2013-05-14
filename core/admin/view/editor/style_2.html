@@ -1,0 +1,105 @@
+<div id='mce_handle_htmledit_<{$var}>' class='mce_style_1'>
+<span class='sysiconBtnNoIcon' title='粗体' htmltp='b'><strong>B</strong></span>
+<span class='sysiconBtnNoIcon' title='斜体' htmltp='i'><i>i</i></span>
+<span class='sysiconBtnNoIcon' title='下划线' htmltp='u'><u>U</u></span>
+<span class='sysiconBtnNoIcon' title='超链接' htmltp='link'>LINK</span>
+<span class='sysiconBtnNoIcon' title='DIV层' htmltp='div'>DIV</span>
+<span class='sysiconBtnNoIcon' title='段落' htmltp='p'>P</span>
+<span class='sysiconBtnNoIcon' title='LI' htmltp='li'>li</span>
+<span class='sysiconBtnNoIcon' title='BR' htmltp='br'><{t}>换行<{/t}></span>
+<span class='sysiconBtnNoIcon' title='HR' htmltp='hr'><{t}>分割线<{/t}></span>
+<span class='sysiconBtnNoIcon' title='图片' htmltp='img'><{t}>插入图片<{/t}></span>
+</div>
+<script>
+void function(){
+var textareaEditor_<{$var}>=new Abstract({
+     element:$E('#mce_body_<{$var}> textarea'),
+     getRange:function(){
+       if(!!document.selection){
+          return document.selection.createRange();
+       }
+       return false;
+     },
+     getSelection:function () {
+		if(!!document.selection){
+                 if(this.range){
+                    return this.range.text;
+                }
+            return document.selection.createRange().text;
+        }else if(!!this.element.setSelectionRange){
+            return this.element.value.substring(this.element.selectionStart,this.element.selectionEnd);		
+        }else{return false};
+	 },replaceSelection:function (text) {
+		var scrollTop=this.element.scrollTop;
+        if(!!document.selection) {
+			this.element.focus();			
+           var old=document.selection.createRange().text;			
+           var range=this.range||document.selection.createRange();			
+           range.text=text;			
+           range-=old.length-text.length;
+		}else if(!!this.element.setSelectionRange) {
+			var selection_start=this.element.selectionStart;			
+            this.element.value=this.element.value.substring(0,selection_start)+text+this.element.value.substring(this.element.selectionEnd);			this.element.setSelectionRange(selection_start+text.length,selection_start+text.length);
+		}
+        this.element.focus();
+		this.element.scrollTop=scrollTop;
+	 },wrapSelection:function (before,after) {
+		this.replaceSelection(before+this.getSelection()+after);
+        this.range=null;
+	 }
+  });
+  
+ $E('#mce_body_<{$var}> textarea').addEvent('mouseup',function(){
+     textareaEditor_<{$var}>.range=textareaEditor_<{$var}>.getRange();
+ });
+  
+ $$('#mce_handle_htmledit_<{$var}> span[htmltp]').addEvent('click',function(e){
+     e.stop();
+     var htmltp=this.get('htmltp');
+     
+     
+     if(htmltp=='img'){
+         
+        return new Dialog('index.php?ctl=editor&act=image',{title:'插入<img>',onShow:function(){
+           var dialog=this;
+           this.dialog.store('callback',function(src,imgtag){
+              textareaEditor_<{$var}>.wrapSelection(imgtag,"");
+              dialog.close();
+           });
+        }});
+         
+     }
+     
+     
+     
+     var B="";
+     var A="";
+     
+     
+     switch (htmltp){
+                 case 'b':
+                     B="<b>";A="</b>";break;                     
+                 case 'i':
+                     B="<i>";A="</i>";break;  
+                 case 'u':
+                     B="<u>";A="</u>";break;         
+                 case 'img':
+                     B="<img src='#'/>";break;
+                 case 'link':
+                     B="<a href='#'>";A="</a>";break;      
+                 case 'div':
+                      B="<div>";A="</div>";break;      
+                 case 'p':
+                      B="<p>";A="</p>";break;      
+                 case 'br':
+                      B="<br/>";break;      
+                 case 'hr':
+                       B="<hr/>";break;
+                 case 'li':
+                       B="<li>";A="</li>";break;                         
+     };
+     textareaEditor_<{$var}>.wrapSelection(B,A);
+ });
+}();
+    
+</script>

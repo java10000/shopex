@@ -1,0 +1,22 @@
+<div class="BrandListWrap">
+	<table width="100%" cellpadding="0" cellspacing="0">
+    	<{foreach from=$data item=data key=key name=brandlist}>
+        <{if $smarty.foreach.brandlist.iteration <= $setting.num}>
+            <{if $key%$setting.col==0}><tr><{/if}>
+                <td>
+                <{if $setting.brandSet=='all' || $setting.brandSet=='logo'}>
+				<{if $data.brand_logo}>
+                <a href="<{link ctl=brand act=index arg0=$data.brand_id}>" title="<{$data.brand_name}>"><img src="<{$data.brand_logo|storager}>"></a>
+				<{/if}>
+                <{/if}>
+                <{if $setting.brandSet=='all' || $setting.brandSet=='write'}>
+                <a href="<{link ctl=brand act=index arg0=$data.brand_id}>" title="<{$data.brand_name}>"><{$data.brand_name}></a>
+                <{/if}>
+                </td>
+            <{if $key%$setting.col==($setting.col-1)}></tr><{/if}>
+        <{/if}>
+        <{/foreach}>
+    </table>
+	<{if $setting.showMore == 'on'}><div class="more clearfix"><a href="<{link ctl=brand act=showList}>">更多品牌</a></div><{/if}>
+</div>
+

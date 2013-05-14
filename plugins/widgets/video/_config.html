@@ -1,0 +1,26 @@
+<div class="tableform widgetconfig">
+<div class="division">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <th>播放文件地址:</th>
+    <td><{input  name="address" value=$setting.address}></td>
+  </tr>
+   <tr>
+    <th>Logo名称:</th>
+    <td><{input  name="logo" value=$setting.logo}></td>
+  </tr>
+   <tr>
+    <th>点击跳转链接地址:</th>
+    <td><{input  name="linkaddress" value=$setting.linkaddress}></td>
+  </tr>
+     <tr>
+    <th>是否自动播放:</th>
+      <td><input type="radio" name="autoplay" value="1" <{if $setting.autoplay!="0"}>checked="checked"<{/if}> >是  <input type="radio" name="autoplay" value="0" <{if $setting.autoplay=="0"}>checked="checked"<{/if}>>否 </td>
+  </tr>
+     <tr>
+    <th>高度:</th>
+      <td><{input  name="height" value=$setting.height|default:170 required="true" type="digits" size=5}></td>
+  </tr>
+
+</table>
+</div></div>

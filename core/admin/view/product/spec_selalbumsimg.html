@@ -1,0 +1,30 @@
+<div id='sel-albums-images'>
+ <div class="division" style="height:300px; overflow:auto;">
+    
+    <{foreach from=$img item=imgItem key=imgid}>
+    
+    <div style="margin:2px 20px;float:left">  
+      <input type="checkbox" name="img[]" value="<{$imgid}>" <{if $imgid|in_array:$selImgs}>checked<{/if}> />
+    <img src="<{$imgItem}>" width="62" height="62" />
+    </div>
+    
+    <{/foreach}>
+    
+    </div>
+        <div class='mainFoot' style='width:80px;height:40px;margin:0 auto;'>
+        <div class="table-action">
+			<{button label="保存"}>
+		</div>
+        </div>
+
+		</div>
+
+		<script>
+		     $E('#sel-albums-images .btn').addEvent('click',function(){
+			    var dialog=this.getParent('.dialog');
+				var callback=dialog.retrieve('callback',$empty);
+				callback( $A( $$('#sel-albums-images input[checked]').get('value') ) );
+				dialog.getElement('.dialog-btn-close').fireEvent('click');
+			 
+			 });
+		</script>

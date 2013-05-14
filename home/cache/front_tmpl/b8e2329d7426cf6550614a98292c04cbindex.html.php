@@ -1,0 +1,1 @@
+<?php if( $this->_vars['errmsg'] ){ ?> <style> .syj-err-msg { font-size:20px;color:#C7CD32;padding:20px; } .syj-err-msg a{color:#3251CD} </style> <div class="syj-err-msg"><?php echo $this->_vars['errmsg']; ?></div> <?php }else{ ?> <iframe id="iframe1" frameborder="0" style="width: 100%; height: 100%;" src="<?php echo $this->_vars['stat_login_url']; ?>"></iframe> <?php } ?> 

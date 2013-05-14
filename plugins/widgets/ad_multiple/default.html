@@ -1,0 +1,120 @@
+<div id="swfmovie_<{$widgets_id}>">Flash Movie</div>
+<script type="text/javascript">
+
+window.addEvent('domready', function(){
+
+  var path = "plugins/widgets/ad_multiple/";
+
+  var ad_style = "<{$setting.ad_style}>";
+
+  var link_arr = "<{foreach name=pics from=$setting.pic item=data key=key}><{if $smarty.foreach.pics.last}><{$data.link}><{else}><{$data.link}>|<{/if}><{/foreach}>".trim();
+  
+  var linktarget_arr = "<{foreach name=pics from=$setting.pic item=data key=key}><{if $smarty.foreach.pics.last}><{$data.linktarget}><{else}><{$data.linktarget}>|<{/if}><{/foreach}>".trim();
+  
+  var image_length = getLength(<{$setting.pic|@count}>);
+ 
+  if(ad_style=="graphics") {
+  
+    var tabtext_arr = "<{foreach name=pics from=$setting.pic item=data key=key}><{if $smarty.foreach.pics.last}><{$data.text}><{else}><{$data.text}>|<{/if}><{/foreach}>".trim();
+  
+    var tabsmallpic_arr = "<{foreach name=pics from=$setting.pic item=data key=key}><{if $smarty.foreach.pics.last}><{$data.smalllink}><{else}><{$data.smalllink}>|<{/if}><{/foreach}>".trim();
+  
+    var link_arr_test = link_arr.split(",");
+    var tabsmallpic_arr_test= tabsmallpic_arr.split(",");
+    var resetarr = false;
+
+    for(var i=link_arr_test.length-1;i>=0;i--) {
+	  if(link_arr_test[i] == "" && tabsmallpic_arr_test[i] == "") {
+	    link_arr_test.splice(i,1);
+	    tabsmallpic_arr_test.splice(i,1);
+        image_length--;
+		resetarr = true;
+	  }
+    }
+  
+    if(resetarr) {
+      link_arr="";
+      tabsmallpic_arr="";
+      link_arr_test.each(function(item,index) {
+        (link_arr_test.length-1==index) ? (link_arr+=item):(link_arr+=item+",");
+      });
+      tabsmallpic_arr_test.each(function(item,index) {
+        (tabsmallpic_arr_test.length-1==index) ? (tabsmallpic_arr+=item):(tabsmallpic_arr+=item+",");
+      });
+    }
+	
+  }
+  
+  function getLength(l) {
+    var len = l;
+	if(link_arr=="") return 0;
+	return len-1;
+  }
+  
+  var swfvars = {
+     widgetpath:path,
+     allimage:image_length,
+     adstyle:ad_style,
+     swfwidth:<{$setting.ad_swf_width}>,
+     swfheight:<{$setting.ad_swf_height}>,
+     swfviewstyle: "<{$setting.ad_viewstyle}>",
+     links:link_arr,
+     linktarget:linktarget_arr,
+     windowtarget:"<{$setting.ad_windowtarget}>",
+	 changeimagespeed:<{$setting.ad_changeimagespeed}>
+  };
+  if(ad_style == "number") {
+    swfvars.mouseevent = "<{$setting.mouseevent}>";
+    swfvars.numberstyle = "<{$setting.numberstyle}>";
+    swfvars.numberposition = "<{$setting.numberposition}>";
+    swfvars.numberbtnstyle = "<{$setting.numberbtnstyle}>";
+    swfvars.autochangeimage = <{$setting.autochangeimage}>;
+    swfvars.imagewait = <{$setting.imagewait}>;
+    swfvars.btncolor = "<{$setting.btncolor}>";
+    swfvars.btnbgcolor = "<{$setting.btnbgcolor}>";
+    swfvars.btnhovercolor = "<{$setting.btnhovercolor}>";
+    swfvars.btnhoverbgcolor = "<{$setting.btnhoverbgcolor}>";
+    swfvars.btnbordercolor = "<{$setting.btnbordercolor}>";
+    swfvars.btnhoverbordercolor = "<{$setting.btnhoverbordercolor}>";
+    swfvars.numbercolumncolor = "<{$setting.numbercolumncolor}>";
+    swfvars.numbercolumnalpha = <{$setting.numbercolumnalpha}>;
+    swfvars.displayarrow = <{$setting.displayarrow}>;
+    swfvars.swfbgcolor = "<{$setting.swfbgcolor}>";
+  }
+  else if(ad_style=="graphics") {
+    swfvars.tabmode  = "<{$setting.tabmode}>";
+	swfvars.tabstyle = "<{$setting.tabstyle}>";
+    swfvars.tabcount  = <{$setting.tabcount}>;
+	swfvars.tabsize  = <{$setting.tabsize}>;
+    swfvars.mouseevent_graphics = "<{$setting.mouseevent_graphics}>";
+	swfvars.tabposition = "<{$setting.tabposition}>";
+	swfvars.autochangeimage_graphics = <{$setting.autochangeimage_graphics}>;
+	swfvars.imagewait_graphics = <{$setting.imagewait_graphics}>;
+	swfvars.btncolor_graphics = "<{$setting.btncolor_graphics}>";
+	swfvars.btnbgcolor_graphics = "<{$setting.btnbgcolor_graphics}>";
+	swfvars.btnhovercolor_graphics = "<{$setting.btnhovercolor_graphics}>";
+	swfvars.btnhoverbgcolor_graphics = "<{$setting.btnhoverbgcolor_graphics}>";
+	swfvars.btnalpha = <{$setting.tabalpha}>;
+	swfvars.btnhoveralpha = <{$setting.tabhoveralpha}>;
+	swfvars.tabcolumncolor = "<{$setting.tabcolumncolor}>";
+	swfvars.tabcolumnalpha = <{$setting.tabcolumnalpha}>;
+	swfvars.swfbgcolor_graphics = "<{$setting.swfbgcolor_graphics}>";	
+	swfvars.tabsmallpic = tabsmallpic_arr;
+	swfvars.tabtext = tabtext_arr;
+  }
+
+  var obj = new Swiff(path+'swf/main.swf', {
+    width:  <{$setting.ad_swf_width}>,
+    height: <{$setting.ad_swf_height}>,
+    container: $('swfmovie_<{$widgets_id}>'),
+    events: {
+      load:function() {
+        alert("Flash is loaded!");
+      }
+    },
+    vars:swfvars
+  });
+  
+ 
+});
+</script>

@@ -1,0 +1,92 @@
+<div class="curtain" id="ad_curtain_<{$widgets_id}>" style="cursor:pointer;<{if $setting.ad_width}>width:<{$setting.ad_width}>px;<{/if}><{if $setting.ad_height}>height:<{$setting.ad_height}>px;<{/if}>background:<{if $setting.ad_pic}>url(<{$setting.ad_pic}>)<{/if}> <{if $setting.ad_bgcolor}><{$setting.ad_bgcolor}><{/if}>; text-align:<{$setting.countdown_position}>"></div>
+
+<script type="text/javascript">
+
+var linktarget= '<{$setting.ad_windowtarget}>';
+
+window.addEvent('domready', function(){
+  var path = "plugins/widgets/ad_curtain/";
+  var datearr= ('<{$setting.setdate}>').split(',');
+  var el = $E('.curtain');
+  
+  
+  
+  var nowdate=new Date();
+  var isdate= new Date(parseInt(datearr[0]),parseInt(datearr[1]),<{$setting.countdown_day}>+parseInt(datearr[2]),<{$setting.countdown_hour}>+parseInt(datearr[3]),<{$setting.countdown_minute}>+parseInt(datearr[4]),<{$setting.countdown_second}>+parseInt(datearr[5]));
+
+
+ if(Math.floor((isdate.getTime()-nowdate.getTime())/1000) <0) {
+    el.destroy();
+    return;
+ }
+
+ el.addEvent("click",elClickEvent);
+
+ var playad = function(){ 
+  
+ el.set('tween', {transition: Fx.Transitions.Sine.easeIn,duration:1500,onComplete:function() { 
+   el.set('tween',{duration:1000,onComplete:function(){
+    el.setStyle("background-image","<{if $setting.ad_mini_pic}>url(<{$setting.ad_mini_pic}>)<{/if}>");
+
+     var iscountdown = '<{$setting.startcountdown}>';
+
+ 
+
+if(iscountdown=="on") {
+    
+    el.removeEvent('click',elClickEvent);
+    
+   var swfvars = {
+     swfwidth:<{$setting.ad_width}>,
+     swfheight:<{$setting.ad_mini_height}>,
+   //  textfontsize:<{$setting.countdown_text_fontsize}>,
+     numberfontsize:<{$setting.countdown_number_fontsize}>,
+     textcolor:'<{$setting.countdown_text_color}>',
+     numbercolor:'<{$setting.countdown_number_color}>',
+     countdownyear:parseInt(datearr[0]),
+     countdownmonth:parseInt(datearr[1]),
+     countdownday:<{$setting.countdown_day}>+parseInt(datearr[2]),
+     countdownhour:<{$setting.countdown_hour}>+parseInt(datearr[3]),
+     countdownminute:<{$setting.countdown_minute}>+parseInt(datearr[4]),
+     countdownsecond:<{$setting.countdown_second}>+parseInt(datearr[5]),
+     position:'<{$setting.countdown_position}>',
+     linkurl:'<{$setting.ad_pic_link}>',
+     linktarget:'<{$setting.ad_windowtarget}>'
+   };
+   var obj = new Swiff(path+'swf/main.swf', {
+    width:  <{$setting.ad_width}>,
+    height: <{$setting.ad_mini_height}>,
+    container: $('ad_curtain_<{$widgets_id}>'),
+    vars:swfvars,
+    events: {
+      load:function() {
+        alert("Flash is loaded!");
+      }
+    }
+   });
+ }
+
+   
+   }}).tween('height',<{$setting.ad_mini_height}>);
+  
+
+  }}).tween('height',0);
+ 
+}.delay(<{$setting.ad_showimagetime}>*1000);
+
+ 
+});
+
+function elClickEvent() {
+    
+    if(linktarget=='_blank') {
+    
+       window.open('<{$setting.ad_pic_link}>'); 
+  }
+    else {
+        window.location.href= '<{$setting.ad_pic_link}>';
+        }
+    
+    }
+
+</script>

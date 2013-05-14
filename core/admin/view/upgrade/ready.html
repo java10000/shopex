@@ -1,0 +1,342 @@
+<div id='upgradeForm'>
+    <h1 style="text-align:center;font-size:18px;"><{$scripts_count}><{t}>个升级脚本需要执行。<{/t}></h1>
+    <h1 style="text-align:center;font-size:14px;color:red;"><{t}>注意：升级正在进行，中途切勿关闭浏览器，否则会造成商店数据丢失<{/t}></h1>
+    <ul id="sqlList" style="list-style:none" class='listready'>
+        <{foreach from=$scripts item=item name=upScript}>
+          <li file="<{$item}>" >
+          
+          core/updatescripts/<{$item}>
+          <span class='title-notice' style='font-weight:bolder'></span>
+          <span class='lnk sdbtn' style='display:none;'><{t}>查看详细<{/t}></span>
+          <div class='detail' style='display:none;'></div>
+          
+          </li>
+        <{/foreach}>
+    </ul>  
+    <p style="padding:30px;" id="run-ready">
+      <input type='button' value='<{t}>执行升级脚本&nbsp;&raquo;<{/t}>' class='submit_btn' />
+    </p>
+</div>
+
+
+<script>
+
+void function(){
+    
+var timeline = '';
+var noticeMsg = new $A(['为确保商店正常运行，请删除系统根目录下的升级文件：upgrade.php']);
+/*所有的升级脚本*/
+var sqls=$$('#sqlList li');
+
+/*为升级脚本赋状态事件*/
+sqls.each(function(sql){
+  
+  sql.store('showDetailBtn',sql.getElement('.sdbtn').addEvent('click',function(){
+            var detail=this.getNext('.detail');
+            if(!detail)return;
+            detail.style.display=detail.style.display=='none'?'':'none';
+  }));
+  
+  sql.store('detail',sql.getElement('.detail'));
+  
+  
+  sql.addEvents({
+
+     'remote':function(){
+          this.addClass('do');
+                    
+      },
+      'complete':function(){
+         this.removeClass('do');
+         this.addClass('complete');
+         this.retrieve('showDetailBtn').style.display='';
+         
+      },
+      'error':function(){
+         this.removeClass('do');
+         this.addClass('error');
+         this.retrieve('showDetailBtn').style.display='';
+         this.retrieve('detail').style.display='';
+         if(this.retrieve('detail').getSize().y>200){
+            this.retrieve('detail').setStyles('height:200px;');
+         }
+      }
+});
+
+});
+
+
+
+
+
+/*请求并执行某个脚本
+* 在函数内部的异步请求成功事件中会产生递归操作。
+*/
+var doUpgrade=function(beginSql){
+    
+    /*升级结束*/
+    if(!beginSql){
+      $E('#upgradeForm .submit_btn').set('value','升级完成！');
+	if(noticeMsg.length)
+		new Element('ol',{'styles':{'background':'#FFF6BF','list-style-position':'inside','padding':'4px'}}).set('html','<li style="padding:1px 1px ">'+noticeMsg.flatten().join('<br/>&nbsp;</li><li>')+'</li>').injectAfter($E('#upgradeForm .submit_btn'));
+      var errorlog=$ES('#sqlList li.error').length;
+      if(errorlog){
+          new Element('span',{'styles':{'color':'red'}}).set('html','&nbsp;&nbsp;&nbsp;但有<b>'+errorlog+'</b>条脚本执行错误.').injectAfter($E('#upgradeForm .submit_btn'));
+      
+      }
+      
+      return;
+    } 
+     
+     /*保持滚动条到当前执行中的升级脚本*/
+    var bsposY=beginSql.getPosition().y;
+    if(bsposY>window.getSize().y){
+        
+        window.scrollTo(0,bsposY);
+    
+    }
+    /*远端控制器*/
+    var requestURL='index.php?act=runscript';
+    
+    /*请求返回容器*/
+    var sqlDetail=beginSql.retrieve('detail');
+    
+    /*下一个升级脚本*/
+    var nextSql=beginSql.getNext('li');
+    
+    var isLast=!nextSql;
+    
+    
+    /*升级脚本的请求队列*/
+    var beginSqlUpstatus=beginSql.retrieve('runState',{
+				'timeline':timeline,
+                 'step':1,
+                 'runFunc':null,
+                 'runStatus':null
+    });
+    /*postData*/
+    var postData=$merge(beginSqlUpstatus,{'file':beginSql.get('file')});
+    
+    /*建立异步请求*/
+    new Request({
+        
+        onRequest:function(){
+           beginSql.fireEvent('remote');
+        },
+        onSuccess:function(re){
+          sqlDetail.set('html',re);
+       
+			var runStatus=sqlDetail.getElement('.run-status');
+			var upTile=sqlDetail.getElement('.up-title');
+			var runFunc=sqlDetail.getElement('.runFunc');
+			if( sqlDetail.getElement('.upgrade-notice') && sqlDetail.getElement('.upgrade-notice').get('value') )
+				noticeMsg.combine( $A( JSON.decode(sqlDetail.getElement('.upgrade-notice').get('value'))) );
+          
+          if(!runStatus||['continue','finish'].indexOf(runStatus.get('value'))<0){
+                if(sqlDetail.getElement('.error')||sqlDetail.getElement('.warning')){
+				  beginSql.fireEvent('error');
+				  sqlDetail.style.display='';
+				}else{
+				   beginSql.fireEvent('complete');
+				}
+          
+          }
+        
+          if(!beginSql.get('file').test('.php','i')){
+             
+             return doUpgrade(nextSql);
+          
+          }
+          
+          /*.php*/
+          
+          	if( !runStatus ){
+					return doUpgrade(nextSql);
+				}else{
+					beginSql.getElement('.title-notice').set('html',upTile.get('value'));
+                   /*队列填充*/
+                    $extend(beginSqlUpstatus,{
+						'timeline':timeline,
+                        'step':beginSqlUpstatus.step+1,
+                        'runFunc':runFunc.get('value'),
+                        'runStatus':runStatus.get('value')
+                    });
+                    
+                    /*根据脚本执行返回状态切分脚本执行流*/
+					switch ( runStatus.get('value') )
+					{
+						case 'finish':
+							beginSqlUpstatus.step = 1;
+						case 'continue':
+							doUpgrade(beginSql);
+							break;
+						case 'all-finish':
+							beginSqlUpstatus.step = 1;
+							$E('.title-notice',beginSql).set('html','');
+                            beginSql.fireEvent('complete');
+							doUpgrade(nextSql);
+							break;
+						case 'error':
+							$E('.title-notice',beginSql).set('html',upTile.get('value'));
+                            beginSql.fireEvent('error');
+						default:
+							doUpgrade(nextSql);
+							break;
+					
+					}
+				}
+          
+        },/*onsuccess end;*/
+        onFailure:function(){
+           sqlDetail.set('html','请求失败.'+Array.flatten(arguments).join(' '));
+           beginSql.fireEvent('error');
+           doUpgrade(nextSql);
+        },
+        onException:function(){
+           sqlDetail.set('html','请求失败.'+Array.flatten(arguments).join(' '));
+           beginSql.fireEvent('error');
+           doUpgrade(nextSql);
+        }
+    }).post(requestURL,$H(postData));
+    
+};
+
+/*升级脚本触发按钮*/
+$E('#upgradeForm .submit_btn').set('disabled',false).addEvent('click',function(){
+    
+    this.set('disabled','disabled').set('value','正在执行升级操作...');
+    $('sqlList').removeClass('listready');
+    var dateobj = new Date();
+	timeline = dateobj.getYear()+'-'+dateobj.getMonth()+'-'+dateobj.getDate()+'-'+dateobj.getHours()+'-'+dateobj.getMinutes()+'-'+dateobj.getSeconds();
+    /*从第一个脚本开始执行*/
+    doUpgrade(sqls[0]);
+
+});
+
+}();
+
+
+
+
+/**----------------------
+var step = 1;
+var sqlUpgrader = new Class({
+  initialize: function(el,ik){
+    this.el = el;
+    this.img = $E('img',el);
+	this.ik = ik;
+  },
+  run:function(){
+
+		var runFunc = '&runFunc='+$E('.a-runFunc').get('value');
+		var runStatus = '&runStatus='+$E('.a-run-statusc').get('value');
+        
+        
+		new Request({
+		  onRequest:function(){
+			if( this.img.src.substr(-22 ) != 'images/ajax-loader.gif' ){
+				this.img.src = 'images/ajax-loader.gif';
+			}
+		  }.bind(this),
+		  onSuccess:function(response){
+			if(!this.btn){
+				this.btn = new Element('span',{'class':'lnk'}).inject(this.el);
+				this.detail = new Element('div',{'class':'detail',style:'display:none'});
+				this.btn.addEvent('click',function(){
+					this.detail.style.display=this.detail.style.display=='none'?'':'none';
+				}.bind(this));
+			}
+			var runSuccess = function(b,d,e){
+				b.inject(e).setText('查看详细');
+				d.inject(e);
+			};
+
+			this.detail.innerHTML = response;
+			
+			var runStatus = this.detail.getLast('.run-status');
+			if( !runStatus || ( runStatus.get('value') != 'continue'  && runStatus.get('value') != 'finish' ) ){
+				if($E('.sql-error',this.detail) ){
+				  this.img.src = 'images/warning.gif';
+				  this.detail.style.display='';
+				}else{
+				  this.img.src = 'images/visible.gif';
+				}
+			}
+			if( this.el.getAttribute('file').substr(-3) == 'php' ){
+				if( !runStatus ){
+					this.fireEvent('next');
+				}else{
+					this.el.getElement('.title-notice').set('html',this.detail.getLast('.up-title').get('value'));
+					$E('.a-run-statusc').set('value',runStatus.get('value'));
+					$E('.a-runFunc').set('value',this.detail.getLast('.runFunc').get('value'));
+					switch ( runStatus.get('value') )
+					{
+						case 'finish':
+							step = 1;
+						case 'continue':
+//							var stepSu = new sqlUpgrader(this.el);
+//							stepSu = stepSu.cloneEvents(this);
+//						    stepSu.run.call(stepSu);
+							runner(this.ik);
+							break;
+
+						case 'all-finish':
+							step = 1;
+							$E('.title-notice').set('html','');
+							runSuccess(this.btn, this.detail, this.el);
+							$E('.a-run-statusc').set('value','');
+							$E('.a-runFunc').set('value','');
+							this.fireEvent('next');
+							break;
+						case 'error':
+							$E('.title-notice').set('html',this.detail.getLast('.up-title').get('value')+'升级出错');
+						default:
+							runSuccess(this.btn, this.detail, this.el);
+							$E('.a-run-statusc').set('value','');
+							$E('.a-runFunc').set('value','');
+							this.fireEvent('next');
+							break;
+					
+					}
+				}
+			}else{
+				runSuccess(this.btn, this.detail, this.el);
+				this.fireEvent('next');
+			}
+		  
+		  }.bind(this),
+		  data:'file='+this.el.getAttribute('file')+'&step='+(step++)+runFunc+runStatus
+		}).post('index.php?act=runscript');
+
+  }
+});
+sqlUpgrader.implement(new Events);
+
+  var list = $ES('li','sqlList');
+$('submit_btn').addEvent('click',function(e){
+  $('submit_btn').disabled=true;
+  runner(0);
+});
+
+  var finish = function(){
+    if($E('.sql-errmsg','sqlList')){
+      $('run-ready').style.display='none';
+      $('run-result-error').style.display='';
+    }else if($E('.sql-errwarning','sqlList')){
+      $('run-ready').style.display='none';
+      $('run-result-warning').style.display='';
+    }else{
+      $('run-ready').style.display='none';
+      $('run-result-succ').style.display='';
+    }
+  }
+  var runner = function(k){
+    var su = new sqlUpgrader(list[k],k);
+    if(list.length>k+1){
+      su.addEvent('next',function(){runner(k+1)});
+    }else{
+      su.addEvent('next',finish);
+    }
+    su.run.call(su);
+  };*/
+</script>

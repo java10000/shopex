@@ -1,0 +1,18 @@
+<form action='index.php?ctl=content/content&act=editDefined' method='post' class="tableform">
+<{input type='hidden' name='page_name' value=$data.page_name}>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <th><{t}>名称：<{/t}></th>
+    <td><{input type='input' name='page_title' value=$data.page_title}></td>
+  </tr>
+  <tr>
+    <th><{t}>内容：<{/t}></th>
+    <td><{input type='html' name='page_content' value=$data.page_content}></td>
+  </tr>
+</table>
+
+<div class="table-action">
+	<{button type="submit"  label="保存"}>
+</div>
+
+</form>

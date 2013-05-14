@@ -1,0 +1,56 @@
+<div class="boxGray CartInfoItems">
+<h4><{t}>目前选购商品共<{/t}><span class="cartCount fontcolorOrange"><{$cartCount}></span><{t}>件<{/t}></h4>
+
+  <{if count($trading.products) > 0}>
+  <table>
+  <col style='background:#fff;'></col>
+  <col style='background:#fff;'></col>
+  <tbody>
+    <{foreach from=$trading.products item="item" key="key"}>
+        <tr>
+         <td width='45px;' valign='middle' align='center'>
+                <a href="<{link ctl=product act=index arg0=$item.goods_id}>" class='goods-pic' style='dispaly:block;width:40px;height:40px;overflow:hidden;border:none;color:#fff;font-size:1px;'>
+                  <img src="<{$item.thumbnail_pic|default:$env.conf.site.default_thumbnail_pic|storager}>" onload="$(this).zoomImg(40,40);"/>
+                </a>
+          </td>
+          <td>
+              <a href="<{link ctl=product act=index arg0=$item.goods_id}>">
+                  <{$item.name}>
+                  <{$item.addon.adjname}>
+                  <{if $item._pmt.describe}>
+                     <div class="ht1"><{$item._pmt.describe}></div>
+                  <{/if}>
+              </a>
+               <span class="fontcolorOrange num">x<{$item.nums}></span>
+           </td>
+          </tr>
+    <{/foreach}>
+    </tbody>
+  </table>
+  <{/if}>
+  
+  
+  <{if count($trading.gift_e) > 0}>
+  <h4><{t}>可获得赠品：<{/t}></h4>
+  <ol class="division CartInfoContent">
+    <{foreach from=$trading.gift_e item="item" key="key"}>
+      <li><a href="<{link ctl=gift act=index arg0=$item.gift_id}>"><{$item.name}><span class="fontcolorOrange num">x<{$item.nums}></span></a></li>
+    <{/foreach}>
+  </ol>
+  <{/if}>
+ 
+  <{if count($trading.package) > 0}>
+   <h4><{t}>捆绑促销商品：<{/t}></h4>
+  <ol class="division CartInfoContent">
+    <{foreach from=$trading.package item="item" key="key"}>
+     <li><{$item.name}><span class="fontcolorOrange num">x<{$item.nums}></span></li>
+    <{/foreach}>
+  </ol>
+  <{/if}>
+      <div class='cart-goods-total'><{t}>商品总额:<{/t}><br />
+        <span class="textright price1 total"><{$trading.totalPrice|cur}></span>&nbsp;&nbsp;&nbsp;&nbsp;
+        <a class="lnk gocart" href="<{link ctl=cart act=index}>" target="_blank"><{t}>进入购物车<{/t}></a>
+      </div>  
+</div>
+
+

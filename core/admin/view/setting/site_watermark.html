@@ -1,0 +1,319 @@
+<form action='index.php?ctl=system/setting&act=watermarkEdit' method='post' enctype="multipart/form-data" target="{update:'messagebox'}" id="setting-form">
+  <input type='hidden' name='returl' value='index.php?ctl=system/setting&act=siteBasic' />
+
+
+<div class="tableform notice"><{t}>一张商品图片上传后，会自动生成三张图片，分别出现在商店的三类页面，如下：<{/t}><br><{t}>1：显示在商品列表页、首页商品版块内的图片，我们称为“列表页缩略图”；<{/t}><br><{t}>2：显示在商品详细页内的图片，我们称为“商品页详细图”；<{/t}><br><{t}>3：显示在商品相册页内的图片，我们称为“商品相册图”；<{/t}></div>
+
+  <div class="tableform">
+    <table width="100%" border="0" cellpadding="0" cellspacing="0" ><tr><td>
+    <h4><{t}>三种图片尺寸设定<{/t}></h4>
+       </td><td style="text-align:right; padding-right:10px;"><{help docid="66" type="link"}><{t}>点击查看图片设置帮助<{/t}><{/help}></td></tr></table>
+    <div class="division">
+      <table border="0" cellpadding="0" cellspacing="0">
+        <tr>
+          <th><{t}>列表页缩略图 <{/t}></th>
+         <td width="220"> <{t}>宽度：<{/t}><{input type='digits' name='thumbnail_pic_width' id='thumbnail_pic_width' value=$thumbnail_pic_width style="width:40px" required='true'}>&nbsp;
+      <{t}>高度：<{/t}>&nbsp;
+         <{input type='digits' name='thumbnail_pic_height' id='thumbnail_pic_height' value=$thumbnail_pic_height style="width:40px" required='true'}>&nbsp;
+         <span class='lnk' onclick="previewImg('index.php?ctl=system/setting&act=createPreviewImg&p[0]=thumbnail&p[1]=1',$('setting-form'), $('thumbnail_pic_width').value, $('thumbnail_pic_height').value);"><{t}>预览<{/t}></span>
+         </td>
+          <th><{t}>缺省图：<{/t}></th>
+          <td><{input type='file' name='default_thumbnail_pic'  size='10'}><{if $default_thumbnail_pic}><a class='lnk' href='<{$default_thumbnail_pic}>' target='showpic'><{t}>查看<{/t}></a><{/if}></td>
+        </tr>
+        <tr>
+      <th><{t}>商品页详细图 <{/t}></th>
+        <td >  <{t}>宽度：<{/t}><{input type='digits' name='small_pic_width' id='small_pic_width' value=$small_pic_width style="width:40px" required='true'}>&nbsp;
+          <{t}>高度：<{/t}>&nbsp;
+          <{input type='digits' name='small_pic_height' id='small_pic_height' value=$small_pic_height style="width:40px" required='true'}>&nbsp;
+         <span class='lnk' onclick="previewImg('index.php?ctl=system/setting&act=createPreviewImg&p[0]=small&p[1]=1',$('setting-form'), $('small_pic_width').value, $('small_pic_height').value)"><{t}>预览<{/t}></span>
+          </td>
+          <th><{t}>缺省图：<{/t}></th>
+          <td><{input type='file' name='default_small_pic'  size='10'}><{if $default_small_pic}><a class='lnk' href='<{$default_small_pic}>' target='showpic'><{t}>查看<{/t}></a><{/if}></td>
+        </tr>
+        <tr>
+      <th>　<{t}>商品相册图 <{/t}></th>
+       <td >   <{t}>宽度：<{/t}><{input type='digits' name='big_pic_width' id='big_pic_width' value=$big_pic_width style="width:40px" required='true'}>&nbsp;
+          高度：&nbsp;
+          <{input type='digits' name='big_pic_height' id='big_pic_height' value=$big_pic_height style="width:40px" required='true'}>&nbsp;
+         <span class='lnk' onclick="previewImg('index.php?ctl=system/setting&act=createPreviewImg&p[0]=big&p[1]=1',$('setting-form'), $('big_pic_width').value, $('big_pic_height').value)"><{t}>预览<{/t}></span>
+          </td>
+          <th><{t}>缺省图：<{/t}></th>
+          <td><{input type='file' name='default_big_pic'  size='10'}><{if $default_big_pic}><a class='lnk' href='<{$default_big_pic}>' target='showpic'><{t}>查看<{/t}></a><{/if}></td>
+        </tr>
+      </table>
+    </div><span class="notice-inline"><{t}>注意：如果尺寸设置为0，则显示商品图片原始尺寸。<{/t}></span><br /><br />
+   <h4><{t}>是否开启图片放大镜功能<{/t}> <{help}><{t}>开启图片放大镜后，顾客可以通过移动鼠标来查看前台商品详细页图片的细节放大效果<{/t}><{/help}></h4>
+   <div class="division"><label><input type="checkbox" name="readingGlass" <{if $readingGlass}>checked="checked"<{/if}>><{t}>开启图片放大镜<{/t}></label> &nbsp; &nbsp; &nbsp; &nbsp;
+    宽度：<input type="text" name="readingGlassWidth" size=5 style="width:40px" value="<{$readingGlassWidth|default:$small_pic_width}>"><{t}>&nbsp; 高度：<{/t}><input type="text" name="readingGlassHeight" size=5 style="width:40px" value="<{$readingGlassHeight|default:$small_pic_height}>"><span class="notice-inline"><{t}>注意：本处宽度和高度是指放大镜的边框大小<{/t}></span>
+    </div>
+
+     <div class="table-action">
+    <{button type="submit"  label="保存"}>
+</div>
+
+
+
+  </div>
+
+  <div class="tableform" >
+    <table width="100%" border="0" cellpadding="0" cellspacing="0" ><tr><td>
+    <h4><{t}>商品页详细图水印设定<{/t}></h4>
+       </td><td style="text-align:right; padding-right:10px;"><{help docid="67" type="link"}><{t}>点击查看水印设置帮助<{/t}><{/help}></td></tr></table>
+    <div class="division"><{if $gd_loaded}>
+      <table border="0" cellpadding="0" cellspacing="0">
+        <tr>
+          <th><{t}>是否开启：<{/t}></th>
+          <td><{input name="wm_small_enable" type="radio" value=$wm_small_enable options=$enable_options onClick="
+      switch(this.value){
+      case '0':
+      $('dt_wt_pic_set').style.display='none';
+      $('dt_sy_pic').getElements('input').each(function(item){item.disabled=true;});
+      $('dt_sy_char').getElements('input').each(function(item){item.disabled=true;});
+      break;
+      case '1':
+      $('dt_wt_pic_set').style.display='';
+      $('dt_sy_pic').style.display='';$('dt_sy_char').style.display='none';
+      $('dt_sy_pic').getElements('input').each(function(item){item.disabled=false;});
+      $('dt_sy_char').getElements('input').each(function(item){item.disabled=true;});
+      break;
+      case '2':
+      $('dt_wt_pic_set').style.display='';
+      $('dt_sy_pic').style.display='none';$('dt_sy_char').style.display='';
+      $('dt_sy_pic').getElements('input').each(function(item){item.disabled=true;});
+      $('dt_sy_char').getElements('input').each(function(item){item.disabled=false;});
+      break;
+      };
+
+      "}></td>
+        </tr>
+      </table>
+    </div>
+    <div class="division" id="dt_wt_pic_set" <{if $wm_small_enable==0}>style="display:none"<{/if}>>
+      <table table border="0" cellpadding="0" cellspacing="0">
+        <tbody id="dt_sy_pic" <{if $wm_small_enable==2}>style="display:none"<{/if}>>
+        <tr>
+          <th><{t}>水印图片：<{/t}></th>
+          <td><{input type='file' name='wm_small_pic'  size='30'}> <{if $wm_small_pic}><a href='<{$wm_small_pic}>' target='showpic'><{t}>查看<{/t}></a><{/if}></td>
+        </tr>
+        <tr>
+          <th><{t}>图片水印透明度：<{/t}></th>
+          <td><{input name="wm_small_transition" type="text" size=5 style="width:40px" value=$wm_small_transition}><{t}><span class="notice-inline"><{t}>透明度请设置为0-100之间的数字，0代表完全透明，100代表不透明<{/t}></span><{/t}></td>
+        </tr>
+        </tbody>
+
+        <tbody id="dt_sy_char" <{if $wm_small_enable==0 || $wm_small_enable==1}>style="display:none"<{/if}>>
+        <tr>
+        <th><{t}>水印文字：<{/t}></th>
+          <td><{input name="wm_small_text" type="text" size="60" value=$wm_small_text}>&nbsp;</td>
+        </tr>
+        <tr>
+          <th><{t}>水印文字字体：<{/t}></th>
+      <td><{input name="wm_small_font" type="select"  value=$wm_small_font options=$wm_font_options}>
+        <{if !$wm_font_options}>
+        <{t}><span class="notice-inline"><{t}>请把所需的字体文件上传到网店服务器根目录下的/public/font文件夹中，字体文件位于本机C:\WINDOWS\Fonts下，例如文件SimSun.ttc表示宋体<{/t}></span><{/t}><{/if}></td>
+        </tr>
+          <tr>
+        <th><{t}>字体水印透明度：<{/t}></th>
+        <td colspan="3"><{input name="wm_small_text_transition" type="text" size=5 value=$wm_small_text_transition|default:50}><{t}><span class="notice-inline"><{t}>透明度请设置为0-127之间的数字，127代表完全透明，0代表不透明<{/t}></span><{/t}></td>
+      </tr>    
+        <tr>
+          <th><{t}>水印文字字体大小：<{/t}></th>
+          <td><{input name="wm_small_font_size" type="text" size=5 style="width:40px" value=$wm_small_font_size}>&nbsp;</td>
+        </tr>
+        <tr>
+          <th><{t}>水印文字颜色：<{/t}></th>
+          <td><{input name="wm_small_font_color" type="color" style="width:66px" value=$wm_small_font_color|default:"default"}>&nbsp;</td>
+        </tr>
+        </tbody>
+
+        <tbody>
+        <tr>
+          <th><{t}>水印位置：<{/t}></th>
+          <td>
+            <table style="width:300px" border=1 cellspacing="1" >
+            <tr>
+                <td><label forid="wm_small_text_1"><input type="radio" name="wm_small_loc" id="wm_small_text_1" value='1' <{if $wm_small_loc == 1}>checked="checked"<{/if}>/><{t}>顶部居左<{/t}></label></td>
+                <td><label forid="wm_small_text_5"><input type="radio" name="wm_small_loc" id="wm_small_text_5" value='5' <{if $wm_small_loc == 5}>checked="checked"<{/if}>/><{t}>顶部居中<{/t}></label></td>
+                <td><label forid="wm_small_text_2"><input type="radio" name="wm_small_loc" id="wm_small_text_2" value='2' <{if $wm_small_loc == 2}>checked="checked"<{/if}>/><{t}>顶部居右<{/t}></label></td>
+            </tr>
+            <tr>
+                <td><label forid="wm_small_text_8"><input type="radio" name="wm_small_loc" id="wm_small_text_8" value='8' <{if $wm_small_loc == 8}>checked="checked"<{/if}>/><{t}>左部居中<{/t}></label></td>
+                <td><label forid="wm_small_text_0"><input type="radio" name="wm_small_loc" id="wm_small_text_0" value='0' <{if $wm_small_loc == 0 || !$wm_small_loc}>checked="checked"<{/if}>/><{t}>图片中心<{/t}></label></td>
+                <td><label forid="wm_small_text_6"><input type="radio" name="wm_small_loc" id="wm_small_text_6" value='6' <{if $wm_small_loc == 6}>checked="checked"<{/if}>/><{t}>右部居中<{/t}></label></td>
+            </tr>
+            <tr>
+                <td><label forid="wm_small_text_4"><input type="radio" name="wm_small_loc" id="wm_small_text_4" value='4' <{if $wm_small_loc == 4}>checked="checked"<{/if}>/><{t}>底部居左<{/t}></label></td>
+                <td><label forid="wm_small_text_7"><input type="radio" name="wm_small_loc" id="wm_small_text_7" value='7' <{if $wm_small_loc == 7}>checked="checked"<{/if}>/><{t}>底部居中<{/t}></label></td>
+                <td><label forid="wm_small_text_3"><input type="radio" name="wm_small_loc" id="wm_small_text_3" value='3' <{if $wm_small_loc == 3}>checked="checked"<{/if}>/><{t}>底部居右<{/t}></label></td>
+            </tr>
+            </table>
+        </td>
+        </tr>
+        </tbody>
+      </table>
+      <{else}>
+      <span class="notice-inline"><{t}>您的服务器未加载GD或imagemagick模块,无法使用水印功能<{/t}></span>
+      <{/if}>
+      </div>
+
+
+  <div class="table-action">
+    <{button type="submit"  label="查看效果" onclick="return previewImg('index.php?ctl=system/setting&act=createPreviewImg&p[0]=small',this.form,600,350);"}>
+      &nbsp;&nbsp;<{button type="submit"  label="保存" }>
+  </div>
+
+  </div>
+  <div class="tableform">
+    <h4><{t}>商品相册图水印设定<{/t}></h4>
+    <{if $gd_loaded}>
+    <div class="division">
+      <table border="0" cellspacing="0" border="0">
+      <tr>
+        <th><{t}>是否开启：<{/t}></th>
+        <td><{input name="wm_big_enable" type="radio" value=$wm_big_enable options=$enable_options onClick="if(this.value==0){
+            $('goods_sy_set').style.display='none';
+            $('goods_sy_pic').getElements('input').each(function(item){item.disabled=true;});
+            $('goods_sy_char').getElements('input').each(function(item){item.disabled=true;});
+      };if(this.value==1){
+        $('goods_sy_set').style.display='';
+        $('goods_sy_pic').style.display='';
+        $('goods_sy_pic').getElements('input').each(function(item){item.disabled=false;});
+        $('goods_sy_char').style.display='none';
+        $('goods_sy_char').getElements('input').each(function(item){item.disabled=true;});
+      };
+      if(this.value==2){
+      $('goods_sy_set').style.display='';
+      $('goods_sy_pic').style.display='none';$('goods_sy_char').style.display='';
+      $('goods_sy_pic').getElements('input').each(function(item){item.disabled=true;});
+      $('goods_sy_char').getElements('input').each(function(item){item.disabled=false;});
+      };
+      "}> </td>
+      </tr>
+      </table>
+    </div>
+
+    <div class="division" id="goods_sy_set" <{if $wm_big_enable==0}>style="display:none"<{/if}>>
+      <table border="0" cellpadding="0" cellspacing="0">
+    <tbody id="goods_sy_pic" <{if $wm_big_enable==2}>style="display:none"<{/if}>>
+      <tr>
+        <th><{t}>图片水印图片：<{/t}></th>
+        <td><{input type='file' name='wm_big_pic'  size='30'}> <{if $wm_big_pic}><a href='<{$wm_big_pic}>' target='showpic'><{t}>查看<{/t}></a><{/if}></td>
+      </tr>
+      <tr>
+        <th><{t}>图片水印透明度：<{/t}></th>
+        <td colspan="3"><{input name="wm_big_transition" type="text" size=5 value=$wm_big_transition}><{t}><span class="notice-inline"><{t}>透明度请设置为0-100之间的数字，0代表完全透明，100代表不透明<{/t}></span><{/t}></td>
+      </tr>
+    </tbody>
+
+    <tbody id="goods_sy_char" <{if $wm_big_enable==1}>style="display:none"<{/if}>>
+        <tr>
+          <th><{t}>水印文字：<{/t}></th>
+          <td ><{input name="wm_big_text" type="text" size="60" value=$wm_big_text}></td>
+        </tr>
+        <tr>
+          <th><{t}>水印文字字体：<{/t}></th>
+      <td><{input name="wm_big_font" type="select"  value=$wm_big_font options=$wm_font_options}>
+        <{if !$wm_font_options}>
+        <{t}><span class="notice-inline"><{t}>请把所需的字体文件上传到网店服务器根目录下的/public/font文件夹中，字体文件位于本机C:\WINDOWS\Fonts下，例如文件SimSun.ttc表示宋体<{/t}></span><{/t}><{/if}></td>
+        </tr>
+          <tr>
+        <th><{t}>字体水印透明度：<{/t}></th>
+        <td colspan="3"><{input name="wm_big_text_transition" type="text" size=5 value=$wm_big_text_transition|default:50}><{t}><span class="notice-inline"><{t}>透明度请设置为0-127之间的数字，127代表完全透明，0代表不透明<{/t}></span><{/t}></td>
+      </tr>    
+        <tr>
+          <th><{t}>水印文字字体大小：<{/t}></th>
+          <td><{input name="wm_big_font_size" type="text" size=5 style="width:40px" value=$wm_big_font_size}></td>
+        </tr>
+        <tr>
+          <th><{t}>水印文字颜色：<{/t}></th>
+          <td><{input name="wm_big_font_color" type="color" style="width:66px" value=$wm_big_font_color|default:'default'}></td>
+        </tr>
+    </tbody>
+
+    <tbody>
+      <tr>
+        <th><{t}>水印位置：<{/t}></th>
+        <td>
+        <table style="width:300px" border=1 cellspacing="1" >
+        <tr>
+            <td><label forid="wm_big_text_1"><input type="radio" name="wm_big_loc" id="wm_big_text_1" value='1' <{if $wm_big_loc == 1}>checked="checked"<{/if}>/><{t}>顶部居左<{/t}></label></td>
+            <td><label forid="wm_big_text_5"><input type="radio" name="wm_big_loc" id="wm_big_text_5" value='5' <{if $wm_big_loc == 5}>checked="checked"<{/if}>/><{t}>顶部居中<{/t}></label></td>
+            <td><label forid="wm_big_text_2"><input type="radio" name="wm_big_loc" id="wm_big_text_2" value='2' <{if $wm_big_loc == 2}>checked="checked"<{/if}>/><{t}>顶部居右<{/t}></label></td>
+        </tr>
+        <tr>
+            <td><label forid="wm_big_text_8"><input type="radio" name="wm_big_loc" id="wm_big_text_8" value='8' <{if $wm_big_loc == 8}>checked="checked"<{/if}>/><{t}>左部居中<{/t}></label></td>
+            <td><label forid="wm_big_text_0"><input type="radio" name="wm_big_loc" id="wm_big_text_0" value='0' <{if $wm_big_loc == 0 || !$wm_small_text}>checked="checked"<{/if}>/><{t}>图片中心<{/t}></label></td>
+            <td><label forid="wm_big_text_6"><input type="radio" name="wm_big_loc" id="wm_big_text_6" value='6' <{if $wm_big_loc == 6}>checked="checked"<{/if}>/><{t}>右部居中<{/t}></label></td>
+        </tr>
+        <tr>
+            <td><label forid="wm_big_text_4"><input type="radio" name="wm_big_loc" id="wm_big_text_4" value='4' <{if $wm_big_loc == 4}>checked="checked"<{/if}>/><{t}>底部居左<{/t}></label></td>
+            <td><label forid="wm_big_text_7"><input type="radio" name="wm_big_loc" id="wm_big_text_7" value='7' <{if $wm_big_loc == 7}>checked="checked"<{/if}>/><{t}>底部居中<{/t}></label></td>
+            <td><label forid="wm_big_text_3"><input type="radio" name="wm_big_loc" id="wm_big_text_3" value='3' <{if $wm_big_loc == 3}>checked="checked"<{/if}>/><{t}>底部居右<{/t}></label></td>
+        </tr>
+        </table></td>
+      </tr>
+    </tbody>
+      </table>
+      <{else}>
+      <span class="notice-inline"><{t}>您的服务器未加载GD或imagemagick模块,无法使用水印功能<{/t}></span></div>
+    <{/if}></div>
+
+
+ <div class="table-action">
+    <{button type="submit"  label="查看效果" onclick="return previewImg('index.php?ctl=system/setting&act=createPreviewImg&p[0]=big',this.form,600,350);"}>
+      &nbsp;&nbsp;<{button type="submit"  label="保存" }>
+  </div>
+
+
+  <div class="tableform">
+    <h4><{t}>商品规格图片尺寸设置<{/t}> <{help}><{t}>此处设置规格图片在前台商品详细页面的显示大小及缺省图片<{/t}><{/help}></h4>
+
+    <div class="division">
+      <table border="0" cellspacing="0" border="0">
+      <tr>
+        <th><{t}>宽度：<{/t}></th>
+        <td><{input type="digits" name="spec_image_width" size=4 style="width:40px"  required='true' value=$spec_image_width}></td>
+        <th><{t}>高度：<{/t}></th>
+        <td><{input type="digits" name="spec_image_height" size=4 style="width:40px"  required='true' value=$spec_image_height }></td>
+        <th><{t}>缺省图：<{/t}></th>
+        <td><{input type='file' name='spec_default_pic'  size='20'}> &nbsp;&nbsp;&nbsp;&nbsp;<img style="border:1px solid #3366CC; padding:1px; vertical-align:middle;" src='<{$spec_default_pic|storager}>' width=<{$spec_image_width}> height="<{$spec_image_height}>"/></td>
+
+      </tr>
+      </table>
+    </div>
+
+
+
+     <div class="table-action">
+      <{button type="submit"  label="保存" }>
+  </div>
+
+    </div>
+
+
+
+
+  </div>
+  <script>
+    function previewImg(url,f,w,h){
+        new Dialog('index.php?ctl=system/setting&act=previewImg',{width:getSize().x*0.7,height:getSize().y*0.7,title:'图片预览'});
+        createPreviewImg(url,f);
+        return false;
+    }
+    function createPreviewImg(url,f){
+        if(!$("previewImg")){
+            var timeFunc = function(){setTimeout(function(){createPreviewImg(url,f);},100)};
+            timeFunc();
+        }
+        else{
+            var ftgt=f.target;
+            var fact=f.action;
+            f.target='_previewImg';
+            f.action=url;
+            f.submit();
+            f.target=ftgt;
+            f.action=fact;
+        }
+    }
+  </script>
+</form>

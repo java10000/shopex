@@ -1,0 +1,57 @@
+<!-- right-->
+  <div class="MemberMain">
+  <div style="margin-right:175px;">
+
+<div class="title"><{t}>发送短消息<{/t}></div>
+<form name="comment" action="<{link ctl="member" act="sendMsg"}>" method="post" class="section" <!--onSubmit="return Form_Validator(this)"-->>
+<{input type="hidden" name="msg_id" value=$msg_id|escape:'html' }>
+
+  <!--<select>
+  <option><{t}>提问<{/t}></option>
+  <option><{t}>评论<{/t}></option>
+  <option><{t}>意见与建议<{/t}></option>
+  </select>
+  -->
+  
+  <div class="FormWrap" style="background:none; border:none; padding:0; margin:0;">
+  <div class="division" style="border:none;">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" class="forform">
+  <tr>
+    <th><{t}>发送给：<{/t}></th>
+    <td><{input class="inputstyle _x_ipt" name="msg_to"  required="true" id="comment_name" size="30" value=$init.msg_to|escape:'html'}></td>
+    </tr>
+    <tr>
+     <th><em>*</em><{t}>标题：<{/t}></th>
+    <td><{input class="inputstyle" name="subject" type="text"  required="true" id="comment_email" size="30" value=$init.subject|escape:'html'}></td>   
+  </tr>
+</table>
+</div>
+
+
+<div style="border-top:1px solid #f1f1f1;"></div>
+
+  <div class="division" style="border:none;">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" class="forform">
+  <tr>
+    <th><{t}>内容：<{/t}></th>
+    <td><{input class="inputstyle" type="textarea" name="message" required="true" cols="50" rows="5" id="commenttitle" value=$init.message|escape:'html'}></td>
+  
+  </tr>
+  <tr>
+    <th></th>
+    <td><input type="submit" id="Submit" value="提交留言">&nbsp;&nbsp;&nbsp;&nbsp;<input name="outbox" type="checkbox" value="1"><{t}>不发送，只保存到草稿箱中<{/t}></td>
+  
+  </tr>  
+</table>
+
+</div>  
+  
+  
+  
+    
+  </div>
+</form>
+
+  </div>
+  </div>
+<!-- right-->

@@ -1,0 +1,60 @@
+<{if !$action}>   
+<form action="index.php?ctl=service/wss&act=register"  method="get" enctype="multipart/form-data">
+<div class="tableform">
+<h4><{t}>配置统计代码：创建统计账号<{/t}></h4>
+<{button type="submit" label="点此创建统计帐号" }>
+</div>
+</form>        
+<{else}>
+
+<div class="tableform">
+<!--h4><{t}>统计账号创建成功<{/t}></h4>
+<div class="division">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <th><{t}>帐号ID:<{/t}></th>
+    <td><{$wss_id}></td>
+  </tr>
+  <tr>
+    <th><{t}>帐号密码:<{/t}></th>
+    <td><{$wss_password}></td>
+  </tr> 
+</table>  
+</div>
+</div-->
+
+<!--<div class="tableform">
+<h4><{t}>登陆站点统计<{/t}></h4>
+点击登陆，查看站点统计
+<div class="division">
+<table cellspacing="0" cellpadding="0" border="0" align="center" class="table-action">
+  <tr>
+    <td><b class="submitBtn"><a href="<{$url}>" target="_blank"><{t}>登陆统计<{/t}></a></b></td>
+  </tr>
+</table>
+</div></div> -->
+
+<form   method="get" enctype="multipart/form-data">
+<div class="division">
+<!--  <h4><{$str}></h4>
+  <{$str}>后请清除系统缓存.<B><{t}>关闭前台统计，站点统计将不在记录站点统计<{/t}></B> -->
+    <div class='notice'><{t}>您的帐号已经创建，可以通过点击按钮对统计功能进行开启和关闭。<{/t}><br><{t}>如果您是第一次创建统计账号，请点击开启统计功能，这样统计功能即可开始使用。<{/t}></div>
+
+</div>
+<table cellspacing="0" cellpadding="0" border="0" align="center" class="table-action">
+  <tr>
+    <td><b class="submitBtn"><input  type="button" value="<{$str}>" onClick="
+  if(this.value=='关闭统计功能'){
+    if(window.confirm('关闭统计功能后，之前统计的历史数据将会清除，确认要关闭吗？')){
+      W.page('index.php?ctl=service/wss&act=setShowIndex','');
+    }
+  }else{
+    W.page('index.php?ctl=service/wss&act=setShowIndex','');
+  }
+  "></b></td>
+  </tr>
+</table>
+</div>
+
+</form> 
+<{/if}>

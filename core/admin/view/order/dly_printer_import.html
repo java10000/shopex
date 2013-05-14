@@ -1,0 +1,9 @@
+<div style=" margin:10px;">
+  	
+	<div class="notice"><{t}>上传dtp格式的快递单模板包<{/t}></div>
+	
+	<form enctype="multipart/form-data" action="index.php?ctl=order/delivery_printer&act=do_upload_pkg" method="post">
+		<input type="file" name="package" style="height:25px;"/>
+		<input name="dly_printer_id" type="hidden" value="<{$dly_printer_id}>" />
+		<input type="submit" value="上传" style="height:25px;"/>
+</div>

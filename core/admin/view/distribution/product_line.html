@@ -1,0 +1,82 @@
+<div class="tableform" id='pline-body'>
+
+<{if $plList}>
+  <h5>请选择需要下载的商品数据</h5>
+  <div class="division" id='pline-list'>
+  	<ul>
+    <{foreach from=$plList item=plitem}>
+    <{if $plitem.disabled == false}>
+    	<li><input type="checkbox" name='pline_id[<{$plitem.pline_id}>]' value="<{$plitem.cat_id}>|<{$plitem.child_cat_path}>|<{$plitem.brand_id}>" checked/><{$plitem.custom_name|escape:'html'}>
+        </li>
+    <{/if}>
+    <{/foreach}>
+    </ul>
+   
+  </div>
+<{/if}>
+     <h5>为商品指定上级分类</h5> 
+  <div class="division">
+  	<table>
+    <tbody><tr>
+    <th>所属上级分类：</th>
+
+    <td>
+    <input type='hidden' name='supplier_id' value='<{$supplier_id}>'/>
+        <select name='cat' vtype='positive'>
+          <option value='0'>----无----</option>
+           <{foreach from=$cats item=cat}>
+               <option value='<{$cat.cat_id}>' >
+                 <{$space|paddingleft:$cat.step:'　'}><{$cat.cat_name}>
+               </option>
+           <{/foreach}>
+        </select>
+        &nbsp;顶级分类请选择“无”
+    </td>
+    </tr>
+    </tbody></table>
+  </div>
+
+
+   <table class="tableAction" align="center" border="0" cellpadding="0" cellspacing="0">  
+  <tbody><tr>  
+    <td><b class="submitBtn" id='pline-download'><input value="下载" type="button"/></b></td>  
+  </tr>  
+</tbody></table>
+<script>
+
+<{if $plList}>
+(function(){
+    $('pline-download').addEvent('click',function(){
+        var e = this;
+
+        var loadimg = new Element('img',{'src':'images/sync_loading.gif','title':'正在同步','class':'data-sync-loading'});
+        $E('#supplier-list tr[supplierid='+$E('#pline-body input[name^=supplier_id]').get('value')+'] .supplier-sync-status').empty().adopt(loadimg);
+        
+        if($('pline-list') && $('pline-list').toQueryString() ){
+           new Request.HTML({data:$('pline-body').toQueryString(),
+             onRequest:function(){
+               $('loadMask').show();
+             },
+             onSuccess:function(){
+               $('loadMask').hide();
+               var supplier_id = $E('#pline-body input[name^=supplier_id]').get('value');
+               doSupplierApiListJob(supplier_id,'','');
+               doDataSync();
+               doAutoSync(supplier_id); /* 2010-01-14 11:04 wubin*/
+               $(e).getParent('.dialog').getElement('.dialog-btn-close').fireEvent('click');
+             },
+             onFailure:function(){
+                 if(this.xhr.status == 501 && this.getHeader('notify_msg')){
+                	 alert(decodeURIComponent(this.getHeader('notify_msg')));
+                 }
+                 $('loadMask').hide();
+             }
+           }).post('index.php?ctl=distribution/supplier&act=downloadPline');
+         }else{
+            alert('请先勾选产品线再点击“下载”按钮');
+         }
+    });
+})();
+<{/if}>
+</script>
+  </div>

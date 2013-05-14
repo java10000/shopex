@@ -1,0 +1,122 @@
+<{area inject=".mainHead"}>
+<div class="clearfix ColColorGray borderup" style="padding:0 15px">
+<h4>什么是应用？</h4>
+<p class="info" style="margin-bottom:10px">
+应用是指基于ShopEx商店系统所开发的第三方程序功能，譬如整合淘宝的一系列功能，您可以点击下面按钮去挑选所需要的应用，然后安装即可开始使用。
+</p>
+<h4>安装应用的好处？</h4>
+<p class="info">
+安装应用后您可以更方便、更快捷地管理您的网店，提升工作效率，例如同步管理淘宝商品、处理订单、下载记录等让您在ShopEx上跨平台处理业务，方便省事，高效便捷！    <br class="clear">
+<a href="http://www.shopex.cn/bbs/read.php?tid-148322-keyword-%D3%A6%D3%C3%D6%D0%D0%C4.html" style="float:right; color:#4F78C0;" target="_blank" ><{img src="images/bundle/user_comment.png"}>使用反馈</a>
+
+<{button style="margin-top:8px" type="button" label="挑选应用" icon="btn_get_world.gif" onclick='new Dialog("index.php?ctl=system/appmgr&act=app_onlince",{onShow:function(e){
+     this.dialog_body.id="dialogContent";
+     },title:"应用中心",width:870,height:630,onClose:function(){W.page("index.php?ctl=system/appmgr&act=index");}})'}>
+</p>
+</div>
+<{/area}>
+
+<script>
+Cookie.write('newTip:tb', 'true');
+new Request.JSON({
+    url: 'index.php?ctl=default&act=getAppChange', 
+    onComplete: function(response){
+        if(response.update_count == 0){
+            if($('app-num-update')) $('app-num-update').dispose();
+            return;
+        }
+        if(response.update_count > 0){
+            if ($('app-num-update')) {
+                $('app-num-update').set('html', '('+response.update_count+')');
+            } else {
+                new Element('a', {html: '('+response.update_count+')', id:'app-num-update', href:'index.php?ctl=system/appmgr&act=index', title:'应用有更新'}).setStyle('padding', '0').inject($('top-tab-tools'), 'after');
+            };
+        }
+    }
+}).send();
+(function(){
+<{foreach from=$apps item=app key=key}>
+if(obj = $("help_link[<{$app.plugin_ident}>]")){
+    obj.addEvent("click",function(){
+        new Request().post('index.php?ctl=system/appmgr&act=appkey_count',{app_key:'<{$app.plugin_ident}>',type:'app_help',version:'<{$app.plugin_version}>'});
+    });
+}
+<{/foreach}>
+})();
+</script>
+<div class="apps-wrapper">
+    <h4>已安装的应用</h4>
+    <div class="app-list-wrap">
+    <{foreach from=$apps item=app key=key}>
+    <{if $key!=='update_count'}>
+
+    <div class="app-item clearfix">
+        <div class="app-opt">
+            <{if $app.disabled eq 'false'}>
+                <{if $app.has_setting==1}>
+                    <{button href="index.php?ctl=system/appmgr&act=setting&p[0]={$app.plugin_ident}&operation_type=config&version={$app.plugin_version}" label="应用配置"}>
+                <{/if}>
+
+                <{button href="index.php?ctl=system/appmgr&act=disable&p[0]={$app.plugin_ident}&operation_type=stop&version={$app.plugin_version}" label="禁用"}>
+            <{else}>
+                <{if $app.status neq 'used'}>
+                    <{button href="index.php?ctl=system/appmgr&act=install&p[0]={$app.plugin_ident}" icon="btn_add.gif" label="启用"}>
+                <{else}>
+                    <{button href="index.php?ctl=system/appmgr&act=enable&p[0]={$app.plugin_ident}&operation_type=start&version={$app.plugin_version}" icon="btn_add.gif" label="启用"}>
+                    <{button href="index.php?ctl=system/appmgr&act=uninstall&p[0]={$app.plugin_ident}" label="卸载"}>
+                <{/if}>
+            <{/if}>
+        </div>
+
+        <h6 class="app-title">
+            <a href="index.php?ctl=system/appmgr&act=view&p[0]=<{$app.plugin_ident}>">
+                <{$app.plugin_name}>
+            </a>
+
+            <{if $app.plugin_struct.props.app_id}>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="javascript:void(0);" onclick="new Dialog('index.php?ctl=system/appmgr&act=dofeedback&p[0]=<{$app.plugin_struct.props.app_id}>',{onShow:function(e){
+                this.dialog_body.id='dialogContent';
+                },title:'使用反馈',width:520,height:400,onClose:function(){W.page('index.php?ctl=system/appmgr&act=index');}});">
+                <{img src="images/bundle/user_comment.png"}>使用反馈
+            </a>
+            <{/if}>
+
+            <{if $app.unset_setting}>&nbsp;&nbsp;&nbsp;&nbsp;
+                <span style="color:#f00;">该应用未配置</span>
+            <{/if}>
+            <{if $app.plugin_struct.props.help}>
+                <span id="help_link[<{$app.plugin_ident}>]">
+                <{help href=$app.plugin_struct.props.help type="link"}><{t}>点击查看帮助<{/t}><{/help}>
+                </span>
+            <{/if}>
+        </h6>
+
+        <div class="app-info">
+            <ul>
+                <li><span class="label">作者</span>
+                    <{if $app.plugin_author}>
+                         <a href="<{$app.plugin_website}>" target="_blank" ><{$app.plugin_author}></a>
+                    <{else}>
+                         <{$app.plugin_author}>
+                    <{/if}>
+                </li>
+                <li><span class="label">版本</span><span> <{$app.plugin_version}></span></li>
+                <li><span class="label">更新时间</span> <{$app.update_time|userdate}></li>
+            </ul>
+
+            <{if $app.new_version}>
+            <p class="app-update notice">有更新，最新版本<{$app.new_version}>
+                <span class="lnk" onclick="new Dialog('index.php?ctl=system/appmgr&act=install_update&url=<{$app.download_url}>&app_status=<{$app.status}>&app_ident=<{$app.plugin_ident}>&app_version=<{$app.new_version}>',{onShow:function(e){this.dialog_body.id='dialogContent';},title:'更新应用',width:800,height:560,onClose:function(){W.page('index.php?ctl=system/appmgr&act=index');}});">开始更新
+                </span>
+
+                <span class="lnk" onclick="new Dialog('index.php?ctl=system/appmgr&act=viewUpdateInfo&app_ident=<{$app.plugin_ident}>&app_new_version=<{$app.new_version}>&app_version=<{$app.plugin_version}>&download_url=<{$app.download_url}>&app_status=<{$app.status}>',{onShow:function(e){this.dialog_body.id='dialogContent';
+            },title:'应用更新说明',width:400,height:280,onClose:function(){W.page('index.php?ctl=system/appmgr&act=index');}});new Request().post('index.php?ctl=system/appmgr&act=appkey_count',{app_key:'<{$app.plugin_ident}>',type:'update_view',version:'<{$app.new_version}>'});">查看详细</span>
+        </p>
+        <{/if}>
+        </div>
+    </div>
+    <{/if}>
+    <{/foreach}>
+    </div>
+</div>

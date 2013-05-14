@@ -1,0 +1,25 @@
+<div class="wrap" style="margin:10px 15px; padding:10px 0 0; color:#666;">
+<p class="tb-app-intro-tp">针对同时在独立商店和淘宝店经营生意的商家，ShopEx商店系统开发了整合淘宝的一系列功能，这些功能能帮助商家在同时管理两边生意的过程中，提高运营效率</p>
+<h6>系统新增整合淘宝四项新功能：</h6>
+<ol style="padding-left:1em; margin-bottom:30px;">
+<li>同步管理淘宝商品：在ShopEx后台发布商品时，同步将商品发布到淘宝网</li>
+<li>同步处理淘宝订单：在ShopEx后台能够同时管理淘宝店铺的订单。</li>
+<li>淘宝会员免注册登录：让淘宝网1.45亿会员能够在您的ShopEx商店前台免注册即可登陆。</li>
+<li>下载淘宝销售记录：下载您淘宝店铺的宝贝交易记录和好评到ShopEx独立商店对应商品中进行显示。</li>
+</ol>
+<h6>在哪里找到这些功能：</h6>
+可在【工具箱】-网店扩展-应用中心中找到应用，安装即可使用。也可以点击下面按钮进入应用列表页立即开始使用。
+<div class="table-action">
+	<{button label="立即开始使用" type="submit" id="tb-app-intro-apply"}>
+</div>
+<div class="info" style="margin:20px 0 20px; color:#e28415">
+<{help type="link-info"}><{/help}>点击上面按钮后，您将进入应用中心列表，点击应用后面的“安装”按钮，您就可以开始安装并使用这些应用了。
+</div>
+</div>
+
+<script>
+$('tb-app-intro-apply').addEvent('click', function(){
+	this.getParent('.dialog').retrieve('instance').close();
+	new Dialog('index.php?ctl=system/appmgr&act=app_onlince',{onShow:function(e){this.dialog_body.id='dialogContent'; },title:'应用中心',width:870,height:560});
+});
+</script>

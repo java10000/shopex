@@ -1,0 +1,141 @@
+<div id="cat-config" style="display:none;">
+<div id="cat-default" class="tableform widgetconfig">
+  <div class="division">
+      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr> 
+          <th width="35%">循环深度：</th>
+          <td width="65%"><select name="showCatDepth_default"><option value="1" <{if $setting.showCatDepth_default=="1"}>selected="selected"<{/if}>>仅显示一级分类</option> <option value="2" <{if $setting.showCatDepth_default=="2"}>selected="selected"<{/if}>>显示二级分类</option> <option value="3" <{if $setting.showCatDepth_default=="3"}>selected="selected"<{/if}>>显示三级分类</option> 
+            </select></td>
+        </tr>
+        <tr>
+          <th>分隔商品列表符号：</th>
+          <td><input type="text" name="page_devide" value="<{$setting.page_devide|default:''}>"></td>
+        </tr>
+    <tr>
+          <th>列数：</th>
+          <td><{input name="devide" value=$setting.devide|default:'1' required="true" type="digits"}>  &nbsp;&nbsp;“0”为自动排列</td>
+        </tr>
+      </table>
+  </div>
+</div>
+
+<div id="cat-accordion" class="tableform widgetconfig">
+  <div class="division">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+      <th>商品分类循环深度：</th>
+      <td><select name="showCatDepth_accordion">
+  <option value="2" <{if $setting.showCatDepth_accordion=="2"}>selected="selected"<{/if}>>显示二级分类</option>
+  <option value="3" <{if $setting.showCatDepth_accordion!="2"}>selected="selected"<{/if}>>显示三级分类</option>
+  </select></td>
+      </tr>
+      
+      
+      <tr>
+      
+      
+      <th>展开二级菜单：</th>
+      <td><input type="radio" name="showCatChild_accordion" value="on" <{if $setting.showCatChild_accordion!="off"}>checked="checked"<{/if}>>是<input type="radio" name="showCatChild_accordion" value="off" <{if $setting.showCatChild_accordion=="off"}>checked="checked"<{/if}>>否</td>
+      </tr>
+      <tr id="showCatgChild_accordion-view" <{if $setting.showCatDepth_accordion=="2"}>style="display:none;"<{/if}>>
+      <th>展开三级菜单：</th>
+      <td><input type="radio" name="showCatgChild_accordion" value="on" <{if $setting.showCatgChild_accordion=="on"}>checked="checked"<{/if}>>是<input type="radio" name="showCatgChild_accordion" value="off" <{if $setting.showCatgChild_accordion!="on"}>checked="checked"<{/if}>>否</td>
+      </tr>
+      <tr id="showCatgChild_accordion-view" <{if $setting.showCatDepth_accordion=="2"}>style="display:none;"<{/if}>>
+      <th>是否显示滑动效果：</th>
+      <td><input type="radio" name="showFx_accordion" value="on" <{if $setting.showFx_accordion=="on"}>checked="checked"<{/if}>>是<input type="radio" name="showFx_accordion" value="off" <{if $setting.showFx_accordion!="on"}>checked="checked"<{/if}>>否</td>
+      </tr>
+      <tr id="showFx_accordion-view" <{if $setting.showFx_accordion!="on"}>style="display:none"<{/if}>>
+      <th>滑动时间(ms)：</th>
+      <td><{input name="fxDuration_accordion" value=$setting.fxDuration_accordion|default:'300' type="digits"}></td>
+      </tr>
+      
+      
+    </table>
+  </div>
+</div>
+
+<div id="cat-dropdown" class="tableform widgetconfig">
+  <div class="division">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+    <th>商品分类循环深度：</th>
+    <td><select name="showCatDepth_dropdown">
+  <option value="2" <{if $setting.showCatDepth_dropdown=="2"}>selected="selected"<{/if}>>显示二级分类</option>
+  <option value="3" <{if $setting.showCatDepth_dropdown!="2"}>selected="selected"<{/if}>>显示三级分类</option>
+  </select></td>
+    </tr>
+  </table>
+  </div>
+</div>
+
+</div>
+<script>
+function getCfgForm(id){
+  var config = $(id);
+  while(config.tagName != 'FORM'){
+    config = config.getParent();
+  }
+  return config;
+}
+
+function getWgtTpl(){
+  var sels = getCfgForm('cat-config').getElements('select');
+  var wgtTpl = '';
+  sels.each(function(sel){
+    if(sel.getProperty('name') == '__wg[tpl]') wgtTpl = sel;
+  });
+  return wgtTpl;
+}
+
+function hideAll(els){
+  els.each(function(el){
+    el.hide();
+  });
+}
+
+function setCfgView(view){
+  var views = [$('cat-accordion'),$('cat-dropdown'),$('cat-default')];
+  hideAll(views);
+  switch(view){
+    case 'accordion.html':
+      views[0].show();
+      break;
+    case 'dropdown.html':
+      views[1].show();
+      break;
+    default:
+      views[2].show();
+      break;
+  }
+}
+
+function setToggler(togglers){
+  togglers.each(function(toggler){
+    var view = toggler.getProperty('name')+'-view';
+    toggler.addEvent('click',function(){
+      if(this.value=="on"){
+        $(view).show();
+      }else{
+        $(view).hide();
+      }
+    });
+  });
+}
+
+setToggler($$('input[name="showFx_accordion"]','input[name="showFx_dropdown"]'));
+
+var catTpl = getWgtTpl();
+setCfgView(catTpl.value);
+$('cat-config').show();
+
+catTpl.addEvent('change',function(){
+  setCfgView(this.value);
+});
+
+$E('select[name="showCatDepth_accordion"]','cat-accordion').addEvent('change',function(){
+  if(this.value == '2') $('showCatgChild_accordion-view').hide();
+  else $('showCatgChild_accordion-view').show();
+});
+
+</script>

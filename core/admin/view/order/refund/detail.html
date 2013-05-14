@@ -1,0 +1,25 @@
+<div class="prepend-1">
+
+<form method='post' action='index.php?ctl=order/refund&act=edit' target="{update:'refund_info'}">
+  <input type='hidden' name='refund_id' value='<{$detail.refund_id}>'>
+  <div class="span-5"><label><{t}>序号：<{/t}></label><{$detail.refund_id}></div>
+  <div class="span-5"><label><{t}>订单号：<{/t}></label><{$detail.order_id}></div>
+  <div class="span-5"><label><{t}>支付方式：<{/t}></label><{$detail.paymethod}></div>
+  <div class="span-5"><label><{t}>货币：<{/t}></label><{$detail.currency}></div>
+  <div class="span-5"><label><{t}>操作员：<{/t}></label><{$detail.send_op_id}></div>
+  <div class="span-5"><label><{t}>生成时间：<{/t}></label><{$detail.t_ready|cdate:SDATE_STIME}></div>
+  <div class="span-5"><label><{t}>退款方式：<{/t}></label><{if $detail.pay_type == 'online'}><{t}>在线支付<{/t}><{elseif $detail.pay_type == 'offline'}><{t}>线下付款<{/t}><{elseif $detail.pay_type == 'deposit'}><{t}>预存款支付<{/t}><{/if}></div>
+  <div class="span-5"><label><{t}>退款帐号：<{/t}></label><{$detail.account}></div>
+  <div class="span-5"><label><{t}>退款银行：<{/t}></label><{$detail.bank}></div>
+  <div class="span-5"><label><{t}>收款人：<{/t}></label><{$detail.member_id}></div>
+  <div class="span-5"><label><{t}>退款金额：<{/t}></label><{$detail.money}></div>
+  <div class="span-5"><label><{t}>退款时间：<{/t}></label><{$detail.t_sent|cdate:SDATE_STIME}></div>
+  
+<table cellspacing="0" cellpadding="0" border="0" class="table-action" style="margin:0;">
+  <tr>
+    <td><{t}>备注：<{/t}><{$detail.memo}></td>
+  </tr>
+</table>
+
+</form>
+</div>

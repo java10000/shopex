@@ -1,0 +1,419 @@
+<div class="CartWrap" id="log">
+<div class="CartNav clearfix">
+<div class="floatLeft">
+<img src="statics/cartnav-step3.gif" alt="购物流程--确认订单填写购物信息" />
+</div>
+<div class="floatRight"><img src="statics/cartnav-cart.gif"  /></div>
+</div>
+<form method="post" action='<{link ctl="order" act="create"}>' id="order-create" extra="subOrder" >
+<input type="hidden" name="md5_cart_info" value="<{$md5_cart_info}>" />
+<{if $env.post.isfastbuy}>
+  <input type='hidden' name='isfastbuy' value=1 />
+<{/if}>
+<div style="display:none"><{input type="checkForm" }></div>
+<{require file="cart/checkout_base.html"}>
+<div class="FormWrap">
+  <{if $trading.products}>
+
+    <h3><{t}>购买的商品<{/t}></h3>
+
+    <div class="division">
+  <table width="100%" cellpadding="0" cellspacing="0" class="liststyle">
+            <col class="span-auto"></col>
+            <col class="span-auto textleft"></col>
+            <col class="span-2"></col>
+            <col class="span-2"></col>
+            <col class="span-2"></col>
+            <col class="span-1"></col>
+            <col class="span-2 ColColorOrange"></col>
+    <thead>
+      <tr>
+        <th><{t}>图片<{/t}></th>
+        <th class="product"><{t}>商品名称<{/t}></th>
+        <th class="price"><{t}>积分<{/t}></th>
+        <th class="price"><{t}>销售价格<{/t}></th>
+        <th class="number"><{t}>优惠价格<{/t}></th>
+        <th class="number"><{t}>数量<{/t}></th>
+        <th class="price"><{t}>小计<{/t}></th>
+      </tr>
+    </thead>
+    <tbody>
+    <{foreach from=$trading.products item="item" key="key"}>
+    <tr>
+      <td>
+          <div class='product-list-img' isrc="<{$item.thumbnail_pic|default:$env.conf.site.default_thumbnail_pic|storager}>" ghref='<{link ctl=product act="index" arg0=$item.goods_id}>' style='width:50px;height:50px;'>
+                <img src='statics/loading.gif'/>
+          </div>
+      </td>
+      <td class="product;" style="text-align:left;"><{$item.name}><{$item.addon.adjname}><{if $item._pmt.describe}><div class="ht1"><{$item._pmt.describe}></div><{/if}>
+      <input type="hidden" name="cart[g][cart][<{$item.key}>]" value="<{$item.nums}>" />
+      <input type="hidden" name="cart[g][pmt][<{$item.goods_id}>]" value="<{$item.pmt_id}>" /></td>
+      <td class="price"><{$item._pmt.score|intval}></td>
+      <td class="price"><{$item.sale_price|cur}></td>
+      <td class="cost"><{$item._pmt.price|cur}></td>
+      <td class="number"><{$item.nums}><{if !is_null($item.store) && $item.nums > $item.store}><h3 class="t"><{t}>(提示:需要备货)<{/t}></h3><{/if}></td>
+      <td class="cost"><{$item._pmt.amount|cur}></td>
+    </tr>
+    <{/foreach}>
+    </tbody>
+  </table>
+    </div>
+  <{/if}>
+  <{if $trading.gift_e}>
+
+    <h3><{t}>赠品<{/t}></h3>
+
+    <div class="division">
+  <table width="100%" cellpadding="3" cellspacing="0" class="liststyle">
+            <col class="span-auto"></col>
+            <col class="span-2"></col>
+            <col class="span-2"></col>
+            <col class="span-1"></col>
+            <col class="span-2 ColColorOrange"></col>
+    <thead>
+        <tr>
+          <th><{t}>赠品名称<{/t}></th>
+          <th><{t}>所需积分<{/t}></th>
+          <th><{t}>限制购买数量<{/t}></th>
+          <th><{t}>数量<{/t}></th>
+          <th><{t}>小计<{/t}></th>
+        </tr>
+      </thead>
+      <tbody>
+      <{foreach from=$trading.gift_e item="item" key="key"}>
+        <tr>
+          
+          <td><{$item.name}></td>
+          <td><{$item.point}></td>
+          <td ><{if $item.limit_num=='0'}><{t}>不限制<{/t}><{else}><{$item.limit_num}><{/if}></td>
+          <td><{$item.nums}></td>
+          <td><{$item.amount}></td>
+        </tr>
+        <{/foreach}>
+      </tbody>
+  </table>
+    </div>
+  <{/if}>
+  <{if $trading.package}>
+
+    <h3><{t}>捆绑商品<{/t}></h3>
+    <div class="division">
+  <table width="100%" cellpadding="3" cellspacing="0" class="liststyle">
+            <col class="span-auto"></col>
+            <col class="span-2"></col>
+            <col class="span-1"></col>
+            <col class="span-2 ColColorOrange"></col>
+      <thead>
+        <tr>
+          <th class="product" width="53%"><{t}>捆绑名称<{/t}></th>
+          <th class="price" width="12%"><{t}>优惠价格<{/t}></th>
+          <th class="number" width="4%"><{t}>数量<{/t}></th>
+          <th class="price" width="9%"><{t}>小计<{/t}></th>
+        </tr>
+      </thead>
+      <tbody>
+      <{foreach from=$trading.package item="item" key="key"}>
+      <tr>
+        <td class="product"><{$item.name}> <{$item.addon.adjname}></td>
+        <td class="price"><{$item.price|cur}></td>
+        <td class="number"><{$item.nums}></td>
+        <td class="cost"><{$item.amount|cur}></td>
+      </tr>
+      <{/foreach}>
+      </tbody>
+  </table>
+    </div>
+  <{/if}>
+</div>
+<div id="amountInfo">
+<{require file="cart/checkout_total.html"}>
+</div>
+<div class="CartBtn clearfix">
+<input type="hidden" name="fromCart" value="true" />
+
+
+<div class="span-auto"><input class="actbtn btn-return-checkout" onClick="window.location='<{link ctl=cart act=index}>';"  type="button" value="返回购物车" /></div>
+<div class="span-auto floatRight last"><input class="actbtn btn-confirm" id="order_ct_dgc" type="submit" value="确认无误，下订单" /></div>
+
+</div>
+
+</form>
+</div>
+<{javascript file='formplus.js'}>
+<script>
+/*下单*/
+void function(){
+
+    Order =new Object();
+    
+    $extend(Order,{
+        paymentChange:function(){
+         
+          this.updateTotal();
+        },
+        setShippingFromArea:function(lastselect){
+           if(!lastselect)throw new Error('非法的地区信息.');
+           var _value = lastselect.value;
+           var _isfastbuy = '<{$env.post.isfastbuy}>';
+            new Request.HTML({url:Shop.url.shipping,update:'shipping',onRequest:function(){
+                  $('shipping').set('text','正在根据地区信息获得配送方式...');
+               }}).post({area:_value, isfastbuy:_isfastbuy});
+        },
+        setCurrency:function(){
+           
+            new Request.HTML({update:$('payment'),onComplete:this.updatePayment.bind(this)}).post(Shop.url.payment,$H({
+               'cur':$('payment-cur').getValue(),
+               'payment':$E('#payment th input[checked]')?$E('#payment th input[checked]').value:null,
+               'd_pay':$E('#shipping th input[checked]')?$E('#shipping th input[checked]').get('has_cod'):null
+            }));      
+        },
+        updatePayment:function(){
+      
+             if(this.synTotalHash.d_pay&&this.synTotalHash.d_pay>0){
+                    $('_normal_payment').hide();
+                    $('_pay_cod').show().getElement('input[type=radio]').checked=true;
+                }else{
+                    $('_normal_payment').show();
+                    $('_pay_cod').hide().getElement('input[type=radio]').checked=false;
+                }
+              
+        },
+        shippingChange:function(target,evt){
+           this.clearProtect(target);
+           this.updateTotal({onRequest:this.updatePayment.bind(this)});
+        },
+        clearProtect:function(target){
+           if(tmpEl=$('shipping').retrieve('tmp_protect')){
+                   if(tmpEl!=target){
+                    tmpEl.removeProperty('protect');                
+                     $E('input[name^=delivery[is_protect]',tmpEl.getParent('tr')).checked=false;
+                }
+           }     
+           if(tmpEl!=target&&target.get('protect'))$('shipping').store('tmp_protect',target);    
+        }, 
+        shippingMerge:function(target,mg,checked,evt){
+           if(!checked){
+               $H(mg).getKeys().each(target.erase.bind(target));
+           }else{
+               $(target).set(mg);
+               $(target).checked=true;
+           }
+           this.shippingChange($(target));
+        },
+        updateTotal:function(options){
+            options = options||{};
+            
+            this.synTotalHash = (this.synTotalHash||{});
+            
+            var _shipping = $E('#shipping th input[checked]');
+            var _payment  = $E('#payment th input[checked]');
+            var _coin     = $('payment-cur');
+            var _tax      = $('is_tax');
+            if(_shipping){
+                $extend(this.synTotalHash,{
+                    shipping_id:_shipping.value,
+                    is_protect:_shipping.get('protect')?'true':'false',
+                    d_pay:_shipping.get('has_cod')
+                });
+            }
+            if(_payment){
+                 $extend(this.synTotalHash,{
+                    payment:_payment.value
+                });
+            }
+            if($E('#order-create input[name=isfastbuy]')){
+                 $extend(this.synTotalHash,{
+                    isfastbuy:1
+                });
+            }
+             $extend(this.synTotalHash,{
+                cur:_coin.getValue(),
+                is_tax:(_tax&&_tax.checked)?'true':'false',
+                area:$E('input[name^=delivery[ship_area]')?$E('input[name^=delivery[ship_area]').getValue():null
+            });
+            
+            new Request.HTML($extend({update:$('amountInfo')},options)).post(Shop.url.total,$H(this.synTotalHash));
+        
+        }
+    
+    });
+    
+}();
+
+void function(){
+
+var _warning=function(msg,go){
+    
+    alert(msg);
+    go.show();
+   <{if $trading.admindo}>
+     $('main').scrollTo(0,(go||$('order-create')).getPosition().y-50);
+   <{else}>
+     window.scrollTo(0,(go||$('order-create')).getPosition().y-50);
+   <{/if}>
+};
+
+
+if(!extra_validator['subOrder']){
+  extra_validator['subOrder'] ={
+    'checkForm':['',function(f,i){
+        
+        var addr_num = 0;
+        var checkTag = false;
+        $$('input[name^=delivery[addr_id]','receiver').each(function(item){
+            addr_num++;
+            if(item.checked){
+                checkTag = true;
+            }
+        });
+        if(checkTag==false && addr_num>0){
+            _warning('请选择收货地址！',$('checkout-recaddr'));
+            return false;
+        }
+        
+        $ES('select', 'checkout-select-area').each(function(item){
+            if(!item.getValue()){
+                _warning('请重新选择收货地区！',$('checkout-recaddr'));
+                $('checkout-recaddr').style.display='block';
+                item.focus();
+                return false;
+            }
+        });
+        if($('checkout-recaddr').getElement('input[name^=delivery[ship_tel]').getProperty('value').trim() == '' && $('checkout-recaddr').getElement('input[name^=delivery[ship_mobile]').getProperty('value').trim() == ''){
+          _warning('请填写 电话 或 手机 其中至少一种联系方式！',$('checkout-recaddr'));
+          return false;
+        }
+        
+        var checkNum = 0;
+        $ES('input[name^=delivery[shipping_id]',"shipping").each(function(item){
+          if(item.checked == true) checkNum++;
+        });
+        if(checkNum == 0){
+          _warning('请选择配送方式！',$('shipping'));
+          return false;
+        }
+        
+        checkNum = 0;
+        $ES('input[name^=payment[payment]',"payment").each(function(item){
+          if(item.checked == true) checkNum++;
+        });
+        if(checkNum == 0){
+          _warning('请选择支付方式！',$('payment'));
+          return false;
+        }
+          checkNum = 0;
+    if($ES('tr',"_normal_payment").some(function(el){return el.hasClass('checked');})){        
+        $E('#payment .checked').getElements('input').each(function(item){
+                  if(item.checked == true) checkNum++;
+           });
+           if(checkNum == 0){
+                  _warning('请选择支付银行！',$('payment'));
+                  return false;
+         } 
+      }
+    checkNum = 0;
+    if($ES('tr',"_normal_payment").some(function(el){return el.hasClass('checked');})){        
+        $E('#payment .checked').getElements('input').each(function(item){
+                  if(item.checked == true) checkNum++;
+           });
+           if(checkNum == 0){
+                  _warning('请选择支付银行！',$('payment'));
+                  return false;
+         } 
+      }
+        /*checkNum = 0;
+        var objf;
+        $ES('input[name^=minfo[]',"misc").each(function(item){
+          if(item.value == ''){
+            checkNum++;
+            objf = item;
+          }
+        });
+        $ES('select[name^=minfo[]',"misc").each(function(item){
+          if(item.getValue() == ''){
+            checkNum++;
+            objf = item;
+          }
+        });
+        $ES('textarea[name^=minfo[]',"misc").each(function(item){
+          if(item.getValue() == ''){
+            checkNum++;
+            objf = item;
+          }
+        });
+        
+        if(checkNum){
+          _warning('订单购物信息不完整，请补充填写！');
+          objf.focus();
+          return false;
+        }else{
+          return true;
+        }*/
+
+        return true;
+      }]
+  };
+}
+}();
+
+
+/*小图mouseenter效果*/
+window.addEvent('domready',function(){
+
+  var cart_product_img_viewer=new Element('div',{styles:{'position':'absolute','zIndex':500,'opacity':0,'border':'1px #666 solid'}}).inject(document.body);
+  
+  var cpiv_show=function(img,event){
+       
+      if(!img)return;
+      cart_product_img_viewer.empty().adopt($(img).clone().removeProperties('width','height').setStyle('border','1px #fff solid')).fade(1);
+      
+      var size = window.getSize(), scroll = window.getScroll();
+        var tip = {x: cart_product_img_viewer.offsetWidth, y: cart_product_img_viewer.offsetHeight};
+        var props = {x: 'left', y: 'top'};
+        for (var z in props){
+            var pos = event.page[z] + 10;
+            if ((pos + tip[z] - scroll[z]) > size[z]) pos = event.page[z] - 10 - tip[z];
+            cart_product_img_viewer.setStyle(props[z], pos);
+        }
+  
+  };
+  
+   $$('.product-list-img').each(function(i){
+  
+       new Asset.image(i.get('isrc'),{onload:function(img){
+       if(!img)return;
+           var _img=img.zoomImg(50,50);
+             if(!_img)return;
+           _img.setStyle('cursor','pointer').addEvents({
+              'mouseenter':function(e){
+                 cpiv_show(_img,e);
+              },
+              'mouseleave':function(e){
+                cart_product_img_viewer.fade(0);
+              }
+           });
+           i.empty().adopt(new Element('a',{href:i.get('ghref'),target:'_blank',styles:{border:0}}).adopt(_img));                 
+       },onerror:function(){
+            i.empty();
+        
+       }});
+   
+   });
+   
+   
+$('order-create').removeEvents('submit').addEvent('submit', function(e){
+    if(!this.bindValidator()){
+       e.stop();
+       return false;
+    }
+    
+    $('order_ct_dgc').disabled=true;
+});
+
+});
+
+
+</script>
+
+
+

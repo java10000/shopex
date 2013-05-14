@@ -1,0 +1,44 @@
+<div id="Order_Form_Mark_<{$orderid}>">
+<{if $_is_singlepage}><input type='hidden' name='all_reload' value='1'><{/if}>
+  <input type="hidden" name='orderid' value="<{$orderid}>">
+  <div class="division">
+  <table width="100%" border="0" cellpadding="0" cellspacing="0" >
+   <tr>
+   <th align='right'><{t}>标记：<{/t}></th>
+   <td align='left'>
+      <label><input type='radio' name='mark_type' value='b1' id='b1'><img src='../statics/remark_icons/b1.gif' width='20' height='20'></label>
+	   <label><input type='radio' name='mark_type' value='b2' id='b2'><img src='../statics/remark_icons/b2.gif' width='20' height='20'></label>
+	  <label><input type='radio' name='mark_type' value='b3' id='b3'><img src='../statics/remark_icons/b3.gif' width='20' height='20'></label>
+	  <label><input type='radio' name='mark_type' value='b4' id='b4'><img src='../statics/remark_icons/b4.gif' width='20' height='20'></label>
+	  <label><input type='radio' name='mark_type' value='b5' id='b5'><img src='../statics/remark_icons/b5.gif' width='20' height='20'></label>
+	  <label><input type='radio' name='mark_type' value='b0' id='b0'><img src='../statics/remark_icons/b0.gif' width='20' height='20'></label>
+   </td>
+   </tr>
+    <tr>
+      <th><{t}>订单备注:<{/t}></th>
+      <td><textarea name="mark_text" rows="6" style="width:80%"><{$mark_text}></textarea></td>
+    </tr>
+    </table>  
+  </div>
+  <table cellspacing="0" cellpadding="0" border="0" align="center" class="table-action">
+  <tr>
+    <td>
+    	<{button label="保存" onclick="W.page('index.php?ctl=order/order&act=saveMarkText',{update:'messagebox',data:$('Order_Form_Mark_{$orderid}'),method:'post'},this)"}>
+    </td>
+  </tr>
+  </table>
+</div>
+
+
+
+
+<script>
+	
+	window.addEvent('domready',function(){
+		if('<{$mark_type}>'!=''){
+		    $('<{$mark_type}>').checked = true;
+		}else{
+		    $('b1').checked = true;
+		}
+	});
+</script>

@@ -1,0 +1,33 @@
+<div class="finder">
+<div class="action-bar">
+<a class="sysiconBtn addorder" href="index.php?ctl=trading/payment&act=newPayment"><{t}>添加支付方式<{/t}></a>
+
+</div>
+</div>
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0" class="gridlist">
+<col class="Colsn"></col>
+<col></col>
+<col></col>
+<col class="Coloption-1b"></col>
+<thead>
+<tr>
+  <th><{t}>序号<{/t}></th>
+  <th><{t}>支付方式名称<{/t}></th>  
+  <th><{t}>排序<{/t}></th>  
+<!--  <th><{t}>类型<{/t}></th> -->
+  <th><{t}>操作<{/t}></th>
+</tr></thead><tbody>
+<{foreach from=$items key=key item=item name="item"}>
+<tr>
+  <td><{$key+1}></td>
+  <td><a href="index.php?ctl=trading/payment&act=detailPayment&p[0]=<{$item.id}>"><{$item.custom_name}></a></td>
+  <td><{$item.orderlist}></td>
+<!--  <td><{$item.pay_type}></td> -->
+  <td><a class="sysiconBtnNoIcon" href="index.php?ctl=trading/payment&act=delPayment&p[0]=<{$item.id}>"><{t}>删除<{/t}></a></td>
+</tr>
+<{/foreach}>
+</tbody>
+</table><div class="footer"><div class="tf"></div></div>
+
+<div id="payment-list">

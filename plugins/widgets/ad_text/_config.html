@@ -1,0 +1,34 @@
+<div id="ad">
+<div class="tableform">
+<div style="margin: -5px 0pt 0pt;" class="division widgetconfig">
+<table cellspacing="0" cellpadding="0" border="0" width="100%">
+  <tbody>
+    <tr>
+      <th>文字内容：</th>
+      <td><textarea style="width: 80%;" name="ad_content" class="_x_ipt" vtype="required" ><{$setting.ad_content}></textarea></td>
+    </tr>
+    <tr>
+      <th>文字链接：</th>
+      <td><input type="text" name="ad_text_link" value="<{$setting.ad_text_link}>"></td>
+    </tr>
+	<tr>
+	  <th>加粗：</th>
+	  <td><input type="checkbox" name="border" <{if $setting.border}>checked<{/if}>></td>
+    <tr>
+      <th>文字尺寸：</th>
+      <td><select name="ad_text_size">
+	<{foreach from=$data item=data key=key}>
+		<option value='<{$data}>' <{if $data==$setting.ad_text_size}>selected<{elseif $data==12 && !$setting.ad_text_size}>selected<{/if}>><{$data}></option>
+	<{/foreach}>
+	</select></td>
+    </tr>
+    <tr>
+      <th>文字颜色：</th>
+      <td><{input type="color" name="ad_text_color" value=$setting.ad_text_color|default:'default' }></td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>

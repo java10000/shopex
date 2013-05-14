@@ -1,0 +1,198 @@
+<{$order.page1}>
+<table width="100%" border="0" cellpadding="2" cellspacing="0" >
+  <tr> 
+    <td width="3%" height="59" valign="middle"><strong><br>
+      </strong></td>
+    <td width="40%" valign="middle" ><strong><{t}>订单信息<{/t}><br>
+      </strong></td>
+    <td width="47%" align="right" valign="bottom" ><strong><span ><{$order.shopname}></span></strong><br>
+      地址：<{$order.shopaddress}><br>
+      <span ><{t}>电话：<{/t}><{$order.shoptelphone}></span>
+      <br />
+
+      <{t}>邮编：<{/t}><{$order.shopzip}></td>
+  </tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+<{if count($order.goodsItems) > 0}>
+<table width="100%" border="0" cellpadding="2" cellspacing="0" >
+  <tr> 
+    <td ><strong><{t}>商品信息<{/t}></strong><hr size="1" noshade></td>
+  </tr>
+</table>
+<table width="98%" border="0" cellpadding="2" cellspacing="0" bgcolor="#F7F7F7" >
+  <tr>
+    <td width="64" height="26" align="center" ><{t}>货号<{/t}></td>
+    <td width="325" height="26" align="center" ><{t}>商品名称<{/t}><br>    </td>
+    <td width="325" height="26" align="center"><{t}>商品分类<{/t}><br>    </td>
+    <td width="120" height="26" align="center"><{t}>价格<{/t}><br>    </td>
+    <td width="90" height="26" align="center" ><{t}>数量<{/t}></td>
+    <td width="90" height="26" align="center" ><{t}>小计<{/t}></td>
+  </tr>
+  <{foreach from=$order.goodsItems item=item}>
+  <tr> 
+    <td width="64" align="center" height="20"><{$item.bn}></td>
+    <td width="325" align="center" height="20"><{$item.name}></td>
+    <td width="325" align="center" height="20"><{$item.catname}></td>
+    <td width="120" align="center" height="20"><{$item.price|cur}></td>
+    <td width="90" align="center" height="20"><{$item.nums}></td>
+    <td width="90" align="center" height="20"><{$item.amount|cur}></td>
+  </tr>
+  <{/foreach}>
+</table>
+<{/if}>
+<{if count($order.giftItems) > 0}>
+<table width="100%" border="0" cellpadding="2" cellspacing="0" >
+  <tr> 
+    <td ><strong><{t}>赠品信息<{/t}></strong><hr size="1" noshade></td>
+  </tr>
+</table>
+<table width="98%" border="0" cellpadding="2" cellspacing="0" bgcolor="#F7F7F7" >
+  <tr> 
+    <td width="325" height="26" align="center" ><{t}>赠品名称<{/t}><br>    </td>
+    <td width="120" height="26" align="center"><{t}>所需积分<{/t}><br>    </td>
+    <td width="120" height="26" align="center" ><{t}>购买量<{/t}></td>
+    </td>
+  </tr>
+  <{foreach from=$order.giftItems item=gftitem}>
+  <tr> 
+    <td width="325" align="center" height="20"><{$gftitem.name}></td>
+    <td width="120" align="center" height="20"><{$gftitem.point}></td>
+    <td width="120" align="center" height="20"><{$gftitem.nums}></td>
+    <td></td>
+  </tr>
+  <{/foreach}>
+</table>
+<{/if}>
+<table width="100%" border="0" cellpadding="2" cellspacing="0" >
+  <tr> 
+    <td ><strong><{t}>订单信息<{/t}></strong><hr size="1" noshade></td>
+  </tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="4"    bgcolor="#F7F7F7">
+  <tr> 
+    <td width="18%" align="right" nowrap ><{t}>订单号：<{/t}></td>
+    <td width="27%" nowrap><{$order.order_id}></td>
+    <td width="16%" align="right" nowrap ><{t}>状态：<{/t}></td>
+    <td width="39%" nowrap><{if $order.pay_status == 0}>未支付<{elseif $order.pay_status == 1}>已支付<{elseif $order.pay_status == 2}>处理中<{elseif $order.pay_status == 3}>部分付款<{elseif $order.pay_status == 4}>部分退款<{elseif $order.pay_status == 5}>已退款<{/if}>
+      [<{if $order.ship_status == 0}>未发货<{elseif $order.ship_status == 1}>已发货<{elseif $order.ship_status == 2}>部分发货<{elseif $order.ship_status == 3}>部分退货<{elseif $order.ship_status == 4}>已退货<{/if}>]</td>
+  </tr>
+  <tr> 
+    <td width="18%" align="right" valign="top" nowrap ><{t}>下单日期：<{/t}></td>
+    <td width="27%" nowrap><{$order.createtime|cdate:'SDATE_STIME'}></td>
+    <td width="16%" align="right" valign="top" nowrap ><{t}>商品总额：<{/t}></td>
+    <td width="39%" nowrap><{$order.cost_item|cur}></td>
+  </tr>
+  <{if $order.is_delivery == 'Y'}>
+  <tr> 
+    <td width="18%" align="right" valign="top" nowrap ><{t}>配送方式：<{/t}></td>
+    <td width="27%" nowrap><{$order.shipping}></td>
+    <td width="16%" align="right" valign="top" nowrap ><{t}>配送费用：<{/t}></td>
+    <td width="39%" nowrap><{$order.cost_freight|cur}></td>
+  </tr>
+  <tr>
+    <td align="right" valign="top" nowrap ><{t}>是否保价：<{/t}></td>
+    <td nowrap><{if $order.is_protect == true}><{t}>是<{/t}><{else}><{t}>否<{/t}><{/if}></td>
+    <td align="right" valign="top" nowrap ><{t}>保价费用：<{/t}></td>
+    <td nowrap><{$order.cost_protect|cur}></td>
+  </tr>
+  <{/if}>
+  <tr> 
+    <td align="right" valign="top" nowrap ><{t}>商品重量：<{/t}></td>
+    <td nowrap><{$order.weight}></td>
+    <td align="right" valign="top" nowrap ><{t}>订单总金额：<{/t}></td>
+    <td nowrap><{$order.total_amount|cur}></td>
+  </tr>
+  <tr> 
+    <td align="right" valign="top" nowrap ><{t}>支付方式：<{/t}></td>
+    <td nowrap><{$order.payment}></td>
+    <td align="right" valign="top" nowrap ><{t}>支付手续费：<{/t}></td>
+    <td nowrap><{$order.cost_payment|cur}></td>
+  </tr>
+  <tr > 
+    <td align="right" valign="top" nowrap ><{t}>货币：<{/t}></td>
+    <td nowrap><{$order.currency}></td>
+    <td align="right" valign="top" nowrap ><{t}>支付总金额：<{/t}></td>
+    <td nowrap><{$order.final_amount}></td>
+  </tr>
+  <{if $order.is_tax == 'true'}>
+  <tr > 
+    <td align="right" valign="top" nowrap ><{t}>发票税额：<{/t}></td>
+    <td nowrap><{$order.cost_tax|cur}></td>
+    <td align="right" valign="top" nowrap ><{t}>发票抬头：<{/t}></td>
+    <td nowrap><{$order.tax_company}></td>
+  </tr>
+  <{/if}>
+</table>
+
+<table width="100%" border="0" cellpadding="2" cellspacing="0" >
+  <tr> 
+    <td ><strong><{t}>购货人<{/t}></strong><hr size="1" noshade></td>
+  </tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="4"    bgcolor="#F7F7F7">
+  <tr> 
+    <td width="18%" align="right" valign="top" nowrap ><{t}>姓名：<{/t}></td>
+    <td width="27%" nowrap><{$order.member.name}></td>
+    <td width="16%" align="right" valign="top" nowrap ><{t}>用户名：<{/t}></td>
+    <td width="39%" nowrap><{$order.member.uname}></td>
+    <td width="39%" align="right" nowrap><{t}>电话：<{/t}></td>
+    <td width="39%" nowrap><{$order.member.tel}></td>
+  </tr>
+  <tr> 
+    <td width="18%" align="right" valign="top" nowrap ><{t}>邮编：<{/t}></td>
+    <td width="27%" nowrap><{$order.member.zip}></td>
+    <td width="16%" align="right" valign="top" nowrap >Email：</td>
+    <td width="39%" nowrap><{$order.member.email}></td>
+    <td width="39%" align="right" nowrap><{t}>地址：<{/t}></td>
+    <td width="39%" nowrap><{$order.member.addr}></td>
+  </tr>
+  
+  <tr> 
+    <td width="18%" align="right" valign="top" nowrap ><{t}>附言：<{/t}></td>
+    <td nowrap><{$order.memo}></td>
+    <td align="right" valign="top" nowrap>&nbsp;</td>
+    <td nowrap>&nbsp;</td>
+    <td align="right" nowrap>&nbsp;</td>
+    <td nowrap>&nbsp;</td>
+  </tr>
+</table>
+<{if $order.is_delivery == 'Y'}>
+<table width="100%" border="0" cellpadding="2" cellspacing="0" >
+  <tr> 
+    <td ><strong><{t}>收货人<{/t}></strong><hr size="1" noshade></td>
+  </tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="4"    bgcolor="#F7F7F7">
+  <tr> 
+    <td width="18%" align="right" valign="top" nowrap ><{t}>姓名：<{/t}></td>
+    <td width="27%" nowrap><{$order.ship_name}></td>
+    <td width="16%" align="right" valign="top" nowrap >Email：</td>
+    <td width="39%" nowrap><{$order.ship_email}></td>
+    <td width="39%" align="right" nowrap><{t}>邮编：<{/t}></td>
+    <td width="39%" nowrap><{$order.ship_zip}></td>
+  </tr>
+  <tr> 
+    <td width="18%" align="right" valign="top" nowrap ><{t}>电话：<{/t}></td>
+    <td width="27%" nowrap><{$order.ship_tel}></td>
+    <td width="16%" align="right" valign="top" nowrap ><{t}>手机：<{/t}></td>
+    <td width="39%" nowrap > 
+      <{$order.ship_mobile}></td>
+    <td width="39%" align="right" nowrap ><{t}>送货时间：<{/t}></td>
+    <td width="39%" nowrap ><{$order.ship_time}></td>
+  </tr>
+  
+  <tr> 
+    <td align="right" valign="top" nowrap ><{t}>送货地址：<{/t}></td>
+    <td nowrap><{$order.ship_addr}></td>
+    <td align="right" nowrap>&nbsp;</td>
+    <td align="right" nowrap>&nbsp;</td>
+    <td align="right" nowrap>&nbsp;</td>
+    <td align="right" nowrap>&nbsp;</td>
+  </tr>
+</table>
+<{/if}>

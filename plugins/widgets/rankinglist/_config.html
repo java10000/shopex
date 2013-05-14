@@ -1,0 +1,49 @@
+<div class="tableform widgetconfig">
+<div class="division">
+<{filter type="goods/products" name=filter from=$setting.filter}>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <th>排行依据：</th>
+    <td><{input name="ranking" type="select"  stype="rank" value=$setting.ranking}></td>
+  </tr>
+  <tr>
+    <th>榜单显示商品数：</th>
+    <td><{input name="limit" value=$setting.limit|default:'10' size=8 required="true" type="digits"}></td>
+  </tr>
+  <tr>
+    <th>字体颜色：</th>
+    <td><{input type="color" name="fontColor2" value=$setting.fontColor2|default:'default'}></td>
+  </tr>
+  <tr>
+    <th>字体样式：</th>
+    <td><{input name="fontStyle2" type="select" stype="fontset" value=$setting.fontStyle2|default:'0'}></td>
+  </tr>
+  <tr>
+    <th>高亮：</th>
+    <td> 前<{input type="com_select" name="showing" value=$setting.showing from=1
+      to=10}>项 </tr>
+  <tr>
+    <th>高亮字体颜色：</th>
+    <td><{input type="color" name="fontColor" value=$setting.fontColor|default:'default'}></td>
+  </tr>
+  <tr>
+    <th>高亮字体样式：</th>
+    <td><{input name="fontStyle" type="select" stype="fontset" value=$setting.fontStyle|default:'0'}></td>
+  </tr>
+  <tr>
+    <th>是否显示首位商品图片：</th>
+    <td><input type="radio" name="showPic" value="on" <{if $setting.showPic!="off"}>checked<{/if}>>是<input type="radio" name="showPic" value="off" <{if
+      $setting.showPic=="off"}>checked<{/if}>> 否</td>
+  </tr>
+   <tr>
+    <th>商品名最长显示长度：</th>
+    <td><{input name="maxlength" value=$setting.maxlength|default:"35"}></td>
+  </tr>
+  <tr>
+    <th>是否显示更多：</th>
+    <td><input type="radio" name="showMore" value="on" <{if $setting.showMore!="off"}>checked<{/if}>>是<input type="radio" name="showMore" value="off" <{if
+      $setting.showMore=="off"}>checked<{/if}>> 否</td>
+  </tr>
+</table>
+</div>
+</div>

@@ -1,0 +1,48 @@
+<ul class="MenuList">
+<{foreach from=$data item=item key=key name=wgtmenu}>
+  <{if $key>$setting.max_leng && $setting.max_leng}>
+    <{if $item.node_type=='pageurl'}>
+    <div><a href="<{$item.action}>" <{if $item.item_id=='1'}>target="_blank"<{/if}>><{$item.title}></a></div>
+    <{else}>
+    <div><a href="<{$item.link}>"><{$item.title}></a></div>
+    <{/if}>
+  <{elseif $key==$setting.max_leng && $setting.max_leng}>
+  
+    <{assign var="page" value="true"}>
+    <li style="position:relative;z-index:65535;" class="wgt-menu-more" id="<{$widgets_id}>_menu_base" onClick="if($('<{$widgets_id}>_showMore').style.display=='none'){$('<{$widgets_id}>_showMore').style.display='';}else{ $('<{$widgets_id}>_showMore').style.display='none';}"><a class="wgt-menu-view-more" href="JavaScript:void(0)"><{$setting.showinfo}></a>
+	
+    <div class="v-m-page" style="display:none;position:absolute; top:25px; left:0" id="<{$widgets_id}>_showMore">
+	    <{if $item.node_type=='pageurl'}>
+    <div><a href="<{$item.action}>" <{if $item.item_id=='1'}>target="_blank"<{/if}>><{$item.title}></a></div>
+    <{else}>
+    <div><a href="<{$item.link}>"><{$item.title}></a></div>
+    <{/if}>
+
+
+   
+
+
+  <{else}>
+    
+    <{if $item.node_type==pageurl}>
+    <li><a <{if $smarty.foreach.menu.last}>class="last"<{/if}> href="<{$item.action}>" <{if $item.item_id=='1'}>target="_blank"<{/if}>><{$item.title}></a></li>
+    <{else}>
+    <li><a <{if $smarty.foreach.menu.last}>class="last"<{/if}> href="<{$item.link}>"><{$item.title}></a></li>
+    <{/if}>
+
+  <{/if}>
+
+    
+<{/foreach}>
+<{if $page=="true"}>
+</div>
+</li>
+
+<{/if}>
+</ul>
+
+<script>
+if($('<{$widgets_id}>_showMore')){
+	$('<{$widgets_id}>_showMore').setOpacity(.8);
+}
+</script>

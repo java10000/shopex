@@ -1,0 +1,52 @@
+<div id="virtualcatTree_<{$widgets_id}>" class='treeList'></div>
+<style id='virtualcatTreeCSS'>
+   .treeList{
+    }
+   .treeList .node{
+      display:block;
+      line-height:20px;
+      clear:left;
+      white-space:nowrap;
+      overflow:hidden;
+   }
+   .treeList .node *{
+      display:block;
+      float:left;
+   }
+   .treeList div{
+     padding-left:10px;
+   }
+   .treeList .node .node-handle{
+      width:18px;
+   }
+   .treeList .node-hasc .node-handle{
+     background:url(statics/treeico.gif) no-repeat 50% -127px;
+     cursor:pointer;
+   }
+   .treeList .node-hasc .node-close{
+     background-position:50% -108px;
+   }
+   .treeList .node-hasc .node-loading{
+      background-position:50% -82px;
+   }
+</style>
+<script src='plugins/widgets/virtualcat/treemenu.js'></script>
+<script>
+withBroswerStore(function(status){
+        $('virtualcatTreeCSS').inject(document.head);
+		new TreeMenu({
+                           remoteURL:'index.php?product-{value}-getVirtualCatById.html',
+                           container:'virtualcatTree_<{$widgets_id}>',
+						   dataMap:{
+										CNAME:'virtual_cat_name',
+										NID:'virtual_cat_id',
+										PID:'parent_id',
+										HASC:"isleaf",
+										URL:"url"
+                                    },
+                           showStep:<{$setting.showCatDepth_fold|default:1}>,
+                           saveStatus:'treeCookie',
+                           ustatus:status
+                         });
+	});
+</script>

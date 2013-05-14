@@ -1,0 +1,65 @@
+<{if count($images)>0}>
+<div style='padding:2px;height:100%;overflow:hidden'>
+
+<{foreach from=$images item=img}>
+  <a class="image-item"   href='<{$img.file_ident|storager}>' target='_blank' innerImg="{src:'<{$img.file_ident|storager}>',ident:'<{$img.file_ident}>',alt:'<{$img.memo|default:$img.file_name}>'}">loading...</a>
+<{/foreach}>
+
+<div style="clear:both;text-align:center">
+<{pager data=$pager}>
+</div>
+</div>
+
+<script>
+(function(){
+var imgs=$ES('.image-item','imgViewLibBox');
+imgs.each(function(i){
+     var _img=JSON.decode(i.get('innerImg'));
+   //console.info();
+     new Asset.image(_img.src,{onload:function(){
+          var img=$(this);
+          if(img.$e)return;
+          img.zoomImg(50,50);
+          img.set('alt',_img.alt);
+          img.set('ident',_img.ident)
+            img.inject(i.empty()); 
+          if(img.getSize().y<50){
+             img.setStyle('margin-top',(50-img.getSize().y)/2);
+          }
+          img.$e=true;
+      },onerror:function(){
+          i.setText(_img.alt);
+         }});
+});
+
+var unseletedSTYLES={
+    'border':'3px solid #ccc',
+  'padding':1,
+  'background':'#fff',
+  'display':'block',
+  'width':50,
+  'height':50,
+  'float':'left',
+  'margin':3,
+  'overflow':'hidden',
+  'text-align':'center',
+  'opacity':.7
+};
+var seletedSTYLES=$merge(seletedSTYLES,{
+    'border':'3px solid #ff6600',
+  'opacity':1
+});
+imgs.setStyles(unseletedSTYLES).removeClass('image-item-selected');
+imgs.addEvent('click',function(e){
+  e= new Event(e).stop();
+  this.blur();
+  imgs.setStyles(unseletedSTYLES).removeClass('image-item-selected');
+  this.setStyles(seletedSTYLES).addClass('image-item-selected');
+})
+
+})();
+
+</script>
+<{else}>
+<strong><{t}>库中没有文件。<{/t}></strong>
+<{/if}>

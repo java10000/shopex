@@ -1,0 +1,256 @@
+<{capture name=titleImg}>
+	<div class="titleImg"><a href="<{if $setting.titleImgHref}><{$setting.titleImgHref}><{else}><{link ctl=gallery act=$setting.view arg0=$setting.id}><{/if}>"><img src="<{$setting.titleImgSrc}>" alt="<{$setting.titleImgAlt}>"/></a></div>
+<{/capture}>
+
+<{capture name=goodsCat}>
+	<{if $setting.showTitle=="on"}>
+		<h4><{$setting.titleDesc}></h4>
+	<{/if}>
+<{/capture}>
+<{capture name=goodsListTabs}>
+<div class="GoodsList-Tabs">
+<{foreach from=$data item=titleDate key=key1}>
+	<div style="float:left" class="glt <{if $key1 == $setting.onSelect }>cur<{/if}>"><span><{$setting.explain.$key1}></span></div>
+<{/foreach}>
+</div>
+<{/capture}>
+<{capture name=goodsLoop}>
+		<{foreach from=$data item=data key=key1}>
+			<div class='GoodsList-Items' <{if $key1 neq $setting.onSelect}>style="display:none"<{else}><{/if}> >
+						<{foreach from=$data item=sData key=key name=goodslist}>
+				          <div class="itemsWrap <{if $setting.column!=1 &&($smarty.foreach.goodslist.iteration % $setting.column|default:4) == 0}>last<{/if}>" product="<{$sData.goods_id}>" style="width:<{math equation="floor(99/x)" x=$setting.column|default:4}>%;">
+								<div class="item">
+									  <div class="goodsImg">
+                                       <a style='width:<{$setting.goodsImgWidth|default:125}>px;height:<{$setting.goodsImgHeight|default:80}>px;display:block' href="<{link ctl="product" act="index" arg0=$sData.goods_id}>" target="_blank" ></a>
+                                      </div>
+									  <h6>
+                                       <a href="<{link ctl="product" act="index" arg0=$sData.goods_id}>" target="_blank" >
+                                      <{$sData.name|cut:$setting.max_length}>
+                                        </a>
+                                      </h6>
+ 								
+                                    <{assign var="savePC" value=" $sData.mktprice - $sData.price "}>
+                                    <{assign var="priceOFF" value=" $savePC / $sData.mktprice * 100 "}>
+  <input type='hidden' name='desc' value="{goodsImg:'<{$sData.thumbnail_pic|default:$env.conf.site.default_thumbnail_pic|storager}>',goodsName:'<{$sData.name}>',mktprice:'<{$sData.mktprice|cur}>',price:'<{$sData.price|cur}>',save:'<{$savePC|cur}>',info:'<{$sData.brief}>','priceOFF':<{$priceOFF}>}"/>
+								</div>
+                          
+							</div>
+						<{/foreach}>
+				<{if $setting.showMore == "on"}>
+				<div class='clear'></div>
+				<div class='more'>
+				<a href="<{if $setting.link.$key1}><{$setting.link.$key1}><{/if}>">查看更多...</a>
+				</div>
+				<{/if}>
+			</div>
+        <{/foreach}>
+<{/capture}>
+
+<div class="GoodsListWrap" id='glw_<{$widgets_id}>'>
+<{$smarty.capture.goodsListTabs}>
+	<{if $setting.showTitleImg=="off"}>
+		<div class="GoodsList">
+			<{$smarty.capture.goodsCat}>
+			<{$smarty.capture.goodsLoop}>
+		</div>
+	<{elseif $setting.titleImgPosition=="top"}>
+		<{$smarty.capture.titleImg}>
+		<div class="GoodsList">
+			<{$smarty.capture.goodsCat}>
+			<{$smarty.capture.goodsLoop}>
+		</div>
+	<{elseif $setting.titleImgPosition=="center"}>
+		<{$smarty.capture.goodsCat}>
+		<{$smarty.capture.titleImg}>
+		<div class="GoodsList">
+			<{$smarty.capture.goodsLoop}>
+		</div>
+	<{elseif $setting.titleImgPosition=="bottom"}>
+		<div class="GoodsList">
+			<{$smarty.capture.goodsCat}>
+			<{$smarty.capture.goodsLoop}>
+		</div>
+		<{$smarty.capture.titleImg}>
+	<{elseif $setting.titleImgPosition=="left"}>
+		<table width="100%" border="0" cellspacing="0" cellpadding="0">
+		  <tr>
+			<td width="<{$setting.titleImgWidth}>"><{$smarty.capture.titleImg}></td>
+			<td><div class="GoodsList">
+				<{$smarty.capture.goodsCat}>
+				<{$smarty.capture.goodsLoop}>
+			</div>
+			</td>
+		  </tr>
+		</table>
+	<{elseif $setting.titleImgPosition=="right"}>
+		<table width="100%" border="0" cellspacing="0" cellpadding="0">
+		  <tr>
+			<td><div class="GoodsList">
+				<{$smarty.capture.goodsCat}>
+				<{$smarty.capture.goodsLoop}>
+			</div>
+			</td>
+			<td width="<{$setting.titleImgWidth}>"><{$smarty.capture.titleImg}></td>
+		  </tr>
+		</table>
+	<{/if}>
+</div>
+
+
+<style id='css-for-goodslistTip'>  
+ /*goodslist tips*/ 
+#glw_<{$widgets_id}> .load{
+  background:url('statics/loading.gif') no-repeat 50% 50%;
+}
+.goods-tip{
+   background:#333;
+   border:1px #666 solid;
+}
+
+.goods-tip .tip-title{
+   background:#fff;
+   color:#fff;
+   padding:1px;
+   
+}
+.goods-tip .tip-title span{
+   display:block;
+   background:#666;
+   padding-left:5px;
+
+}
+.goods-tip .tip-text{
+   padding:1px;
+   font-size:12px;
+   background:#fff;
+   font-family:verdana;
+   position:relative;
+}
+.goods-tip .tip-text span{
+  font-weight:bold;
+  color:#333;
+}
+.goods-tip  .tt-gn{
+  font-weight:bold;
+  padding:2px 0 1px 2px;
+  color:#ffffff;
+}
+.goods-tip  .tt-info{
+  color:#cccccc;
+}
+
+.goods-tip  .tt-img{
+   border:1px #a9a9a9 solid;
+   padding:1px;
+   background:#ffffff;
+} 
+.goods-tip .tt-mktp{
+     text-decoration:line-through
+}
+.goods-tip  .tt-mktp,.goods-tip  .tt-price{
+   color:#ff9900;
+}
+.goods-tip  .tt-price{
+   font-weight:bold;
+   color:#ff6600;
+}
+.goods-tip  .tt-priceOFF{
+  position:absolute;
+  right:4px;
+  bottom:4px;
+  font-size:30px;
+  color:green;
+  font-weight:bold;
+  font-family:Arial,Helvetica,sans-serif;
+}
+.goods-tip .tt-priceOFF span{
+    color:green;
+}
+.goods-tip .tt-save{
+   color:green;
+}
+</style>
+<script>
+/*
+@author Ze
+@email up2vs@yahoo.com 
+*/
+window.addEvent('domready',function(){
+         $('css-for-goodslistTip').injectBefore($E('link',document.head));
+         var _eventName;
+		 <{if $setting.changeEffect==1}>_eventName="click";<{/if}>
+		 <{if $setting.changeEffect==2}>_eventName="mouseover";<{/if}>
+
+          var tipText="<div class='tt-img'><img src={goodsImg}></div>";
+              tipText+="<div class='tt-mktp'><span><{$setting.mktPriceText}><{$setting.mktPriceSep}></span>{mktprice}</div>";
+              tipText+="<div class='tt-price'><span><{$setting.priceText}><{$setting.priceSep}></span>{price}</div>";
+              tipText+="<div class='tt-save'><span><{$setting.saveText}><{$setting.saveSep}></span>{save}</div>";
+              tipText+="<div class='tt-priceOFF'>{priceOFF}<span>%OFF</span></div>";
+          var goodsTips=new Tips({className:'goods-tip',onShow:function(tip){
+                    tip.setStyle('visibility','visible').setOpacity(.9);
+          }});
+		  var loadInfo=function(item){
+		      $ES('.item',item).each(function(i){
+			      var gi=$E('.goodsImg',i).addClass('load');
+                  var info=JSON.decode($E('input[name=desc]',i).value);
+                  var tipTitle=("<span class='tt-gn'>{goodsName}</span><span class='tt-info'>{info}</span>").substitute(info);
+				  new Asset.image(info.goodsImg,{
+				     onload:function(){
+					  var img=$(this);
+					  if(img.$e)return;
+					  img.zoomImg(<{$setting.goodsImgWidth|default:125}>,<{$setting.goodsImgHeight|default:80}>);
+                      gi.removeClass('load');
+					  /*img.set('alt',info.goodsName);*/
+                      var fxto={'width':img.width,'height':img.height,'opacity':1,'margin-top':0};
+					  if(img.height<gi.getSize().y){
+					    $extend(fxto,{'margin-top':((gi.getSize().y-img.height)/2)});
+					  }
+                      img.set({'width':1,'height':1}).setOpacity(0);
+				      img.inject($E('a',gi).empty()).effects().start(fxto);
+                      img.store('tip:title',tipTitle);
+                      img.store('tip:text',tipText.substitute($extend(info,{goodsImg:info.goodsImg.replace('thumbnail','small'),priceOFF:info.priceOFF.toInt()})));
+                      goodsTips.attach(img);
+					  img.$e=true;
+			         },onerror:function(){
+					     gi.empty().removeClass('load').set('text',info.goodsName);
+					  }
+				 });
+				  
+			  });
+		 };
+		 
+		
+		 var tabs=$E('.GoodsList-Tabs','glw_<{$widgets_id}>').getElements('.glt');
+		 var items=$ES('.GoodsList-Items','glw_<{$widgets_id}>');
+		 var _show=tabs.indexOf($E('.cur',$E('.GoodsList-Tabs','glw_<{$widgets_id}>')));
+		 var curItem=items[_show];
+		 loadInfo(curItem);
+         var itemAgg=new Class({
+         Extends:ItemAgg,
+         initialize:function(){
+            this.parent(arguments[0],arguments[1],arguments[2]);
+             this.tabs[ this.tempCurIndex].addClass('current');
+         },
+         show:function(index){
+           this.parent(index);
+           this.tabs[index].addClass('current');
+         },
+         hide:function(index){
+           this.parent(index);
+           this.tabs[index].removeClass('current');
+         }
+         });
+		 new itemAgg(tabs,items,{
+		    'show':_show||0,
+		    'eventName':_eventName,
+			'onActive':function(tab,item){
+			   if($E('img',item))return;
+			   loadInfo(item);
+			}
+		 });
+		 
+		
+
+});
+</script>
+

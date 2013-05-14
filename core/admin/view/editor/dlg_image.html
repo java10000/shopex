@@ -1,0 +1,267 @@
+<{area inject='.mainHead'}>
+<div class="tableform mainHead">
+<h4><{t}>选择上传图片的方式<{/t}></h4>
+<div id="imgFrom">
+<input type="radio" name="from"  id="imgFromLocal" checked><label for="imgFromLocal"><{t}>上传图片<{/t}></label>&nbsp;&nbsp;&nbsp;&nbsp;
+<input type="radio" name="from"  id="imgFromNet"><label for="imgFromNet"><{t}>网络图片地址<{/t}></label>&nbsp;&nbsp;&nbsp;&nbsp;
+<input type="radio" name="from" id="imgFromLib"><label for="imgFromLib"><{t}>使用图库<{/t}></label>
+</div>
+
+</div>
+<{/area}>
+
+
+
+<iframe id="img-uploader" style="display:none;width:100%" src='about.html' name="img-uploader"></iframe>
+<form id="imgFromSomeWhere" target="img-uploader" action="index.php?ctl=editor&act=uploader" method="post" enctype="multipart/form-data">
+<div id="imgViewLocal" class="tableform">
+
+<h4><{t}>从您的电脑中挑选一张图片：<{/t}></h4>
+<input name="file" type="file" />
+<span onclick="$(this).getNext().toggleDisplay()" class="sysiconBtn addorder"><{t}>为图片设置标签<{/t}></span>
+  <div class="division" style='display:none'>
+  
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <th><{t}>请输入标签名称：<{/t}></th>
+    <td><input type="text" id="tagTextarea" name="tags"/></td>
+  </tr>
+    <tr>
+    <th><{t}>请选择标签名称：<{/t}></th>
+    <td><div id="tagLibs" class="tagEditor" style='height:50px'>
+  <{foreach from=$imgtags item=tag}>
+  <span><{$tag.tag_name}></span>
+  <{/foreach}>
+  </div></td>
+  </tr>
+</table>
+  </div>
+  <div class='upload_view note' ><{t}>建议为图片设置标签,以方便管理图库.<{/t}></div>
+</div>
+</form>
+<div style='display:none' id="imgViewNet" class="tableform">
+
+<h4><{t}>输入一张网络图片的网址：<{/t}></h4>
+  <input type="text" style="width:80%" id="imgViewUrl" value="http://" />
+  <div id="imgViewUrlPreivew" class="note"><{t}>复制网络上的一张图片路径到上面的输入框<{/t}><br/><{t}>.例如:"http://www.example.com/images/pic.jpg"<{/t}></div>
+</div>
+<div style="display:none" id="imgViewLib" class="tableform">
+
+<h4><{t}>从网店图库中挑选一张图片：<{/t}></h4>
+  <div class="division">
+    <span><{t}>按标签过滤:<{/t}></span>
+    <select style="width:200px;" onchange="showResLib(encodeURIComponent(this.value),0)">
+    <option value="0"><{t}>显示所有<{/t}></option>
+    <{foreach from=$imgtags item=tag}>
+      <option value="<{$tag.tag_name}>">- <{$tag.tag_name}> (<{$tag.rel_count|default:0}>)</option>
+    <{/foreach}>
+    </select>
+  </div>
+  <h4><{t}>请点击选择要使用的图片<{/t}></h4>
+  <div class="division" id="imgViewLibBox"><{t}>读取图片库，请稍侯...<{/t}></div>
+</div>
+<div class="tableform">
+<div style="clear:both;<{if !$show_picset}>display:none;<{/if}>" id='imgOptionsHide'>
+<FIELDSET >
+<LEGEND><{t}>设置图片属性<{/t}></LEGEND>
+<strong><{t}>位置：<{/t}></strong>
+  <select name='align'>
+  <option value=''><{t}>默认<{/t}></option>
+  <option value='top'><{t}>上对齐<{/t}></option>
+  <option value='bottom'><{t}>底对齐<{/t}></option>
+  <option value='middle'><{t}>文字环绕<{/t}></option>
+  <option value='left'><{t}>左对齐<{/t}></option>
+  <option value='right'><{t}>右对齐<{/t}></option>  
+  </select><br/><br/>
+<strong><{t}>缩放：<{/t}></strong><{t}>最宽:<{/t}><input name='width' value='' style='width:40px'/><{t}>&nbsp;最高:<{/t}><input name='height' value='' style='width:40px'/><em><{t}>(等比例缩放图片的设置.)<{/t}></em><br/><br/>
+<strong><{t}>连接：<{/t}></strong>
+<input name='linkimg'  type='radio' />点击图片链接到原图.
+<input name='linkimg'  type='radio' class='mdf'/>点击图片链接到指定地址:<input type='text' value='http://' name='linkimgurl' class='inputstyle' onfocus='$(this).getPrevious("input").checked=true'/>
+</FIELDSET>
+</div>
+</div>
+
+
+<{area inject='.mainFoot'}>
+<div class="mainFoot">
+<div class="table-action">
+    <{button label="确定" id="mce_dlg_ok"}>
+    <{button label="取消" isCloseDialogBtn=true}>
+</div>
+</div>
+<{/area}>
+
+<script>
+(function(){
+  //  if(!window.ie)$('imgOptionsHide').hide();
+  var imgFormDialog=$('imgFrom').getParent('.dialog');
+  
+  var submitcallback=imgFormDialog.retrieve('callback');
+  new tagInputer($('tagTextarea'),$ES('span','tagLibs'));
+    
+  var imgSERI;
+  var linkIMG;
+  
+  var insertImage=function(v,i){
+     var i=i||v;
+     if(submitcallback){
+        return submitcallback(v,imageHtml(v,i),i);
+     }
+    
+     window.curEditor.exec.call(window.curEditor,'insertHTML',imageHtml(v,i));
+
+
+        var  img=window.curEditor.inc.win.$(imgSERI);
+        //todo:需要优化
+        var tmpSrc = img.get('src');
+        if (tmpSrc.substr(0,2)=="..")
+        img.src = SHOPBASE+tmpSrc.substr(tmpSrc.indexOf('images'));
+        img.removeProperties('turl','id');
+         
+             
+        if(linkIMG){
+           var  a=window.curEditor.inc.win.$(imgSERI+"lnk");
+                if(!a)return;
+                a.href=a.get('turl');
+                a.removeProperties('turl','id');
+        }
+
+       
+  }
+  var imageHtml=function(url,storager){
+  
+     var img=new Element('img',{src:url});
+     
+     var h=$E('input[name=height]','imgOptionsHide').value.toInt(),
+         w=$E('input[name=width]','imgOptionsHide').value.toInt(),
+        align=$E('select','imgOptionsHide').getValue();
+
+        linkIMG=$$('#imgOptionsHide input[name=linkimg]').filter(function(ipt){return !!ipt.checked})[0];
+        
+        
+     if(align&&align.trim()!==""){img.set('align',align)}
+     
+        /*if(SHOPBASE&&url.contains(SHOPBASE)){
+            url=url.replace(SHOPBASE,'');
+        }*/
+    
+     img.set('src',url);
+     
+     if(h||w){
+          img.zoomImg(w,h);
+        }
+      
+    
+     var d;
+     
+
+     if(!submitcallback){
+    
+        img.set('id',imgSERI='img_'+Native.UID++).set('turl',url);
+     }
+     if(window.ie&&!h&&!w)
+        img.removeProperties('height','width');
+      
+     if(linkIMG){
+        var imglink = linkIMG.hasClass('mdf')?linkIMG.getNext('input').value.trim():url;
+        var a=new Element('a',{
+           href:imglink,
+           target:'_blank'
+        });
+      if(window.gecko&&!submitcallback){a.set('id',imgSERI+"lnk").set('turl',imglink);}
+        d=new Element('div').adopt(a.adopt(img));
+     }else{
+    
+      d=new Element('div').adopt(img);
+     }
+     
+
+     return d.get('html');
+  }
+  var imgInject=function(Imageurl){
+    return window.curEditor.exec.bind(window.curEditor)('insertimage',Imageurl);
+  }
+
+  $('imgFromLocal').addEvent('click',function(){
+    $('imgViewLocal').setStyle('display','');
+    $('imgViewNet').setStyle('display','none');
+    $('imgViewLib').setStyle('display','none');
+  });
+
+  $('imgFromNet').addEvent('click',function(){
+    $('imgViewNet').setStyle('display','');
+    $('imgViewLocal').setStyle('display','none');
+    $('imgViewLib').setStyle('display','none');
+  });
+
+  $('imgFromLib').addEvent('click',function(){
+    if(!this.initLib){
+      this.initLib=true;
+      showResLib();
+    }
+
+    $('imgViewNet').setStyle('display','none');
+    $('imgViewLocal').setStyle('display','none');
+    $('imgViewLib').setStyle('display','');
+    
+  });
+   
+      var upForm=$('imgFromSomeWhere');
+    var upView=$E('.upload_view',upForm);
+    upForm.addEvent('submit',function(){
+        upView.setHTML('<font color="red"><{t}>正在上传...<{/t}></font>');
+    });
+      window.uploadCallback = function(value){
+           $('loadMask').hide();
+          if(!value)return upView.empty();
+          if(!value.url)return upView.empty().setHTML("<div class='notice'>"+value+"</div>");
+          new Asset.image(value.url,{onload:function(){
+      
+              insertImage(value.url,value.ident);
+          },onerror:function(){
+              upView.setText('图片上传失败!')
+          }});
+          
+     };
+   
+   
+  $('imgViewUrl').addEvent('change',function(){
+      var ivup=$('imgViewUrlPreivew');
+      var imgsrc=$('imgViewUrl').value;
+      ivup.setText('正在校验这张图片...');
+     new Asset.image(imgsrc,{onload:function(img){
+         if(ivup)
+         ivup.empty().adopt(img.zoomImg(200,200));
+      },onerror:function(){
+          ivup.setText("图片来源不正确!");
+         }});
+    
+  });
+
+  $('mce_dlg_ok').addEvent('click',function(e){
+    e.stop();
+    if($('imgFromLocal').checked){
+    
+    
+      $('imgFromSomeWhere').submit();
+      $('loadMask').amongTo(this).show();
+      
+    }else if($('imgFromNet').checked){
+      if(img=$('imgViewUrlPreivew').getElement('img')){
+         insertImage(img.src,img.get('ident'));
+      }
+    }else{
+       if(!$E('.image-item-selected','imgViewLibBox'))return alert('没有要使用的图片源.');
+       var img=$E('.image-item-selected','imgViewLibBox').getElement('img');
+       if(!img)return alert('没有要使用的图片源.');
+       insertImage(img.src,img.get('ident'));
+    }
+  });
+})();
+
+function showResLib(tag_id,page_id){
+  tag_id = tag_id?tag_id:0;
+  page_id = page_id?page_id:1;
+  W.page('index.php?ctl=editor&act=gallery&p[0]={0}&p[1]={1}'.format(tag_id,page_id),{method:'get',update:$('imgViewLibBox')});
+}
+</script>

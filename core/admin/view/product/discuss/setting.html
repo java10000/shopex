@@ -1,0 +1,71 @@
+<form method="post" action="index.php?ctl=goods/discuss&act=toSetting&p[0]=<{$comment.comment_id}>" target="{update:'messagebox'}">
+  <div class="tableform">
+    <h4><{t}>显示条数设置（商品评论/购买咨询共用此设置）<{/t}></h4>
+    <div class="division">
+      <table>
+        <tr>
+          <th ><{t}>商品详细页显示：<{/t}></th>
+          <td><{input type="digits" maxlength="3" size=5 required="true" style="width:50px" name="indexnum" value=$setting.index}> <{t}>条<{/t}></td>
+        </tr>
+        <tr>
+          <th><{t}>评论/咨询页显示：<{/t}></th>
+          <td><{input type="digits" maxlength="3" size=5  required="true" style="width:50px" name="listnum" value=$setting.list}> <{t}>条/页<{/t}></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <div class="tableform">
+    <h4><{t}>其他设置：<{/t}></h4>
+    <div class="division">
+      <table width="100%" cellspacing="0" cellpadding="2" border="0">
+        <tr>
+          <th><{t}>是否开启评论功能：<{/t}></th>
+          <td><{input type='radio' name="switch[discuss]" options=$setting.aSwitch.discuss value=$setting.switch.discuss separator=""}></td>
+        </tr>
+        <tr>
+          <th><{t}>发表评论权限：<{/t}></th>
+          <td><{input type='radio' name="power[discuss]" options=$setting.aPower.discuss value=$setting.power.discuss separator=""}></td>
+        </tr>
+        <tr>
+          <th><{t}>无评论时缺省文字：<{/t}></th>
+          <td><{input type="input" name="null_notice[discuss]" style="width:360px" size=30 value=$setting.null_notice.discuss}></td>
+        </tr>
+        <tr>
+          <th><{t}>发表时需输入验证码：<{/t}></th>
+          <td><{input type='radio' name="verifyCode[discuss]" options=$setting.verifyLCode.discuss value=$setting.verifyCode.discuss separator=""}></td>
+        </tr>
+      </table>
+    </div>
+    <div class="division">        
+       <table width="100%" cellspacing="0" cellpadding="2" border="0">        
+        <tr>
+          <th><{t}>显示条件：<{/t}></th>
+          <td><input type="radio" name="display[discuss]"<{if $setting.display.discuss == 'reply'}> checked=checked<{/if}> value="reply"><{t}>管理员回复后显示<{/t}></td>
+        </tr>
+        <tr>
+          <th></th>
+          <td  class="intro"><{t}>发表成功提示文字<{/t}><{input type="input" style="width:360px" name="submit_hidden_notice[discuss]" size=30 value=$setting.submit_hidden_notice.discuss}></td>
+        </tr>
+        <tr>
+          <th></th>
+          <td><input type="radio" name="display[discuss]"<{if $setting.display.discuss == 'soon'}> checked=checked<{/if}> value="soon"><{t}>用户发表后立即显示<{/t}></td>
+        </tr>
+        <tr>
+          <th></th>
+          <td class="intro"><{t}>发表成功提示文字<{/t}><{input type="input" style="width:360px" name="submit_display_notice[discuss]" size=30 value=$setting.submit_display_notice.discuss}></td>
+        </tr>
+      </table>
+      </td>
+      </tr>
+      </tbody>
+      </table>
+    </div>
+    
+        <div class="table-action">
+	<{button type="submit"  label="保存"}>
+</div>
+
+  </div>
+  
+
+</form>

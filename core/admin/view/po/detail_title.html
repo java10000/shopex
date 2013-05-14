@@ -1,0 +1,9 @@
+<h1><{img src="images/bundle/spage_editing.gif"}><strong><{t}>正在查看:<{/t}></strong><{t}>采购单 - <{$POrder.order_id}><{/t}></h1>
+
+<div class="action-bar action-bar-order">
+  <div class="order-ctls" order_id="<{$POrder.order_id}>" dealer_order_id="<{$POrder.dealer_order_id}>" supplier_id="<{$POrder.supplier_id}>"><{include file="po/actbar.html"}><{assign var="order_id" value=$POrder.order_id}></div>
+</div>
+
+<ul class="btn-bar">
+	<li><{button label="关 闭" class="btn-quit" onclick="if(confirm('确定关闭窗口?'))window.close()"}></li>
+</ul>

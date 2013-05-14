@@ -1,0 +1,72 @@
+<div class="tableform">
+
+
+<h3><{t}>您已开通网罗天下服务，详情如下:<{/t}></h3> 
+<div class="division">
+   
+    <table cellspacing="0" cellpadding="0" width="100%" border="0" class="shopping_setting">
+      <tbody>
+        <tr> 
+          <th width="21%">License：</th>
+          <td width="79%"><{$cert_id}></td>
+        </tr>
+        <tr> 
+          <th><{t}>服务有效期：<{/t}></th>
+          <td><{$data.info.service_open_time|cdate:FDATE}><{t}>至<{/t}><{$data.info.service_close_time|cdate:FDATE}><{if $isold}><font color='red'><{t}>您的服务已过期，请联系客服续费<{/t}></font><{/if}><{if $timeneed}><{t}>你的服务将在<{/t}><{$timeneed}><{t}>天后过期<{/t}><{/if}></td>
+        </tr>
+        <tr> 
+          <th><{t}>已被ShopEx收录：<{/t}></th>
+          <td><{$data.info.collect_num|default:0}><{t}>个商品<{/t}></td>
+        </tr>
+        <tr> 
+          <th><{t}>引擎收录详情：<{/t}></th>
+          <td>
+          <{foreach from=$data.info.collect_se item=items}>
+          
+          <{$items.se_name}><{$items.se_num|default:0}>条<br>
+          
+          <{/foreach}>
+          </td>
+        </tr>
+        <tr>
+          <th>&nbsp;</th>
+          <td>
+            
+            
+            <b class="submitBtn"> 
+            <{if $isold}><a href="http://2c.shopex.cn/" target='_blank' class='btn'><{t}>再次开通申请<{/t}></a><{else}><input type="button" value="暂停服务" onClick="if(window.confirm('暂停后用户信息将停止更新，确认要暂停吗？')){W.page('index.php?ctl=sale/tools&act=set_wltx&p[0]=0');}"/><{/if}>
+            </b><{if $timeneed}>&nbsp;&nbsp;<a href='http://2c.shopex.cn/' target='_blank' class='btn'><{t}>联系客服续费<{/t}></a><{/if}> 
+            
+            
+            
+            
+            </td>
+        </tr>
+      </tbody>
+    </table>
+    
+    
+    
+       </div>
+       
+       
+       
+
+    
+       
+  <h3><{t}>支持引擎:<{/t}></h3> 
+  <div class="division">
+            <table cellspacing="0" cellpadding="0" border="0">
+
+            <{foreach from=$linklist item=item key=key}>
+            <{if $key%3==0}>
+            <tr><{/if}>
+            <td style="text-align:center; padding:5px;"><a target="_blank" href="<{$item.se_url}>"><img src="<{$item.se_img}>" width='155'height='40'></a>
+            <br />
+            <a href="<{$item.se_url}>" target="_blank"><{$item.se_name}></a></td>
+          <{if ($key+1)%3==0}><{/if}>
+                <{if ($key+1)%3==0}></tr><{/if}>
+            <{/foreach}>
+               </table>
+  </div>
+</div>

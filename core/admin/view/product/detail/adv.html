@@ -1,0 +1,27 @@
+<h3><{t}>搜索引擎优化<{/t}></h3>
+<div class="division">
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+<tr>
+  <th><{t}>商品页面标题：<{/t}></th>
+  <td><{input type="text" size="45" name="goods[seo][seo_title]" value=$goods.seo.seo_title }><span class="info"><{t}>(留空则默认显示商品名称)<{/t}></span></td>
+  </tr>
+<tr>
+  <th>META_KEYWORDS：<br><{t}>(页面关键词)<{/t}></th>
+  <td><{input type="textarea" cols="27" rows="3" name="goods[seo][meta_keywords]" value=$goods.seo.meta_keywords }><span class="info"><{t}>(留空则默认继承分类或全局设置的KEYWORDS内容)<{/t}></span></td>
+  </tr>
+<tr>
+  <th>META_DESCRIPTION：<br><{t}>(页面描述)<{/t}></th>
+  <td><{input type="textarea" name="goods[seo][meta_description]" cols="27" rows="3" value=$goods.seo.meta_description }><span class="info"><{t}>(留空则默认继承分类或全局设置的DESCRIPTION内容)<{/t}></span></td>
+  </tr>
+<!--tr>
+  <th><{t}>上架日期：<{/t}></th>
+  <td><input type="text" name="goods[uptime]" value="<{$goods.uptime}>"></td>
+  <td class="note"><{t}>介绍<{/t}></td>
+</tr>
+<tr>
+  <th><{t}>下架日期：<{/t}></th>
+  <td><input type="text" name="goods[downtime]" value="<{$goods.downtime}>"></td>
+  <td class="note"><{t}>介绍<{/t}></td>
+</tr-->
+</table>
+</div>

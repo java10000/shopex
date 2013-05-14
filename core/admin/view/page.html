@@ -1,0 +1,19 @@
+
+<{if $_path_}>
+    <{area inject=".mainHead"}>
+    <div class="nav-bar">
+        <a href="index.php?ctl=dashboard&act=index" style="color:#fff"><{t}>桌面<{/t}></a>
+        <{foreach from=$_path_ item=item name="_path_"}>
+        &raquo; 
+          <{if $item.url}>
+            <a style="color:#fff" href="<{$item.url}>"><{$item.text}></a>
+          <{else}>
+            <span><{$item.text}></span>
+          <{/if}>
+        <{/foreach}>
+        <{if $smarty.capture.header}>&raquo; <span><{$smarty.capture.header}></span><{/if}>
+    </div>
+    <{/area}>
+<{/if}>
+
+<{include file=$_PAGE_}>

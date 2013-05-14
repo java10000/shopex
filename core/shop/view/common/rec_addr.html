@@ -1,0 +1,94 @@
+<table widtd="100%" border="0" cellpadding="0" cellspacing="0" class="liststyle data">
+<col class="span-3" />
+<col class="span-9" />
+<col class="span-auto" />
+<tbody>
+  <tr>
+    <td><em style="color:red">*</em><{t}>收货地区：<{/t}></td>
+    <td colspan=2>
+      <span id="checkout-select-area"><{input id="shipping-area" class="inputstyle" name="delivery[ship_area]" type="region" required="true" value=$trading.receiver.area}></span>
+    </td>
+  </tr>
+  <tr>
+    <td><em style="color:red">*</em><{t}>收货地址：<{/t}></td>
+    <td>
+    <input type='hidden' name='delivery[ship_addr_area]' value='' id='selected-area-hidden'/>    
+    <span id='selected-area' class='fontcolorGray' title='系统将拼接地区选择结果到收获地址'>[地区]</span>
+    <{input class="inputstyle" name="delivery[ship_addr]"   id="addr" vtype="required" value=$trading.receiver.addr size="30"}>
+    </td>
+    <td width=130>
+	<{t}>邮编：<{/t}>
+	<{input class="inputstyle span-2" name="delivery[ship_zip]" size="30" id="zip"  type="text" value=$trading.receiver.zip}>
+	</td>
+  </tr>
+  <tr>
+    <td><em style="color:red">*</em><{t}>收货人姓名：<{/t}></td>
+    <td colspan=2><{input class="inputstyle" name="delivery[ship_name]" id="name"  size="30" required="true" type="text" value=$trading.receiver.name}></td>
+  </tr>
+  <{if !$trading.member_id}>
+  <tr>
+    <td><em style="color:red">*</em><{t}>Email：<{/t}></td>
+    <td colspan=2><{input name="delivery[ship_email]" class="inputstyle" id="ship_email"  size="30" required="true" type="text" vtype="email" value=$trading.receiver.email}></td>
+  </tr>
+  <{/if}>
+  <tr>
+    <td>
+      <em style="color:red">*</em><{t}>手机：<{/t}>
+    </td>
+    <td colspan=2>
+     <{input class="inputstyle" vtype="mobile" name="delivery[ship_mobile]" size="30" type="text" id="mobile"  value=$trading.receiver.mobile}>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <em style="color:#ccc">*</em><{t}>固定电话：<{/t}>
+    </td>
+    <td colspan=2>
+     <{input class="inputstyle" vtype="tel" name="delivery[ship_tel]" size="30" type="text" id="tel"  value=$trading.receiver.tel}>&nbsp;例如：021-6xxxxxx
+    </td>
+  </tr>
+  <{if $trading.member_id}>
+  <tr class="recsave">
+    <td><{t}>是否保存地址：<{/t}></td>
+    <td colspan=2><label><input name="delivery[is_save]" type="checkbox" checked="checked" value=1><{t}>保存本次收货地址<{/t}></label></td>
+  </tr>
+  <{/if}>
+  </tbody>
+</table>
+<{$selectArea}>
+<script>
+window.addEvent('domready',function(e){
+	$E('#checkout-select-area input[name^=delivery[]').store('onselect',function(sel){
+
+        if($E('option[has_c]',sel)){
+            $('shipping').set('html','<div class="valierror clearfix"><{t}>请选择收货地区<{/t}></div>');   
+            $('selected-area').set('text','[地区]').removeClass('fontcolorBlack').addClass('fontcolorGray');
+        }
+
+    });
+
+    $E('#checkout-select-area input[name^=delivery[]').store('lastsel',function(lastselect){
+        var areaSels=$ES("#checkout-select-area select");
+        var areaSelPrt=areaSels[0].getParent('*[package=mainland]');
+        var selected=[];
+        areaSels.each(function(s){
+           var text = s[s.selectedIndex].text.trim().clean();
+           if(['北京','天津','上海','重庆'].indexOf(text)>-1)return;
+           selected.push(text);
+        });
+        var selectedV = selected.join('');
+        $('selected-area').setText(selectedV).removeClass('fontcolorGray').addClass('fontcolorBlack');
+        $('selected-area-hidden').value =  selectedV;
+        $('addr').set('value',$('addr').value.replace(selectedV,''));
+        Order.setShippingFromArea(lastselect);
+    });
+    var areaSels=$ES("#checkout-select-area select");
+    var lastSel=areaSels[areaSels.length-1];
+	if( lastSel.get('value') != '' && lastSel.get('value') != '_NULL_' )
+    
+	 lastSel.onchange(lastSel,lastSel.value,(areaSels.lengtd-1));  
+
+
+});
+   
+</script>

@@ -1,0 +1,37 @@
+<div class="tableform">
+<form name="onSearch" action="index.php?ctl=sale/salescount&act=countall" method="GET">
+关键字 <{input name="dosearch" size=15 required="true"}><select name="searchitem"><option value="order"><{t}>订单号<{/t}></option><option value="username"><{t}>用户名<{/t}></option></select>  从 <{input class="cal"  type="date" name="searchfrom" size=10 required="true"}>至 <{input class="cal" type="date" name="searchto" size=10 required="true"}>
+
+<input type="submit" id="submit" name="submit" value="查找">
+<input type="button" name="generatexml" value="生成报表" onClick="location.href='index.php?ctl=sale/salescount&act=countall&genexml=1'"> 
+</form>
+</div>
+<div class="tableform">
+<div class="division">
+
+<table border="0" cellspacing="0" cellpadding="0" class="gridlist">
+<col class="Colsn"></col>
+<col></col>
+<col class="Colamount"></col>
+<col class="Colamount"></col>
+<thead>
+  <tr>
+    <th><{t}>排名<{/t}></th>
+    <th><{t}>商品名称<{/t}></th>
+    <th><a href="index.php?ctl=sale/salescount&act=countall<{$plug}>&ordertype=1&method=<{if $method==1}>2<{else}>1<{/if}>"><{t}>销售量<{/t}></a></th>
+    <th><a href="index.php?ctl=sale/salescount&act=countall<{$plug}>&ordertype=2&method=<{if $method==1}>2<{else}>1<{/if}>"><{t}>销售额<{/t}></a></th>
+  </tr>
+  </thead>
+  <tbody>    <{foreach from=$data item=data key=key}>
+  <tr>
+    <td><div align="center"><{$key+1}></div></td>
+    <td><div align="center"><{$data.name}></div></td>
+    <td><div align="center"><{$data.saleTimes}></div></td>
+    <td><div align="center"><{$data.salePrice}></div></td>
+  </tr>
+  <{/foreach}>
+  
+  </tbody>
+ </table>
+</div>
+</div>

@@ -1,0 +1,34 @@
+body{font-family:Georgia;font-size:12px;background:#024883 url(body-bj.jpg) no-repeat center -74px;text-align:center;}
+ul,li{list-style:none;padding:0;margin:0;}
+.content{width:743px;height:439px;margin:0 auto;margin-top:74px;_margin-top:60px;position:relative;text-align:left;}
+*+html .content{margin-top:60px;}
+.content h1{width:233px;height:128px;background:url(loginlogo.jpg) no-repeat;text-indent:-999999px;position:absolute;top:142px;left:72px;}
+.content .body{position:absolute;top:98px;right:50px;width:330px;}
+.content .body ul li{margin:5px 0;padding:3px 0;*padding:2px 0;overflow:hidden;}
+.default-style .body{width:353px;}
+.login-list label{width:71px;text-align:right;padding-right:5px;display:block;float:left;height:30px;line-height:30px;*zoom:1;}
+.account-title{font-size:16px;padding:0 20px;margin:2px; height:25px;line-height:25px;}
+.account-title span{color:#0099FF;margin-right:2px;}
+#usrname,
+#password,
+#verifycode,
+#account
+{background:url(login-bj.png) no-repeat;height:30px;line-height:30px;padding:0 25px;color:#999;border:none;width:197px;}
+.default-style #account,.default-style #password{width:120px;}
+#verifycode{width:83px;padding:0 3px;}
+#verifycode{background-position:0 -89px;}
+#verifycode.inputstylefocus{background-position:0 -427px;}
+#usrname.inputstylefocus{background-position:0 -301px;}
+#account,.default-style #password{background-position:0 -519px;}
+#account.inputstylefocus,.default-style #password.inputstylefocus{background-position:0 -587px;}
+#password{background-position:0 -45px;}
+#password.inputstylefocus{background-position:0 -362px;}
+.login-list a{color:#666;text-decoration:none;}
+.login-list a:hover{color:#ff6600;text-decoration:underline;}
+.content    .loginbtn{border:none;width:138px;height:42px;cursor:pointer;text-indent:-9999px;*text-indent:0;*line-height:98px;background:url(login-bj.png) no-repeat 0 -180px;}
+.content .body ul li.message{height:37px;line-height:37px;background:url(loginmsgbg.gif) no-repeat 77px 4px;padding:0 0px 0 107px;
+}
+.rem-user{vertical-align:middle;margin-left:76px;float:left;}
+.login-list .rem-usermame label{display:inline;height:22px;line-height:19px;*line-height:22px;width:auto;}
+.content .body ul li.btn{padding-left:76px;}
+.verifycodeimg{height:18px;width:60px;position:absolute;left:170px;_left:92px;top:10px;}

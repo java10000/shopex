@@ -1,0 +1,53 @@
+
+<div class="ArticleListWrap" name="ar_widgets_190" id="ar_widgets_190">
+    <div class="ArticleList">
+        <table width="100%" cellpadding="0" cellspacing="0">
+          <{counter start=1 assign="result" print=false }>
+            <{foreach from=$data item=data key=key}>
+            <{if ($result mod $setting.colums) eq 1 }>
+          <tr>
+            <td>
+            
+            <{if $setting.smallPic==6 }>
+      <{if $setting.picaddress}>
+      <img src="<{$setting.picaddress}>" />
+      <{/if}>
+    <{else}>
+    <{img src=$setting.smallPic path="icons"}>
+    <{/if}>
+            
+            
+            <a href="<{link ctl=article act=index arg0=$data.article_id}>" title="<{$data.title}>"><{$data.title|cut:$setting.max_length}></a></td>
+            <{elseif ($result mod $setting.colums) eq 0}>
+            <td>
+            <{if $setting.smallPic==6 }>
+      <{if $setting.picaddress}>
+      <img src="<{$setting.picaddress}>" />
+      <{/if}>
+    <{else}>
+    <{img src=$setting.smallPic path="icons"}>
+    <{/if}>
+            <a href="<{link ctl=article act=index arg0=$data.article_id}>" title="<{$data.title}>"><{$data.title|cut:$setting.max_length}></a></td>
+          </tr>
+          <{else}>
+            <td>
+            <{if $setting.smallPic==6 }>
+      <{if $setting.picaddress}>
+      <img src="<{$setting.picaddress}>" />
+      <{/if}>
+    <{else}>
+    <{img src=$setting.smallPic path="icons"}>
+    <{/if}>
+    <a href="<{link ctl=article act=index arg0=$data.article_id}>" title="<{$data.title}>"><{$data.title|cut:$setting.max_length}></a></td>
+          <{/if}>
+          <{counter assign="result" print=false }>
+          <{/foreach}>
+        </table>
+        <{if $setting.showMore == "on"}>
+        <div class="more clearfix">
+            <a href="<{link ctl=artlist act=index arg0=$setting.id1}>">更多...</a>
+        </div>
+        <{/if}>
+    </div>
+</div>
+

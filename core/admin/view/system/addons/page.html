@@ -1,0 +1,40 @@
+<{area inject=".mainHead"}>
+<table><tr>
+<{foreach from=$type key=key item=item}>
+<{if $smarty.get.p[0] eq $key}>
+<td style="background:#ffd;width:75px;border:1px solid #333;border-style:solid solid none solid"><{$item.text}></td>
+<{else}>
+<td style="width:75px;border:1px solid #333;border-style:none none solid none"><a href="index.php?ctl=system/addon&act=<{$smarty.get.act}>&p[0]=<{$key}>" style='margin:5px;'><{$item.text}></a></td>
+<{/if}>
+<{/foreach}>
+<td style="border:1px solid #333;border-style:none none solid none;">
+	<{button type="button" icon="mceico_14.gif" label="更新插件数据库" href="index.php?ctl=system/addon&act=refresh"}>
+</td>
+</tr></table>
+<div style="padding:10px;background:#ffd;border:1px solid #333;border-top-style:none"><{include file=$infoPage}></div>
+<{/area}>
+
+<{if count($items)>0}>
+<{foreach from=$items key=key item=item name="addon"}>
+<div class="<{if $smarty.foreach.addon.iteration is not odd}>even<{/if}>">
+  <{if $item.icon}>
+  <img src="<{$item.icon}>" style="float:right" />
+  <{/if}>
+  <div>
+  <strong style="font-size:16px;margin-right:20px"><{$item.name}></strong><em style="color:#060;"><{$item.file}></em>
+  </div>
+  <pre style="color:#333"><{$item.desc}></pre>
+  <{if $allow_disable}>
+  <div style="text-align:right">
+    <{if $item.disabled}>
+    <button><{t}>启用<{/t}></button>&nbsp;<button disabled="disabled"><{t}>禁用<{/t}></button>
+    <{else}>
+    <button disabled="disabled"><{t}>启用<{/t}></button>&nbsp;<button><{t}>禁用<{/t}></button>
+    <{/if}>
+  </div>
+  <{/if}>
+</div>
+<{/foreach}>
+<{else}>
+<div class="notice"><{t}>系统没有安装本类型插件。<{/t}></div>
+<{/if}>

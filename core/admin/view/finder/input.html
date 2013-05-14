@@ -1,0 +1,6 @@
+<div id="ipt_<{$_input.domid}>" params="<{$_input|json_encode|htmlentities}>" class='clearfix'>
+<{input type="object:{$_input.object}" id="sel_{$_input.domid}" filter=$_input.filter select=checkbox}>
+<div class="gridlist rows-body">
+<{include file="finder/input-row.html"}>
+</div>
+</div>

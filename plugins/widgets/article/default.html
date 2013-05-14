@@ -1,0 +1,79 @@
+<{capture name=titleImg}>
+  <div class="titleImg"><a href="<{if $setting.titleImgHref}><{$setting.titleImgHref}><{else}><{link ctl=artlist act=index arg0=$setting.id}><{/if}>"><img src="<{$setting.titleImgSrc}>" alt="<{$setting.titleImgAlt}>"/></a></div>
+<{/capture}>
+
+<{capture name=articleCat}>
+  <{if $setting.showTitle=="on"}>
+    <h4><{$setting.titleDesc}></h4>
+  <{/if}>
+<{/capture}>
+
+<{capture name=articleLoop}>
+  <ul>
+    <{foreach from=$data item=data key=key}>
+    <li>
+    <{if $setting.smallPic==6 }>
+      <{if $setting.picaddress}>
+      <img src="<{$setting.picaddress}>" />
+      <{/if}>
+    <{elseif $setting.smallPic}>
+    <{img src=$setting.smallPic path="icons"}>
+    <{/if}>
+    <a href="<{link ctl=article act=index arg0=$data.article_id}>" title="<{$data.title}>"><{$data.title|cut:$setting.max_length}></a></li>
+    <{/foreach}>
+  </ul>
+  <{if $setting.showMore == "on"}>
+  <div class="more clearfix"><a href="<{link ctl=artlist act=index arg0=$setting.id1}>">更多...</a></div>
+  <{/if}>
+<{/capture}>
+
+
+
+<div class="ArticleListWrap">
+  <{if $setting.showTitleImg=="off"}>
+    <div class="ArticleList">
+      <{$smarty.capture.articleCat}>
+      <{$smarty.capture.articleLoop}>
+    </div>
+  <{elseif $setting.titleImgPosition=="top"}>
+    <{$smarty.capture.titleImg}>
+    <div class="ArticleList">
+      <{$smarty.capture.articleCat}>
+      <{$smarty.capture.articleLoop}>
+    </div>
+  <{elseif $setting.titleImgPosition=="center"}>
+    <{$smarty.capture.articleCat}>
+    <{$smarty.capture.titleImg}>
+    <div class="ArticleList">
+      <{$smarty.capture.articleLoop}>
+    </div>
+  <{elseif $setting.titleImgPosition=="bottom"}>
+    <div class="ArticleList">
+      <{$smarty.capture.articleCat}>
+      <{$smarty.capture.articleLoop}>
+    </div>
+    <{$smarty.capture.titleImg}>
+  <{elseif $setting.titleImgPosition=="left"}>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+      <td width="15%"><{$smarty.capture.titleImg}></td>
+      <td><div class="ArticleList">
+        <{$smarty.capture.articleCat}>
+        <{$smarty.capture.articleLoop}>
+      </div>
+      </td>
+      </tr>
+    </table>
+  <{elseif $setting.titleImgPosition=="right"}>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+      <td><div class="ArticleList">
+        <{$smarty.capture.articleCat}>
+        <{$smarty.capture.articleLoop}>
+      </div>
+      </td>
+      <td width="15%"><{$smarty.capture.titleImg}></td>
+      </tr>
+    </table>
+  <{/if}>
+</div>

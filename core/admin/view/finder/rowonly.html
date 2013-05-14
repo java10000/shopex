@@ -1,0 +1,16 @@
+<script>
+<{$_finder.initvar}><{$_finder.var}> = new Finder("<{$_finder._name}>",<{json from=$_finder}>);
+</script>
+<div class="finder" id="finder-<{$_finder._name}>">
+
+<form method="post" view="<{$_finder.filter}>" id="finder-filter-<{$_finder._name}>" style="display:none" target="_finder" action="index.php?ctl=<{$_finder.controller}>&act=finder&p[0]=<{$_finder.type}>&p[1]=<{$_finder.view}>&p[2]=<{$_finder.cols}>&p[3]=<{$_finder.var}>&p[4]=<{$_finder.plimit}>&notools=true">
+  <input name="_finder[select]" value="<{$_finder.select}>" type="hidden" />
+  <input name="_finder[id]" value="<{$_finder.id}>" type="hidden" />
+  <input name="_finder[type]" value="<{$_finder.type}>" type="hidden" />
+  <input name="_finder[withTools]" value="true" type="hidden" />
+  <input type="hidden" class="keywords" />
+  <{toinput from=$_finder.params}>
+</form>
+
+<div class="finder-list"><{include file="finder/list.html"}></div>
+</div>

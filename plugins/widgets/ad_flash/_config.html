@@ -1,0 +1,35 @@
+<div  class="tableform">
+<div class="division widgetconfig" style="margin:-5px 0 0 0">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <th>Flash:</th>
+	
+    <td ><input name="ad_flash" id="ad_flash" class="_x_ipt" vtype="required" value="<{$setting.ad_flash}>" style="width:300px">
+	</tr>
+	<tr>
+    <th>宽度:</th>
+    <td ><input name="ad_flash_width" value="<{$setting.ad_flash_width|default:200}>" style="width:50px" >
+	</tr>
+	<tr>
+	<th>高度:</th>
+	<td ><input name="ad_flash_height" value="<{$setting.ad_flash_height|default:350}>" style="width:50px">
+	</tr>
+	<span class="sysiconBtn addorder" onClick="addFlash()">上传flash</span></td>
+    </tr>
+</table>
+</div>
+</div>
+
+<script>
+function addFlash(){
+	return new Dialog('index.php?ctl=editor&act=flash',{title:'FLASH',onShow:function(){
+			var dialog=this;
+			this.dialog.store('callback',function(src){
+              $('ad_flash').value=src;
+              dialog.close();
+           });
+           }}
+         );
+
+}
+</script>

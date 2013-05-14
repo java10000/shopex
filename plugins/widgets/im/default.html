@@ -1,0 +1,21 @@
+<div class="ImChat">
+<ul>
+<{foreach from=$data item=data key=key}>
+<li>
+          <{if $data.type==1}>
+          <{$data.info}><a target="_blank" href="tencent://message/?uin=<{$data.link}>&&Site=LICENSE_ShopEx&&Menu=yes"><img border="0" src="http://wpa.qq.com/pa?p=1:<{$data.link}>:1"/><{$setting.plug}></a>
+          <{elseif $data.type==2}>
+          <{$data.info}><a href="msnim:chat?contact=<{$data.link}>"><img width="30" height="30" border="0" src="http://im.live.com/Messenger/IM/Images/Icons/Messenger.Logo.gif"/><{$setting.plug}></a>
+          <{elseif $data.type==3}>
+          <{$data.info}><a target="_blank" href="http://amos1.taobao.com/msg.ww?v=2&uid=<{$data.link|escape:'url'}>&s=1"><img border="0" src="http://amos1.taobao.com/online.ww?v=2&uid=<{$data.link|escape:'url'}>&s=1"/><{$setting.plug}></a>
+          <{elseif $data.type==4}>
+          <{$data.info}><a target="_blank" href="http://scs1.sh1.china.alibaba.com/msg.atc?v=1&uid=<{$data.link}>"><img border="0" src="http://scs1.sh1.china.alibaba.com/online.atc?v=1&uid=<{$data.link}>&s=102"/><{$setting.plug}></a>
+          <{elseif $data.type==5}>
+		
+
+          <{$data.info}><a href="callto://<{$data.link}>"><img border="0" src="http://goodies.skype.com/graphics/skypeme_btn_small_green.gif"/><{$setting.plug}></a>
+          <{/if}>
+</li>
+<{/foreach}>
+</ul>
+</div>

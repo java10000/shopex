@@ -1,0 +1,60 @@
+<div id="Tmp_Image_Edit_<{$tmpid}>-<{$file.name}>">
+<form action="index.php?ctl=system/tmpimage&act=saveImage"  method="POST" enctype="multipart/form-data" target="{update:'Tmp_Image_Edit_<{$tmpid}>-<{$file.name}>'}">
+<input type="hidden" name="id" value="<{$tmpid}>-<{$file.name}>">
+<input type="hidden" name="tmpid" value="<{$tmpid}>">
+<input type="hidden" name="name" value="<{$file.name}>">
+<input type="hidden" id="imgdef-<{$smarty.now}>" name="imgdef" value="<{$file.name}>">
+<div class="division">
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+<tr>
+  <th><{t}>图片显示：<{/t}></th>
+  <td id="imgshow-<{$smarty.now}>"><img src="<{$basic_path}><{$file.name}>?<{$smarty.now}>"></td>
+</tr>
+</table>
+</div>
+<div class="division">
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+<{if count($file.files) > 0}>
+<tr>
+  <th><{t}>历史图片：<{/t}></th>
+  <td>
+  <{foreach from=$file.files item=bakfile}>
+  <div><img src="<{$basic_path}><{$bakfile.name}>?<{$smarty.now}>" class="imgbak" title="<{$bakfile.name}>"><span class="lnk" onclick="if(confirm('确认删除？')) delImage('<{$bakfile.name}>');"><{t}>删除<{/t}></span></div>
+  <{/foreach}></td>
+</tr>
+<{/if}>
+<tr>
+  <th><{t}>替换图片：<{/t}></th>
+  <td><{input type="file" name="upfile"}></td>
+</tr>
+</table>
+</div>
+  <div class="table-action">
+	<{button type="submit"  label="保存" }>
+	<{button type="button"  label="返回" onclick="tmpback();"}>
+</div>
+</form>
+</div>
+<script>
+  function tmpback(){
+    W.page('index.php?ctl=system/tmpimage&act=index&theme=<{$path}>');
+  }
+</script>
+
+
+<script>
+
+  $ES(".imgbak", "Tmp_Image_Edit_<{$tmpid}>-<{$file.name}>").each(function(item, index, itobj){
+    item.addEvent('click',function(e){
+      //console.info($('imgshow-<{$smarty.now}>'));
+      e=new Event(e);
+      var ipt=e.target;
+      $(ipt).clone().inject($('imgshow-<{$smarty.now}>').empty());
+      $('imgdef-<{$smarty.now}>').value = ipt.src.indexOf('?')?ipt.src.substr(0,ipt.src.indexOf('?')):ipt.src;
+    });
+  });
+
+  function delImage(imgname){
+    W.page('index.php?ctl=system/tmpimage&act=delete&p[0]='+imgname,{data:$('Tmp_Image_Edit_<{$tmpid}>-<{$file.name}>'),update:$('Tmp_Image_Edit_<{$tmpid}>-<{$file.name}>'),method:'post'});
+  }
+</script>

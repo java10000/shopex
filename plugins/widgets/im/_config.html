@@ -1,0 +1,209 @@
+
+<script>
+var addItem=function(y){
+  var i=$time();
+  var type;
+  var str;
+  switch(y){
+    case 1:
+       type=1;
+       str='QQ:';
+      break;
+    case 2:
+       type=2;
+       str='MSN:';
+      break;
+    case 3:
+       type=3;
+       str='阿里旺旺:';
+      break;
+    case 4:
+       type=4;
+       str='Ali Talk:';
+      break;
+    case 5:
+       type=5;
+       str='Skype:';
+      break;
+  }
+ 
+ 
+ var rowLine=[
+     '<div class="row-line">',
+       '<input type="hidden" value="{type}" name="im[{id}][type]"/>',
+       '<input type="hidden" value="{id}" name="im[{id}][i]"/>',
+      '<div style="text-align: right;" class="span-7">',
+                '<span class="im-info">{str}</span>',
+               ' <input value="" name="im[{id}][link]"/>',
+      '</div>',
+      '<div class="span-6">',
+        '文字说明:<input value="" name="im[{id}][info]"/>',
+      '</div>',
+       '<div class="span-2">',
+         
+         '<img onclick="imItemMoveTo(-1,this)" style="cursor: pointer;" title="向上移动" class="asc" src="../statics/icons/icon_asc.gif"/>&nbsp;&nbsp;',
+         '<img onclick="imItemMoveTo(1,this)" style="cursor: pointer;" title="向下移动" class="desc" src="../statics/icons/icon_desc.gif"/>&nbsp;&nbsp;',
+        '<{img src="images/bundle/delecate.gif" style="cursor:pointer;" alt="删除" title="删除" onclick="$(this).getParent(\'.row\').remove();"}>',
+                '</div>',
+      '</div>'].join('');
+      
+ $('im').adopt(new Element('div',{'class':'row'}).setHTML(rowLine.substitute({
+     
+     id:i,
+     type:type,
+     str:str
+ 
+ })));
+  
+ 
+}
+</script>
+<div id="cat-config" style="display:none;"></div>
+<div class="tableform widgetconfig">
+<div class="division" id="aligntype">
+    <table>
+      <tr>
+        <th>跟随方式</th>
+        <td><select name="alignselect"><option value='left' <{if $setting.alignselect=='left'}>selected<{/if}>>左</option><option value='right' <{if $setting.alignselect=='right'}>selected<{/if}>>右</option></select></td>
+      </tr>
+      <tr>
+        <th>标题说明文字</th>
+        <td><textarea name="titleexp"><{$setting.titleexp|default:'我们营业的时间<br>9:00-18:00'}></textarea> </td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="division" id="listNum">
+    <table>
+      <tr>
+        <th>分格列数：</th>
+        <td><input type=text name=colums value="<{$setting.colums|default:'3'}>"></td>
+      </tr>
+      <tr>
+        <th>图片和说明排列方式：</th>
+        <td><select name="align" id="align"><option value='0' <{if $setting.align==0}>selected<{/if}>>普通</option><option value='1' <{if $setting.align==1}>selected<{/if}>>换行</option></select></td>
+      </tr>
+    </table>
+  </div>
+  
+  <div class='actionBar'>
+      <span>添加:</span>
+      <span  class="sysiconBtn addorder" onclick="addItem(1);">QQ</span>
+      <span  class="sysiconBtn addorder" onclick="addItem(2);">MSN</span>
+      <span  class="sysiconBtn addorder" onclick="addItem(3);">阿里旺旺</span>
+      <span  class="sysiconBtn addorder" onclick="addItem(4);">Ali Talk</span>
+      <span  class="sysiconBtn addorder" onclick="addItem(5);">Skype</span>
+  </div>
+  
+
+
+
+<div class="finder">
+ <div class="finder-list" id="im">
+<{foreach from=$setting.im item=data key=key}>
+  <div class='row'>
+    <div class='row-line'>
+       <input type=hidden name=im[<{$data.i}>][type] value="<{$data.type}>">
+       <input type=hidden name=im[<{$data.i}>][i] value="<{$data.i}>">
+      <div class='span-7' style='text-align:right'>
+        <{if $data.type==1}>
+        <span class="im-info">QQ:</span>
+        <{elseif $data.type==2}>
+        <span class="im-info">MSN:</span>
+        <{elseif $data.type==3}>
+        <span class="im-info">阿里旺旺:</span>
+        <{elseif $data.type==4}>
+        <span class="im-info">Ali Talk:</span>
+        <{elseif $data.type==5}>
+        <span class="im-info">Skype:</span>
+        <{/if}>
+        <input name=im[<{$data.i}>][link] value="<{$data.link}>" >
+      </div>
+
+      
+      <div class='span-6'>
+        文字说明:<input name=im[<{$data.i}>][info] value="<{$data.info}>">
+      
+      </div>
+       <div class='span-2'>
+         <img src='../statics/icons/icon_asc.gif' class='asc'  title='向上移动' style="cursor:pointer;" onclick='imItemMoveTo(-1,this)'/> &nbsp; &nbsp; 
+         <img src='../statics/icons/icon_desc.gif' class='desc' title='向下移动' style="cursor:pointer;" onclick='imItemMoveTo(1,this)'/> &nbsp; &nbsp; 
+       <{if $data.type }> 
+         <{img src="images/bundle/delecate.gif" style="cursor:pointer;" alt="删除" title="删除" onclick="$(this).getParent('.row').remove();"}>
+        <{/if}>
+        </div>   
+      </div>
+  </div>
+  <{/foreach}>
+ </div>
+</div>
+</div>
+
+<script>
+function imItemMoveTo(v,e){
+     var row =$(e).getParent('.row');
+     var pre=row.getPrevious('.row');
+     var next=row.getNext('.row');
+  
+    
+     if(pre&&v<0){
+             row.injectBefore(pre);
+          }
+      if(next&&v>0){
+              row.injectAfter(next);
+          }
+
+}
+function setting(){
+  switch($('mark_set').value){
+      case '2':
+        $('own_text').style.display="";
+      break;
+      default:
+        $('own_text').style.display="none";
+      break;
+  }
+
+}
+
+
+function getCfgForm(id){
+  var config = $(id);
+  while(config.tagName != 'FORM'){
+    config = config.getParent();
+  }
+  return config;
+}
+function setCfgView(view){
+  if(view=='default.html'){
+	 $('listNum').style.display="none";
+      $('aligntype').style.display="none";
+  }else if(view=='siderIm.html'){
+      $('aligntype').style.display="";
+      $('listNum').style.display="none";
+  }else{
+      $('aligntype').style.display="none";
+      $('listNum').style.display="";
+  }
+ 
+}
+
+
+function getWgtTpl(){
+  var sels = getCfgForm('cat-config').getElements('select');
+  var wgtTpl = '';
+  sels.each(function(sel){
+    if(sel.getProperty('name') == '__wg[tpl]') wgtTpl = sel;
+  });
+  return wgtTpl;
+}
+
+
+
+var catTpl = getWgtTpl();
+setCfgView(catTpl.value);
+catTpl.addEvent('change',function(){
+  setCfgView(this.value);
+});
+
+</script>

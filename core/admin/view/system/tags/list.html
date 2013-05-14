@@ -1,0 +1,72 @@
+<div class="action-bar"><span class="sysiconBtn addorder" onclick="$(this.parentNode).setStyle('display','none');$('div_new_tag').setStyle('display','block')"><{t}>添加标签<{/t}></span></div>
+<form id="div_new_tag" style="margin:10px;display:none" method="post" action="index.php?ctl=<{$controller}>&act=newTag">
+  <input type="text" name="tag_name" id="ipt_tag_name" />
+  <input type="submit" onclick="return window.newTag()" value="添加标签" />
+</form>
+<table width="100%" border="0" cellpadding="0" cellspacing="0" class="gridlist">
+<col class="Collongname"></col>
+<col class="Coloption-2b"></col>
+<col></col>
+  <thead>
+    <tr>
+      <th><{t}>标签<{/t}></th>
+      <th width="100"><{t}>操作<{/t}></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody id="x-tag-list">
+  <{foreach from=$tags item=tag}>
+  <tr tag="<{$tag.tag_name}>" tagid="<{$tag.tag_id}>">
+    <td><span class="tag_name"><{$tag.tag_name}></span>(<{$tag.rel_count}>)</td>
+    <td>
+		<{if $tag.is_system=='false'}>
+			<span class="sysiconBtn delete" onclick="delTag('<{$controller}>','<{$tag.tag_id}>')"><{t}>删除<{/t}></span><span class="sysiconBtn edit" onclick="setTagName(this,'<{$controller}>','<{$tag.tag_id}>')"><{t}>重命名<{/t}></span>
+		<{/if}>
+	</td>
+    <td></td>
+  </tr>
+  <{/foreach}>
+  </tbody>
+
+</table>
+<script>
+window.delTag=function(ctl,tag_id){
+  if(!window.confirm('确认删除此标签吗？')){
+    return false
+  }else{
+    W.page('index.php?ctl='+ctl+'&act=delTag',{method:'post',data:'tag_id={0}'.format(tag_id)});
+  }
+}
+window.setTagName=function(obj,ctl,tag_id){
+  var oldname=$(obj).getParent('tr').getElements('.tag_name').getText();
+  var nname = window.prompt('请输入新的标签名称：',oldname);
+  if(!nname){
+    return false
+  }else{
+    if(window.checkTag(nname,tag_id)){
+      W.page('index.php?ctl='+ctl+'&act=renTag',{method:'post',data:'tag_id={0}&name={1}'.format(tag_id,nname)});
+    }
+  }
+}
+window.checkTag = function(name,tag_id){
+  var tag = {};
+  $ES('tr','x-tag-list').each(function(tr){
+    tag[tr.getAttribute('tag')]=tr.getAttribute('tagid');
+  });
+  if(tag[name] && tag[name]!=tag_id){
+    alert('存在同名标签，请换个名字。');
+    return false;
+  }else{
+    return true;
+  }
+}
+window.newTag=function(){
+  var tag = $('ipt_tag_name').value.trim();
+  if(tag.length==0 || tag.contains(' ')){
+    alert('标签名称不能为空，并且不能含有空格字符');
+    return false;
+  }else{
+    return window.checkTag(tag);
+  }
+}
+</script>

@@ -1,0 +1,36 @@
+<div class="tableform">
+  <form action="index.php?ctl=sale/salescount&act=visitsalecompare" method="GET">
+    从 <{input class="cal" type="date" name="searchfrom" size=10 required="true"}>至 <{input class="cal" type="date" name="searchto" size=10 required="true"}>
+    <input type="submit" id="submit" name="submit" value="查找">
+    <input type="button" name="generatexml" value="生成报表" onClick="location.href='index.php?ctl=sale/salescount&act=visitsalecompare&genexml=1'">
+  </form>
+</div>
+<div class="tableform">
+  <div class="division">
+    <table border="0" cellspacing="0" cellpadding="0" class="gridlist">
+      <col></col>
+      <col class="Colamount"></col>
+      <col class="Colamount"></col>
+      <col class="Colamount"></col>
+      <thead>
+        <tr>
+          <th><{t}>商品名称<{/t}></th>
+          <th><a href="index.php?ctl=sale/salescount&act=visitsalecompare<{$plug}>&ordertype=1&method=<{if $method==1}>2<{else}>1<{/if}>"><{t}>访问次数<{/t}></a></th>
+          <th><a href="index.php?ctl=sale/salescount&act=visitsalecompare<{$plug}>&ordertype=2&method=<{if $method==1}>2<{else}>1<{/if}>"><{t}>购买次数<{/t}></a></th>
+          <th><{t}>访问购买率<{/t}></th>
+        </tr>
+      </thead>
+      <tbody>
+      <{foreach from=$data item=data key=key}>
+      <tr>
+        <td><{$data.name}></td>
+        <td><{$data.view_count}></td>
+        <td><{$data.saleTimes}></td>
+        <td><{math equation="x / y" x=$data.saleTimes*100 y=$data.view_count format="%.2f"}>%</td>
+      </tr>
+      <{/foreach}>
+      </tbody>
+      
+    </table>
+  </div>
+</div>

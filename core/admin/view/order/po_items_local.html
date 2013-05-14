@@ -1,0 +1,241 @@
+<input type="hidden" name="supplier_id" value="<{$supplier_id}>">
+<div class="clearfix">
+  <{if count($sItem.po)}>
+  <div class="fontcolorRed"><b>以下商品供应商缺货，待补货</b></div>
+  <{else}>
+  <div style="padding: 2px; float: left;" class="fontcolorBlue">
+    <span style="padding-right: 10px;">供应商：<b style="font-size: 14px;"><{$sItem.name}></b></span>采购单状态：<b>未下单</b></span></div>
+  <{/if}>
+  <div style="float: right;">
+    <span class="sysiconBtn viewRefresh Refreshon but-local-refresh" style="display:none"><{t}>撤销操作<{/t}></span></div></div>
+<table width="100%" cellspacing="0" cellpadding="0" style="background-color: rgb(255, 255, 255);" class="finderInform">
+<colgroup class="span-3"/>
+<colgroup class="auto"/>
+<colgroup class="span-2"/>
+<colgroup class="span-2"/>
+<colgroup class="span-2 ColColorOrange"/>
+<colgroup class="span-2"/>
+<colgroup class="span-2 ColColorRed"/>
+<colgroup class="span-1 x-edit-model" style="display:none"/>
+  <thead>
+    <tr>
+      <th>货号</th>
+      <th>商品名称</th>
+      <th>销售价格</th>
+      <th>采购价</th>
+      <th>购买量<span class="but-local-edit" style="cursor:pointer;font-color:blue;color:blue;"><{t}>修改<{/t}></span></th>
+      <th>供应商库存</th>
+      <th>小计</th>
+      <th class="x-edit-model" style="display:none">删除</th>
+    </tr>
+  </thead>
+  <tbody>
+<{foreach from=$sItem.local item=localItem key=local_bn}>
+    <tr>
+      <td><{$localItem.dealer_bn}>
+        <input type="hidden" name="aItems[product_id][]" value="<{$localItem.product_id}>">
+        <input type="hidden" name="aItems[dealer_bn][]" value="<{$localItem.dealer_bn}>">
+        <input type="hidden" name="aItems[supplier_bn][]" value="<{$localItem.supplier_bn}>"></td>
+      <td><{if $localItem.goods_id}><a href="../index.php?ctl=product&act=index&p[0]=<{$localItem.goods_id}>" target="_blank"><{$localItem.name}></a><{else}><{$localItem.name}><{/if}></td>
+      <td><{$localItem.price|cur}>
+        <input type="hidden" name="aItems[price][]" value="<{$localItem.price}>">
+        <input type="hidden" name="aItems[po_price][]" value="<{$localItem.po_price}>">
+        </td>
+      <td><{if $localItem.po_price!==NULL}>￥<{$localItem.po_price}><{else}>请先询价<{/if}></td>
+      <td><input type="text" name="aItems[nums][]" class="itemrow" style="background-color: #ccc" readonly=readonly value="<{$localItem.nums}>" size="5"/></td>
+      <td<{if $localItem.stock_status===0}> style="background-color:#CCEEDD;"<{elseif $localItem.stock_status===1}> style="background-color:#FFD850;"<{elseif $localItem.stock_status===2}> style="background-color:#FFA0A0;"<{elseif $localItem.stock_status===3}> style="background-color:#E8E8E8;color:#999999;"<{/if}>>
+        <{if $localItem.status == 'deleted'}>货品删除 
+        <{elseif $localItem.status == 'shelves'}>货品下架
+        <{else}>
+        <{if $localItem.stock>0}><{$localItem.stock}><{elseif $localItem.stock===0}>无货<{elseif $localItem.stock===-1}>充足<{else}>请先询价<{/if}>
+        <{/if}>
+        </td>
+      <td><span class="fontcolorLightGray">
+        <{if $localItem.stock===null||$localItem.stock===''}>请先询价<{else}>￥<{$localItem.amount}><{/if}>
+        </span></td>
+      <td class="x-edit-model" style="white-space: nowrap;display:none"><span class="sysiconBtnNoIcon" onClick="delgoods(this)">删除</span></td>
+    </tr>
+<{/foreach}>
+    <tr>
+      <td style="text-align: right;" colspan="8"><span class="font14px fontbold">总计：<{if $sItem.total_amount}><{$sItem.total_amount|b2bcur:$supplier_id}><{/if}></span></td>
+    </tr>
+    <tr>
+      <td colspan="8">
+        <table cellspacing="0" cellpadding="0" border="0" align="center" style="border: 0pt none ;" class="tableAction">
+          <tbody><tr>
+          <td><b class=""><input type="button" name="butsubmit" value="询价" class="but-local-inquiry btn wd2"/></b></td>
+            <td><b class=""><input type="button"<{if !$sItem.store_status}> disabled="disabled"<{/if}> name="butsubmit" value="向供应商下单" class="but-local-makepo btn wd3"/></b></td>
+            <td><b class=""><input type="submit" name="butsubmit" value="保存" class="but-local-save btn wd2" style="display:none"/></b></td>
+            </tr>
+        </tbody></table></td>
+    </tr>
+  </tbody>
+</table>
+<script>
+$E('.but-local-inquiry', 'enquiry-<{$supplier_id}>').addEvent('click',function(){
+	if($E("input[name=\'aItems[product_id][]\']","enquiry-<{$supplier_id}>") == null) return false;
+    if($E(".but-local-edit", "enquiry-<{$supplier_id}>").style.display == 'none'){
+        var editMode = true;
+    }else{
+        var editMode = false;
+    }
+    W.page('index.php?ctl=order/order&act=inquiry&p[0]=<{$order.order_id}>',{data:$('enquiry-<{$supplier_id}>'), update:'enquiry-<{$supplier_id}>', method: 'post',
+        onSuccess:function(a){
+            if(editMode){
+                $E(".but-local-edit", "enquiry-<{$supplier_id}>").fireEvent('click');
+            }
+        },
+        onFailure:function(){
+            if(this.xhr.status == 501 && this.getHeader('notify_msg')){
+                MessageBox.error(decodeURIComponent(this.getHeader('notify_msg')));
+            }
+            this.cancel();
+        }
+    });
+});
+
+$E(".but-local-edit", "enquiry-<{$supplier_id}>").addEvent('click',function(e){
+    if(e) e=new Event(e);
+    var divb = this.getParent('.table-grid');
+    $ES('.x-edit-model', divb).each(function(item){item.style.display = '';});
+    $ES('.itemrow', divb).each(function(item){
+        item.removeProperty('readonly');
+        item.style.cssText = 'background-color:#fff';
+        });
+    this.style.display = 'none';
+    $E('.but-local-makepo', divb).style.cssText = 'display:none';
+    $E('.but-local-save', divb).style.cssText = 'display:';
+    $E('.but-local-refresh', divb).style.cssText = 'display:';
+    });
+
+$E(".but-local-refresh", "enquiry-<{$supplier_id}>").addEvent('click',function(e){
+    if(e)e=new Event(e);
+    location.href = 'index.php?ctl=order/order&act=edit_po&p[0]=<{$order.order_id}>&'
+    /*
+    maindiv = $('workground');
+    W.page('index.php?ctl=order/order&act=edit_po&p[0]=<{$order.order_id}>',{
+         data:maindiv, method: 'get'
+    });*/
+    /*
+    var divb = this.getParent('.table-grid');
+    W.page('index.php?ctl=order/order&act=refresh_po_local&p[0]=<{$order.order_id}>',{data:divb, update:divb, method: 'post'});
+    */
+    });
+
+$E(".but-local-save", "enquiry-<{$supplier_id}>").addEvent('click',function(e){
+    e=new Event(e);
+    var divb = this.getParent('.table-grid');
+    W.page('index.php?ctl=order/order&act=savePo&p[0]=<{$order.order_id}>&p[1]=<{$supplier_id}>',{
+        data:divb, method: 'post', update:'messagebox',
+        onSuccess:function(re){
+        	/*
+        	$('iditem_amount').value = $('hidden_poitems_total_amount').value;
+            calculate_order_fee();
+            */
+            $E(".but-local-refresh", "enquiry-<{$supplier_id}>").fireEvent('click');
+        },
+        onFailure:function(){
+            if(this.xhr.status == 501 && this.getHeader('notify_msg')){
+               MessageBox.error(decodeURIComponent(this.getHeader('notify_msg')));
+            }
+        }
+   });
+});
+
+var po_Dialog;
+$E(".but-local-makepo", "enquiry-<{$supplier_id}>").addEvent('click',function(e){
+    var divs = this.getParent('div[supplier_id]');
+    po_Dialog = new Dialog("index.php?ctl=order/order&act=makePo&p[0]=<{$order.order_id}>", {title:'订单[<{$order.order_id}>]采购操作',
+        width:window.getSize().x*0.85,
+        height:window.getSize().y*0.85,
+        onLoad:function(e){
+            var dialog=this.dialog;
+            if(dialog.getElement('form') == null){
+                var notice = $E('.dialog-content-body',dialog).get('html');
+                if(notice){
+                    notice = $H(JSON.decode(notice));
+                    MessageBox.error(notice.notify_msg);
+                }
+                this.close();
+                return false;
+            }
+            
+            dialog.getElement('form').removeEvents('submit').addEvent('submit',function(e){
+                    if(e){new Event(e).stop();}
+                    var _from=this;
+                    if(!checkMakePoForm(_from)){
+                        return;
+                    }
+                    
+                    /* 提交按钮不可用 */
+                    $E('.but-makepay', 'x-makepo').disabled = true;
+	                $E('.but-make', 'x-makepo').disabled = true;
+	
+	                $E('.but-makepay', 'x-makepo').style.backgroundColor = "#999";
+	                $E('.but-make', 'x-makepo').style.backgroundColor = "#999";
+                    
+                    this.send({
+                        onFailure:function(){
+                            if(this.xhr.status == 501 && this.getHeader('notify_msg')){
+                                MessageBox.error(decodeURIComponent(this.getHeader('notify_msg')));
+                            }
+                            if(typeof(po_Dialog) == 'object') (function(){po_Dialog.close()}).delay(1000);
+                        },
+                        onSuccess:function(a){
+                        (function(){dialog.retrieve('instance').close()}).delay(200);
+                        if(_from.getProperty('subtypes') == 2){
+                        	a = eval(a)[0];
+                        	
+                        	if(a.type == 2){ 
+                        	    _from.innerHTML = a.info;
+                                _from.action    = a.action;
+                                _from.method    = 'post';
+                                _from.target    = '_blank';
+                                _from.submit();
+                                
+                        	} else { /** 预存款 **/
+                        		MessageBox.show(a.msg);
+                        	}
+                        	/*
+                            $('elTempBox').innerHTML = a;
+                            if($('elTempBox').getElement('form')){
+                                $('elTempBox').getElement('form').submit();
+                            }else{
+                                MessageBox.show(a);
+                            }*/
+                        }else{
+                            MessageBox.show(a);
+                        }
+                        W.page('index.php?ctl=order/order&act=refresh_po_supplier&p[0]=<{$order.order_id}>&p[1]=<{$supplier_id}>',{
+                            update:divs, method: 'get'});
+                    }});
+                });
+            },
+		ajaxoptions:{
+			data:$("enquiry-<{$supplier_id}>"),
+			method:'post'
+		}
+    });
+});
+
+function checkMakePoForm(frm){
+    var checkNum = 0;
+    $ES('input[name^=delivery[shipping_id]',frm).each(function(item){
+        if(item.checked == true) checkNum++;
+    });
+    if(checkNum == 0){
+        MessageBox.error('请选择配送方式！');
+        return false;
+    }
+
+    checkNum = 0;
+    $ES('input[name^=payment[payment_id]',frm).each(function(item){
+        if(item.checked == true) checkNum++;
+    });
+    if(checkNum == 0 && !$E('.checkpayment', frm).checked){
+        MessageBox.error('请选择支付方式！');
+        return false;
+    }
+    return true;
+}
+</script>

@@ -1,0 +1,102 @@
+
+<table class="table_frame" width="90%" border="0" align="center" cellpadding="0" cellspacing="0">
+<tr><td><div class="oder-print_title"><{$print_head_title1}></div></td>
+</tr>
+  <tr>
+    <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td class="td_frame"><table width="100%" border="0" cellpadding="0" cellspacing="0">
+        <tr><td colspan="3" ></td>
+          <td><div id="chk_print1" class="noprint">
+          <input name="chk_pic_print" type="checkbox" id="chk_pic_print"  checked="checked" />
+            <label class="label_pic_print" for="chk_pic_print"><{t}>打印图片<{/t}></label>
+            </div></td>
+        </tr>
+          <tr>
+            <td><img src="<{$env.conf.site.logo|storager}>" width="150px" height="60" /></td>
+            <td width="35%"><h1><{$shop.name}></h1>
+              <{$shop.url}></td>
+            <td width="40%" style="font-size:16pt"><{if $printContent.cart && $printContent.sheet}><strong><{$orderInfo.print_id}></strong><{/if}></td>
+            <td width="20%"><p><{t}>客户：<{/t}><{$orderInfo.ship_name}></p>
+            <p>
+            电话：<{$orderInfo.ship_tel}></p></td>
+          </tr>
+        </table></td>
+      </tr>
+    </table></td>
+  </tr>
+  <tr>
+    <td class="td_frame"><table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
+      <tr>
+        <td><h2><{t}>订单号：<{/t}><{$orderInfo.order_id}></h2></td>
+        <td align="right"><h2><{t}>订购日期：<{/t}><{$orderInfo.createtime|userdate}></h2></td>
+      </tr>
+    </table></td>
+  </tr>
+  <tr>
+    <td class="td_frame"><table width="98%" border="0" align="center" cellpadding="0" cellspacing="0">
+      <tr class="table_data_title">
+        <td>No</td>
+        <td><{t}>货号<{/t}></td>
+        <td><{t}>商品名称<{/t}></td>
+        <td><{t}>单价<{/t}></td>
+        <td><{t}>数量<{/t}></td>
+        <td><{t}>小计<{/t}></td>
+      </tr>
+
+        <{foreach from=$goodsItem item=aGoods name="item"}>
+      <tr>
+        <td><{$smarty.foreach.item.iteration}></td>
+        <td><{$aGoods.bn}></td>
+        <td><img class="product" src="<{$aGoods.thumbnail_pic|default:$env.conf.site.default_thumbnail_pic|storager}>" width="50" height="50" align="absmiddle" /><{$aGoods.name}>
+        <{if count($aGoods.minfo)}>
+          <{foreach from=$aGoods.minfo item=minfo key=name}>
+          <br><{$minfo.label}>：<{$minfo.value}>
+          <{/foreach}>
+          <{/if}><{$aGoods.addon.adjname}>
+          </td>
+        <td><{$aGoods.price|cur}><{t}>元<{/t}></td>
+        <td><{$aGoods.nums}></td>
+        <td><{$aGoods.price*$aGoods.nums|cur}><{t}>元<{/t}></td>
+      </tr>
+        <{/foreach}>
+
+    </table></td>
+  </tr>
+  <tr>
+    <td class="td_frame"><table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+      <tr>
+        <td width="80%" valign="top" style="height:150px;">
+        
+        <p><{t}>赠品：<{/t}><{foreach from=$giftsItem item=aGift}> <{$aGift.name}> <{/foreach}></p>
+
+         <p><{t}>订单附言：<{/t}><{$orderInfo.memo}></p></td>
+        <td width="20%" valign="top"><p><{t}>商品总价：<{/t}><{$orderInfo.cost_item|cur}></p>
+          <p><{t}>配送费用：<{/t}><{$orderInfo.cost_freight|cur}></p>
+          <p><{t}>保价费用：<{/t}><{$orderInfo.cost_protect|cur}></p>
+          <p><{t}>支付手续费：<{/t}><{$orderInfo.cost_payment|cur}></p>
+          <p><{t}>订单优惠：<{/t}><{$orderInfo.self|cur}></p></td>
+      </tr>
+    </table></td>
+  </tr>
+  <tr>
+    <td class="td_frame"><table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+      <tr>
+        <td width="80%"><p><{t}>服务商：<{/t}><{$shop.name}></p>
+            <p><{t}>电话：<{/t}><{$shop.tel}></p>
+            <p><{t}>邮箱：<{/t}><{$shop.email}></p>
+          <p><{t}>网址：<{/t}><{$shop.url}></p></td>
+        <td width="20%" valign="top"><h2><{t}>应付总金额：<{/t}><{$orderInfo.total_amount|cur}><{t}>元<{/t}></h2>
+</td>
+      </tr>
+    </table></td>
+  </tr>
+  <tr>
+    <td class="td_frame">您目前的总积分为 <{$memberPoint}> ，累计购物<{$orderSum.sum}>次，累计购物金额<{$orderSum.sum_pay|cur}>元
+</td>
+  </tr>
+  <tr>
+    <td style="height:30px; padding-bottom:50px;" align="right"><strong>Powered by ShopEx.cn</strong>
+</td>
+  </tr>
+</table>

@@ -1,0 +1,5 @@
+<{foreach from=$status item=item key=key}>
+<{if $allstatus[$key] && $item}>
+	<li class="item" onclick="W.page('<{$allstatus[$key]['url']}>')"><{$allstatus[$key]['label']}> : <{$item}></li>
+<{/if }>
+<{/foreach}>

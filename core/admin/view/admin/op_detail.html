@@ -1,0 +1,7 @@
+<div class="prepend-1">
+    <div class="span-5"><label><{t}>用户名：<{/t}></label><{$operator.username}></div>
+    <div class="span-5"><label><{t}>姓名：<{/t}></label><{$operator.name}></div>
+    <div class="span-5"><label><{t}>用户类型：<{/t}></label><{if $operator.super == 1}><{t}>超级管理员<{/t}><{else}><{t}>普通管理员<{/t}><{/if}></div>
+    <div class="span-5"><label><{t}>状态：<{/t}></label><{if $operator.status == 0}><{t}>关闭<{/t}><{else}><{t}>开启<{/t}><{/if}></div>
+    <div class="span-5"><label><{t}>时区：<{/t}></label><{$operator.timezone}></div>
+</div><!--<div class="span-5"><label><{t}>语言：<{/t}></label><{$operator.lang}></div>-->

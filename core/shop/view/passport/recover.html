@@ -1,0 +1,48 @@
+<div class="RegisterWrap clearfix">
+      <h4><{t}>取回密码第二步：邮箱确认<{/t}></h4>
+     <div class="intro"><{t}>说明：当你填写邮箱并提交后，密码会自动发到您注册的邮箱里面，请及时收邮件，取回密码！<{/t}></div>
+    <div class="form">
+
+       <form name="FORM_TPL_FORGETQUESTION" method="post" action=<{link ctl="passport" act="sendPSW"}>>
+     <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-top:20px;">
+          <tr>
+            <th style="width:200px;"><{t}>您的用户名：<{/t}></th>
+            <td><{$data.uname}><input type=hidden name=uname value="<{$data.uname}>" /></td>
+          </tr>
+          <{if $data.pw_question}>
+          <tr>
+            <th style="width:200px;"><{t}>取回密码问题：<{/t}></th>
+            <td><{$data.pw_question}></td>
+          </tr>
+          <tr>
+            <th style="width:200px;"><{t}>取回密码答案：<{/t}></th>
+            <td><{input name=pw_answer class="inputstyle" }></td>
+          </tr>          
+          <{/if}>
+          <tr>
+            <th style="width:200px;"><{t}>请输入您的邮箱：<{/t}></th>
+            <td><{input name=email class="inputstyle" }></td>
+          </tr>   
+          <tr>
+            <th>&nbsp;</th>
+            <td><input  type="submit" class="buttonstyle" value="提 交" /></td>
+          </tr>                      
+        </table>
+   
+    </div>
+    
+    
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+

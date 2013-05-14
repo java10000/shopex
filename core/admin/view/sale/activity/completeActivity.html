@@ -1,0 +1,12 @@
+
+<div class="tableform">
+  <h4><{if $action=="edit"}><{t}>编辑<{/t}><{else}><{t}>添加<{/t}><{/if}><{t}>促销活动成功！<{/t}></h4>
+  <div class="success"><{t}>您已经成功的<{/t}><{if $action=="edit"}><{t}>编辑<{/t}><{else}><{t}>添加<{/t}><{/if}><{t}>了促销活动：<{/t}><strong><{$pmta.pmta_name}></strong><br/>
+    接下来您可以为此促销活动<{if $action=="edit"}>编辑<{else}>添加<{/if}>相应的促销规则，规则可以是一条也可以是多条，譬如买300送20、全场打9折等等。 </div>
+  
+  <div class="table-action">
+<{if $action!="edit"}><{button label="添加促销规则" href="index.php?ctl=sale/promotion&act=addPromotion&p[0]=0&p[1]={$pmta.pmta_id}"}><{/if}>
+</div>
+
+
+</div>

@@ -1,0 +1,85 @@
+<form action="" id="catEditor" method="post">
+    <{area inject=".mainHead"}>
+	<{if $path != $lastpath}>
+        <div class="action-bar"><span class="sysiconBtn addorder" onclick="W.page('index.php?ctl=system/tmpimage&act=index&theme=<{$lastpath}>')"><{t}>返回上级目录<{/t}></span>
+           </div>
+    <{/if}>
+        <div class='gridlist-head mainHead'>
+            <div class='span-2'><{t}>示意图<{/t}></div>
+            <div class='span-4' ><{t}>模板名称<{/t}></div>
+            <div class='span-2'><{t}>后缀名<{/t}></div>
+            <div class='span-2'><{t}>文件类型<{/t}></div>
+            <div class='span-2'><{t}>编辑<{/t}></div>
+            <div class='span-2'><{t}>删除<{/t}></div>
+
+        </div>
+    <{/area}>
+    <div id="cat_tree" class='gridlist'>
+
+    <{foreach from=$file item=item name="item"}>
+    <div depath="<{$item.step}>" class="clear_cat row" cid="<{$item.cat_id}>" pid="<{$item.pid}>">
+         <div class='row-line'>
+         <{if $item.filetype eq "css"}>
+         <div class='span-2'><span class="opt"><{img src="images/bundle/tupian_4.gif" border="0" alt="图标"}></span></div>
+         <{elseif $item.filetype eq "Folder"}>
+         <div class='span-2'><span class="opt"><{img src="images/bundle/tupian_1.gif" border="0" alt="图标"}></span></div>
+         <{elseif $item.filetype eq "xml"}>
+         <div class='span-2'><span class="opt"><{img src="images/bundle/tupian_5.gif" border="0" alt="图标"}></span></div>
+         <{elseif $item.filetype eq "html"}>
+         <div class='span-2'><span class="opt"><{img src="images/bundle/tupian_3.gif" border="0" alt="图标"}></span></div>
+         <{elseif $item.filetype eq "jpg" || $item.filetype eq "gif" || $item.filetype eq "bmp" || $item.filetype eq "jpeg"}>
+         <div class='span-2'><span class="opt"><{img src="images/bundle/tupian_6.gif" border="0" alt="图标"}></span></div>
+         <{elseif $item.filetype eq "js"}>
+         <div class='span-2'><span class="opt"><{img src="images/bundle/tupian_2.gif" border="0" alt="图标"}></span></div>
+         <{else}>
+         <div class='span-2'><span class="opt"><{img src="images/bundle/tupian_7.gif" border="0" alt="图标"}></span></div>
+         <{/if}>
+
+         <{if $file.filetype eq "css" ||$file.filetype eq "html"||$file.filetype eq "xml"||$file.filetype eq "js"}>
+         <div class='span-4' onclick="W.page('index.php?ctl=system/tmpimage&act=detail&p[0]=<{$path}>-<{$item.name}>')"><span class="quiet"  ><{$item.name}></span></div>
+         <{elseif $file.filetype eq "Folder"}>
+         <div class='span-4' onclick="W.page('index.php?ctl=system/tmpimage&act=detail&p[0]=<{$path}>-<{$item.name}>')"><span class="quiet"  ><{$item.name}></span></div>
+         <{else}>
+         <div class='span-4' onclick="W.page('index.php?ctl=system/tmpimage&act=detail&p[0]=<{$path}>-<{$item.name}>')"><span class="quiet"  ><{$item.name}></span></div>
+          <{/if}>
+
+          <div class='span-2'><span class="quiet" style="padding:0 5px"><{$item.filetype}></span></div>
+          <div class='span-2'><span class="quiet" style="padding:0 5px"><{$item.memo}></span></span></div>
+
+         <{if $file.filetype eq "css" ||$file.filetype eq "html"||$file.filetype eq "xml"||$file.filetype eq "js"}>
+         <div class='span-2'><span class="opt" onclick="W.page('index.php?ctl=system/tmpimage&act=detail&p[0]=<{$path}>-<{$item.name}>')" ><{img src="images/bundle/editcate.gif" border="0" alt="编辑"}></span></div>
+         <{elseif $file.filetype eq "Folder"}>
+         <div class='span-2'><span class="opt" onclick="W.page('index.php?ctl=system/tmpimage&act=index&theme=<{$path}>/<{$item.name}>')" ><{img src="images/bundle/editcate.gif" border="0" alt="编辑"}></span></div>
+         <{else}>
+         <div class='span-2'><span class="opt" onclick="W.page('index.php?ctl=system/tmpimage&act=detail&p[0]=<{$path}>-<{$item.name}>')" ><{img src="images/bundle/editcate.gif" border="0" alt="编辑"}></span></div>
+          <{/if}>
+          <div class='span-2'>
+	          <{if SHOP_DEMO}>
+	          <span class="opt"><{t}>禁止<{/t}></span>
+	          <{else}>
+	          <span class="opt" onclick="deleteR('index.php?ctl=system/tmpimage&act=delete_file&theme=<{$path}>&p[0]=<{$path}>/<{$item.name}>')"><{img src="images/bundle/delecate.gif" border="0" alt="删除"}></span>
+	          <{/if}>
+         </div>
+         </div>
+        </div>
+        <{/foreach}> </div>
+    <{area inject=".mainFoot"}>
+    <div class="footer">
+        <table cellspacing="0" cellpadding="0" border="0" align="center" class="table-action">
+            <tr>
+                <td><b class="submitBtn">
+
+                    </b></td>
+            </tr>
+        </table>
+    </div>
+    <{/area}>
+</form>
+<script>
+function deleteR(path){
+    if(confirm('您确定要删除该文件?(删除后将不可恢复)')){
+    W.page(path);
+    W.page('index.php?ctl=system/tmpimage&act=index&theme=<{$path}>');
+    }
+}
+</script>

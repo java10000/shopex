@@ -1,0 +1,99 @@
+<form id="autoSyncForm" action="index.php?ctl=distribution/autosync&act=addSave"  method="POST"  >
+<div class="tableform" id="autosync-rule-info">
+<div class="division">
+   <{if $rule_id}>
+     <input type="hidden" name="rule_id" value="<{$rule_id}>">
+   <{/if}>
+   <table width="100%" border="0" cellpadding="0" cellspacing="0">
+      <tr>
+        <th><{t}>当供应商的操作为:<{/t}></th>
+        <td> 
+            <div style="float:left;">
+            <!-- <select name="supplier_op_id" id="supplier_op_id">
+                 <option value="0">--请选择--</option>
+                 <{foreach from=$supplier_op_list key=key item=op}>
+                      <option value='<{$key}>' <{if $key == $rule_info.supplier_op_id}>selected<{/if}>><{$op.name}></option>
+                 <{/foreach}>
+            </select>
+                 -->
+                 <input type="hidden" name="supplier_op_id" value="11">同步操作
+            </div>
+            <div style="float:right;display:none;">
+               <span class="sysiconBtn" id="autosync-rule-add">添加规则</span>
+            </div>
+        </td>
+         
+     </tr>
+  </table>
+</div>
+  
+<div class="division" style="display:none;">
+   <table width="100%" border="0" cellpadding="0" cellspacing="0">
+     <tbody id="autosync-rule-list">
+       <{foreach from=$rule_list item=rule}>
+           <tr>
+              <th><{t}>请选择供应商:<{/t}></th>
+              <td width="200">
+                <!--  <select name="rule[supplier_id][]" onchange="changeSupplier(this);"> -->
+                 <select name="rule[supplier_id][]" >
+                      <!-- <option value="0">所有</option> -->
+                      <{foreach from=$supplier_list item=supplier}>
+                            <option value="<{$supplier.supplier_id}>" <{if $supplier.supplier_id == $rule.supplier_id}>selected<{/if}>><{$supplier.supplier_brief_name}></option>
+                      <{/foreach}>
+                 </select>
+              </td>
+              <td><img style="cursor: pointer;" onclick="deleteRuleItem(this)" class="operater" alt="删除" src="../statics/icons/icon_delete.gif"></td>
+              <td width="200" class="_x_to_pline_value" style="display:<{if $rule_info.supplier_op_id==10}>none<{else}>''<{/if}>">
+                 <!-- <{if $rule.supplier_id}>
+                     <select name="rule[pline_id][]">
+                          <option value="0">所有</option>
+                          <{foreach from=$rule.pline_list item=pline key=key}>
+                               <option value="<{$key}>" <{if $key == $rule.pline_id}>selected<{/if}>><{$pline.pline_name|escape:'html'}></option>
+                          <{/foreach}>
+                     </select>
+                 <{else}>
+                     <select name="rule[pline_id][]" ><option value="0" selected>所有</option></select>
+                 <{/if}> -->
+              </td>
+              <td></td>
+           </tr>
+       <{/foreach}>
+      </tbody>
+   </table>
+</div>
+    
+<div class="division">
+    <table width="100%" border="0" cellpadding="0" cellspacing="0">
+        <tr>
+            <th><{t}>本地操作:<{/t}></th>
+            <td><span id="local_op_span">
+               <!-- <{if $local_op_list}>
+                   <{foreach from=$local_op_list item=local_op}>
+                        <label><input type="radio" name="local_op_id" <{if $local_op.checked}>checked<{/if}> value="<{$local_op.op_id}>"><{$local_op.op_name}></label>
+                   <{/foreach}>
+               <{else}>
+                   <{t}>请选择供应商的操作<{/t}>
+               <{/if}>-->
+               <span id="local_op_span"> 
+               <label><input type="radio" value="0" <{if 0==$rule_info.local_op_id }> checked="" <{/if}> name="local_op_id">手动操作</label>  
+               <label><input type="radio" value="11" <{if 11==$rule_info.local_op_id }> checked="" <{/if}> name="local_op_id">自动同步</label> </span>
+            </span></td>
+        </tr>
+        <tr>
+            <th><{t}>细节操作:<{/t}></th>
+            <td><{$rule_detail}></td>
+        </tr>
+        <tr>
+            <th><{t}>备注:<{/t}></th>
+            <td><textarea name="memo" style="width: 500px; height: 120px;"><{$rule_info.memo}></textarea></td>
+        </tr>
+    </table>
+</div>
+
+<table border="0" align="center" cellpadding="0" cellspacing="0" class="tableAction">
+    <tr>
+       <td><b class="submitBtn" ><input  type="submit" value="保存"></b></td>
+    </tr>
+</table>
+</div>
+</form>

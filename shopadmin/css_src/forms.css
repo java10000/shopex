@@ -1,0 +1,134 @@
+/* -------------------------------------------------------------- 
+   
+   forms.css
+   * Sets up some default styling for forms
+   * Gives you classes to enhance your forms
+   
+   Usage:
+   * For text fields, use class .title or .text
+   
+-------------------------------------------------------------- */
+fieldset { padding:1.4em; margin: 0 0 1.5em 0; border: 1px solid #ccc; }
+legend { font-weight: bold; font-size:1.2em; }
+/* Form fields
+-------------------------------------------------------------- */
+
+input.text,
+input.title { width: 200px; padding:2px; font-size:1em; }
+textarea { padding:5px; font-size:1em; }
+input.shadow { background:#FFFFFF url(../images/inputbox-bg.gif) no-repeat 0 0; border-color:#7C7C7C #CECECE #C3C3C3 #7C7C7C; border-style:solid; border-width:1px; font-family:verdana; padding:2px; }
+/*----------------------------------------------------------------
+ 表格form
+ ------------------------------------------------------------------*/
+.tableform { background: #efefef; margin: 10px; padding:5px; border-top: 1px solid #ddd; border-left: 1px solid #ddd; border-right: 1px solid #bec6ce; border-bottom: 1px solid #bec6ce; }
+.tableform h2 span { color: #777; font-weight: normal; }
+.tableform h3 span { font-weight: normal; float: right; }
+.tableform .assis { font-weight: normal; color: #000; }
+.tableform h3 span a { color: #777; font-weight: normal; }
+.tableform .division td a { padding: 2px 5px 0 5px; margin: 0 3px; color: #000; line-height: 20px; }
+.tableform .intro { color: #369; padding-left: 15px; }
+.widgetconfig {  1margin: 10px 0;
+}
+.widgetconfig .division { margin: 0 0 10px 0; }
+.widgetconfig th { width: 20%; padding: 0.3em 0 0 0; }
+.widgetconfig h4 { padding: 5px; color: #003366; font-size: 1em; }
+.FloatForm ul li { float: left; margin: 3px 20px 3px 0; }
+.FloatTableData { border: 1px solid #ccc; float: left; width: 170px; margin: 5px; }
+.FloatTableData th,
+.FloatTableData td { padding: 3px; white-space: nowrap; }
+.FloatTableData th { text-align: right; }
+.FloatTableData .image { height: 120px; text-align: center; }
+
+.division { border-top: 1px solid #ccc; border-left: 1px solid #ccc; border-right: 2px solid #bec6ce; border-bottom: 2px solid #bec6ce; background: #fff; margin: 10px; padding:5px; line-height: 150%; white-space:normal; }
+.division .shopping_setting th { width:190px; }
+.division table { margin:0; padding:0; }
+.division label { text-align: right; white-space: nowrap; width: 150px; display:block; float:left; }
+.division th,
+.division td { padding: 5px; vertical-align:top; border-right:1px solid #DBE2E7; border-left:1px solid #fff; border-bottom:1px solid #ddd; border-top:1px solid #fff; }
+.division th { text-align: right; white-space: nowrap; width:140px; background:#E2E8EB; font-size:14px; border-right:1px solid #ccc; }
+.division .shop-setting th { width:190px; }
+.division td { white-space:normal; }
+.division td label,
+.division div label { display:inline; float:none; white-space: normal; }
+.division ul,
+.division ul li { list-style:none; padding:0; margin:0; }
+.division ul li { border-bottom:1px solid #efefef; padding:2px; }
+.helptips { font-size:14px; border-bottom:1px dotted #f90; cursor:pointer; }
+.division .info { color:#b6b6b6; margin-left:5px; }
+.section h4 { color:#003366; padding:3px 10px; margin:0 0 5px;}
+/* Success, notice and error boxes
+-------------------------------------------------------------- */
+
+.error,
+.notice,
+.note,
+.success { padding: .8em; margin-bottom: 1em; border: 2px solid #ddd; font-size:1em; }
+.error { background: #FBE3E4; color: #8a1f11; border-color: #FBC2C4; }
+.notice { background: #FFF6BF; color: #514721; border-color: #FFD324; }
+.success { background: #E6EFC2; color: #264409; border-color: #C6D880; }
+.note { background: #efefef; color: #666; border-color: #ccc; }
+.error a { color: #8a1f11; }
+.notice a { color: #514721; }
+.success a { color: #264409; }
+.note a { color: #000; }
+.notice-inline { padding-left:5px; color:#666; margin-left:10px; }
+.notice-inline-icon { background:url(../images/notice_inline.gif) no-repeat 0 0; padding-left:15px; color:#666; margin-left:5px; font-weight:normal; font-size:12px; }
+/* tables items
+-------------------------------------------------------------- */
+colgroup { white-space:nowrap; }
+.Colsn { width:36px; background:#efefef; }
+.Colauto { width:auto; }
+.Colordernum { width:100px; background:#efefef; }
+.Colgoodsid { width:120px; background:#efefef; }
+.Coldate { width:100px; background:#eef4fb }
+.Colamount,
+td.Colamount { width:60px; text-align:right; font-weight:700; background:#F8FAFC; text-align:right; }
+.Coloption-1b { background:#f4fdf6; width:55px; }
+.Coloption-2b { background:#f4fdf6; width:150px; }
+.Colname,
+.Colcategory { width:120px; }
+.Collongname { width:220px; }
+.Coldetails,
+td.Coldetails { text-align:left; white-space:normal; }
+.tagEditor { background: #E7EFF5 url(../images/sysrightbackgroud.gif) repeat-x; white-space:normal; height:150px; border:1px solid #ccc; overflow:auto; margin-bottom:10px; padding:4px; }
+.tagEditor span { background: url(../images/functionareabg.gif) 0 -23px; padding:2px 4px; margin:2px 2px 0 0; cursor: pointer; color: #000; text-decoration: none; border-top: 1px solid #fff; border-left: 1px solid #fff; border-right: 1px solid #bec6ce; border-bottom: 1px solid #bec6ce; outline:none; float:left; height:20px; line-height:20px; white-space:nowrap; }
+.tagEditor span:hover { background:#FFFFFF; color:#000; }
+.tagEditor span.checked { background:#FFFFFF; border-color:#BEC6CE rgb(255, 255, 255) rgb(255, 255, 255) rgb(190, 198, 206); border-style:solid; border-width:1px; color:#000; }
+b.tag { padding:0 2px; border:1px solid #ccc;border-bottom-color:#e9e9e9;border-right-color:#e9e9e9; color:#4E6A81; background:#F1F4F7; margin-right:3px; font-weight:400; -moz-border-radius:4px;-webkit-border-radius:4px;}
+.mx-tabber .t-handle { background:#666; color:#fff; border:1px solid #666; }
+.mx-tabber .t-handle-current { border:1px solid #666; border-bottom:none; }
+#all-pics { margin:5px 0; }
+.idata td,
+.idata th { background:#ffd; }
+
+
+/* data table style
+-------------------------------------------------------------- */
+.liststyle              { border: 1px solid #ddd;	width:100%;	margin:0;}
+.liststyle a            { padding-right:5px; text-decoration:underline;}
+.liststyle a.lnk        { text-decoration:none;}
+.liststyle thead th     {text-align:center;	font-size:12px; white-space:nowrap;	font-weight:700;background:url(tablethbg.gif);	
+						 border-bottom:1px solid #ccc;	border-top:1px solid #fff;	border-right:1px solid #ddd;	border-left:1px solid #fff;
+						 padding:4px 3px;}/*定义列表的头部*/
+.liststyle  td, 
+.liststyle  th          {padding:4px;  word-break:break-word; text-align:center;
+				        border-right:1px solid #ddd;	border-left:1px solid #fff;	border-bottom:1px solid #ddd;	border-top:1px solid #fff;}
+
+
+/*定义data型表格，th居右对齐，td居左对齐*/
+.liststyle.data td, 
+.liststyle.data th      {word-break:break-word;}				
+.liststyle.data tbody th      {text-align:right;color:#000; font-size:14px;} 
+.liststyle.data td      {text-align:left;}	
+.liststyle.data .colspan{ text-align:center; border-bottom:1px solid #aaa;border-top:1px solid #fff; color:#000; font-weight:700;}	/*用于整个通栏的td，使用了colspan的td*/
+/*表格下方的操作区域*/
+.liststyle_option       {}
+.liststyle_option th,
+.liststyle_option td    {padding:5px; text-align:center; background:#eee; text-align:left;}
+
+.liststyle .viewpic     {text-indent:-9999px; display:block;width:20px;height:20px; background:url(goodsgallary_icon.gif) 0 -25px no-repeat;}
+.liststyle .addtocart   {text-indent:-9999px; display:block;width:20px;height:20px; background:url(goodsgallary_icon.gif) 0 -100px no-repeat;}
+.liststyle .phone-group li{list-style:none;line-height:30px;}
+
+#checkout-recaddr th { background:#fff;}
+.FormWrap h3 { font-size:14px;}

@@ -1,0 +1,53 @@
+<div class="action-bar" >
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="sentmailsetting">
+      <tr>
+        <td>
+        <div class="actionItems">
+            <h3><{t}>总体配置<{/t}></h3>
+            <div class="func">
+                <a  href="index.php?ctl=member/messenger&act=index" <{if $smarty.get.act eq 'index'}> class="sysiconBtnNoIcon editing"<{else}>class="sysiconBtnNoIcon"<{/if}>>
+                    <{t}>配置首页<{/t}>
+                </a>
+            </div>
+        </div>
+        </td>
+        
+    <{foreach from=$messenger item=item key=key}>
+    <{*if $item.class<>'messenger_email'*}>
+    <td>
+
+    <div class="actionItems">
+        <h3><{$item.name}></h3>
+        <div class="func">
+            <a href="index.php?ctl=member/messenger&act=outbox&p[0]=<{$key}>"<{if $smarty.get.act eq 'outbox'&&$smarty.get.p.0 eq $key}> class="sysiconBtnNoIcon editing"<{else}>class="sysiconBtnNoIcon"<{/if}>>
+                <{t}>发件箱<{/t}>
+            </a>
+            
+            <{if !$item.withoutQueue}>
+                <a   href="index.php?ctl=member/messenger&act=queue&p[0]=<{$key}>"<{if $smarty.get.act eq 'queue'&&$smarty.get.p.0 eq $key}> class="sysiconBtnNoIcon editing"<{else}>class="sysiconBtnNoIcon"<{/if}>>
+                    <{t}>队列<{/t}>
+                </a>
+            <{/if}>
+            
+            <{if $item.hasOptions}> <a href="index.php?ctl=member/messenger&act=config&p[0]=<{$key}>"<{if $smarty.get.act eq 'config'&&$smarty.get.p.0 eq 'email'}> class="sysiconBtnNoIcon editing"<{else}>class="sysiconBtnNoIcon"<{/if}>>
+                <{t}>配置<{/t}>
+            </a>
+            <{/if}>
+            
+            <{if $item.outgoingOptions}>
+                <a href="<{$item.outgoingOptions}>" target="_blank" class="sysiconBtnNoIcon">
+                    <{t}>配置<{/t}>
+                </a>
+            <{/if}>
+        </div>
+    </div>
+
+    </td>
+    <{*/if*}>
+    <{/foreach}>
+    </tr>
+    </table>
+</div>
+
+<{include file=$__show_page__}>
+

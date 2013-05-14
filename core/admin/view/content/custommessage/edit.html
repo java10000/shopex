@@ -1,0 +1,30 @@
+<form action='index.php?ctl=content/custommessage&act=save' method='post' class="tableform">
+<div class="division">
+<{if $var.var_name}><input type="hidden" name="is_editing" value="1"><{/if}>
+<input type='hidden' name='var_name' value="<{$var.var_name}>" />
+<table cellspacing="0" cellpadding="0" border="0" width="100%">
+  <tbody>
+  <tr>
+    <th><{t}>名称：<{/t}></th>
+    <td><{$var.var_title}></td>
+  </tr>
+  <tr>
+    <th><{t}>位置：<{/t}></th>
+    <td><{$var.var_remark}></td>
+  </tr>
+  </tbody>
+  </table>
+  </div>
+
+<div class="division">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <th><{t}>自定义内容：<{/t}></th>
+    <td><{input type='html' name='var_value' value=$var.var_value}></td>
+  </tr>
+</table>
+
+</div>
+<div class="table-action"> <button class="btn" type="submit"><span><span>保存</span></span></button> </div>
+
+</form>

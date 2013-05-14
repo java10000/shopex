@@ -1,0 +1,46 @@
+<div class="ItemsWarp clearfix">
+  <div class="GoodsInfoWrap PackageGoodsWrap"> <{foreach from=$package item="itemlist"}>
+    <div class="items clearfix">
+      <h3><{$itemlist.name}></h3>
+      
+      <{if $itemlist.intro}>
+         <div class='desc'><{$itemlist.intro}></div>
+      <{/if}>
+      
+      <div class="span-6">
+      <div class="boxBlue">
+        <div class="division">
+        <ul class="clearfix">
+          <li ><div class="span-2"><{t}>原价：<{/t}></div><strong class="mktprice1"><{$itemlist.mktprice|cur}></strong></li>
+          <li ><div class="span-2"><{t}>捆绑价：<{/t}></div><strong class="price1"><{$itemlist.price|cur}></strong></li>
+          <{if $itemlist.mktprice > $itemlist.price && $setting.mktprice && $setting.saveprice > 0}>
+          <li class="save"><div class="span-2"></div>
+            <{if $setting.saveprice == 1}><{t}>节省：<{/t}><strong><{$itemlist.mktprice-$itemlist.price|cur}></strong>
+            <{elseif $setting.saveprice == 2}><{t}>优惠：<{/t}><strong><{$itemlist.price/$itemlist.mktprice*100|number:'2'}>%
+            <{elseif $setting.saveprice == 3}><strong><{$itemlist.price/$itemlist.mktprice*10|number:'1'}>折
+			<{/if}></strong></li>
+            
+          <{/if}> 
+          <li class="textcenter"><a class="actbtn btn-buy" href="<{link ctl="cart" act="addPkgToCart" arg0=$itemlist.goods_id}>"><{t}>购买<{/t}></a></li>
+          </ul>
+         </div>
+      </div>
+      </div>
+      
+      
+      <div class="push-6">
+      <h4><{t}>此捆绑促销包括：<{/t}></h4>
+        <ul class="list">
+          <{foreach from=$itemlist.items item="items"}>
+          <li><a href="<{link ctl="product" act="index" arg0=$items.p_goods_id}>" target="_blank"><{$items.name}></a><br />
+            <{t}>数量:<{/t}><strong class="fontcolorBlue"><{$items.pkgnum}></strong><{t}> 单价:<{/t}><strong class="fontcolorBlue"><{$items.price|cur}></strong></li>
+          <{/foreach}>
+        </ul>
+      </div>
+      
+      
+      
+      <!--  <ul class="button"><li title="<{$itemlist.name}>" star="<{$itemlist.goods_id}>" class="star-off"><a class="listact" onclick="return false;" href="#"><{t}>加入收藏<{/t}></a></li><li class="vdetail"></li><li class="addcart"></li></ul>-->
+    </div>
+    <{/foreach}> </div>
+  <{pager data=$pager}> </div>

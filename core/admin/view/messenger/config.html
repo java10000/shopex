@@ -1,0 +1,49 @@
+<form action="index.php?ctl=member/messenger&act=saveCfg" method="post" class="tableform" id='messengerconfig' target="{update:'messagebox'}">
+    <input type="hidden" name="messenger" value="<{$messengername}>" />
+    
+    <div class="division">
+        <table width="100%" cellspacing="0" cellpadding="0" border="0" id="EConfig">
+        <{foreach from=$options item=item key=key}>
+            <tr id='<{$key}>'>
+                <th><{$item.label}></th>
+
+                <td>
+                    <{if $item.type=="radio"}>
+                    <{input type=$item.type options=$item.options name="config[{$key}]" value=$item.value onclick="methodchange(this.value)"}>
+                    <{elseif 'button' == $item.type}>
+                    <{input type=$item.type options=$item.options name="config[{$key}]" value=$item.value onclick="{$item.onclick}"}>
+                    <{else}>
+                    <{input type=$item.type options=$item.options name="config[{$key}]" value=$item.value}>
+                    <{/if}>
+                </td>
+            </tr>
+        <{/foreach}>
+        </table>
+    </div>
+
+    <div class="table-action">
+        <{button label="保存" type="submit"}>
+        <{if $messengername == 'email'}>
+        <{button label="测试配置" onclick="new Dialog('index.php?ctl=member/messenger&act=testEmail&'+_S('messengerconfig').toQueryString(),{width:590,ajaksable:false})"}>
+        <{/if}>
+    </div>
+
+</form>
+
+<script>
+
+var methodchange = (function (type){
+    if ( 'smtp' == type ) {
+        for (var I=$('EConfig').rows.length-1; I>=1; $($('EConfig').rows[I]).setStyles({display:''}),I--);
+        $($('EConfig').rows[$('EConfig').rows.length-1]).setStyles({display:'none'});
+    } else if ( 'edm' == type ) {
+        for (var I=$('EConfig').rows.length-1; I>=1; $($('EConfig').rows[I]).setStyles({display:'none'}),I--);
+        $($('EConfig').rows[$('EConfig').rows.length-1]).setStyles({display:''});
+    } else if ( 'mail' == type ) {
+        for (var I=$('EConfig').rows.length-1; I>=2; $($('EConfig').rows[I]).setStyles({display:'none'}),I--);
+        for (var i=0; i<2; $($('EConfig').rows[i]).setStyles({display:''}),i++);
+    }
+    return arguments.callee;
+})('<{$options.sendway.value}>');
+
+</script>

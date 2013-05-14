@@ -1,0 +1,45 @@
+<form id='giftCatForm'  method='post' action='index.php?ctl=sale/giftcat&act=addType'>
+<div class="tableform">
+<div class="division">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <th><{t}>赠品分类名称：<{/t}></th>
+      <td><{input type='text' value=$giftcat.cat name='cat' required='true'}></td>
+    </tr>
+    </table>
+</div>
+<div class="division">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+    
+    <tr>
+      <th><{t}>发布：<{/t}></th>
+      <td><label><input type='radio' name='shop_iffb' value=1 <{if $giftcat.shop_iffb eq '1'}>checked="checked"<{/if}>><{t}>是<{/t}></label>&nbsp; &nbsp;<label><input type='radio' name='shop_iffb' value=0 <{if $giftcat.shop_iffb eq '0'}>checked="checked"<{/if}>><{t}>否<{/t}></label>&nbsp; &nbsp; <{help}><{t}>如果选择发布，前台赠品页面将显示此分类<{/t}><{/help}></td>
+    </tr>
+    <tr>
+      <th><{t}>排序：<{/t}></th>
+      <td><{input type='unsignedint' style="width:50px" value=$giftcat.orderlist name='orderlist'}></td>
+    </tr>
+  </table>
+</div>
+
+
+<div class="table-action">
+<{button label="完成" type="submit"}>
+</div>
+
+</div>
+  
+  <{if $giftcat.giftcat_id}>
+  <input type='hidden' value='<{$giftcat.giftcat_id}>' name='giftcat_id'>
+  <{/if}>
+</form>
+ <{if $env.get._finder_name}>
+ <script>
+ $('giftCatForm').store('target',{
+    update:'messagebox',
+    onComplete:function(){
+      finderGroup['<{$env.get._finder_name}>'].refresh();
+    }
+ });
+ </script>
+ <{/if}>

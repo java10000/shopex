@@ -1,0 +1,1 @@
+<a href="index.php?ctl=<?php echo $_GET['ctl']; ?>&act=showEdit&p[0]=<?php echo $this->_vars['item']['dt_id']; ?>"><img src="images/transparent.gif" class="imgbundle" style="width:15px;height:16px;background-position:0 -133px;" />编辑</a>

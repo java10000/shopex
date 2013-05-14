@@ -1,0 +1,166 @@
+<{finder}>
+
+<script>
+
+finderDestory();
+var finderOption=<{json from=$_finder}>;
+
+<{$_finder.var}> = new Finder("<{$_finder._name}>",finderOption);
+
+<{if $_finder.hasTag}>
+	(function(){
+		var options={'finderTag':$('finder-tag'),'url':"index.php?ctl="+finderOption['controller']};
+		var tags=new Tags_opt(options);
+	})();
+<{/if}>
+
+</script>
+
+<!-- 列表页顶部切换卡区域 -->
+<{if count($_finder.views)>0 && $env.get.act!="recycleIndex"}>
+    <{area inject=".mainHead"}>
+        <div class="finder-tab">
+        <{foreach from=$_finder.views item='name' key='key' name=finderTtab}>
+            <{if $key eq $smarty.get.view}>
+            <div class="tab cur <{if $smarty.foreach.finderTtab.first}>nobl<{elseif $smarty.foreach.finderTtab.iteration == 4}>nobr<{/if}>"><span><{$name}></span></div>
+            <{else}>
+            <div class="tab <{if $smarty.foreach.finderTtab.first}>nobl<{elseif $smarty.foreach.finderTtab.last}>nobr<{/if}>"><span><a href="index.php?ctl=<{$_finder.controller}>&view=<{$key}>"><{$name}></a></span></div>
+            <{/if}>
+        <{/foreach}>
+        </div>
+    <{/area}>
+<{/if}><!-- 列表页顶部切换卡区域 end -->
+
+<!-- 顶部的动作和搜索区 -->
+<{area inject=".mainHead"}>
+<div class="finder-action" id="finder-action-<{$_finder._name}>">
+    <div class="finder-action-inner clearfix">
+
+    <{if $env.get.act=="recycleIndex"}><!-- 回收站 -->
+        <{button type="link" wrapimg="true" label="返回列表" icon="finder_back.gif" href="index.php?ctl={$env.get.ctl}&act=index"}>
+        <{button type="button" wrapimg="true" confirm="确定从回收站中还原选中项" submit="index.php?ctl={$_finder.controller}&act=active" label="还原" icon="finder_trash_rev.gif" target="refresh::{onSuccess:{$_finder.var}.unselectAll.bind({$_finder.var})}" }>
+        <{button type="button" wrapimg="true" confirm="确定彻底删除选中项?删除后将不可恢复" submit="index.php?ctl={$_finder.controller}&act=delete" label="彻底删除" icon="finder_trash.gif" target="refresh::{onSuccess:{$_finder.var}.unselectAll.bind({$_finder.var})}"}>
+        <{if !$_finder.filterUnable}>
+        <{button wrapimg="true" icon="finder_filter.gif" onclick="window.finderDialog = new Dialog('index.php?ctl=editor&act=filter&object={$_finder.model}&id={$_finder._name}',{title:'筛选'})" label="筛选" }>
+        <{/if}>
+    <{else}><!-- 非回收站 -->
+        <!-- 简单搜索form区域 -->
+        <{if $_finder.searchOptions}>
+            <form class="finder-search" id="finder-search-<{$_finder._name}>" current_key="<{$_finder.searchOptions|key}>">
+                <div class="finder-search-inner">
+                    <{img class="finder-search-btn" src="images/bundle/finder_search_btn.gif" type="image" tag="input"}>
+                    <span class="finder-search-select" dropmenu="finder-keywords-<{$_finder._name}>"><label><{$_finder.searchOptions|current}></label><{img src="images/bundle/arrow-down.gif"}></span><input  class="finder-search-input" type="text" search="true" autocomplete="off" size="20" maxlength="40" />
+                </div>
+            </form>
+            <style>
+            #finder-keywords-<{$_finder._name}>{height:auto !important;}
+            </style>
+            <div id="finder-keywords-<{$_finder._name}>" class="x-drop-menu" style="width:auto;">
+                <ul class="group">
+                <{foreach from=$_finder.searchOptions item=item key=key}>
+                <li class="item" value="<{$key}>" onclick="$('finder-search-<{$_finder._name}>').set('current_key','<{$key}>').getElement('label').innerHTML='<{$item}>'"><{$item}></li>
+                <{/foreach}>
+                </ul>
+            </div>
+        <{/if}>
+        
+        <{if $_finder.finder_action_tpl}>
+        <{include file=$_finder.finder_action_tpl}>
+        <{/if}>
+        
+        <{button type="button" wrapimg="true" label="刷新" icon="finder_refresh.gif" onclick="{$_finder.var}.refresh()"}>
+
+        <!-- action 删除、回收站 -->
+        <{if $_finder.deleteAble}>
+            <{if !$_finder.noRecycle}>
+            <{button type="button" wrapimg="true" label="删除" target="refresh::{onSuccess:{$_finder.var}.unselectAll.bind({$_finder.var})}" icon="finder_trash.gif" confirm="确定删除选中项？删除后可进入回收站恢复" only_id="true" submit="index.php?ctl={$_finder.controller}&act=recycle&cat_id={$cat_id}"}>
+            <{button type="link" wrapimg="true" label="回收站" icon="finder_view_trash.gif" href="index.php?ctl={$env.get.ctl}&act=recycleIndex"}>
+            <{else}>
+            <{button type="button" wrapimg="true" label="删除" target="refresh::{onSuccess:{$_finder.var}.unselectAll.bind({$_finder.var})}" icon="finder_trash.gif" confirm="确定删除选中项？删除后无法恢复" only_id="true" submit="index.php?ctl={$_finder.controller}&act=delete"}>
+            <{/if}>
+        <{/if}>
+
+        <!-- action 标签操作区域 -->
+        <{if $_finder.hasTag}>
+            <{button type="dropmenu" wrapimg="true" label="标签" icon="finder_tag.gif" dropmenu_opts="relative:{$_finder.var}.action" dropmenu="finder-tag"}>
+            
+            <div id="finder-tag" class="x-drop-menu tag-editor">
+                <ul class="tag-editor-group"></ul>
+                <div class="tag-editor-btns">
+                    <span class="sysiconBtnNoIcon btn-create-tag"><span>新建</span></span>
+                    <span class="sysiconBtnNoIcon btn-apply"><span>应用</span></span>
+                    <span class=" btn-tag-manage"><a href="index.php?ctl=<{$env.get.ctl}>&act=tagmgr">编辑器...</a></span>
+                </div>
+                
+                <div class="dialogTag" style="display:none">  
+                    <p>请输入一个新的标签名称：</p>          
+                    <input type="text" maxlength="20" class="tag-editor-value"/>
+                    <div style="margin:20px 10px 0;float:right"><span class="sysiconBtnNoIcon btnSmt">确定</span>
+                    <span class="sysiconBtnNoIcon btnCancel">取消</span></div>               
+                </div>
+                        
+                <ul class="theme_tag" style="display:none">
+                    <li class="selected_none"><{img src="images/bundle/tag_none.gif"}></li>
+                    <li class="selected_part"><{img src="images/bundle/tag_part.gif"}></li>
+                    <li class="selected_all"><{img src="images/bundle/tag_all.gif"}></li>
+                </ul>
+            </div>
+        <{/if}>
+        
+        <{if $_finder.allowExport}>
+        <{button type="button" wrapimg="true" label="导出" only_id="true" icon="finder_io.gif" submit="index.php?ctl={$env.get.ctl}&act=export" target="dialog::{height:200,width:280}"}>
+        <{/if}>
+        
+        <{if $_finder.allowImport}>
+        <{button type="button" wrapimg="true" label="导入" icon="finder_io.gif" href="index.php?ctl={$env.get.ctl}&act=import"}>
+        <{/if}>
+        
+        <{if !$_finder.filterUnable}>
+        <{button wrapimg="true" icon="finder_filter.gif" onclick="window.finderDialog = new Dialog('index.php?ctl=editor&act=filter&object={$_finder.model}&id={$_finder._name}',{title:'筛选'})" label="筛选" }>
+        <{/if}>
+        
+        <{if count($_finder.listViews)>1}>
+            <{foreach from=$_finder.listViews item="tpl" key=key}>
+            <button class="btn" type="button" onclick="<{$_finder.var}>.request({method:'post',data:{lister:'<{$key}>'}})">
+                <span><span><i class="finder-icon"><{img src=$tpl.icon}></i><{$tpl.name}></span></span>
+            </button>
+            <{/foreach}>
+        <{/if}>
+        
+        <!-- 其他自定义动作 -->
+        <{if count($_finder.customActions) > 0}>
+            <{foreach from=$_finder.customActions item="action"}>
+                <{include file=$action.tpl}>
+            <{/foreach}>
+        <{/if}>
+    <{/if}><!-- 非回收站 结束 -->
+    </div><!-- finder-action-inner end -->
+</div>
+
+<!-- 当前过滤条件区域 -->
+<form id="finder-form-<{$_finder._name}>" action='index.php?ctl=<{$env.get.ctl}>&act=<{$env.get.act}>&view=<{$env.get.view}>' method='post'>
+    <div class="finder-filter clearfix" style='display:none;'>
+        <strong><{t}>当前过滤条件(<{/t}><span class="lnk" onclick="<{$_finder.var}>.filter.reset().change()"><{t}>清除<{/t}></span>)</strong>
+        <ul class='finder-filter-info'>
+          <li class="ffitpl"><span>root</span><{img src="images/bundle/finder_drop_arrow_close.gif" class='remove'}></li>      
+        </ul>
+    </div>
+    <input name="_finder[select]" value="<{$_finder.select}>" type="hidden" />
+    <input name="_finder[_name]" value="<{$_finder._name}>" type="hidden" />
+
+    <input name="_finder[in_pager]" value="1" type="hidden" />
+    <{toinput from=$_finder.viewParams}>
+    <{toinput from=$_finder.params}>
+</form>
+<{/area}><!-- 顶部的动作和搜索区 end -->
+
+<!-- 数据区域 -->
+<{include file="finder/lister.html#{$env.get.ctl}"}>
+
+<!-- 底部 列表页内显示详细区域 -->
+<{area inject=".mainFoot"}>
+<div id="finder-detail-<{$_finder._name}>" class="finder-detail" finder="<{$_finder.var}>">
+    <div class='finder-detail-content' container='true'></div>
+</div>
+<{/area}><!-- 底部 列表页内显示详细区域 end -->
+

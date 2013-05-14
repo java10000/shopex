@@ -1,0 +1,8 @@
+<input type="hidden" name="supplier_id" value="<{$supplier_id}>">
+<{foreach from=$sItem.po item=poItem key=po_id}>
+<div class="tableform k_three x-po-detail" po_id="<{$po_id}>"  style="margin:10px 0px 0px; border-left-width: 4px;">
+  <{include file="order/po_detail.html"}>
+</div>
+<{/foreach}>
+<script>
+</script>

@@ -1,0 +1,14 @@
+<div class="colfilter" style="display:nsone">
+<table>
+<tr>
+  <td><label for="aaa"><{t}>文章分类<{/t}></label>
+    <select id="aaa" name="node_id[]" size="5" multiple="multiple" id="select">
+      <option style="font-weight:bold" value="_ANY_" selected="selected"><{t}>任意分类<{/t}></option>
+      <{foreach from=$filter.article_cat item=cat name="_s"}>
+      <option<{if $smarty.foreach._s.iteration is odd}> class="row2"<{/if}> value="<{$cat.node_id}>"><{$cat.title}></option>
+      <{/foreach}>
+    </select>
+  </td>
+</tr>
+</table>
+</div>

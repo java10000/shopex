@@ -1,0 +1,370 @@
+
+<div class="goods-spec-cell" >
+<h4><{t}>规格<{/t}><{help docid="71" type="link"}><{t}>点击查看帮助<{/t}><{/help}></h4>
+    <div class='clearfix note' style='border:none;'>
+       <div class='span-auto'><span class="sysiconBtn addorder addproduct"><{t}>添加一个货品<{/t}></span></div>
+       <div class='span-auto'><{help docid="80" type="link-small"}><{t}>点击查看货品说明<{/t}><{/help}></div>
+       <div class='span-auto'><span class="sysiconBtn edit selectspec"><{t}>选择规格项<{/t}></span><span class="sysiconBtn delete closespec"><{t}>关闭规格<{/t}></span></div>
+    </div>
+	<table cellspacing="0" cellpadding="0" border="0" class="gridlist">
+		<thead id="productNodeTitle">
+			<tr>
+				<th><{t}>货号<{/t}></th>
+				<{foreach from=$specname item=snItem key=key}>
+				<th><{$snItem.spec_name|escape:'html'}>
+					<input type="hidden" name="vars[<{$key}>]" value="<{$snItem.spec_name|escape:'html'}>" />
+				</th>
+				<{/foreach}>
+				
+				<{foreach from=$spec.idataInfo item=item key=key}>
+				<th class="idata" ><{$item}>
+					<input type="hidden" name="idataInfo[<{$key}>]" value="<{$item}>" /></th>
+				<{/foreach}>
+				<th ><{t}>库存<{/t}></th>
+				<th ><{t}>销售价<{/t}></th>
+				<th><{t}>成本价<{/t}></th>
+				<th><{t}>市场价<{/t}></th>
+				<th><{t}>重量<{/t}></th>
+<{if $env.conf.storeplace.display.switch}>
+				<th><{t}>货位<{/t}></th>
+<{/if}>
+				<th><{t}>上架<{/t}></th>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<tbody id='productNode'>
+		<{foreach from=$goods.products item=pro key=id}>
+		<input type="hidden" name="source_bn[<{$pro.bn}>]" value="1"/>
+		<tr>
+			<td><input type="hidden" name="old_bn[]" value="<{$pro.bn}>"/><input type="text" size=15 name="bn[]" value="<{$pro.bn}>"/></td>
+			<{if $fromType == 'create'}>
+			<{foreach from=$pro.sel_spec item=sitem }>
+			<td><div class="select-spec-unselect goods-spec-selected" specid="<{$sitem.spec_id}>"><{ if $sitem.spec_type == 'text' }><span><{$sitem.spec_value}></span> <{else}>
+					<{if $sitem.spec_image}>
+					<center>
+						<img width="20" height="20" src="<{$sitem.spec_image|storager}>" alt="<{$sitem.spec_value}>" title="<{$sitem.spec_value}>"/>
+					</center>
+					<{elseif $goods.spec_value_image[$sitem.spec_value_id]}>
+					<center>
+						<img width="20" height="20" src="<{$goods.spec_value_image[$sitem.spec_value_id]|storager}>" alt="<{$sitem.spec_value}>" title="<{$sitem.spec_value}>"/>
+					</center>
+					<{else}>
+					<center>
+						<img width="20" height="20" src="<{$spec_default_pic|storager}>" alt="<{$sitem.spec_value}>" title="<{$sitem.spec_value}>"/>
+					</center>
+					<{/if}>
+					<{/if}> </div>
+				<div class='select-spec-value' style="display:none">
+					<ul class='goods-spec-box' style="width:200px;">
+					</ul>
+				</div>
+				<input type="hidden" name="val[<{$sitem.spec_id}>][]" value="<{$sitem.spec_value|urlencode}>" />
+				<input type="hidden" name="pSpecId[<{$sitem.spec_id}>][]" value="<{$sitem.p_spec_value_id}>"/>
+				<input type="hidden" name="specVId[<{$sitem.spec_id}>][]" value="<{$sitem.spec_value_id}>"/></td>
+			<{/foreach}>
+			<{else}>
+			<{foreach from=$pro.props.spec item=specVar key=varid}>
+			<td><div class="select-spec-unselect goods-spec-selected" specid="<{$varid}>"> <{assign var='psid' value=$pro.props.spec_private_value_id[$varid]}>
+					<{assign var='sid' value=$pro.props.spec_value_id[$varid]}>
+					<{ if $goods.spec_desc[$varid][$psid].spec_type == 'text' }> <span><{$specVar}></span> <{else}>
+					<{if $goods.spec_desc[$varid][$psid].spec_image}>
+					<center>
+						<img width="20" height="20" src="<{$goods.spec_desc[$varid][$psid].spec_image|storager}>" alt="<{$specVar}>" title="<{$specVar}>"/>
+					</center>
+					<{elseif $goods.specVdesc[$varid].value[$psid].spec_image}>
+					<center>
+						<img width="20" height="20" src="<{$goods.specVdesc[$varid].value[$psid].spec_image|storager}>" alt="<{$specVar}>" title="<{$specVar}>"/>
+					</center>
+					<{else}>
+					<center>
+						<img width="20" height="20" src="<{$spec_default_pic|storager}>" alt="<{$specVar}>" title="<{$specVar}>"/>
+					</center>
+					<{/if}>
+					<{/if}> </div>
+				<div class='select-spec-value' style="display:none">
+					<ul class='goods-spec-box' style="width:200px;">
+					</ul>
+				</div>
+				<input type="hidden" name="val[<{$varid}>][]" value="<{$specVar|urlencode}>" />
+				<input type="hidden" name="pSpecId[<{$varid}>][]" value="<{$pro.props.spec_private_value_id[$varid]}>"/>
+				<input type="hidden" name="specVId[<{$varid}>][]" value="<{$pro.props.spec_value_id[$varid]}>"/></td>
+			<{/foreach}>
+			<{/if}>
+			
+			<{foreach from=$spec.idata item=item key=ikey}>
+			<td><input type="text" name="idata[<{$ikey}>][]" value="<{$spec.idata[$ikey][$id]}>" /></td>
+			<{/foreach}>
+
+
+			<td><{input type="text" value=$pro.store name="store[]" size=4 vtype="number"}></td>
+			<td><input type="text" size=8 name="price[]" value="<{$pro.price}>"/><br>
+				<span class='sysiconBtn edit' onclick="goodsEditor.mprice.bind(goodsEditor)(this)"><{t}>会员价<{/t}></span> <{if $fromType == 'create'}>
+				<{foreach from=$mLevels item=rows key=memlvid}>
+				<input name="mprice[<{$rows.member_lv_id}>][]" level="<{$rows.member_lv_id}>" type="hidden" value="<{$pro.mprice[$rows.member_lv_id]}>" />
+				<{/foreach}>
+				<{else}>
+				<{foreach from=$pro.mprice item=rows key=memlvid}>
+				<input name="mprice[<{$memlvid}>][]" level="<{$memlvid}>" type="hidden" value="<{$pro.mprice[$memlvid]}>" />
+				<{/foreach}>
+				<{/if}> </td>
+			<td><input type="text" size=10  name="cost[]" value="<{$pro.cost}>"/></td>
+			<td><input type="text" size=10  name="mktprice[]" value="<{$pro.mktprice}>"/></td>
+			<td><input type="text" size=10  name="weight[]" value="<{$pro.weight}>"/></td>
+<{if $env.conf.storeplace.display.switch}>
+			<td><input type="text" size=15  name="store_place[]" value="<{$pro.store_place}>"  maxlength="80"/></td>
+<{/if}>
+             <td><input type='checkbox' class='pro-marketable-check' <{if $pro.marketable != 'false'}>checked<{/if}>/>
+             <input type='hidden' name='marketable[]' value='<{if $pro.marketable != 'false'}>true<{else}>false<{/if}>'/>
+             </td>
+			<td><input type="hidden" name="disabled[]" value=$pro.disabled >
+				<!-- 
+                          <img class="operater" alt="向上" src="../statics/icons/icon_asc.gif"/>
+                          <img class="operater" alt="向下" src="../statics/icons/icon_desc.gif"/> -->
+				<img class="operater" alt="删除" src="../statics/icons/icon_delete.gif"/></td>
+		</tr>
+		<{/foreach}>
+		</tbody>
+		
+	</table>
+	<div style="display:none"> <{if $goods.spec_value_image}>
+		<{foreach from=$goods.spec_value_image item=specImg key=svid}>
+		<input type="hidden" id="spec_value_image_src_<{$svid}>" value="<{$specImg}>"/>
+		<{/foreach}>
+		<{else}>
+		<{foreach from=$goods.prototype.spec item=sitem}>
+		<{foreach from=$sitem.spec_value item=specImg key=svid}>
+		<input type="hidden" id="spec_value_image_src_<{$svid}>" value="<{$specImg.spec_image|storager}>"/>
+		<{/foreach}>
+		<{/foreach}>
+		<{/if}>
+		<input type="hidden" name="goods[spec_desc]" id="goods_spec_desc" value="<{$goods.spec_desc_str}>"/>
+		<script>
+	     (function(){
+		    	var specInfo =$('gEditor').retrieve('specInfo',{});
+                $extend(specInfo,$H({
+                        <{foreach from=$goods.spec_desc item=sdItem key=sdId name=specSd}>
+                            "<{$sdId}>":{
+                            <{foreach from=$sdItem item=sdvItem key=sdvId name=specSdv}>
+                                "<{$sdvId}>":{
+                                "spec_value_id" : "<{$sdvItem.spec_value_id}>",
+                                "spec_value" : "<{$sdvItem.spec_value|htmlspecialchars}>",
+                                "spec_type" :"<{$sdvItem.spec_type}>",
+                                "spec_image" : "<{$sdvItem.spec_image}>",
+                                "spec_image_src" : "<{$sdvItem.spec_image|storager}>",
+                                "spec_goods_images" : "<{$sdvItem.spec_goods_images}>"
+                                }<{if $smarty.foreach.specSdv.iteration != count($sdItem) }>,<{/if}>
+                            <{/foreach}>
+                            }<{if $smarty.foreach.specSd.iteration != count($goods.spec_desc) }>,<{/if}>
+                        <{/foreach}>
+                        }));
+                        $("goods_spec_desc").set("value", "<{$goods.spec_desc_str}>" );
+		 })();
+	   </script>
+	</div>
+</div>
+<script>
+
+   void function(){
+		var goods_args = null;
+		<{if $goods_args}>
+			goods_args = $H(<{$goods_args}>);
+		<{/if}>
+
+
+        $$('#productNode .pro-marketable-check').removeEvents('click').addEvent('change',function(){
+            var marketable = this.getNext('input[name^=marketable[]');
+            marketable.set('value',this.get('checked')?'true':'false');
+        });
+
+
+		var checkProSpec = function(ssid, thisChecked){
+			var hasPspecid = [];
+			$$('#productNode tr').each(function(tr,i){
+				if( thisChecked.join('-') == tr.getElements('.select-spec-unselect[specid!='+ssid+']').getNext('input[name^=pSpecId]').get('value').join('-') && !hasPspecid.contains(tr.getElement('.select-spec-unselect[specid='+ssid+']').getNext('input[name^=pSpecId]').get('value')) ){
+					hasPspecid.extend( [ tr.getElement('.select-spec-unselect[specid='+ssid+']').getNext('input[name^=pSpecId]').get('value') ] );
+				}
+			});
+			return hasPspecid;
+		};
+
+		var selectSpecValue =function(){
+			var _li_text = "<li specvid={spec_value_id} specpvid={p_spec_value_id}><span>{spec_value}</span></li>";
+			var _li_img = "<li specvid={spec_value_id} specpvid={p_spec_value_id}><img src='{spec_image_src}' alt='{spec_value}' width='20' height='20'/></li>";
+			$$('#productNode .select-spec-unselect').removeEvents('click').addEvent('click',function(){
+            
+			  
+             
+				var selValue = this;
+                var selBox=this.getNext();
+				var selDom = selBox.getElement('ul');
+                if($type($('productNode').retrieve('ts'))=='element'&&$('productNode').retrieve('ts')!=selBox){
+                   $('productNode').retrieve('ts').hide().retrieve('sv').removeClass('goods-spec-select');
+                }
+                if(this.hasClass('goods-spec-select')){
+                   selBox.hide();
+                   this.removeClass('goods-spec-select');
+                   return;
+                }
+				var sI = $('gEditor').retrieve('specInfo',{});
+				var selSpecHtml = '';
+				var ssid = this.get('specid');
+				var thisChecked = this.getParent('tr').getElements('.select-spec-unselect[specid!='+ssid+']').getNext('input[name^=pSpecId]').get('value');
+				var thisPspecid = this.getNext('input[name^=pSpecId]').get('value');
+				var filterPspecid = checkProSpec(ssid , thisChecked);
+                
+				selValue.addClass('goods-spec-select');
+                
+				$H(sI.get(ssid)).each(function(tsi,psid){
+					tsi =$H(tsi);
+					tsi['p_spec_value_id'] = psid;
+					if (tsi.get('spec_type') == 'text'){
+						selSpecHtml += _li_text.substitute(tsi);
+					}else{
+						if(tsi['spec_image'] == '')
+							tsi['spec_image_src'] = $('spec_value_image_src_'+tsi['spec_value_id']).get('value')?$('spec_value_image_src_'+tsi['spec_value_id']).get('value'):'<{$spec_default_pic|storager}>';
+						selSpecHtml += _li_img.substitute(tsi);
+					}
+				});
+                
+				selDom.set('html', selSpecHtml);
+                
+				selDom.getElements('li').each(function(cli){
+					if( filterPspecid.contains( cli.get('specpvid') ) && cli.get('specpvid') != thisPspecid ){
+						cli.addClass('noclick');
+						return;
+                    }
+					cli.addEvent('click',function(){
+						selValue.set('html',this.get('html'));
+						if(selValue.getElement('img')){
+							selValue.getNext('input[name^=val[]').set('value',this.getElement('img').get('alt'));
+                          }else{
+							selValue.getNext('input[name^=val[]').set('value',this.get('text'));
+                        }
+						selValue.getNext('input[name^=pSpecId[]').set('value',this.get('specpvid'));
+						selValue.getNext('input[name^=specVId[]').set('value',this.get('specvid'));
+						selDom.empty();
+                        selBox.hide();
+						selValue.removeClass('goods-spec-select');
+						selValue.addClass('goods-spec-selected');
+					});
+				});
+                var selBoxStyls={
+                     'position':'absolute',
+                     'left':this.getPosition().x,
+                     'zIndex':65535
+                };
+                if(window.webkit){
+                   $extend(selBoxStyls,{'top':this.getPosition().y+25});
+                }
+				selBox.setStyles(selBoxStyls).show().store('sv',selValue);
+                $('productNode').store('ts',selBox);
+                selBox.getParent('#main').addEvent('scroll',function(){
+                    this.removeEvent('scroll',arguments.callee);
+                    if(selBox){
+                         selBox.hide();
+                    }
+                  });
+			});
+            
+           document.body.addEvent('click',function(e){		   		
+		 		var target=$(e.target);
+				if(!$('productNode')||!$('productNode').retrieve('ts'))return;
+		   		if(!target.getParent('.goods-spec-select')&&!target.getParent('.select-spec-value')){
+						var selBox=$('productNode').retrieve('ts').hide();					
+						selBox.retrieve('sv').removeClass('goods-spec-select');					
+				}  
+		   });   
+		};
+
+		var proOp =function(){
+			/*规格行上下移动删除操作*/
+			$$('#gEditor .goods-spec-cell .operater').removeEvents('click');
+		   $$('#gEditor .goods-spec-cell .operater').setStyle('cursor','pointer').addEvent('click',function(){
+				   var tr=this.getParent('tr');
+				  
+				   switch (this.get('alt')) {
+					   case '删除':
+							  if(confirm('删除后货品数据将不能恢复，确认删除本行？'))tr.remove();
+							  return;
+				   }
+		   
+		   });
+		};
+
+
+	/*	$$('#gEditor .goods-spec-cell *').removeEvents('click');*/
+       $E('#gEditor .goods-spec-cell .selectspec').addEvent('click',function(){
+            new Dialog('index.php?ctl=goods/spec&act=addCol&type_id='+$('gEditor-GType-input').getValue(),
+            {title:'选择规格项',
+            ajaxoptions:{data:'goods_spec_desc='+$('goods_spec_desc').value+'&ctlType=edit', method:'post'}
+            });
+          
+       });
+
+	$E('#gEditor .goods-spec-cell .addproduct').removeEvents('click').addEvent('click',function(e){
+		e=this;
+		var lastTr = $('productNode').getLast('tr');
+		var last_goods_args = '';
+		if( lastTr ){
+			last_goods_args = lastTr.toQueryString();
+		}
+		var _sdata = 'spec_desc='+$('goods_spec_desc').value+(last_goods_args?'&'+last_goods_args:'')+(goods_args?'&'+goods_args.toQueryString():'');
+		new XHR({data:_sdata,
+        onRequest:function(){
+            $('loadMask').amongTo(e).show();
+        },
+        onSuccess:function(re){
+          $('loadMask').hide();
+		  var newtr=new Element('tr');
+			$('productNode').adopt(newtr);
+			newtr.set('html',re);
+			selectSpecValue();
+			proOp();
+		}}).send('index.php?ctl=goods/spec&act=addRow');
+
+
+	});
+	   
+       proOp();
+       selectSpecValue();
+
+	<{if $needUpValue}>
+	var sinfo = $('gEditor').retrieve('specInfo',{});
+		$H(<{$needUpValue}>).each(function(pvid){
+			pvid = $H(pvid);
+			var tdiv = null;
+			if( $E('#productNode input[value='+pvid.get('specpvid')+']') ){
+				tdiv = $ES('#productNode input[value='+pvid.get('specpvid')+']').getParent('td').getElement('.select-spec-unselect');
+			}
+			if( tdiv != [] ){
+				var t_spec_image_src = sinfo[pvid.get('specid')][pvid.get('specpvid')]['spec_image_src'];
+				var t_spec_value = sinfo[pvid.get('specid')][pvid.get('specpvid')]['spec_value'];
+				tdiv.each(function(t){
+					if( t.getElement('img') ){
+						t.getElement('img').set('src',t_spec_image_src);
+						t.getElement('img').set({'alt':t_spec_value,'title':t_spec_value});
+					}else{
+						t.getElement('span').set('html',t_spec_value);
+					}
+					t.getParent('td').getElement('input[name^=val[]').set('value',t_spec_value);
+				});
+			}
+		});
+	<{/if}>
+
+       /*取消规格操作*/
+       $E('#gEditor .goods-spec-cell .closespec').removeEvents('click').addEvent('click',function(){
+           if(!confirm('关闭后现有已添加的货品数据将全部丢失，确定要关闭规格吗？'))return;
+           new Request.HTML({update:'goods-spec',data:'type_id='+$('gEditor-GType-input').getValue(),
+                             onRequest:function(){
+                               $('loadMask').amongTo($(this.options.update)).show();
+                             },
+                             onComplete:function(){
+                               $('loadMask').hide();
+                             }
+           }).post('index.php?ctl=goods/product&act=nospec');
+       
+       });
+    
+   }();
+</script>

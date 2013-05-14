@@ -1,0 +1,64 @@
+<{area inject=".mainHead"}>
+<div class='gridlist-head' >
+<div class='span-1'><{t}>显示<{/t}></div>
+<!--<div  class='span-2'><{t}>排序<{/t}></div>-->
+<div class='span-4'><{t}>项目<{/t}></div>
+<div class='span-3'><{t}>排序<{/t}></div>
+</div>
+<{/area}>
+<form id="x-form-col-setting" action="index.php?ctl=<{$env.get.ctl}>&act=save_col_setting" method="post"  class='gridlist'>
+    <div id="x_col_setting" class='gridlist-list'>
+        
+        <{foreach from=$cols item=col key=key name="cols"}>
+        <div class='row' >
+        <div class="row-line <{if $env.foreach.cols.iteration is not odd}>even<{/if}>" style='cursor:move'>
+        <div class='span-1' style='cursor:default;'>
+        <{if $col.locked}>
+            <input type="checkbox" disabled="disabled" checked="checked" />
+            <input type="hidden" name="used[]" value="<{$key}>" />
+        <{else}>
+            <input type="checkbox" name="used[]"<{if $col.used}> checked="checked"<{/if}> value="<{$key}>" id="col-sel-<{$env.foreach.cols.iteration}>" />
+        <{/if}>
+        </div>
+       <!-- <div class='span-2'>
+            <{img src="images/bundle/arrow-up.gif"}>
+            <{img src="images/bundle/arrow-down.gif"}>
+           
+        </div>-->
+        <div class='span-4'><label for="col-sel-<{$env.foreach.cols.iteration}>"><{$col.label}></label></div>
+         <div class='span-3' ><{t}>拖动排序<{/t}><input type="hidden" name="sort[]" value="<{$key}>" /></div>
+        </div>
+        </div>
+        <{/foreach}>
+    </div>
+</form>
+
+<{area inject=".mainFoot"}>
+<center><{button label="保存选择结果" id="x-col-setting-savebtn" icon="mceico_2.gif"}></center>
+<{/area}>
+
+<script>
+/*attachEsayCheck('x_col_setting','.row-line div:nth-child(first)');*/
+
+
+$('x-col-setting-savebtn').addEvent('click',function(){
+   
+   $('x-form-col-setting').fireEvent('submit',{requestOptions:{
+        
+        update:'messagebox',
+        onComplete:function(){
+            
+           var dialog= $('x-form-col-setting').getParent('.dialog');
+           if(!dialog)return;
+           
+           dialog.retrieve('instance').close();            
+           dialog.retrieve('callback',$empty)();
+        }
+        
+   
+   }});
+
+});
+
+ new Sortables($('x_col_setting'),{clone:false,opacity:.7});
+</script>

@@ -1,0 +1,262 @@
+<script>
+function delgoods(obj){
+ for(obj=obj.parentNode; obj.tagName!='TR'; obj=obj.parentNode);
+ obj.parentNode.removeChild(obj);
+}
+
+function calculate(){
+ var iList = document.getElementsByName('aPrice[]');
+}
+</script>
+
+<form method='post' action='index.php?ctl=order/order&act=toEdit' class="tableform" id="orderEdit" extra="subOrder" target="{update:'messagebox'}">
+  <h4><{t}>商品信息<{/t}></h4>
+  <div class="division" id="orderItemList">
+    <{include file="order/edit_items.html"}>
+  </div>
+
+  <input id="add_order_id" TYPE="hidden" value="<{$order.order_id}>">
+  <input id="add_cost_item" TYPE="hidden" value="<{$order.cost_item}>" >
+  <input id="add_payment" TYPE="hidden" value="<{$order.payment}>" >
+
+  <h4><{t}>订单信息<{/t}></h4>
+  <div class="division">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <th><{t}>订单号：<{/t}></th>
+        <td><{$order.order_id}></td>
+        <th><{t}>下单日期：<{/t}></th>
+        <td><{$order.createtime|cdate:'SDATE_STIME'}></td>
+      </tr>
+      <tr>
+        <th><{t}>商品总金额：<{/t}></th>
+        <td><input id="iditem_amount" name="cost_item" value="<{$order.cost_item}>" size=10 disabled="disabled"></td>
+        <th><{t}>配送方式：<{/t}></th>
+        <td>
+          <select name=shipping_id id='ship_id'>
+            <{html_options options=$order.selectDelivery selected=$order.shipping_id}>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <th><{t}>配送费用：<{/t}></th>
+        <td><{input id="idcost_freight" class='item itemrow' name="cost_freight" value=$order.cost_freight type="unsigned" size=10}></td>
+        <th><{t}>支付方式：<{/t}></th>
+        <td><select name="payment"><{html_options options=$order.selectPayment selected=$order.payment}></select>&nbsp;&nbsp;
+        <{foreach from=$order.extendCon item=item key=key}>
+            <{$item}>&nbsp;&nbsp;
+        <{/foreach}>
+      </td>
+    </tr>
+    <tr>
+      <th><{t}>保价：<{/t}></th>
+      <td>
+        <{input id="idcost_protect" class="item itemrow" type="unsigned" name="cost_protect" size=10 value=$order.cost_protect }><{t}> 是否要保价<{/t}>
+        <input id="idis_protect" name="is_protect" type='checkbox' value='true' <{if $order.is_protect == 'true'}>checked="checked"<{/if}>>
+      </td>
+      <th><{t}>商品重量：<{/t}></th>
+      <td>
+        <input name='weight' class='inputstyle' size='10' value="<{$order.weight}>" id='goodweight'>
+      </td>
+    </tr>
+    <tr>
+      <th><{t}>支付手续费：<{/t}></th>
+      <td><{input id="idcost_payment" class='item itemrow' name=cost_payment type="unsigned" size=10 value=$order.cost_payment }></td>
+      <th><{t}>发票抬头：<{/t}></th>
+      <td><{input id="idtax_company" name="tax_company" value=$order.tax_company}></td>
+    </tr>
+    <tr>
+      <th><{t}>税金：<{/t}></th>
+      <td>
+        <{input id="idcost_tax" class='item itemrow' name="cost_tax" type="unsigned" size=10 value=$order.cost_tax }><{t}> 是否开发票<{/t}>
+        <input id="idis_tax" name="is_tax" type='checkbox' value='true' <{if $order.is_tax == 'true'}>checked="checked"<{/if}>>
+      </td>
+      <th><{t}>支付币别：<{/t}></th>
+      <td>
+        <{if $order.order_id == ''}>
+        <{html_options options=$order.curList selected=$order.currency}>
+        <{else}>
+          <{$order.cur_name}>
+          <{if $order.cur_rate != 1}>(<{$order.cur_rate}>)<{/if}>
+        <{/if}>
+      </td>
+    </tr>
+    <tr>
+      <th><{t}>订单人工调价：<{/t}></th>
+      <td><input id="idpmt_amount" class='item itemrow' name="pmt_amount" value="<{$order.pmt_amount}>" size=10><{help}><{t}>所输入数字大于零降价，小于零涨价<{/t}><{/help}></td>
+      <th><{t}>订单总金额：<{/t}></th>
+      <td>
+        <input id="idtotal_amount" name=total_amount value="<{$order.total_amount}>" disabled="disabled">
+      </td>
+    </tr>
+  </table>
+</div>
+
+<h4><{t}>购买人信息<{/t}></h4>
+<div class="division">
+  <{if $order.order_id == ''}>
+  <input TYPE="text" NAME="uname" value='' class=inputstyle size=15>
+  <input TYPE="button"  class=inputstyle value="导入会员" onClick="seluser(adminForm.uname.value)">
+  <input TYPE="button"  class=inputstyle value="非会员" onClick="seluser('anonymous')">
+  <input TYPE="hidden" name="userid" value="{userid}"> 
+  <{/if}>
+
+ <table width="100%" border="0" cellspacing="0" cellpadding="0">
+   <tr>
+    <th><{t}>姓名：<{/t}></th>
+    <td><{$order.member.name}></td>
+    <th><{t}>会员用户名：<{/t}></th>
+    <td><{$order.member.uname}></td>
+  </tr>
+   <tr>
+    <th><{t}>联系电话：<{/t}></th>
+    <td><{$order.member.tel}></td>
+    <th><{t}>Email地址：<{/t}></th>
+    <td><{$order.member.email}></td>
+  </tr>
+   <tr>
+    <th><{t}>地区：<{/t}></th>
+    <td><{$order.member.area|region}></td>
+    <th><{t}>邮政编码：<{/t}></th>
+    <td><{$order.member.zip}></td>
+  </tr>
+   <tr>
+    <th><{t}>地址：<{/t}></th>
+    <td><{$order.member.addr}></td>
+    <th></th>
+    <td></td>
+  </tr>
+</table>
+</div>
+
+
+<{if $order.is_delivery == 'Y'}>
+ <h4><{t}>收货人信息<{/t}></h4>
+ <div class="division" id="order_edit_receiver">
+ <table width="100%" border="0" cellspacing="0" cellpadding="0">
+   <tr>
+    <th><{t}>收货人姓名：<{/t}></th>
+    <td><{input type="text" NAME="ship_name" required="true" value=$order.ship_name }>*</td>
+    <th><{t}>联系手机：<{/t}></th>
+    <td>
+      <input vtype="order_tel" NAME="ship_mobile" value="<{$order.ship_mobile}>" class=inputstyle>
+    </td>
+  </tr>
+   <tr>
+    <th><{t}>联系电话：<{/t}></th>
+    <td><{input type="order_tel" NAME="ship_tel" class=inputstyle value=$order.ship_tel}></td>
+    <th><{t}>Email地址：<{/t}></th>
+    <td><{if $order.member}><{$order.ship_email}><{else}><{input type="email" NAME="ship_email" value=$order.ship_email }><{/if}></td>
+  </tr>
+   <tr>
+    <th><{t}>送货时间：<{/t}></th>
+    <td><input type="text" NAME="ship_time" value="<{$order.ship_time}>" class=inputstyle></td>
+    <th><{t}>邮政编码：<{/t}></th>
+    <td><{input  NAME="ship_zip"  class=inputstyle value=$order.ship_zip}></td>
+  </tr>
+   <tr>
+    <th><{t}>收货地区：<{/t}></th>
+    <td><{input type="region" name="ship_area" required="true" value=$order.ship_area}>*</td>
+    <th><{t}>收货地址：<{/t}></th>
+    <td><{input type="text" NAME="ship_addr" required="true" class=inputstyle value=$order.ship_addr}>*</td>
+  </tr>
+</table>
+</div>
+<{/if}>
+</form>
+
+<script>
+$E('div.mainwrap').addEvent('change',function(eve){
+  var ele = eve.target;
+  if(-1 == $ES('input.itemrow[name^="aNum"]').indexOf(ele)) return;
+
+  (function(){
+    var item_num = ele.getValue().toFloat(),
+      item_id = /aNum\[(\d+)\]/.exec(ele.getProperty('name'));
+    if ( !item_id ) return;
+
+    item_id = item_id[1];
+    var item_price = $E('.itemrow[name="aPrice\['+item_id+'\]"]').getValue().toFloat();
+
+    // 小计
+    $E('.itemSub_'+item_id).setText( Number(item_price*item_num).toFixed(3) );
+
+    // 计算运费
+    (function(){
+      var shipping_area=$ES('input[name=ship_area]').getValue(),shipping_id=$('ship_id').getValue(),
+      order_id=$('order_id').get('text'),weight=$('goodweight').getValue(),
+      goodprice=$('iditem_amount').getValue();
+      var url="index.php?ctl=order/order&act=toedit_dlyprice&shipping_id="+shipping_id+"&ship_area="+shipping_area+"&orderid="+order_id+"&Orderweight="+weight+"&cost_item="+goodprice;
+      new Request({
+        method:'post', url:url, async:false, noCache:true,
+        onComplete:function(resp){
+          $('idcost_freight').value = resp;
+        }
+      }).send();
+    })();
+
+    countF();
+  })();
+});
+
+// 重新计算订单价格
+function countF(){
+  // 商品总额
+  $('iditem_amount').value=(function(){
+    var count=0;
+    $ES(".itemCount").each(function(item){
+      count += item.getText().toFloat();
+    });
+    return count.round(3);
+  })();
+
+  // 订单总额
+  $('idtotal_amount').value=(function(){
+    // 保价 和 税费
+    var cost_protect = $('idis_protect').checked ? $('idcost_protect').value.toFloat() : 0;
+    var cost_tax = $('idis_tax').checked ? Number($('idcost_tax').value) : 0;
+    // 订单人工调价
+    var pmt_amount = Number($('idpmt_amount').value);
+
+    var count = Number($('iditem_amount').value) + cost_protect + 
+      $('idcost_freight').value.toFloat() + Number($('idcost_payment').value) +
+      cost_tax - pmt_amount;
+
+    return count.round(3);
+  })();
+}
+
+  
+//手工调价,支付手续费
+$ES('#idcost_payment,#idpmt_amount,#idcost_protect,#idcost_tax,#idcost_freight').addEvent('change',function(){
+  countF();
+});
+
+// 是否保价
+$('idis_protect').addEvent('click',function(e){
+  $('idcost_protect').disabled = !this.checked;
+  countF();
+});
+
+// 是否发票
+$('idis_tax').addEvent('click',function(e){
+  $('idcost_tax').disabled = !this.checked;
+  countF();
+});
+
+$('idcost_tax').disabled = !$('idis_tax').checked;
+$('idcost_protect').disabled = !$('idis_protect').checked;
+
+var extra_validator={};
+if(!extra_validator['subOrder']){
+  extra_validator['subOrder'] ={
+    'order_tel':['请至少输入联系电话和联系手机中的一项',function(f,i){
+        var tel = $E('#order_edit_receiver input[name=ship_tel]').getProperty('value');
+        var mob = $E('#order_edit_receiver input[name=ship_mobile]').getProperty('value');
+        console.log(mob);
+        return (tel.trim() != '') || (mob.trim() != '');
+      }]
+  };
+}
+</script>
+

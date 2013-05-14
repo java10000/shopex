@@ -1,0 +1,62 @@
+
+<!--<div class="actionItems">
+  <table cellspacing="0" cellpadding="0" border="0" width="100%">
+    <tbody>
+      <tr>
+        <td class="functop"><h3><{t}>搜索<{/t}></h3></td>
+      </tr>
+      <tr>
+        <td class="func"><table>
+  <tr>
+    <td valign="top"><label for="start_date"><{t}>起始日期<{/t}></label>
+      <{input type="date" name="start_date" id="start_date" class="cal _x_ipt" style="width:100px" value="$sfinddate"}> </td>
+    <td valign="top"><label for="end_date"><{t}>结束日期<{/t}></label>
+      <{input type="date" name="end_date" id="end_date" class="cal _x_ipt" style="width:100px" readonly=true value="$efinddate"}> </td>
+    <td><button style="font-size:12px; height:26px;padding:0 2px;marign:0" class="sysiconBtnNoIcon" onclick="$('finder-filterInput-<{$_finder._name}>').name='sdtime';$('finder-filterInput-<{$_finder._name}>').value=$('start_date').value+'/'+$('end_date').value;<{$_finder.var}>.refresh.call(<{$_finder.var}>);return false" ><{t}>搜索<{/t}></button></td>
+  </tr>
+</table></td>
+      </tr>
+    </tbody>
+  </table>
+</div>-->
+
+
+<{button type="dropmenu" wrapimg="true" label="日期" icon="finder_date.gif" dropmenu_opts="relative:{$_finder.var}.action" dropmenu="finder-date"}>
+<div id="finder-date" class="x-drop-menu">
+	<div class="group">
+		<label for="start_date"><{t}>起始日期<{/t}></label><br />
+		<{input type="date" name="start_date" id="start_date" class="cal _x_ipt" style="width:100px" value=$sfinddate}><br />
+		<label for="end_date"><{t}>结束日期<{/t}></label><br />
+		<{input type="date" name="end_date" id="end_date" class="cal _x_ipt" style="width:100px" readonly=true value=$efinddate}><br />
+				
+		<button style="margin-top:5px;" onclick="submit_<{$_finder._name}>()" ><{t}>搜索<{/t}></button>
+	</div>
+</div>
+
+
+<script>
+/*
+$('finder-filter-<{$_finder._name}>').style.display='none';
+$('finder-mode-<{$_finder._name}>').style.display='none';
+<{$_finder.var}>._initList = <{$_finder.var}>.initList;
+<{$_finder.var}>.initList = (function(){
+ this._initList();
+    $('finder-filter-<{$_finder._name}>').style.display='none';
+ $('finder-mode-<{$_finder._name}>').style.display='none'; 
+ this.selectMode.className='selectModeBar x-all';
+ $ES('strong',this.selectMode).setStyle('display','none');
+}).bind(<{$_finder.var}>);
+$ES('strong',<{$_finder.var}>.selectMode).setStyle('display','none');
+<{$_finder.var}>.selectAll();
+*/
+
+var submit_<{$_finder._name}>=function(){
+
+    <{$_finder.var}>.filter.reset()
+     .push({label:'日期范围:'+$('start_date').value+' --- '+$('end_date').value,name:'sdtime',value:$('start_date').value+'/'+$('end_date').value});
+
+    //<{$_finder.var}>.refresh();
+};
+$('finder-date').addEvent('click', function(e){if(!$(e.target).match('button')) e.stopPropagation()});
+
+</script>

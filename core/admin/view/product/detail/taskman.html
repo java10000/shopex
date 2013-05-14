@@ -1,0 +1,28 @@
+<{area inject=".mainHead"}>
+<div class="division">
+<table cellpadding="0" cellspacing="0">
+<tr>
+	<th>时间选择：</th>
+	<td><{input type="time" name="time" id="gtask_time_sele"}></td>
+</tr>
+<tr>
+	<th>操作类型：</th>
+	<td>
+	<input type="radio" name="mode" value="online" checked="checked" id="gtask-mod-online" /><label for="gtask-mod-online">上架</label>&nbsp;&nbsp;&nbsp;&nbsp;
+	<input type="radio" name="mode" value="offline" id="gtask-mod-offline" /><label for="gtask-mod-offline">下架</label>
+	</td>
+</tr>
+<tr>
+	<th>&nbsp;</th>
+	<td>
+    <b class="submitBtn">
+	<input value="添加新操作" type="button" onclick="W.page('index.php?ctl=goods/product&act=taskrows',{onComplete:function(){_S('gtask_time_sele').value=''},method:'post',update:$('g_taskman_box'),data:$(this).getParent('.dialog')})" />
+    </b>
+	</td>
+</tr>
+</table>
+</div>
+<{/area}>
+<div id="g_taskman_box">
+<{include file="product/detail/taskrows.html"}>
+</div>

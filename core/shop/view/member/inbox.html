@@ -1,0 +1,142 @@
+<!-- right-->
+<style type="text/css">
+hr {
+height:1px;border:none;margin:0;*margin:0 0 -14px 0;float:none;*float:left;display:block;
+}
+</style>
+<div class="MemberMain">
+<div style="margin-right:175px;">
+
+<script>
+var prediv = '';
+function showMsg(obj,msgid,url) {
+  var currdiv = $('view_msg_pro_'+msgid);
+  if(!obj.parentNode.id){
+    if(typeof prediv == "object") {prediv.style.display='none'};
+    currdiv.style.display = '';
+    new Ajax(url,{method:'post',update:'view_msg_'+msgid,data:''}).request();
+    obj.parentNode.id = 'span_'+msgid;
+    if(prediv){
+      var link = $('span_'+prediv.id.substr(13)).getElementsByTagName('a')[0];
+      link.className = 'viewmsgoff';
+      toggleBg(link, false);
+    }
+    prediv = $('view_msg_pro_'+msgid);
+    obj.className = 'viewmsg';
+    toggleBg(obj, true);
+  }else{
+    if(currdiv.style.display == 'none'){
+      currdiv.style.display = '';
+      obj.className = 'viewmsg';
+      toggleBg(obj, true);
+      if(prediv) {
+        prediv.style.display = 'none';
+        var link = $('span_'+prediv.id.substr(13)).getElementsByTagName('a')[0];
+        link.className = 'viewmsgoff';
+        toggleBg(link, false);
+      }
+      prediv = currdiv;
+    }else{
+      currdiv.style.display = 'none';
+      obj.className = 'viewmsgoff';
+      toggleBg(obj, false);
+      prediv = '';
+    }
+  }
+}
+
+function toggleBg(el, state){
+  while(el.tagName != 'TR'){
+    el = el.parentNode;
+  }
+  if(!state) $(el).removeClass('msgon');
+  else $(el).addClass('msgon');
+}
+
+function checkAll(obj,box) {
+  var tag = obj.getElementsByTagName('input');
+  for(var i = 0;i < tag.length;i++){
+    tag[i].checked = box.checked;
+  }
+}
+</script>
+<div class="title"><{t}>收件箱<{/t}></div>
+<form action="<{link ctl="member" act="delInBoxMsg"}>" method="post">
+<table width="100%" cellspacing="0" cellpadding="0" class="liststyle_option">
+    <col class="span-0 textcenter"></col>
+    <col class=" textleft"></col>
+
+    <tr>
+      <th class="textcenter"><input type="checkbox" onclick="checkAll(this.form,this)" name="chkall" id="chkall" title="全选"></th>
+            <td><input type="submit" value="删除" name="pmsend /"></td>
+            <td class="textright"><{t}>共有短消息:<{/t}><em id="pmtotalnum"><{$total_msg}></em></td>
+    </tr>
+
+    </table>
+  <table width="100%" cellspacing="0" cellpadding="0"  summary="收件箱" class="memberlist">
+    <col class="span-0 ColColorGraydark"></col>
+    <col class="span-15 textleft"></col>
+    <col class="span-2 ColColorOrange"></col>
+    <col class="span-3"></col>
+    <col class="span-2"></col>
+    <col class="span-2"></col>
+    <thead>
+      <tr>
+        <th>&nbsp;</th>
+        <th><{t}>标题<{/t}></th>
+        <th ><{t}>来自<{/t}></th>
+        <th ><{t}>时间<{/t}></th>
+        <th ><{t}>操作<{/t}></th>
+        <th ><{t}>是否阅读<{/t}></th>
+      </tr>
+    </thead>
+    <tbody>
+      <{if count($message)>0}>
+      <{foreach item=msg from=$message}>
+      <tr class="msgon">
+        <td class="selector"><input type="checkbox" value=<{$msg.msg_id}> name="delete[]"></td>
+        <td class="textleft">
+          <span><a href="<{if $msg.unread}><{else}>#<{/if}>" onclick="showMsg(this,<{$msg.msg_id}>,'<{link ctl='member' act='viewMsg' arg0=$msg.msg_id }>');return false;" class="viewmsgoff"><{$msg.subject|cut:60|escape:'html'}></a></span></td>
+        <td><{if $msg.from_type == 1}><{t}>管理员<{/t}><{else}><{$msg.msg_from}><{/if}></td>
+        <td><{$msg.date_line|cdate:SDATE_STIME}></td>
+        <td><a href="<{if $msg.from_type==1}><{link ctl=member act=message arg0=$msg.msg_id arg1=reply}><{else}><{link ctl=member act=send arg0=$msg.msg_id arg1=reply}><{/if}>"  ><{t}>回复<{/t}></a></td>
+        <td >
+        <{if $msg.unread}>
+        已读
+        <{else}>
+        未读
+        <{/if}>
+        </th>
+      </tr>
+      <tr id="view_msg_pro_<{$msg.msg_id}>" style="display:none; white-space:normal;">
+        <td class="textleft memberviewinfo" colspan="6"><div id="view_msg_<{$msg.msg_id}>"><{$msg.message|escape:'html'}></div></td>
+      </tr>
+      <{/foreach}>
+      <{else}>
+      <tr>
+      <td height="60" colspan="6" class="ColColorWhite">
+        收件箱内没有短信息。
+      </td>
+      </tr>
+      <{/if}>
+    </tbody>
+    
+  </table>
+    <table width="100%" cellspacing="0" cellpadding="0" class="liststyle_option">
+    <col class="span-0 textcenter"></col>
+    <col class=" textleft"></col>
+
+    <tr>
+      <th class="textcenter"><input type="checkbox" onclick="checkAll(this.form,this)" name="chkall" id="chkall" title="全选"></th>
+            <td><input type="submit" value="删除" name="pmsend /"></td>
+            <td class="textright"><{t}>共有短消息:<{/t}><em id="pmtotalnum"><{$total_msg}></em></td>
+    </tr>
+
+    </table>
+  <{pager data=$pager}>
+
+</form>
+
+</div>
+</div>
+<!-- right-->

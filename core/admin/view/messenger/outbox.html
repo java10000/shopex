@@ -1,0 +1,23 @@
+<{if count($oubox.data)>0}>
+    <div class="finder-list table-grid">
+        <table class="gridlist" cellpadding="0" cellspacing="0">
+            <thead>
+                <tr>
+                    <th><{t}>时间<{/t}></th><th><{t}>发送数量<{/t}></th><{if $sender.hasTitle}><th><{t}>标题<{/t}></th><{/if}><th><{t}>内容概要<{/t}></th>
+                </tr>
+            </thead>
+            <tbody>
+                <{foreach from=$oubox.data item=item}>
+                <tr>
+                    <td><{$item.creattime|cdate}></td>
+                    <td class="Colamount"><{$item.sendcount}></td>   
+                    <{if $sender.hasTitle}><td><{$item.subject|cut:40}></td><{/if}>
+                    <td class="Coldetails"><{$item.content|escape:"html"}></td>
+                </tr>
+                <{/foreach}>
+            </tbody>
+        </table>
+    </div>
+<{else}>
+    <div class="notice"><{t}>发件箱中无内容<{/t}></div>
+<{/if}>

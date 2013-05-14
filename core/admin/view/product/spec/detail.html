@@ -1,0 +1,203 @@
+﻿<div style="text-align:right;padding-top:3px;padding-right:9px"><{help docid="71" type="link"}><{t}>点击查看帮助<{/t}><{/help}></div>
+<form id="specForm" action="index.php?ctl=goods/specification&act=save" method="POST">
+<input type="hidden" name="spec_id" value="<{$spec.spec_id}>">
+<div style="display:none"><{input type="checkForm" }></div>
+<div class="division">
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+<tr>
+  <th><{t}>规格名称：<{/t}></th>
+  <td><{input type="text" name="spec_name" required="true" value=$spec.spec_name  maxlength='20'}>*</td>
+</tr>
+<tr>
+  <th><{t}>规格备注：<{/t}></th>
+  <td><{input type="text" name="spec_memo" value=$spec.spec_memo}></td>
+</tr>
+<tr>
+  <th><{t}>规格别名：<{/t}></th>
+  <td><{input type="text" name="spec_alias" value=$spec.alias}> 用 | 分割</td>
+</tr>
+<tr>
+  <th><{t}>显示类型：<{/t}></th>
+  <td>
+    <div class='spec_type'>
+      <label><input type="radio" name="spec_type" value="text" checked/><{t}>文字<{/t}></label> &nbsp; &nbsp; 
+      <label><input type="radio" name="spec_type" value="image" /><{t}>图片<{/t}></label>
+     </div>
+  </td>
+</tr>
+<tr>
+  <th><{t}>显示方式：<{/t}></th>
+  <td>
+     <div class='spec_show_type'>
+      <label><input type="radio" name="spec_show_type" value="flat" checked/><{t}>平铺显示<{/t}></label> &nbsp; &nbsp; 
+      <label><input type="radio" name="spec_show_type" value="select" /><{t}>下拉显示<{/t}></label>
+     </div>	
+  </td>
+</tr>
+</table><!--img src="<{$ssss|storager}>"-->
+</div>
+<div style="padding-left: 10px;">
+<span class="sysiconBtn add addspec"><{t}>添加规格值<{/t}></span>
+</div>
+
+
+  <div class="division">
+      <table border="0" cellspacing="0" cellpadding="0" class="gridlist sepc_value_table <{$spec.spec_type|default:'text'}>-spec-value-table">
+        <thead>
+         <tr>
+            <th><{t}>规格值名称<{/t}></th>
+            <th><{t}>规格值别名<{/t}></th>
+             <th class='simg-col'><span><{t}>规格图片<{/t}><span></th>
+            <th><{t}>操作<{/t}></th>
+            <!--th><{t}>删除<{/t}></th-->
+          </tr>
+        </thead>
+        <tbody>
+        <{foreach from=$spec.vals item=items}>
+        <tr>
+            <td style="vertical-align:middle;"><{input type="text" name="spec_value[]" value=$items.spec_value style='width:150px;' maxlength='20'  vtype='is_trim_required'}></td>
+            <td style="vertical-align:middle;" width="400"><{input type="text" name="alias[]" value=$items.alias style='width:150px;' maxlength='20'}></td>
+            <td class='simg-col'><span><{if $items.spec_image eq ''}><img class='spec_pic' src='<{$img_path}>' width='<{$width}>' height='<{$height}>'><{else}><img class='spec_pic' src='<{$items.spec_image|storager}>' width='<{$width}>' height='<{$height}>'><{/if}><input type='hidden' name='spec_image[]' value='<{$items.spec_image}>' />
+             <span style=" margin-bottom:10px;" class='sysiconBtn edit sel_image'><{t}>选择图片<{/t}></span>
+            </span></td>
+            <td style="vertical-align:middle;">
+                <input type='hidden' name='val[]' value='<{$items.spec_value_id}>'/>
+                <img src='../statics/icons/icon_asc.gif' class='asc'  title='向上移动' style="cursor:pointer;"/> &nbsp; &nbsp; 
+                <img src='../statics/icons/icon_desc.gif' class='desc' title='向下移动' style="cursor:pointer;"/> &nbsp; &nbsp; 
+                <img src='../statics/icons/icon_delete.gif' class='delete'  title='删除' style="cursor:pointer;" spec_vid=<{$items.spec_value_id}> />
+            </td>
+        </tr>
+        <{/foreach}>
+        </tbody>
+      </table>
+      </div>
+
+
+</form>
+<div class='mainFoot'>
+<div class="footer">
+<table border="0" align="center" cellpadding="0" cellspacing="0" class="table-action">
+  <tr>
+    <td><b class="submitBtn" ><input type="button" value="保存" onclick="if(!$E('#specForm .sepc_value_table tbody td')){return MessageBox.error('请添加规格值')}$('specForm').fireEvent('submit',{stop:$empty})"></b></td>
+  </tr>
+</table>
+</div>
+</div>
+<script>
+void function(){
+    var spec_image_width = <{$width}>;
+    var spec_image_height = <{$height}>;
+    
+    var specForm=$('specForm');
+    var radio_spec_type=$$("#specForm input[name=spec_type]");
+    var radio_spec_show_type=$$("#specForm input[name=spec_show_type]");
+    var table_spec_value=$E("#specForm table.sepc_value_table");
+    
+ 
+    
+    
+    
+    /*specValueEditBtn*/
+    var SVE="<input type='hidden' name='val[]' value=''/>"+
+            "<img src='../statics/icons/icon_asc.gif' class='asc' title='向上移动' style='cursor:pointer;'/> &nbsp; &nbsp; "+
+            "<img src='../statics/icons/icon_desc.gif' class='desc'  title='向下移动' style='cursor:pointer;'/> &nbsp; &nbsp; "+
+            "<img src='../statics/icons/icon_delete.gif' class='delete' title='删除' style='cursor:pointer;'/>";
+    /*specFormTEMPLETE*/
+    var SFT="<td style='vertical-align:middle;'>"+
+            "<input type='text' name='spec_value[]' class='_x_ipt' vtype='text' required='true' style='width:150px;' size='28' maxlength='20'/></td>"+
+            "<td style='vertical-align:middle;' width='400'><input type='text' name='alias[]' value='' style='width:150px;' maxlength='20' /></td>"+
+            "<td class='simg-col'><span><input type='hidden' name='spec_image[]'/><img class='spec_pic' src='<{$img_path}>' width='"+spec_image_width+
+            "' height='"+spec_image_height+"'>&nbsp;&nbsp;<span class='sysiconBtn edit sel_image'><{t}>选择图片<{/t}></span></span></td>"+
+            "<td style='vertical-align:middle;'>"+SVE+"</td>";
+
+    
+    radio_spec_type.addEvent('click',function(e){
+                 var clazz=this.value+'-spec-value-table';
+                 if(table_spec_value.hasClass(clazz)){
+                   return;
+                 }
+                 if(this.value=='text'){
+                     table_spec_value.removeClass('image-spec-value-table');
+                     table_spec_value.addClass('text-spec-value-table');
+                 }else{
+                    table_spec_value.removeClass('text-spec-value-table');
+                    table_spec_value.addClass('image-spec-value-table');
+                 }
+    });
+
+    
+    var bindEditEvent=function(row){
+            var sel_image=row.getElement('span.sel_image');
+            var asc=row.getElement('img.asc');
+            var desc=row.getElement('img.desc');
+            var del=row.getElement('img.delete');
+            if(sel_image){
+                var p=sel_image.getParent('td');
+                var input=p.getElement('input');
+                var img=p.getElement('img');
+                sel_image.addEvent('click',function(){
+                     new Dialog('index.php?ctl=editor&act=image&p[0]=0',{title:'选择图片',onShow:function(){
+                        var dialog=this;
+                        this.dialog.store('callback',function(src,_img,ident){
+                          input.value=ident;
+                          if(img){
+                        
+                          img.set({'width':spec_image_width,'height':spec_image_height}).src=src;
+                          }else{
+                        
+                            new Element('img').set({'width':spec_image_width,'height':spec_image_height,'src':src}).injectBefore(input);
+                          }
+                          dialog.close();
+                       });
+                    }});
+                });
+            }
+            asc.addEvent('click',function(){
+               var pre=row.getPrevious('tr');
+               if(pre){
+                  row.injectBefore(pre);
+               }
+            });
+            desc.addEvent('click',function(){
+                var next=row.getNext('tr');
+                   if(next){
+                      row.injectAfter(next);
+                   }
+            });
+            del.addEvent('click',function(){
+			   var specvid=this.get('spec_vid');
+               if(confirm('删除不可恢复，确认删除本行吗？')){
+ new Request({data:'spec_value_id='+encodeURIComponent(specvid),
+				  onSuccess:function(re){
+				     if(re=='can'){
+						row.remove();
+					 }else{
+						MessageBox.error(re);
+					 }
+				  
+				  }
+              }).post('index.php?ctl=goods/specification&act=check_spec_value_id');
+                  
+               }
+            });
+            
+      };
+    
+    
+    $E('.addspec',specForm).addEvent('click',function(e){
+         var newRow=new Element('tr');
+         newRow.inject($E('tbody',table_spec_value));
+         newRow.setHTML(SFT);
+         bindEditEvent(newRow);
+    });
+   
+      /*初始化规格设置项RADIO,VALUE*/
+    try{
+      $E('#specForm input[value=<{$spec.spec_type}>]').set('checked',true);
+      $E('#specForm input[value=<{$spec.spec_show_type}>]').set('checked',true);
+      $ES('tbody tr',table_spec_value).each(bindEditEvent);
+    }catch(e){
+    }
+ 
+}();
+</script>

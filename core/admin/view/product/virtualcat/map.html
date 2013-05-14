@@ -1,0 +1,157 @@
+<form action="index.php?ctl=goods/virtualcat&act=update" id="catEditor" method="post">
+<{area inject=".mainHead"}>
+<div class="action-bar mainHead">
+<span class="sysiconBtn addorder" onclick="W.page('index.php?ctl=goods/virtualcat&act=addNew')"><{t}>添加分类<{/t}></span>(共有<{$tree_number}>个虚拟分类)
+<{if $tree_number<=500}>
+<span id="showCat-handle" class="sysiconBtn btn-show-cate"><{t}>全部展开<{/t}></span>
+<span id="hideCat-handle" class="sysiconBtn btn-hide-cate"><{t}>全部收起<{/t}></span>
+<{/if}>
+</div>
+
+   <div class='gridlist-head mainHead' style='text-align:center!important'>
+       <div class='span-8' ><{t}>虚拟分类名称<{/t}></div>
+       <div class='span-2'><{t}>添加子类<{/t}></div>
+       <div class='span-2'><{t}>编辑<{/t}></div>
+       <div class='span-2'><{t}>删除<{/t}></div>
+       <div class='span-2'><{t}>查看商品<{/t}></div>
+       <div class='span-2'><{t}>预览<{/t}></div>
+   </div>
+
+<{/area}>
+<div class='gridlist'>
+
+<div id="cat_tree" class='gridlist-list' style='text-align:center!important'>
+<{foreach from=$tree item=item name="item"}>
+
+<div depath="<{$item.step}>" class="clear_cat row" cid="<{$item.cat_id}>" pid="<{$item.pid}>">
+ <div class='row-line'>
+  <div class='span-8' style='text-align:left!important'>
+    <div  style="margin-left:<{$item.step*25}>px;">
+    <{if $tree_number<=500}>
+        <{if $item.cls=='true'}>
+    <span style='width:12px;line-height:12px;margin:auto 4px;overflow:hidden;display:inline-block;padding:0;cursor:pointer'>
+         <{img src="images/bundle/handle-hide.gif" alt="收起子分类" title="收起子分类" class="handle-hide"}>
+         <{img src="images/bundle/handle-show.gif" alt="收起子分类" title="展开子分类" class="handle-show"}>
+    </span>
+        <{else}>
+        <{img src="images/bundle/blue-dot.gif" }>
+    <{/if}>
+    <{/if}>
+    <{t}>排序<{/t}> <input class="orderTextStyle _x_ipt" vtype="unsigned" type="number" size="2"  name="p_order[<{$item.cat_id}>]" value="<{$item.p_order}>" style="width:40px"> 
+    <span class="lnk" onClick='W.page("index.php?ctl=goods/virtualcat&act=edit&p[0]=<{$item.cat_id}>")'><{$item.cat_name}></span>
+    </div>
+  </div>
+  
+  <div class='span-2'>
+    <{assign var="cat_id" value=$item.cat_id}>
+    <span class="opt" onClick='W.page("index.php?ctl=goods/virtualcat&act=addNew&p[0]=<{$item.cat_id}>")'><{img src="images/bundle/addcate.gif" alt="添加子分类"}></span>
+  </div>
+  <div class='span-2'><span class="opt" onclick="W.page('index.php?ctl=goods/virtualcat&act=edit&p[0]=<{$item.cat_id}>')"><{img src="images/bundle/editcate.gif" alt="编辑"}></span></div>
+  <div class='span-2'><span class="opt" onclick="deleteRow('index.php?ctl=goods/virtualcat&act=toRemove&p[0]=<{$item.cat_id}>',event)">
+       <{img src="images/bundle/delecate.gif" alt="删除"}></span>
+  </div>
+  <div class='span-2'>
+ <a href='index.php?ctl=goods/product&act=index&filter=<{$item.link|serialize|urlencode}>&vfilter=hidden'><{img src="images/bundle/showcate.gif" border="0" alt="查看此分类下商品"}></a>
+  </div>
+  <div class='span-2'><span class="opt" onclick="window.open('<{$item.url}>')"><{img src="images/bundle/zoom_btn.gif" alt="跳转前台查看该"}></span></div>
+ </div>
+</div>
+<{/foreach}>
+</div>
+</div>
+
+<{area inject=".mainFoot"}>
+  <div class="mainFoot">
+    <div class="footer">
+     <table cellspacing="0" cellpadding="0" align="center" class="table-action">
+  <tr>
+    <td><b class="submitBtn"><input onclick="$('catEditor').fireEvent('submit',{type:'submit',target:$('catEditor')})" type="submit" value="保存排序" /></b></td>
+  </tr>
+</table> 
+    </div>
+  </div>
+  <{/area}>
+</form>
+<script>
+
+function deleteRow(act,event){
+e=$(new Event(event).stop().target);
+     var row=e.getParent('.row');
+    
+    if(confirm('您确定要删除该分类？')){ 
+        W.page(act,{
+        method:'get',
+        update:'messagebox',
+        onComplete:function(re){
+            
+            if(re.contains('successSplash')){row.remove();}
+        
+            }
+        });
+    }
+}
+<{if $tree_number<=500}>
+void function(){
+   
+   $E('#hideCat-handle').addEvent('click',function(){
+    $ES('#cat_tree .clear_cat').each(function(e){
+        if(e.get('depath')>1){
+            e.setStyles({'display':'none'});
+        }
+    });
+    $ES('#cat_tree .handle-hide').hide();
+  });
+    $E('#showCat-handle').addEvent('click',function(){
+
+        $ES('#cat_tree .clear_cat').each(function(e){
+            if(e.get('depath')>1){
+                e.setStyles({'display':''});
+            }
+        });
+        $ES('#cat_tree .handle-hide').show();
+    });
+
+    $('cat_tree').addEvent('click',function(e){
+       
+       if(!e.target.className.match(/handle-/i))return;
+    
+
+      var handle=$(e.stop().target);
+			var eventRow=handle.getParent('.row');
+			var visible=handle.hasClass('handle-show')?'':'none';	
+				if(visible=='none'){	   
+					 	 handle.hide().getNext().show();						  			 				   			  			   				    	
+					}else{																   
+					 	 handle.hide().getPrevious().show(); 						 
+									    
+					}	
+			flode(eventRow,visible);
+
+    });
+   
+	function flode(eventRow,visible){			
+			var cid=eventRow.get('cid');
+			var pid=eventRow.get('pid');		
+			
+			eventRow.getAllNext('div[pid='+cid+']').each(function(row){								
+				if(visible=='none'){						
+					row.hide();
+					var obj=row.getElements('.span-8 img');							
+					if(obj.length>1){					
+						flode(row,visible);	
+					}											
+				}else{						
+					row.show();		
+					var obj=row.getElements('.span-8 img');							
+					if(obj.length>1){			   
+						var vis=(obj[0].getStyle('display')=='none'?'none':'inline');			
+						flode(row,vis);	
+					}
+				}	
+						
+			});
+	}
+
+}();
+<{/if}>
+</script>

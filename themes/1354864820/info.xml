@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<theme>
+<name>名鞋城</name>
+<id>webui_zhgoo</id>
+<version>ShopEx4.8</version>
+<info></info>
+<author>视觉网络</author>
+<site>http://www.webui.com.cn</site>
+<update_url></update_url>
+<borders>
+<set key="默认" tpl="borders/border1.html" />
+<set key="粗边框" tpl="borders/border2.html" />
+<set key="主区域头部" tpl="borders/border3.html" />
+<set key="大列表" tpl="borders/border4.html" />
+<set key="底部文章" tpl="borders/border5.html" />
+<set key="帮助中心" tpl="borders/border6.html" />
+<set key="一" tpl="borders/border7.html" />
+<set key="二" tpl="borders/border8.html" />
+<set key="三" tpl="borders/border9.html" />
+<set key="四" tpl="borders/border10.html" />
+</borders>
+<views></views>
+<config></config>
+</theme>

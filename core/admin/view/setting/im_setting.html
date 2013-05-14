@@ -1,0 +1,99 @@
+<style>
+.im-info{
+  width:60px;
+  float:left;
+  text-align:right;
+}
+</style>
+
+<form method='post' action='index.php?ctl=system/setting&act=saveimsetting' target="{update:'messagebox'}">
+<div id="cat-config" style="display:none;"></div>
+<div class="tableform widgetconfig">
+<div class="division" id="aligntype">
+    <table>
+      <tr>
+        <th><{t}>在线客服位置<{/t}></th>
+        <td><select name="alignselect">
+		<{if $setting.alignselect=='close'}>selected<{/if}> selected><{t}>关闭<{/t}><{if $setting.alignselect=='close'}>selected<{/if}><{t}> selected>关闭<{/t}><option value='close' <{if $setting.alignselect=='close'}>selected<{/if}> selected><{t}>关闭<{/t}></option>	
+		<{if $setting.alignselect=='left'}>selected<{/if}>><{t}>左侧<{/t}><{if $setting.alignselect=='left'}>selected<{/if}><{t}>>左侧<{/t}><option value='left' <{if $setting.alignselect=='left'}>selected<{/if}>><{t}>左侧<{/t}></option><{if $setting.alignselect=='right'}>selected<{/if}><{t}>>右侧<{/t}><{if $setting.alignselect=='right'}>selected<{/if}><{t}>>右侧<{/t}><option value='right' <{if $setting.alignselect=='right'}>selected<{/if}>><{t}>右侧<{/t}></option>
+		</select></td>
+      </tr>
+      <tr>
+        <th><{t}>标题说明文字<{/t}></th>
+        <td><textarea name="titleexp"><{$setting.titleexp|default:'我们营业的时间<br>9:00-18:00'}></textarea></td>
+      </tr>
+    </table>
+  </div>
+
+
+<span  class="sysiconBtn addorder" u_type="1">QQ</span>
+<span  class="sysiconBtn addorder" u_type="2">MSN</span>
+<span  class="sysiconBtn addorder" u_type="3"><{t}>淘宝旺旺<{/t}></span>
+<span  class="sysiconBtn addorder" u_type="4">Ali Talk</span>
+<span  class="sysiconBtn addorder" u_type="5">Skype</span>
+<div id="im" class="division">
+
+<{foreach from=$setting.im item=data key=key}>
+  <table id="im_<{$data.i}>" width="100%" cellpadding="0" cellspacing="0">
+   <input type=hidden name=im[<{$data.i}>][type] value="<{$data.type}>">
+   <input type=hidden name=im[<{$data.i}>][i] value="<{$data.i}>">
+  <tr>
+  <th>
+    <{if $data.type==1}>
+    <span class="im-info" type="1">QQ:</span>
+    <{elseif $data.type==2}>
+    <span class="im-info" type="2">MSN:</span>
+    <{elseif $data.type==3}>
+    <span class="im-info" type="3"><{t}>淘宝旺旺:<{/t}></span>
+    <{elseif $data.type==4}>
+    <span class="im-info" type="4">Ali Talk:</span>
+    <{elseif $data.type==5}>
+    <span class="im-info" type="5">Skype:</span>
+    <{/if}>
+   
+  </th>
+  <td><input name=im[<{$data.i}>][link] value="<{$data.link}>" size=10></td>
+  <th><{t}>文字说明:<{/t}></th>
+  <td><input name=im[<{$data.i}>][info] value="<{$data.info}>">
+  
+  </td>
+  <td>
+   <{if $data.type }> 
+    <span onClick="delItem(this);" class="delbtn"><{img src="images/bundle/delecate.gif" style="cursor:pointer;" alt="删除" title="删除"}></span>
+    <{/if}>
+    </td>
+  </tr></table>
+  <{/foreach}>
+</div>
+<div class="table-action" ><{button label='确认修改' type='submit'}></div>
+</div>
+</form>
+<table cellspacing="0" cellpadding="0" width="100%" class="themeBtn" style="display:none"><input type="hidden" class="btntype" value="1" name=""/><input type="hidden" value="" class="i" name=""/><tbody><tr><th><span class="im-info"></span></th><td><input size="10" class="btnlink" value="" name=""/></td><th><{t}>文字说明:<{/t}></th><td><input value="" class="btninfo" name=""/></td><td><span class="delbtn"><{img src="images/bundle/delecate.gif" alt="删除" style="cursor:pointer"}></span></td></tr></tbody></table>
+<script>
+	$('aligntype').getAllNext('span').addEvent('click',function(e){
+			var time=$time();
+ 			var btnTable=$$('.themeBtn').getLast().clone();
+			btnTable.set('id','im_'+time);
+			btnTable.setStyle('display','');
+			btnTable.getElement('.im-info').set('text',this.get('text'));			
+			var btntype=btnTable.getElement('.btntype');			
+			btntype.setProperty('name','im['+time+'][type]');
+			btntype.setProperty('value',e.target.get('u_type'));
+			var btni=btnTable.getElement('.i');						
+			btni.setProperty('name','im['+time+'][i]');
+			btni.setProperty('value',time);			
+			var btnlink=btnTable.getElement('.btnlink');			
+			btnlink.setProperty('name','im['+time+'][link]');
+			var btninfo=btnTable.getElement('.btninfo');						
+			btninfo.setProperty('name','im['+time+'][info]');
+			btnTable.removeClass('.themeBtn');
+			btnTable.getElement('.delbtn').addEvent('click',function(e){
+					delItem(this);
+			});			
+			btnTable.inject($('im'));
+	});
+	var delItem=function(obj){
+			if($(obj))$(obj).getParent('table').destroy();
+	}
+	
+</script>

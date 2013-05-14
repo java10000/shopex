@@ -1,0 +1,60 @@
+<div class="tableform"><table width="100%" border="0" cellspacing="10" cellpadding="0">
+  <tr>
+    <td style="vertical-align:top" >
+      <h4><{t}>发货单据列表<{/t}></h4>
+        <div class="division">
+          <table cellspacing="0" cellpadding="0" border="0" class="gridlist">
+          <col class="Coldate"></col>
+            <thead>
+              <tr>
+                <th><{t}>建立日期<{/t}></th>
+                <th><{t}>发货单号<{/t}></th>
+                <th><{t}>物流单号<{/t}></th>
+                <th><{t}>收件人<{/t}></th>
+                <th><{t}>配送方式<{/t}></th>
+              </tr>
+            </thead>
+            <tbody>
+            <{foreach from=$consign item=aBill}>
+            <tr>
+              <td><{$aBill.t_begin|cdate:SDATE_STIME}></td>
+              <td><{$aBill.delivery_id}></td>
+              <td><{$aBill.logi_no}></td>
+              <td><{$aBill.ship_name}></td>
+              <td><{$aBill.delivery}></td>
+            </tr>
+            <{/foreach}>
+            </tbody>
+          </table>
+        </div>
+      </div></td>
+    <td  style="vertical-align:top">
+      <h4><{t}>退货单据列表<{/t}></h4>
+        <div class="division">
+          <table width="100%" border="0" cellspacing="0" cellpadding="0" class="gridlist">
+          <col class="Coldate"></col>
+            <thead>
+              <tr>
+                <th><{t}>建立日期<{/t}></th>
+                <th><{t}>退货单号<{/t}></th>
+                <th><{t}>物流单号<{/t}></th>
+                <th><{t}>退货人<{/t}></th>
+                <th><{t}>配送方式<{/t}></th>
+              </tr>
+            </thead>
+            <tbody>
+            <{foreach from=$reship item=aBill}>
+            <tr>
+              <td><{$aBill.t_begin|cdate:SDATE_STIME}></td>
+              <td><{$aBill.delivery_id}></td>
+              <td><{$aBill.logi_no}></td>
+              <td><{$aBill.ship_name}></td>
+              <td><{$aBill.delivery}></td>
+            </tr>
+            <{/foreach}>
+            </tbody>
+          </table>
+      </td>
+  </tr>
+</table>
+</div>

@@ -1,0 +1,29 @@
+<div id="payInfoPad"></div>
+
+<form method="POST" action="index.php?ctl=system/passport&act=savePassPort" >
+  <input type="hidden" name="passport_type" value="<{$passport_type}>" />
+  <div class="tableform">
+  <div class="division">
+  <table width="100%" border="0" cellpadding="0" cellspacing="0">
+    <tr>
+      <th ><{t}>是否开启：<{/t}></th>
+      <td><input type='radio' name='passport_ifvalid' value='true'  <{if $passport_ifvalid eq 'true'}>checked="checked"<{/if}>}/><{t}>是<{/t}><input type='radio' name='passport_ifvalid' value='false' <{if $passport_ifvalid eq 'false'}>checked="checked"<{/if}>}/><{t}>否<{/t}></td>    
+    </tr>
+  </table>
+</div>
+
+    <div class="division">
+      <table width="100%" cellspacing="0" cellpadding="0" border="0">
+        <{foreach from=$options item=item key=key}>
+        <tr>
+          <th><{$item.label}></th>
+          <td><{input type=$item.type options=$item.options name="config[{$key}]" value=$item.value required=$item.required}></td>
+        </tr>
+        <{/foreach}>
+      </table>
+    </div>
+    
+  <div class="table-action">
+	<{button type="submit"  label="保存"}>
+</div></div>
+</form>

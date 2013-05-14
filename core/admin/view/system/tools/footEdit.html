@@ -1,0 +1,18 @@
+<FORM METHOD=POST ACTION="index.php?ctl=content/content&act=saveFoot" target="{update:'messagebox'}" class="tableform">
+<div class="division">
+<table>
+<tr>
+<th><{t}>显示内容：<{/t}></th>
+  <td><{input name="footEdit" type="html" value=$footEdit}>
+  <input type='hidden' name="code" value='<{$code}>'>
+  </td>
+</tr>
+
+</table>
+</div>
+   <div class="table-action">
+	<{button type="submit"  label="保存"}>
+</div>
+
+
+</FORM>

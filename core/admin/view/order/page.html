@@ -1,0 +1,94 @@
+<{capture name="header"}>
+    <{include file="common/header.meta.html"}>
+
+    <!--JAVASCRIPTS SRC END-->
+    <{if $order.is_has_remote_pdts=='true'}>
+         <{if defined('DEBUG_CSS') && DEBUG_CSS}>
+            <link rel="stylesheet" href="css_src/purchase.css" type="text/css" media="screen, projection"/>
+        <{else}>
+            <link rel="stylesheet" href="css/purchase.css" type="text/css" media="screen, projection"/>
+        <{/if}>
+    <{/if}>
+
+    <style>
+    #payment td img,#shipping td img{display:none!important;}/*fix IMG SRC bug*/
+    </style>
+<{/capture}>
+
+<{capture name="title"}>
+<h1><{img src="images/bundle/spage_editing.gif"}><strong><{t}>正在编辑:<{/t}></strong><{t}><{if $order}>订单号 - <{/t}><span id='order_id'><{$order.order_id}></span><{else}>新建订单<{/t}><{/if}></h1>
+<ul class="btn-bar">
+	<li><{button label="退出编辑" class="btn-quit" onclick="if(confirm('确定退出?'))window.close()"}></li>
+	<li><{button label="保　存" type="button" dropmenu="drop-save" class="btn-save" onclick='subOrderForm()' }></li>
+</ul>
+<ul id="drop-save" class="x-drop-menu">
+	<li onclick='subOrderForm(1)'><span class="info" title="设为默认"><{img src="images/bundle/savesetdef.gif" alt="设为默认"}></span><span><{img src="images/bundle/savetolist.gif"}><{t}>并返回列表<{/t}></span></li>
+</ul>
+<{/capture}>
+
+<div class="spage-main-box">
+<{if $order}>
+    <{if $order.is_has_remote_pdts!=='true'}>
+        <{include file="order/order_edit.html"}>
+    <{elseif $order.is_has_remote_pdts=='true'}>
+        <{include file="order/edit_po.html"}>
+    <{/if}>
+<{else}>
+    <{include file="order/order_new.html"}> 
+<{/if}>   
+</div>
+
+<script>
+(function(){
+subOrderForm=function(sign){
+    var tmp_target,_form;
+	if(document.getElements('form')){
+        _form=document.getElements('form').getLast();
+    }
+
+    if(_form&&_form.target.length==0){
+        tmp_target=_form;
+        tmp_target.target="{update:'messageBox'}";
+    }
+    
+	if(sign){
+		window.MessageBoxOnShow=function(box,success){
+			if(MODALPANEL)MODALPANEL.hide();
+			if(!success){
+				if(tmp_target)tmp_target.target=''
+				return
+			}
+			window.close();
+		}
+	}else{
+		if(tmp_target)tmp_target.target='';
+	}			
+	_form.fireEvent('submit');		
+};
+})();
+</script>
+ 
+<{capture name='footbar'}>
+<table cellspacing="5" cellpadding="0" style="margin:0 auto; height:50px; width:auto;"
+ class="tableAction">
+    <tbody>
+        <tr valign="middle">
+            <td>
+              <b class="submitBtn">
+                <button onclick="subOrderForm(1);">
+                    <span class="iconbutton savetolist">保存并关闭窗口</span>
+                </button>
+              </b>
+              <b class="submitBtn blue">
+                <button onclick="subOrderForm()">
+                    <span class="iconbutton savebutton">保存当前</span>
+                </button>
+              </b>
+              <b isclosedialogbtn="true" class="submitBtn blue">
+                <button onclick="if(confirm('确定退出?'))window.close()"><span>关闭</span></button>
+              </b>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<{/capture}>

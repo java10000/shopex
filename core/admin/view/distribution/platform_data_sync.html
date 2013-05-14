@@ -1,0 +1,89 @@
+<style type="text/css">
+.actionBar {
+background:#F0F0F0 none repeat scroll 0 0;
+border-bottom:3px solid #6F777A;
+border-top:1px solid #FFFFFF;
+line-height:30px;
+padding:0 8px;
+}
+.sysiconBtn {margin:0; padding:0; margin:1px 3px 0 0; padding:4px 4px 2px 20px; line-height:24px; cursor: pointer; color: #000; text-decoration: none; border-top: 1px solid #fff; border-left: 1px solid #fff; border-right: 2px solid #bec6ce; border-bottom: 2px solid #bec6ce; outline:none; display:inline; font-weight: normal; cursor:pointer; }
+</style>
+<div id="" style="padding-left: 0pt;" class="actionBar mainHead"><table cellspacing="0" cellpadding="0" border="0" width="100%"><tbody><tr><td>
+
+<div class="actionItems" style="border-right:none; height:60px;">
+<table id='data_sync_form'>
+  <tbody><tr style="display:none;">
+    <td class="functop"><span style="text-align:left;"><!-- 搜索选项： -->
+
+    <select name='update_content' id='update_content' style="display:none;">
+    	<option value='0'>- 选择更新内容 -</option>
+<option value='6'>新增商品</option>
+<option value='4'>商品更新</option>
+<!--  <option value='1'>商品上架</option>
+<option value='8'>商品下架</option>-->
+<option value='10'>商品图片更新</option>
+    </select>&nbsp;&nbsp;
+
+    <select name='ctrl_status' id='ctrl_status'  style="display:none;">
+    	<option value='0'>- 选择操作状态 -</option>
+<option value='1' class="ColColorBlue">已同步完成</option>
+<option value='2'>须手动同步</option>
+
+    </select>
+
+更新时间：<{input type="date" size="10" name='s_update_time' value="" readonly='true' }> 至<{input type="date" size="10" name='e_update_time' value="" readonly='true'}></span></td>
+  </tr>
+  <tr>
+    <td class="func">商品名称或货号：<input type="text" size="40" name='search_name' id='search_name'/><span class="sysiconBtnNoIcon " style="padding-left: 15px;padding-right: 15px;" id='syncDataSearchBtn'>搜索</span><span id="sync_update" style="margin-left:10px;" ><{button type="button" label="更新所有商品" onclick='syncUpdate("")'}></span>  </td>
+  </tr>
+  
+  <tr>
+    <td class="func">
+  <form id="updateSyncForm" method="POST" action="index.php?ctl=distribution/autosync&act=updateSyncRule&supplier_id=<{$supplier_id}>">  
+    更新商品规则：<{$rule_detail}> <input name="submit" type="submit" value="保存更新商品规则" id="submit" />
+    </form>
+    </td>
+  </tr>
+  
+</tbody></table>
+</div>
+</td>
+
+</tr></tbody></table>
+</div>
+<div id="UpdateProgess" align='center'></div>
+<div id='t_sync_data_list'>
+<{include file='distribution/platform_data_sync_list.html'}>
+</div>
+
+<script>
+
+function syncUpdate(url){
+	  if(!url) {
+	    $('UpdateProgess').innerHTML = '正在更新第一个商品，请勿进行其他页面操作。';
+	    $('sync_update').innerHTML = '';
+	  }
+	  if(!url) url = 'index.php?ctl=distribution/supplier&act=syncUpdate&supplier_id=<{$supplier_id}>';
+	  new Ajax(url,{update:'UpdateProgess',data:'a=a',evalScripts:true}).request();
+}
+var turnd = function(p){
+	W.page("index.php?ctl=distribution/supplier&act=getPlatformSyncDataList&supplier_id=<{$supplier_id}>", {update:$('t_sync_data_list'), data:'page='+p+'&'+$('data_sync_form').toQueryString(), method:'post',                                    onComplete:function(){
+	        if($defined($('finder-foot-datasync-list'))){
+    	        $('finder-foot-datasync-list').set('html',$('finder-foot-datasync-list').get('html'));
+    	        /*$('finder-foot-datasync-list').empty();*/
+	        }
+        }.bind(this)
+    });
+	
+};
+
+(function(){
+    $('syncDataSearchBtn').addEvent('click',function(){
+        turnd(1);
+    });
+})();
+
+
+</script>
+
+</div>

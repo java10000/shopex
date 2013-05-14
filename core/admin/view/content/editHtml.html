@@ -1,0 +1,19 @@
+﻿<div id='content-html-edit'>
+<{input type="html" name="content-html-edit" value=$htmls}>
+<div class="mainFoot">
+	<div class="table-action">
+		<{button type="submit" label="确定编辑"}>
+		<{button label="关闭" isCloseDialogBtn="true"}>
+	</div>
+</div>
+</div>
+
+
+<script>
+  var sw=$('themeFrame').contentWindow.shopWidgets;
+  var btn=$E('#content-html-edit .mainFoot .btn');
+  btn.addEvent('click',function(){
+       $E('.content-html',sw.curWidget).setHTML($E('textarea','content-html-edit').getValue());
+       sw.curdialog.close();
+  });
+</script>

@@ -1,0 +1,114 @@
+<table width='100%'>
+  <tr>
+     <td width='80%'><h3 style='margin:0;padding:0'>客户留言</h3></td>
+     <td width='20%' class='textright'><a href='#dosubmit' class='lnk'>立即发布留言</a></td>
+  </tr>
+</table>
+<hr/>
+
+<{if $msg}>
+
+<div id="shop-message">
+
+  <{foreach from=$msg item=msglist}>
+    <div class="division boxBlue clearfix mainReply" style="margin-bottom:0px;">
+      <div class=" floatLeft commentMain">
+        <div class="floatLeft commentAsk">留言</div>
+          <span class="author fontcolorOrange"><{$msglist.msg_from}></span>&nbsp;&nbsp;<{t}>说：<{/t}>
+          <span class="timpstamp font10px fontcolorGray replies"><{$msglist.date_line|cdate:'SDATE_STIME'}></span>
+          <div style="clear:both;"></div>
+       
+          <{*<h4><{$comment.title|escape:'html'}></h4>
+          <h4><{$msglist.subject|escape:'html'}></h4>*}>
+         
+          <div class="commentText"><{$msglist.message|escape:'html'}></div>
+        </div>
+      </div>
+    
+    
+        <div class="commentReply">
+          <{foreach from=$msglist.reply item=items}>
+            <div class="division  item " style=" margin:0px;" >
+             <div class="floatLeft commentReply-admin">回复</div>
+              <span class="author fontcolorOrange"><{$items.msg_from}></span><{t}>&nbsp;&nbsp;回复：<{/t}>
+              <span class="timpstamp font10px fontcolorGray replies"><{$items.date_line|cdate:'SDATE_STIME'}></span>
+              <div  style="clear:both;"></div>
+              <div class="commentText"><{$items.message|escape:'html'}></div>
+              </div>
+          <{/foreach}> 
+       </div>
+   
+
+<{/foreach}>
+ </div>
+<{/if}>
+<script>
+    var checkFormReqs =function(e){
+           e    = new Event(e);
+       var form= $(e.target);
+          
+       var reqs = $$(form.getElements('input[type=text]'),form.getElements('textarea'));
+
+       if(reqs.some(function(req){
+               if(!req.get('required')&&!req.get('vtype').contains('required'))return;
+            if(req.getValue().trim()==''){
+                       req.focus();
+                       MessageBox.error('请完善表单必填项.');
+                       return true;
+            }
+              
+              return false;
+              
+       
+       })){
+           
+           e.stop();
+       
+       }       
+
+    };
+
+
+ <{if $msgshow == "on" }>
+   var changeimg = function(){
+        $('imgVerifyCode').set('src','<{link ctl="passport" act="verifyCode"}>#'+$time());
+    }
+ <{/if}>
+</script>
+  
+  
+  <{pager data=$pager}>
+  <form class="addcomment division" method="post" action='<{link ctl="message" act="sendMsgToOpt"}>' onsubmit='checkFormReqs(event);'>
+  
+    <h4><a name='dosubmit'><{t}>发布留言<{/t}></a></h4>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="forform">
+    
+      <tr>
+        <th><em style='color:red'>*</em><{t}>标题：<{/t}></th>
+        <td><{input type="text" required="true" size=50 name="subject"}></td>
+      </tr>
+    
+      <tr>
+        <th><em style='color:red'>*</em><{t}>留言内容：<{/t}></th>
+        <td><{input type="textarea" required="true" rows="5" name="message" class='inputstyle' style='width:80%'}></td>
+      </tr>
+       <{if $nomember eq 'on'}>
+      <tr>
+        <th><{t}>联系方式：<{/t}></th>
+        <td><{input type="text"  size=24 name="email" maxlength=255 class='inputstyle'}><{t}>(QQ、MSN、Email、电话等，此信息不会被公开)<{/t}></td>
+      </tr>
+      <{/if}>
+      <{if $msgshow == "on" }>
+      <tr>
+        <th><em style='color:red'>*</em><{t}>验证码：<{/t}></th>
+        <td><{input type="text" required="true" size="4" maxlength="4" name="verifyCode" class='inputstyle'}>&nbsp;<img src="<{link ctl="passport" act="verifyCode"}>" border="1" id="imgVerifyCode"/><a href="javascript:changeimg()"><{t}>&nbsp;看不清楚?换个图片<{/t}></a></td>
+      </tr>
+      <{/if}>
+      <tr>
+        <th></th>
+        <td><input type="submit" value="提交" class='btn' ></td>
+      </tr>
+    </table>
+  </form>
+
+

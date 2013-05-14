@@ -1,0 +1,52 @@
+<div class="tableform widgetconfig">
+<div class="division">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr> 
+        <th>显示成功发贷</th>
+        <td><{input name="rowNum" value=$setting.rowNum|default:20 size=5}> 条 
+        </td>
+      </tr>
+      <tr> 
+        <th>显示小图标</th>
+        <td><div id="showPic"></div>
+          <{input type="select" stype='arrow' name="smallPic" id="smallPic" value=$setting.smallPic onClick="choosePic()"}> 
+          <div id="pic_add" style="display: none"> 图片地址：<{input name="picaddress" 
+            value=$setting.picaddress}></div></td>
+      </tr>
+      <tr> 
+        <th>滚动速度</th>
+        <td><select name="roll_speed"><option value=1 <{if $setting.roll_speed==1}>selected<{/if}>>快</option><option value=30 <{if $setting.roll_speed==30}>selected<{/if}>>普通</option><option value=70 <{if $setting.roll_speed==70}>selected<{/if}>>慢</option>
+          </select></td>
+      </tr>
+      <tr>
+        <th>高度</th>
+        <td><{input name="height" value=$setting.height|default:90 size=5 required="true" type="digits"}></td>
+      </tr>
+      <tr>
+      <th>是否停顿</th>
+      <td>
+      是:<input type="radio" name="suspend" value=on <{if $setting.suspend== on}>checked<{/if}>>
+      否:<input type="radio" name="suspend" value=off <{if $setting.suspend!= on}>checked<{/if}>>
+    </tr>
+
+    </table>
+</div>
+</div>
+<script>
+choosePic=function(){
+  var vol=$('smallPic').value;
+  $('pic_add').style.display="none";
+  switch(vol){
+    case '':
+    $('showPic').innerHTML='';
+    break;
+    case '6':
+    $('pic_add').style.display="";
+    $('showPic').innerHTML="";
+    break;
+    default:
+    $('showPic').innerHTML="<img src='../statics/icons/"+vol+"'>";
+    break;
+  }
+}
+choosePic();</script>

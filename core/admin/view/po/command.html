@@ -1,0 +1,6 @@
+<{if $item.status == 'pending'}>
+    <a  href="index.php?ctl=<{$env.get.ctl}>&act=cancel_pause&p[0]=<{$item.order_id}>">取消暂停发货</a>
+<{/if}>
+<{if $item.status == 'active' && $item.__pay_status == 1 && $item.__ship_status == 0}>
+    <a  href="index.php?ctl=<{$env.get.ctl}>&act=pause&p[0]=<{$item.order_id}>">暂停发货</a>
+<{/if}>

@@ -1,0 +1,160 @@
+<form method='post' action='<{if $article.article_id}>index.php?ctl=content/articles&act=save&p[0]=<{$article.article_id}>&p[1]=<{$node_id}><{else}>index.php?ctl=content/articles&act=addArticle&p[0]=<{$node_id}><{/if}>' class="tableform" >
+<input type="hidden" name="node_id" value="<{$node_id}>" /><{if $article.article_id}><input type="hidden" name="article_id" value="<{$article.article_id}>" /><{/if}>
+<input type="hidden" name="goodsid" value="<{$goodsinfo.goodsid}>" id="goodsid">
+<div class="division">
+  <table cellspacing="0" cellpadding="0" border="0" width="100%" class="shopping_setting">
+    <tbody>
+      <tr>
+        <th><{t}>栏目：<{/t}></th>
+        <td><label>
+          <select name="node_id">
+            <{foreach from=$article_cat item=item key=key}>
+            <option value="<{$item.node_id}>" <{if $item.node_id==$node_id}>selected<{/if}>><{$item.title}></option>
+            <{/foreach}>
+          </select>
+          </label></td>
+      </tr>
+      <tr>
+        <th><{t}>标题：<{/t}></th>
+        <td><{input type='text' name='title' value=$article.title class="x-input" vtype="required"}></td>
+      </tr>
+       <!--2011-8-15 文章排序-->
+      <tr>
+        <th><{t}>排序：<{/t}></th>
+        <td><{input type='text' name='ordernum' value=$article.ordernum class="x-input" vtype="required"}></td>
+      </tr>
+      <tr>
+        <th><{t}>设置：<{/t}></th>
+        <td><label><input type="checkbox" name="ifpub" id="checkbox" <{if $article.ifpub||!$node_id}>checked<{/if}>> 发布</label>
+            <label><input type="checkbox" name="goodslink" id="goodslink" <{if $goodsinfo.goodslink}>checked<{/if}>> 启用相关产品 </label>
+            <label><input type="checkbox" name="hotlink" id="hotlink" <{if $goodsinfo.hotlink}>checked<{/if}>> 启用热点链接 </label>
+          </td>
+      </tr>
+
+      <tr id="goodsinfolabel">
+        <th><{t}>相关商品：<{/t}></th>
+        <td><p style="margin:0 0 0.5em;"><{t}>匹&nbsp;&nbsp;配&nbsp;&nbsp;词：<{/t}>
+        <{input name="goodskeywords" type="text" id="goodskeywords" value=$goodsinfo.goodskeywords class="x-input" vtype="required"}> 
+        <span class="info"><{t}>多个匹配词用半角竖线&quot;|&quot;分开<{/t}></span> <{help}>系统会根据您输入的匹配词搜索相关的商品，商品名称中包含该词，或者商品关键词中存在该词都会被搜索到<{/help}>
+        </p>
+        <{t}>显示数量：<{/t}>
+        <select name="goodsnums" id="goodsnums">
+          <option value="5" <{if $goodsinfo.goodsnums==5}>selected<{/if}>>5</option>
+          <option value="10" <{if $goodsinfo.goodsnums==10}>selected<{/if}>>10</option>
+          <option value="20" <{if $goodsinfo.goodsnums==20}>selected<{/if}>>20</option>
+        </select>
+        <span onclick="new Dialog('index.php?ctl=content/articles&act=getGoods&p[0]='+$('goodsnums').value+'&p[1]='+$('goodsid').value,{title:'商品选择器',ajaxoptions:{method:'post',data:$H({'keywords':$('goodskeywords').value})}})" class="sysiconBtnNoIcon"><{t}>搜索<{/t}></span>
+        </td>
+      </tr>
+      <tr id="hotlinklabel">
+        <th><{t}>热点链接：<{/t}></th>
+        <td>
+        <{if $hotlink}>
+            <{foreach from=$hotlink item=item key=key}>
+                <div class="label3">热&nbsp;&nbsp;点&nbsp;&nbsp;词：
+                <{input name="linkwords[]" style="width:70px;" type="text" id="linkwords" value=$item.keyword class="x-input" vtype="required&&morelength"}> 
+                &nbsp;&nbsp;&nbsp;&nbsp;链接URL：
+                <{input name="linkurl[]" type="text" id="linkurl" value=$item.refer class="x-input" vtype="required"}><{img src="images/bundle/delecate.gif" onclick="del_el(this)"}></div>
+            <{/foreach}>
+        <{else}>
+            <div class="label3" style="padding:5px 0;">热&nbsp;&nbsp;点&nbsp;&nbsp;词：
+            <{input name="linkwords[]" style="width:70px;" type="text" id="linkwords" class="x-input" vtype="required&&morelength"}> 
+            &nbsp;&nbsp;&nbsp;&nbsp;链接URL：
+            <{input name="linkurl[]" type="text" id="linkurl" value="http://" class="x-input" vtype="required"}><{img src="images/bundle/delecate.gif" onclick="del_el(this)" width="16" height="16" align="absmiddle"}></div>
+        <{/if}>
+        <span class="sysiconBtn addorder"><{t}>添加热点词<{/t}></span>
+        <script>
+           (function(){
+                var tmp=$$('.label3')[0].clone();
+                $$(".addorder").addEvent("click",function(){
+                     if(tmp)tmp.clone().injectBefore(this);
+                });
+            })();
+        </script>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div class="division">
+  <table cellspacing="0" cellpadding="0" border="0" width="100%" class="shopping_setting">
+    <tbody>
+      <tr>
+    <th><{t}>内容<{/t}></th>
+        <td><{input type='html' name='content' value=$article.content}></td>
+      </tr>
+      <tr>
+          <th><{t}>TITLE<br>
+            (页面标题)<{/t}></th>
+          <td><input type="text" name="seo_title" style="width:360px" maxlength="255" value="<{$seo.title}>"></td>
+        </tr>
+          <tr>
+          <th><{t}>META_KEYWORDS<br>
+            (页面关键词)<{/t}></th>
+          <td><input type="text" name="seo_keywords" style="width:360px" maxlength="255" value="<{$seo.keywords}>"></td>
+        </tr>
+        <tr>
+          <th><{t}>META_DESCRIPTION<br>
+            (页面描述)<{/t}></th>
+          <td><textarea name="seo_description" rows=4 style="width:360px" cols=35 maxlength=255/>
+            <{$seo.descript}>
+            </textarea></td>
+        </tr>
+    </tbody>
+  </table>
+</div>
+
+<table cellspacing="0" cellpadding="0" border="0" align="center" class="table-action">
+<tr>
+<td><b class="submitBtn"><input type='submit' value='提交'></b></td>
+</tr>
+</table>
+
+
+
+</form>
+<script>
+         $('goodslink').addEvent('click',function(){
+                    if(this.checked){
+                        $('goodsinfolabel').show().getFormElements().set('disabled',false);
+                    }else{
+                        $('goodsinfolabel').hide().getFormElements().set('disabled',true);
+                    }
+         });
+        $('hotlink').addEvent('click',function(){
+                    if(this.checked){
+                        $('hotlinklabel').show().getFormElements().set('disabled',false);
+                    }else{
+                        $('hotlinklabel').hide().getFormElements().set('disabled',true);
+                    }
+         });
+         
+    window.addEvent("domready",function() {
+      <{if !$goodsinfo.goodslink}>
+        $('goodsinfolabel').hide().getFormElements().set('disabled',true);
+      <{/if}>
+      <{if !$goodsinfo.hotlink}>
+      $('hotlinklabel').hide().getFormElements().set('disabled',true);
+      <{/if}>
+    });
+    function del_el(el) {
+    if($$(".label3").length>1) 
+      el.parentNode.destroy();
+    else
+      alert("不能删除全部输入项，如果不想使用热点链接，请取消上方的启用选项！");
+    }
+    validatorMap.set('morelength',['热点关键词字数不能小于2，请核实',function(el){
+    return el.value.trim().length>=2;
+    }]);
+</script>
+
+<{if $env.get._finder_name}>
+ <script>
+ $$('.tableform')[0].store('target',{
+    update:'messagebox',
+    onComplete:function(){
+      finderGroup['<{$env.get._finder_name}>'].refresh();
+    }
+ });
+ </script>
+ <{/if}>

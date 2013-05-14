@@ -1,0 +1,11 @@
+<{if $gimage.gimage_id>0}>
+<span <{if $goods.image_default==$gimage.gimage_id}>class="current"<{/if}> onclick="goodsEditor.pic.setDefault('<{$gimage.gimage_id}>','<{if $gimage.small}><{$gimage.small|storager}><{else}>index.php?ctl=goods/product&act=view_src_img&p[0]=<{$gimage.gimage_id}><{/if}>')">
+	<img sn="_img_<{$gimage.gimage_id}>" src='images/loading.gif' lsrc='<{if $gimage.thumbnail}><{$gimage.thumbnail|storager}><{else}>index.php?ctl=goods/product&act=view_src_img&p[0]=<{$gimage.gimage_id}><{/if}>' onload='chainImgLoader(this);'>
+</span>
+<input name="goods[image_file][]" value="<{$gimage.gimage_id}>" soucre="<{$gimage.source}>" bigPic="<{$gimage.big}>" type="hidden">
+<div class="gpic-btn-bar">
+<{assign var=gimageid value=$gimage.gimage_id}>
+<span class="gpic-btn-view" onclick="goodsEditor.pic.viewSource('index.php?ctl=goods/product&act=viewGimages&gimage_id=<{$gimageid}>')" title="查看路径"><i><{t}>查看路径<{/t}></i></span>|<span class="gpic-btn-delete" onclick="goodsEditor.pic.del(<{$gimage.gimage_id}>,this)" title="删除图片"><i><{t}>删除图片<{/t}></i></span>
+</div>
+<{/if}>
+

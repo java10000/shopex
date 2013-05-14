@@ -1,0 +1,40 @@
+
+<div id="Remark_<{$member_id}>">
+ <div class="division">
+
+ <{if $_is_singlepage}><input type='hidden' name='all_reload' value='1'><{/if}>
+<table width="100%" border="0" cellpadding="0" cellspacing="0" >
+   <tr>
+   <th><{t}>标记：<{/t}></th>
+   <td>
+       <label><input type='radio' name='remark_type' value='b1' id='b1'><img src='../statics/remark_icons/b1.gif' width='20' height='20'></label>
+	   <label><input type='radio' name='remark_type' value='b2' id='b2'><img src='../statics/remark_icons/b2.gif' width='20' height='20'></label>
+	  <label><input type='radio' name='remark_type' value='b3' id='b3'><img src='../statics/remark_icons/b3.gif' width='20' height='20'></label>
+	  <label><input type='radio' name='remark_type' value='b4' id='b4'><img src='../statics/remark_icons/b4.gif' width='20' height='20'></label>
+	  <label><input type='radio' name='remark_type' value='b5' id='b5'><img src='../statics/remark_icons/b5.gif' width='20' height='20'></label>
+	  <label><input type='radio' name='remark_type' value='b0' id='b0'><img src='../statics/remark_icons/b0.gif' width='20' height='20'></label>
+   </td>
+   </tr>
+   <tr>
+   <th><{t}>会员备注：<{/t}></th>
+   <td><{input type="textarea" style="width:750px;height:200px" name="remark" value=$remark }></td>
+   </tr>
+</table>
+ </div>
+
+ <div class="table-action">
+	<{button label="保存" onclick="W.page('index.php?ctl=member/member&act=addRemark&p[0]={$member_id}',{update:'messagebox',data:$('Remark_{$member_id}'),method:'post'},this)"}>
+</div>
+
+</div>
+
+
+<script>
+	window.addEvent('domready',function(){
+		if('<{$remark_type}>'!=''){
+		    $('<{$remark_type}>').checked = true;
+		}else{
+		    $('b1').checked = true;
+		}
+	});
+</script>

@@ -1,0 +1,13 @@
+<div class="division" style="border:none">
+<{foreach from=$updateInfos item=item}>
+<h4 class="fontcolorOrange"><{$item.version}></h4>
+  <ol>
+     <{$item.contents}>
+  </ol>
+<{/foreach}>
+</div>
+<{area inject=".mainFoot"}>
+<center>
+ <input value="开始更新" onclick="parent.$('dialogContent').getParent('.dialog').retrieve('instance').close();new Dialog('index.php?ctl=system/appmgr&act=install_update&url=<{$download_url}>&app_status=<{$app_status}>&app_ident=<{$plugin_ident}>&app_version=<{$app_version}>',{onShow:function(e){ this.dialog_body.id='dialogContent'; },title:'更新应用',width:800,height:560,onClose:function(){W.page('index.php?ctl=system/appmgr&act=index');}});" type="button">
+</center>
+<{/area}>

@@ -1,0 +1,48 @@
+<form class="tableform" action="index.php?ctl=admin/roles&act=save" method="post">
+    <{if $role.role_id}>
+        <input type="hidden" name="role_id" value="<{$role.role_id}>" />
+    <{/if}>
+    
+    <div class="division">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <th><{t}>角色名称:<{/t}></th>
+    <td><{input type="text" name="role_name" value=$role.role_name }> &nbsp; <{help}><{t}>角色是管理权限的集中点，类似于现实公司中的工作职位<{/t}><br /><br /><{t}>如：订单管理角色，为其设置会员、订单的操作权限后建立此角色，多个网店管理员可以同时使用此角色，而且无需单独设置权限即可操作会员和订单功能<{/t}><{/help}></td>
+  </tr>
+    </table>        
+    </div>
+    
+    <div class="division">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <th><{t}>角色描述:<{/t}></th>
+    <td><{input type="textarea" style="width:360px;height:40px" name="role_memo" value=$role.role_memo }></td>
+  </tr>
+    </table>        
+    </div>
+    
+    
+    <div class="division">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <th><{t}>权限选择:<{/t}></th>
+    <td>
+        <{foreach from=$actions item=item key=key name="group"}>
+        <div>
+            <input type="checkbox" id="p-<{$smarty.foreach.group.iteration}>-all" name="actions[]" value="<{$key}>" <{if $role.actions[$key]>-1}> checked="checked"<{/if}> />
+            <label style="margin-right:50px" for="p-<{$smarty.foreach.group.iteration}>-all"><{$item}></label>
+        </div>
+        <{/foreach}>        
+    </td>
+  </tr>
+    </table>        
+    </div>
+
+
+
+
+ <div class="table-action">
+	<{button type="submit" label="提交"}>
+</div>
+    
+</form>

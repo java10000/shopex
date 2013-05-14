@@ -1,0 +1,154 @@
+﻿
+<div class="tableform">
+
+<div class="division">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  
+	<tr>
+    <th>广告宽度：</th>
+    <td ><input name="ad_width" value="<{$setting.ad_width|default:900}>" style="width:50px" ></td>
+	<th>大幅广告高度：</th>
+	<td ><input name="ad_height" value="<{$setting.ad_height|default:450}>" style="width:50px"></td></tr>
+	<tr>
+	  <th>横幅的广告高度：</th>
+	  <td >
+      
+ <input name="ad_mini_height" value="<{$setting.ad_mini_height|default:50}>" style="width:50px">
+      
+         </td>
+	  <th>链接跳转方式：</th>
+	  <td >
+      
+        <select name="ad_windowtarget">
+        <option value="_blank" <{if $setting.ad_windowtarget=='_blank'}>selected<{/if}> >跳转至新窗口</option>
+        <option value="_self" <{if $setting.ad_windowtarget=='_self'}>selected<{/if}> >在原窗口打开</option>
+      </select>   
+      
+      </td>
+      </tr>
+      
+        <tr>
+    <th>大幅图片展示时间：</th>
+    <td> <input name="ad_showimagetime" value=<{$setting.ad_showimagetime|default:5}> style="width:50px"><span class="notice-inline">秒</span></th>
+    <th>广告背景色：</th>
+    <td><{input type="color" name=ad_bgcolor style="width:50px;" value=$setting.ad_bgcolor|default:'#b10000'}></td>
+    
+  </tr>
+  <tr>
+    <th>开启倒计时：</th>
+    <td> <input type="checkbox" name="startcountdown" id="startcountdown"  <{if $setting.startcountdown=='on'}>checked="checked"<{/if}> /></td>
+    <th>&nbsp;</th>
+    <td>&nbsp;</td>
+    
+  </tr>
+	 
+</table>
+</div>
+
+<div class="division">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <th>大幅图片地址：</th>
+    <td><input type="text" name="ad_pic" id="ad_pic" value="<{$setting.ad_pic}>" class="_x_ipt" vtype="required"> <span class='sysiconBtn addorder' onclick="addPic('ad_pic')">添加图片</span></td>
+  </tr>
+    <tr>
+    <th>横幅图片地址：</th>
+    <td><input type="text" name="ad_mini_pic" id="ad_mini_pic" value="<{$setting.ad_mini_pic}>" class="_x_ipt" vtype="required"> <span class='sysiconBtn addorder' onclick="addPic('ad_mini_pic')">添加图片</span></td>
+  </tr>
+    <tr>
+    <th>链接地址：</th>
+    <td><input type="text" name="ad_pic_link" value="<{$setting.ad_pic_link}>"></td>
+  </tr>
+</table>
+</div>
+  
+<div class="division" id="showcountdown" style="display:none;">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <th>倒计时时间设置：</th>
+    <td>
+    <input name="countdown_day" value='<{$setting.countdown_day|default:1}>' style="width:30px"> 天 <input name="countdown_hour" value='<{$setting.countdown_hour|default:0}>' style="width:30px"> 时 <input name="countdown_minute" value='<{$setting.countdown_minute|default:0}>' style="width:30px"> 分 <input name="countdown_second" value='<{$setting.countdown_second|default:0}>' style="width:30px"> 秒
+    </td>
+    <th>倒计时数字大小：</th>
+    <td><input name="countdown_number_fontsize" value="<{$setting.countdown_number_fontsize|default:30}>" style="width:50px"></td>
+  </tr>
+   <tr>
+    <th>倒计时文字颜色：</th>
+    <td><{input type="color" name=countdown_text_color style="width:50px;" value=$setting.countdown_text_color|default:'#ffffff'}></td>
+    <th>倒计时数字颜色：</th>
+    <td><{input type="color" name=countdown_number_color style="width:50px;" value=$setting.countdown_number_color|default:'#ff9900'}></td>
+  </tr>
+  <tr>
+    <th>倒计时显示位置：</th>
+    <td> <select name="countdown_position"  >
+        <option value="left" <{if $setting.countdown_position=='left'}>selected<{/if}> >左</option>
+        <option value="center" <{if $setting.countdown_position=='center'}>selected<{/if}> >中</option>
+        <option value="right" <{if $setting.countdown_position=='right'}>selected<{/if}> >右</option>
+      </select> </td>
+    <th>&nbsp;</th>
+    <td>&nbsp;
+    
+    </td>
+  </tr>
+</table>
+</div>
+
+
+</div>
+
+<input type="text" style="display:none;" id="setdate" name="setdate" >
+
+<script>
+
+window.addEvent("domready",function() {
+
+  settime();
+   
+  $('startcountdown').checked ? show($('showcountdown')) : hide($('showcountdown'));
+  
+  $('startcountdown').addEvent("click",function() {
+  
+  if(this.checked) {
+    settime();
+    show($('showcountdown')); 
+  }
+  else {
+    hide($('showcountdown'));
+  }
+
+});
+
+function show(el) {
+  el.setStyle("display","");
+}
+
+function hide(el) {
+  el.setStyle("display","none");
+}
+
+});
+
+function settime() {
+
+  var isdate= new Date(); 
+  var year=isdate.getFullYear();
+  var month=isdate.getMonth();
+  var day=isdate.getDate();
+  var hour= isdate.getHours();
+  var minute = isdate.getMinutes();
+  var second = isdate.getSeconds();
+  $('setdate').value = year+","+month+","+day+","+hour+","+minute+","+ second;
+
+}
+
+	function addPic(id){
+			return new Dialog('index.php?ctl=editor&act=image&p[0]=0',{title:'插入<img>',onShow:function(){
+			var dialog=this;
+			this.dialog.store('callback',function(src){
+              $(id).value=src;
+              dialog.close();
+           });
+        }});
+		}
+
+</script>

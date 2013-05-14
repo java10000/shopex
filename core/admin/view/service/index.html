@@ -1,0 +1,132 @@
+<div class="tableform notice"><{t}>ShopEx企业通行证是您享受ShopEx服务的唯一标识，它记录了您的商家信息、购买服务记录、充值帐户金额等重要信息。<{/t}><br><{t}>您只要通过注册"ShopEx企业通行证"就可以绑定产品的授权证书，在您遇到商店系统需要重新安装时，只需要输入您的"ShopEx企业通行证"的帐号和密码，就可以继续使用原有的重要信息了。<{/t}></div>
+<div class="tableform">
+<h4><{t}>ShopEx企业通行证：<{/t}><{$ent_id}><span style='color:#aaaaaa'>(<{$ent_email}>)</span></h4>
+
+
+<{if $license}>
+<div class="division">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td><{t}>提示&nbsp:&nbsp&nbsp&nbsp您的授权证书<{/t}><b style='color:#ff6600'>(<{$certi_id}>)</b><{t}>已经绑定商派企业通行证,如果想查看相关信息请 <b>登录</b>ShopEx企业用户中心<{/t}></td>
+    
+  </tr>
+</table>
+</div>
+
+<{else}>
+<div class="division">
+
+提示：只有在网络服务器安装的ShopEx商店系统才拥有证书功能，您的商店系统由于是在本地安装，所以无ShopEx证书，无法使用ShopEx证书下载和上传功能。如果您将本地的商店系统迁移至服务器，则会自动获得ShopEx证书。
+</div>
+<{/if}>
+
+</div>
+<!-- 内网http://shopexuser.ex-sandbox.com/index.php?ctl=passport&act=login-->
+<form action="index.php?ctl=service/certificate&act=reset_shopexid_pwd" method="post">
+<div class="tableform">
+<h4><{t}>ShopEx企业用户中心<{/t}></h4>
+<div class="division">
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <th><{t}>用户中心邮箱：<{/t}></th>
+    <td><input type="text" style='width: 170px' value="<{$ent_email}>" disabled=disabled></td>
+  </tr>
+  <tr>
+    <th><{t}>用户中心密码：<{/t}></th>
+    <td>
+        <input name="password" type="password" style='width: 170px'>
+        <span><{help}>此处输入密码必须与shopex用户中心密码保持一致。<{/help}><a class="forgot-password" target="_blank" style='color:#336699' href="<{$env.const.SHOP_USER_ENTERPRISE}>?ctl=passport&act=forget">忘记密码？</a></span>
+    </td>
+  </tr>
+    <input name="dosubmit" type="hidden">
+</table>
+
+
+</div>
+
+<div class="table-action">
+     <{button type="submit"  label="保存修改"}>
+  </div>
+</form>
+
+<div class="tableform">
+<h4><{t}>ShopEx证书下载备份<{/t}></h4>
+
+
+<{if $license}>
+<div class="division">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <th><{t}>当前证书节点号:<{/t}></th>
+    <td>
+        <{$node_id|default:'-'}>
+        <{if $node_id}>
+            [<a href="index.php?ctl=service/certificate&act=node_binding" dialog="{title:'节点绑定关系'}">节点绑定关系</a>]
+        <{/if}>
+    </td>
+  </tr>
+  <tr>
+    <th><{t}>当前证书:<{/t}></th>
+    <td><{$certi_id}></td>
+  </tr>
+</table>
+</div>
+
+
+<div class="table-action">
+<button class="btn" onclick="window.open('<{$license_url}>')">下载证书</button>
+</div>
+
+
+<{else}>
+<div class="division">
+
+提示：只有在网络服务器安装的ShopEx商店系统才拥有证书功能，您的商店系统由于是在本地安装，所以无ShopEx证书，无法使用ShopEx证书下载和上传功能。如果您将本地的商店系统迁移至服务器，则会自动获得ShopEx证书。
+</div>
+<{/if}>
+
+</div>
+
+<form action="index.php?ctl=service/certificate&act=upLicense" method="POST" enctype="multipart/form-data">
+<div class="tableform">
+<h4><{t}>ShopEx证书上传恢复<{/t}></h4>
+<div class="division">
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <th><{t}>请选择证书：<{/t}></th>
+    <td><input name="license" type="file"></td>
+  </tr>
+
+</table>
+
+
+</div>
+
+<div class="table-action">
+      <{button type="submit"  label="上传恢复" }>
+  </div>
+</form>
+
+
+<{if $license}>
+<form action="index.php?ctl=service/certificate&act=checkPass"  method="get" enctype="multipart/form-data">
+<div class="tableform">
+<h4><{t}>错误证书删除<{/t}></h4>
+
+<div class="division">
+当您上传了错误的ShopEx证书导致证书功能失效时，请先在此处清空错误的证书，再使用证书上传恢复功能恢复正确的证书。
+</div>
+
+
+<div class="table-action">
+    <{button type="submit"  label="删除"}>
+</div>
+
+</div>
+</form>
+<{/if}>
+
+
+

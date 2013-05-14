@@ -1,0 +1,61 @@
+<form action="index.php?ctl=goods/gtype&act=toSave" method="post" >
+  <input type="hidden" name="type_id" value=<{$gtype.type_id}>>
+  <table width="100%" border="0" cellpadding="0" cellspacing="0" ><tr><td style="text-align:right;padding-top:3px;padding-right:10px;"><{help docid="72" type="link"}><{t}>点击查看帮助<{/t}><{/help}></td></tr></table>
+    <{tabber}>
+    <div style="padding:5px; border:1px solid #dddddd; margin-left:5px; margin-right:5px; *margin-top:1px;">
+        <{tab name="基本设置"}>
+        <{include file="product/gtype/name.html"}>
+        <{/tab}><{if $gtype.setting.use_props}><{tab name="扩展属性"}>
+        <{include file="product/gtype/props_form.html"}>
+        <{/tab}>
+        <{/if}>
+        <{tab name="规格"}>
+        <{include file="product/gtype/spec_form.html"}>
+        <{/tab}>
+        <{if $gtype.setting.use_params}>
+        <{tab name="详细参数表"}>
+        <{include file="product/gtype/params_form.html"}>
+        <{/tab}>
+        <{/if}>
+        <{if $gtype.setting.use_minfo}>
+        <{tab name="购物必填信息"}>
+        <{include file="product/gtype/minfo_form.html"}>
+        <{/tab}>
+        <{/if}>
+    </div>
+    <{/tabber}>
+ <div style="clear:both"></div>
+
+  <div class="table-action">
+	<{button type="submit"  label="保存"}>
+</div>
+</form>
+
+<div style="display:none" id="props_tmpl">
+<div class="row">
+    <div class="p_name span-3">
+        <input size=12 name="props[name][]"  />
+    </div>
+    <{if $gtype.type_id}><div class="p_name span-3"><input size=12 name="props[alias][]"  /></div><{/if}>
+    <div class="p_type span-5">
+      <select name="props[type][]"  onchange='changePropsType(this)'>
+      <optgroup label="选择项">
+        <option value="2"><{t}>选择项 - 渐进式筛选<{/t}></option>
+        <option value="3"><{t}>选择项 - 下拉筛选<{/t}></option>
+        <option value="4"><{t}>选择项 - 不可筛选<{/t}></option>
+          </optgroup>
+          <optgroup label="输入项">
+        <option value="0"><{t}>输入项 - 可搜索<{/t}></option>
+        <option value="1"><{t}>输入项 - 不可搜索<{/t}></option>
+          </optgroup>
+    </select></div>
+    <div class="p_optionalias span-8">
+    <input  style='width:95%;' name="props[options][]"  />
+    </div>
+        <div class="p_optionalias span-2"><input type="checkbox" checked/><input type="hidden" name="props[show][]" value="1"></div> 
+        <div class="p_optionalias span-2"><input  style='width:50%;' name="props[ordernum][]" value=""/></div>
+        <div class="p_btn span-1" style="text-align:center;color:red;cursor:pointer" onclick="$(this).getParent('.row').remove()" ><{img src="images/bundle/delecate.gif" title="删除" alt="删除"}></div>
+
+        <div style="clear:both"></div>
+    </div>
+</div>

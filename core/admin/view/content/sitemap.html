@@ -1,0 +1,113 @@
+<form action="index.php?ctl=content/sitemaps&act=update" id="site_map_form" method="post">
+	<{area inject=".mainHead"}>
+	<div class="action-bar mainHead clearfix">
+		<div class="flt"><span class="sysiconBtn addorder" onclick="W.page('index.php?ctl=content/sitemaps&act=addNew')"><{t}>添加顶级栏目<{/t}></span><span class="sysiconBtn btn-show-cate" onclick="W.page('index.php?ctl=content/sitemaps&act=index')"><{t}>全部展开<{/t}></span><span class="sysiconBtn btn-hide-cate" onclick="W.page('index.php?ctl=content/sitemaps&act=index&p[0]=1')"><{t}>全部收起<{/t}></span></div>
+		<div class="frt"><{help docid="78" type="link"}><{t}>点击查看帮助<{/t}><{/help}></div>
+	</div>
+	<div class='gridlist-head mainHead' style='text-align:center!important'>
+		<div class='span-13' ><{t}>站点栏目名称<{/t}></div>
+		<div class='span-1'><{t}>显示<{/t}></div>
+		<div class='span-1'><{t}>添加<{/t}></div>
+		<div class='span-1'><{t}>编辑<{/t}></div>
+		<div class='span-1'><{t}>更名<{/t}></div>
+		<div class='span-1'><{t}>删除<{/t}></div>
+		<div class='span-1'><{t}>预览<{/t}></div>
+	</div>
+	<{/area}>
+	<div id="cat_tree" class='gridlist'>
+		<div class="clear_<{$item.p_node_id}> row">
+			<div class='row-line'>
+				<div class='span-14'>
+					<div style="margin-left:<{math equation='10+x*35' x=$item.depth}>px;" ><span class="closeFolder" onClick="this.className=(this.className=='openFolder'?'closeFolder':'openFolder');flode('0',this,(this.className=='openFolder'?'none':''));"></span><{t}>根目录<{/t}></div>&nbsp;
+				</div>
+			</div>
+		</div>
+		<{foreach from=$list item=item name="sitemap"}>
+
+		<{assign var="nodetype" value=$item.node_type}> <div class="clear_<{$item.p_node_id}> row" <{if $item.depth>0 && $cloasall}>style="display:none"<{/if}> >
+		<div class='row-line'>
+			<div class='span-13'>
+				<div style="margin-left:<{math equation='30+x*35' x=$item.depth}>px;"><{if $item.depth>-1 && $item.child_count}><span class="<{if !$cloasall}>closeFolder<{else}>openFolder<{/if}>" onClick="this.className=(this.className=='openFolder'?'closeFolder':'openFolder');flode('<{$item.node_id}>',$(this),(this.className=='openFolder'?'none':''));" nid="<{$item.node_id}>"></span> <{/if}>
+					排序
+					<{assign var="node_id" value=$item.node_id}>
+					<input class="orderTextStyle" name=p_order[<{$node_id}>] value=<{$item.p_order}>>
+
+					<{if $nodetype=='action'}>
+					<{img src="images/bundle/sidemaps-action.gif" }>
+					<{elseif $nodetype=='articles'}>
+					<{img src="images/bundle/sidemaps-articles.gif" }>
+					<{elseif $nodetype=='custompage'}>
+					<{img src="images/bundle/sidemaps-custompage.gif" }>
+					<{elseif $nodetype=='goodpackage'}>
+					<{img src="images/bundle/sidemaps-goodpackage.gif" }>
+					<{elseif $nodetype=='goodsCat'}>
+					<{img src="images/bundle/sidemaps-goodsCat.gif" }>
+					<{elseif $nodetype=='layouts'}>
+					<{img src="images/bundle/sidemaps-layouts.gif" }>
+					<{elseif $nodetype=='links'}>
+					<{img src="images/bundle/sidemaps-links.gif" }>
+					<{elseif $nodetype=='page'}>
+					<{img src="images/bundle/sidemaps-page.gif" }>
+					<{elseif $nodetype=='pageurl'}>
+					<{img src="images/bundle/sidemaps-pageurl.gif" }>
+					<{/if}>
+
+					<{if $item.editUrl}><a href='<{$item.editUrl}>' class="lnk" <{if $item.node_type=="page"}>target="_blank"<{/if}> ><{$item.title}></a><{else}><{$item.title}><{/if}><{if $item.child_count}>(<{$item.child_count}>)<{/if}>
+
+					<{if $item.node_type=='articles'}><a href="index.php?ctl=content/articles&act=addNew&p[0]=<{$item.node_id}>" style="margin-left:5px;"><{t}>[添加文章]<{/t}></a><{/if}></div>
+			</div>
+			<div class='span-1'><{if $item.hidden eq "true"}><a class="opt" href="index.php?ctl=content/sitemaps&act=enableNode&p[0]=<{$item.node_id}>" ><{img src="images/bundle/hidden.gif" title="点击显示此栏目"}></a><{else}><a class="opt" href="index.php?ctl=content/sitemaps&act=disableNode&p[0]=<{$item.node_id}>" ><{img src="images/bundle/visible.gif"  title="点击隐藏此栏目"}></a><{/if}></div>
+			<div class='span-1'><{assign var="cat_id" value=$item.cat_id}><a class="opt" href='index.php?ctl=content/sitemaps&act=addNew&p[0]=<{$item.node_id}>'><{img src="images/bundle/addcate.gif" border="0" title="添加子项"}></a></div>
+			<div class='span-1'><{if $item.editUrl}><a class="opt" class="i" href='<{$item.editUrl}>' <{if $item.node_type=="page"}>target="_blank"<{/if}>><{img src="images/bundle/editcate.gif" border="0" alt="编辑" title="编辑"}></a><{/if}>&nbsp;</div>
+			<div class='span-1'><a class="opt" href='index.php?ctl=content/sitemaps&act=modify&p[0]=<{$item.node_id}>'><{img src="images/bundle/mceico_45.gif" border="0" title="更名"}></a></div>
+			<div class='span-1'><span class="opt" onClick="if(window.confirm('是否确认删除'))deleteSiteMapRow(<{$item.node_id}>,event)"><{img src="images/bundle/delecate.gif" border="0" title="删除"}></span></div>
+			<div class='span-1'><a class="opt" href='<{$item.link}>' target="blank"><{img src="images/bundle/zoom_btn.gif" border="0" title="预览"}></a></div>
+		</div>
+	</div>
+	<{/foreach}>
+	</div>
+	<{area inject=".mainFoot"}>
+	<div class="mainFoot">
+		<div class="footer">
+			<table cellspacing="0" cellpadding="0" border="0" align="center" class="table-action">
+				<tr>
+					<td><b class="submitBtn">
+						<input onclick="$('site_map_form').fireEvent('submit',{stop:$empty})" type="submit" value="保存排序" />
+						</b></td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<{/area}>
+</form>
+<script>
+function flode(nid,target,visible){
+    $ES('#site_map_form .clear_'+nid).each(function(e){
+        e.setStyle('display',visible);
+        if(visible=='none'){
+            var dv=e.getElement('span[nid]');
+            if(dv){
+                flode(dv.get('nid'),e.getElement('span'),visible);
+            }
+        }else{
+            var dv=e.getElement('span[nid]');
+            if(dv){
+                flode(dv.get('nid'),e.getElement('span'),((e.getElement('span').className=="openFolder")?'none':''));
+            }
+        }
+    });
+}
+
+function deleteSiteMapRow(id,e){
+    e=new Event(e).stop();
+    W.page("index.php?ctl=content/sitemaps&act=toRemove&p[0]="+id,{update:'messagebox',method:'get',onComplete:function(re){
+         if(re.contains('successSplash')){
+            $(e.target).getParent('.row').remove();
+         }
+    }})
+
+}
+
+
+
+</script>

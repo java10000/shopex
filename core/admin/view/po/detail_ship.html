@@ -1,0 +1,52 @@
+<table cellspacing="10" cellpadding="0" border="0" width="100%">
+              <tbody>
+                <tr>
+                  <td style="vertical-align: top;"><h4><{t}>发货单据列表<{/t}></h4>
+                    <div class="division">
+                      <table cellspacing="0" cellpadding="0" border="0" class="finderInform">
+                        <colgroup class="Coldate"/>
+                        
+                        <thead>
+                          <tr>
+                            <th><{t}>建立日期<{/t}></th>
+                            <th><{t}>物流单号<{/t}></th>
+                            <th><{t}>收件人<{/t}></th>
+                            <th><{t}>配送方式<{/t}></th>
+                          </tr>
+                        </thead>
+                        <tbody><{foreach from=$POrder.deliveryInfo item=val}>
+                          <tr>
+                            <td><{$val.t_begin}></td>
+                            <td><{$val.logi_no}></td>
+                            <td><{$val.ship_name}></td>
+                            <td><{$val.delivery}></td>
+                          </tr><{/foreach}>
+                        </tbody>
+                      </table>
+                    </div></td>
+                  <td style="vertical-align: top;"><h4><{t}>退货单据列表<{/t}></h4>
+                    <div class="division">
+                      <table cellspacing="0" cellpadding="0" border="0" width="100%" class="finderInform">
+                        <colgroup class="Coldate"/>
+                        
+                        <thead>
+                          <tr>
+                            <th><{t}>建立日期<{/t}></th>
+                            <th><{t}>物流单号<{/t}></th>
+                            <th><{t}>退货人<{/t}></th>
+                            <th><{t}>配送方式<{/t}></th>
+                          </tr>
+                        </thead>
+                        <tbody><{foreach from=$POrder.reshipInfo item=val}>
+                          <tr>
+                            <td><{$val.t_begin}></td>
+                            <td><{$val.logi_no}></td>
+                            <td><{$val.ship_name}></td>
+                            <td><{$val.delivery}></td>
+                          </tr><{/foreach}>
+                        </tbody>
+                      </table>
+                    </div></td>
+                </tr>
+              </tbody>
+            </table>

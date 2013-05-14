@@ -1,0 +1,22 @@
+<div class="division" style=" padding:3px; margin:0;">
+<table>
+<tr>
+  <th align="right"><{t}>类型名称:<{/t}></th>
+  <td><input type="text" class="_x_ipt" vtype="required" name="name" value="<{$gtype.name|escape:html}>">*</td>
+</tr>
+<tr<{if !$gtype.type_id}> style="display:none"<{/if}>>
+  <th align="right"><{t}>类型别名:<{/t}></th>
+  <td><input type="text" value="<{$gtype.alias}>" name="alias" size="40"/><br /><{t}>（以"|"分隔，以"|"开头与结尾，如：“|T恤|T恤衫|”）<{/t}></td>
+</tr>
+<{if $brands && $gtype.setting.use_brand}>
+<tr>
+  <th align="right"><{t}>关联品牌:<{/t}></th>
+  <td>
+    <{foreach from=$brands item=item key=key}>
+        <input type="checkbox" name="brand[]" value="<{$key}>" <{if $key|in_array:$gtype.brands}>checked='checked'<{/if}> /><{$item}>
+    <{/foreach}>
+  </td>
+</tr>
+<{/if}>
+</table>
+</div>

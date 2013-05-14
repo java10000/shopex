@@ -1,0 +1,80 @@
+<!-- right-->
+<div class="MemberMain">
+<div style="margin-right:175px;">
+
+<div class="title"><{t}>修改收货地址<{/t}></div>
+<form method='post' action='<{link ctl="member" act="saveRec"}>' extra="subMemAddr" id="member_addr">
+  <input type="hidden" name="addr_id" value="<{$addr_id}>">
+  <div class="FormWrap">
+         <div class="division">       
+       <table width="100%" border="0" cellspacing="0" cellpadding="0" class="liststyle data"> 
+       <col class="span-4 ColColorGray"/>
+       <col class="span-auto"/>
+        <tr>
+          <th><{t}>默认收货地址：<{/t}></th>
+          <td><{input type="radio" name="def_addr" options=$defOpt value=$def_addr}></td>
+        </tr>       
+        <tr>
+          <th><em>*</em><{t}>姓名：<{/t}></th>
+          <td><{input class="inputstyle" name="name" type="text" required="true" value=$name}></td>
+        </tr>
+        <tr>
+          <th><{t}>电话：<{/t}></th>
+          <td><{input class="inputstyle" name="tel" type="order_tel" value=$tel}><span class="infotips"><{t}>其中联系电话和联系手机必须填写一项<{/t}></span></td>
+        </tr>
+        <tr>
+          <th><{t}>手机：<{/t}></th>
+          <td><{input class="inputstyle" name="mobile" type="text" value=$mobile}></td>
+        </tr>
+        <tr>
+          <th><em>*</em><{t}>地区：<{/t}></th>
+          <td><span id="checkout-select-area"><{input type="region" name="area" required="true" value=$area}></span></td>
+        </tr>
+        <tr>
+          <th><em>*</em><{t}>地址：<{/t}></th>
+          <td><{input class="inputstyle" type="textarea" required="true" name="addr" id="addr" cols="30" rows="3" value=$addr}></td>
+        </tr>
+        <tr>
+          <th><em>*</em><{t}>邮编：<{/t}></th>
+          <td><{input class="inputstyle" name="zip"  required="true" value=$zip}></td>
+        </tr>
+        <tr>
+          <th></th>
+          <td><input class="buttonstyle" type="submit" name="submit" value="保存"/><input class="buttonstyle" type="button" onclick="location.href='<{link ctl=member act=receiver}>'" value="返回"></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</form>
+<script>
+(function(){
+$E('#checkout-select-area input[name=area').store('lastsel',function(lastselect){
+        var areaSels=$ES("#checkout-select-area select");
+        var selected=[];
+        areaSels.each(function(s){
+           var text = s[s.selectedIndex].text.trim().clean();
+           if(['<{t}>北京<{/t}>','<{t}>天津<{/t}>','<{t}>上海<{/t}>','<{t}>重庆<{/t}>'].indexOf(text)>-1)return;
+           selected.push(text);
+        });
+        var selectedV = selected.join('');
+        $('addr').value = selectedV;
+    });
+if(!extra_validator['subMemAddr']){
+  extra_validator['subMemAddr'] ={
+    'order_tel':['请至少输入联系电话和联系手机中的一项',function(f,i){
+        var tel = $('member_addr').getElement('input[name=tel]').getProperty('value');
+        var mob = $('member_addr').getElement('input[name=mobile]').getProperty('value');
+        if(tel.trim() == '' && mob.trim() == ''){
+          return false;
+        }else{
+            return true;
+        }
+      }]
+  };
+}
+})();
+</script>
+
+</div>
+</div>
+<!-- right-->

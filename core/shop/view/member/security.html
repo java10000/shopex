@@ -1,0 +1,93 @@
+<!-- right-->
+  <div class="MemberMain">
+  <div style="margin-right:175px;">
+
+<{if $type == ''}>
+<form method="post" action="<{link ctl="member" act="saveSecurity"}>" class="section">
+
+<div class="FormWrap" style="background:none; border:none; padding:0; margin:0;">
+
+
+<table class="forform" width="180" border="0" cellspacing="0" cellpadding="2" style="text-align:center;margin-left:10px;padding:2px">
+<tr>
+    <td style="background:#fc8600;padding:2px">
+        <a style="text-decoration:none;" href="<{link ctl="member" act="security"}>"><strong style="color:#fff"><{t}>密码修改<{/t}></strong></a>
+    </td>
+    <td style="padding:2px;"></td>
+    <td style="padding:2px; background:#fff2e0;">
+        <{t}><a href="<{link ctl="member" act="security" arg0="1"}>"><{t}>安全问题<{/t}></a><{/t}>
+    </td>
+</tr>
+</table>
+
+  <div style="border-top:1px solid #f1f1f1;"></div>
+
+
+<div class="division" style="border:none">
+<table class="forform" width="100%" border="0" cellspacing="0" cellpadding="0" class="forform">
+  <tr>
+    <th><{t}>旧密码：<{/t}></th>
+    <td><{input class="inputstyle" type="password" required="true" name="old_passwd" }></td>
+  </tr>
+  <tr>
+    <th><{t}>新密码：<{/t}></th>
+    <td><{input class="inputstyle" type="password" required="true" name="passwd" }></td>
+  </tr>
+  <tr>
+    <th><{t}>确认新密码：<{/t}></th>
+    <td><{input class="inputstyle" type="password" required="true" name="passwd_re" }></td>
+  </tr>
+  <tr>
+    <th></th>
+    <td><input class="actbtn btn-save" type="submit" value="保存" /></td>
+  </tr>     
+</table>
+</div>  
+
+</div>
+</form>
+
+<{else}>
+
+<form method="post" action="<{link ctl="member" act="saveSecurityIssue"}>" class="section">
+
+<div class="FormWrap" style="background:none; border:none; padding:0; margin:0;">
+
+<table width="180" border="0" cellspacing="0" cellpadding="0" style="text-align:center;margin-left:10px;padding:2px">
+<tr>
+    <td style="padding:2px; background:#fff2e0;">
+        <a href="<{link ctl="member" act="security"}>"><{t}>密码修改<{/t}></a>
+    </td>
+    <td style="padding:2px;"></td>
+    <td style="background:#fc8600;padding:2px">
+        <{t}><a style="text-decoration:none;" href="<{link ctl="member" act="security" arg0="1"}>"><strong style="color:#fff"><{t}>安全问题<{/t}></strong></a><{/t}>
+    </td>
+</tr>
+</table>
+  <div style="border-top:1px solid #f1f1f1;"></div>
+
+<div class="division" style=" border:none;">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="forform">
+  <tr>
+    <th><{t}>安全问题：<{/t}></th>
+    <td>
+      <{input class="inputstyle" type="text" required="true" id="pw_question" name="pw_question" }>
+    </td>
+  </tr>
+  <tr>
+    <th><{t}>回答：<{/t}></th>
+    <td><{input class="inputstyle" type="text" required="true" name="pw_answer"}></td>
+  </tr>
+  <tr>
+    <th></th>
+    <td><input class="actbtn btn-save" type="submit" value="保存" /></td>
+  </tr>         
+</table>
+</div>  
+</div>
+</form>
+<{/if}>
+
+  </div>
+  </div>
+<!-- right-->

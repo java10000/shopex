@@ -1,0 +1,8 @@
+<div class="notice" style="margin:10px 10px;">即将卸载应用：<{$app.name}></div><div class="tableform">    <{if $app_tables || $ctl_mapper}>    <h4>注意！卸载过程系统将执行以下操作：</h4>    <div class="division">        <ol style="padding:10px 0 0 15px">
+         <{if $app_tables}>
+         <li>从数据库里删除<{$app_tables|count}>个数据表:<b> <{$table_prefix}><{$app_tables|array_keys|implode:' , '.$table_prefix}> </b>。</li>
+            <{/if}>
+            <{foreach from=$ctl_mapper item=map}>
+          <li>复原您的 <strong><{$map}></strong> 流程。</li>
+         <{/foreach}>
+       </ol>    </div>    <{/if}>    <div class="table-action">    <{button label="确认卸载" onclick="W.page('index.php?ctl=system/appmgr&act=do_uninstall&p[0]={$env.get.p.0}&operation_type=uninstall&version={$app.ver}');window.open('{$purl}')"}>    <{button label="取消" onclick="W.page('index.php?ctl=system/appmgr&act=index')"}>    </div></div>

@@ -1,0 +1,214 @@
+<script>
+function delgoods(obj){
+ for(obj=obj.parentNode; obj.tagName!='TR'; obj=obj.parentNode);
+ obj.parentNode.removeChild(obj);
+}
+function calculate(){
+ var iList = document.getElementsByName('aPrice[]');
+}
+</script>
+
+        
+
+<div id="x-order-items" class="division clearfix" style="border:0px;">
+  <h4><{t}>商品信息<{/t}></h4>
+  <{if $order.po.local}>
+  <fieldset class="b2bpurchase" style="border-color: rgb(194, 215, 178);">
+    <legend class="b2bpurchase">我仓库中的商品</legend>
+      <div id="x-local-items" style="margin-top:10px;">
+      <{include file="order/edit_local_items.html"}>
+      </div>
+  </fieldset>
+  <{/if}>
+  <{if $order.po.supplier}>
+  <fieldset id="x-supplier-items" class="b2bpurchase" style="border-color: rgb(194, 215, 178);">
+    <legend class="b2bpurchase">需采购的商品</legend>
+    <div class="clearfix">
+    	<div style="margin-top: 5px; float: left;">商品操作：</div>
+    	<div style="padding-top: 5px; font-size: 12px; float: right; height: 20px; line-height: 22px;" class="clearfix">
+    	<span>库存状况：</span>
+    	<span style="border: 1px solid rgb(204, 204, 204); padding: 2px 10px; width: 50px; height: 20px; background-color: rgb(204, 238, 221);">充足</span>
+        <span style="border: 1px solid rgb(204, 204, 204); padding: 2px 10px; width: 50px; height: 20px; background-color: rgb(255, 216, 80);">紧张</span>
+        <span style="border: 1px solid rgb(204, 204, 204); padding: 2px 10px; width: 50px; height: 20px; background-color: rgb(255, 160, 160);">不足</span>
+        <span style="border: 1px solid rgb(204, 204, 204); padding: 2px 10px; width: 50px; height: 20px; background-color: rgb(232, 232, 232);">无货</span>
+    	</div>
+    </div>
+    <{foreach from=$order.po.supplier item=sItem key=supplier_id}>
+    <div supplier_id="<{$supplier_id}>">
+      <{include file="order/po_items.html"}>
+    </div>
+    <{/foreach}>
+  </fieldset>
+  <{/if}>
+</div>
+<!--form action="index.php?ctl=order/order&act=addPoItem" method="post">
+<input type="hidden" name="order_id" value=<{$order.order_id}>>
+<div class="division clearfix">
+  <table width="100%" border="0" cellspacing="0" cellpadding="2" class="finderInform">
+    <tr>
+      <td style="text-align:left">添加商品货号：<{input type="text" name=newbn }>
+         <input type="button" onclick="addGitem(this)" name="newbtn" value="添加" ></td>
+    </tr>
+  </table>
+</div>
+</form-->
+<div class="division" id="x-order-info">
+<{include file="order/order_info.html"}>
+</div>
+<script>
+function addGitem(obj){
+    if(confirm('是否添加商品？')){
+        obj.getParent('form').fireEvent('submit');
+    }
+}
+
+var initEventPo=(function(){
+    $ES('.but-inquiry', 'x-supplier-items').addEvent('click',function(e){
+        if(e) e=new Event(e);
+        var divp = this.getParent('.x-po-detail');
+        if($E('input[name^=aItems[product_id]]',divp) == null) return false;
+        
+        var sid = this.getParent('div[supplier_id]').getProperty('supplier_id');
+        W.page('index.php?ctl=order/order&act=reInquiry&p[0]=<{$order.order_id}>&p[1]='+sid,{
+            data:divp, update:divp, method: 'post',
+            onComplete:function(){
+                    $ES('.x-inquiry-model', divp).each(function(item){item.style.display = '';});
+                    if($E(".but-edit", divp)) $E(".but-edit", divp).fireEvent('click');
+                }
+            });
+        });
+
+    $ES(".but-edit", "x-supplier-items").addEvent('click',function(){
+        var divp = this.getParent('.x-po-detail');
+        $ES('.x-edit-model', divp).each(function(item){item.style.display = '';});
+        $ES('.x-inquiry-model', divp).each(function(item){item.style.display = '';});
+        $ES('.itemrow', divp).each(function(item){
+            item.removeProperty('readonly');
+            item.style.cssText = 'background-color:#fff';
+            });
+        this.style.display = 'none';
+        
+        if($E('.but-inquiry', divp)) $E('.but-inquiry', divp).disabled = false;
+        if($E('.but-pay', divp)) $E('.but-pay', divp).disabled = true;
+        $E('.but-save', divp).style.cssText = 'display:';
+        $E('.but-refresh', divp).style.cssText = 'display:';
+        
+        if($E(".but-stop", divp)) {
+            if(($E(".but-stop", divp).get('butstatus') == null || $E(".but-stop", divp).get('butstatus') == '0') && !$E(".but-stop", divp).disabled){
+                $E(".but-stop", divp).fireEvent('click');
+            }
+        }
+        
+        $E('.finderInform',divp).style.tableLayout='fixed';
+        });
+
+    $ES(".but-refresh", "x-supplier-items").addEvent('click',function(e){
+        if(e) e=new Event(e);
+        var divp = this.getParent('.x-po-detail');
+        if(this.getParent('div[supplier_id]')) {
+            var sid = this.getParent('div[supplier_id]').getProperty('supplier_id');
+        }else{
+        	return false;
+        }
+        location.href = 'index.php?ctl=order/order&act=edit_po&p[0]=<{$order.order_id}>';
+        /*
+        maindiv = $('workground');
+        W.page('index.php?ctl=order/order&act=edit_po&p[0]=<{$order.order_id}>',{
+            data:maindiv, method: 'get'
+        });*/
+        /*
+        W.page('index.php?ctl=order/order&act=refresh_po_detail&p[0]=<{$order.order_id}>&p[1]='+sid,{
+            data:divp, update:divp, method: 'post'});
+        */
+        });
+
+    $ES(".but-save", "x-supplier-items").addEvent('click',function(e){
+        var divs = this.getParent('div[supplier_id]');
+        var order_id = $E('input[name=order_id]').value;
+        if(divs == null) {	
+        	return false;
+        } else {
+        	var sid = divs.getProperty('supplier_id');
+        }
+        var divp = this.getParent('.x-po-detail');
+        W.page('index.php?ctl=order/order&act=savePo&p[0]='+order_id+'&p[1]='+sid,{
+            data:divp, method: 'post', update:'messagebox',
+            onSuccess:function(re){
+                /*
+                maindiv = $('workground');
+                W.page('index.php?ctl=order/order&act=edit_po&p[0]=<{$order.order_id}>',{
+                   data:maindiv, method: 'get'
+                });*/
+                $E(".but-refresh", "x-order-items").fireEvent('click');
+            }
+            });
+        });
+    
+    $ES(".but-pay", "x-supplier-items").addEvent('click',function(e){
+        var sid = this.getParent('div[supplier_id]').getProperty('supplier_id');
+        var divp = this.getParent('.x-po-detail');
+        var date = new Date();
+        new Dialog('index.php?ctl=order/order&act=payPo&p[0]=<{$order.order_id}>&p[1]='+sid+'&p[2]='+(this.getParent('.x-po-detail')).getProperty('po_id')+'&'+date.getTime(), {title:'订单[<{$order.order_id}>]付款操作',
+            width:window.getSize().x*0.85,
+            height:window.getSize().y*0.85,
+            onLoad:function(e){
+                var dialog=this.dialog;
+                dialog.getElement('form').removeEvents('submit').addEvent('submit',function(e){
+                    var checkNum = 0;
+                    $ES('input[name=pay_id]',dialog.getElement('form')).each(function(item){
+                        if(item.checked == true) checkNum++;
+                    });
+                    if(checkNum == 0){
+                        MessageBox.error('请选择支付方式！');
+                        return false;
+                    }
+                    if(dialog.getElement('form').getProperty('action').contains('http://')){
+                        (function(){dialog.retrieve('instance').close()}).delay(200);
+                    }else{
+                        if(e) new Event(e).stop();
+                        this.send({onComplete:function(a){
+                                dialog.retrieve('instance').close();
+                                if(a.contains('success')){
+                                    MessageBox.success('支付成功！');
+                                    $E('.but-pay', divp).disabled = true;
+                                    $E('.but-stop', divp).disabled = false;
+                                    $E('.but-checkpay', divp).style.display = '';
+                                }
+                            }});
+                    }
+                    });
+                }
+            });
+        });
+        
+    $ES(".but-stop", "x-supplier-items").addEvent('click',function(e){
+        if(this.get("butstatus") == '1'){
+            var method='activepo';
+        }else{
+            var method='stoppo';
+        }
+        var divb = this.getParent('.x-po-detail')
+        W.page('index.php?ctl=order/order&act='+method+'&p[0]='+(this.getParent('.x-po-detail')).getProperty('po_id'),{
+            method: 'post',update:'messagebox',
+            onComplete:function(){
+                    $E('.but-makepo', divb).disabled = true;
+                    if($E('.but-stop', divb).get('butstatus') == '1'){
+                        $E('.but-stop', divb).set('butstatus', '0');
+                        $E('.but-stop', divb).set('value', '暂停发货');
+                    }else{
+                        $E('.but-stop', divb).set('butstatus', '1');
+                        $E('.but-stop', divb).set('value', '取消暂停发货');
+                    }
+                }
+            });
+        });
+    
+    $ES(".but-checkpay", "x-supplier-items").addEvent('click',function(e){
+        W.page('index.php?ctl=order/order&act=checkPay&p[0]='+(this.getParent('.x-po-detail')).getProperty('po_id'),{
+            method: 'post',update:'messagebox'
+            });
+        });
+    
+    return arguments.callee;
+})();
+</script>

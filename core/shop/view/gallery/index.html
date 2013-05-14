@@ -1,0 +1,222 @@
+<{$searchInfo}>
+
+<{if $tabs}>
+<ul class="GoodsSearchTabs">
+  <li <{if $args.3 eq ''}>class="current"<{/if}>>
+    <a href="<{link args=$args arg3=''}>"><span><{t}>全部商品<{/t}></span></a>
+  </li>
+
+  <{section name=tabs loop=$tabs}>
+    <li<{if is_numeric($args.3) && $args.3 eq $smarty.section.tabs.index}> class="current"<{/if}>>
+    <a href="<{link args=$args arg3=$smarty.section.tabs.index}>">
+      <span><{$tabs[tabs].label}></span>
+    </a>
+  </li>
+  <{/section}>
+
+  <li></li>
+</ul>
+<{/if}>
+
+<div class="clear"></div>
+
+<div class="GoodsSearchWrap"> 
+    <form method="post" action="<{link ctl=search act=result}>" id='selector-form'>
+      <input type="hidden" name="filter" value="<{$args[1]}>" />
+      <{if $cat_id}>
+      <input type="hidden" name="cat_id" value="<{$cat_id}>">
+      <{/if}>
+
+      <div class="GoodsSelector division boxGray">
+      <{require file="gallery/selector/default.html"}>
+      </div>
+        
+      <{if count($searchInput)>0}>
+      <div class="GoodsSelector division boxGray">
+          <div class="division clearfix"> 
+            <{foreach from=$searchInput item=prop key=key}>
+            <div class="span-3">
+              <h5><{$prop.name}></h5>
+              <{input type=$prop.type name="p_{$key}[]" value=$prop.value options=$prop.options id="sel-prop-$key" style="width:100px"}> 
+            </div>
+            <{/foreach}>
+          </div>
+
+          <div class="textcenter">
+            <input type="submit" type="submit" value="显示符合条件的商品" />
+          </div>
+       </div>
+      <{/if}>
+    </form>
+
+    <script type='text/javascript'>
+    var fixEmpeyPanel = (function(el){
+       el.setStyle('display',el.get('text').clean().trim()?'block':'none');
+       return arguments.callee; 
+    })($('selector-form'));
+       
+       if($('selector-form').style.display!='none'){
+          $$('#selector-form .division').each(fixEmpeyPanel);
+       }
+    </script>
+      
+    <{if $searchtotal}>
+    <div class="search_total">
+      <{if $search_array}>搜索：<font color='red'><{$search_array}></font>，<{/if}>
+
+      <{t}>总共找到<{/t}><font color='red'><{$searchtotal}></font><{t}>个商品<{/t}>
+    </div>
+    <{/if}>
+
+  <!--布局 和 排序 配置区域-->
+  <div class="title" id='gallerybar'>
+    <table width="100%" cellpadding=0 cellspacing=0>
+    <tbody>
+      <tr>
+        <td><{pager data=$pager type=mini}></td>
+
+        <!-- 布局配置 -->
+        <{if count($views)>1}>
+        <td>
+          <div class="listmode">
+          <{foreach from=$views key=label item=view}>
+            <{if $curView==$view}>
+            <span class="list_<{$view}> current"><{$label}></span> 
+            <{else}>
+            <a href="<{link act=$view args=$args}>" title="<{$label}>">
+              <span class="list_<{$view}>"><{$label}></span>
+            </a> 
+            <{/if}>
+          <{/foreach}> 
+          </div>
+        </td>
+        <{/if}>
+
+        <!-- 排序区域 -->
+        <td>
+          <div class="listorder">
+          <{if $args.2 == 3}>
+          <a class="list_desc_on" href="<{link args=$args arg2=4}>"><i><{t}>价格<{/t}></i></a>
+          <a class="list_desc" href="<{link args=$args arg2=8}>"><i><{t}>销量<{/t}></i></a>
+          <a class="list_desc" href="<{link args=$args arg2=6}>"><i><{t}>人气<{/t}></i></a>
+          <{elseif $args.2 == 4}>
+          <a class="list_asc_on" href="<{link args=$args arg2=3}>"><i><{t}>价格<{/t}></i></a>
+          <a class="list_desc" href="<{link args=$args arg2=8}>"><i><{t}>销量<{/t}></i></a>
+          <a class="list_desc" href="<{link args=$args arg2=6}>"><i><{t}>人气<{/t}></i></a>
+          <{elseif $args.2 == 6}>
+          <a class="list_desc" href="<{link args=$args arg2=3}>"><i><{t}>价格<{/t}></i></a>
+          <a class="list_desc" href="<{link args=$args arg2=8}>"><i><{t}>销量<{/t}></i></a>
+          <span class="list_desc_on"><i><{t}>人气<{/t}></i></span> <{elseif $args.2 == 8}>
+          <a class="list_desc" href="<{link args=$args arg2=3}>"><i><{t}>价格<{/t}></i></a>
+          <span class="list_desc_on"><i><{t}>销量<{/t}></i></span>
+          <a class="list_desc" href="<{link args=$args arg2=6}>"><i><{t}>人气<{/t}></i></a>
+          <{else}>
+          <a class="list_asc" href="<{link args=$args arg2=4}>"><i><{t}>价格<{/t}></i></a>
+          <a class="list_desc" href="<{link args=$args arg2=8}>"><i><{t}>销量<{/t}></i></a>
+          <a class="list_desc" href="<{link args=$args arg2=6}>"><i><{t}>人气<{/t}></i></a>
+          <{/if}> 
+          </div>
+        </td>
+        
+        <!-- 排序方式 -->
+        <td>
+          <div class='filtmode'>
+            <label><{t}>排序方式:<{/t}></label>
+            <select onchange="if(this.value!='_')window.location=this.value">
+              <optgroup label="排序"> 
+                <{foreach from=$orderBy item=item key=order}> 
+                  <option value="<{link args=$args arg2=$order}>"<{if $order eq $args.2}> class="selected" selected="selected"<{/if}>>
+                    <{$item.label}>
+                  </option>
+                <{/foreach}>
+              </optgroup>
+            </select>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+    </table>
+  </div>
+
+  <!-- 商品列表显示区域 -->
+  <{if !count($products)}>
+    <div class="FeedBackInfo" style="margin:30px">
+      <{if $emtpy_info}>
+        <div class="lineheight-free"><{$emtpy_info}></div>
+      <{else}>
+        <h1 class="error" style=""><{t}>非常抱歉，没有找到相关商品<{/t}></h1>
+        <p style="margin:15px 1em;"><strong><{t}>建议：<{/t}></strong><br />
+        适当缩短您的关键词或更改关键词后重新搜索，如：将 “苹果手机iphone4s” 改为 “苹果手机+iphone4s”</p>
+      <{/if}> 
+    </div>
+
+    <div align='center'>
+      <a href="javascript:history.back(1)"><{t}>返回上一页<{/t}></a>
+      <a href="./" style="padding-left:20px"><{t}>返回首页<{/t}></a>
+    </div>
+  <{else}>
+    <{include file=$_PDT_LST_TPL}>
+    <{pager data=$pager}>
+  <{/if}>
+
+</div>
+
+<script>
+window.addEvent('domready', function(){
+
+  /*关键字高亮*/
+  try{
+  (function(replace_str){
+      var replace=replace_str.split("+");
+
+      if(replace.length){
+        $ES('.entry-title').each(function(r){
+          for(i=0;i<replace.length;i++){
+            if(replace[i]){
+              if(replace[i]==='1'){
+                  r.setText(r.get('text').replace(/[^{]1/,function(){            
+                    return "{0}"+arguments[0]+"{1}";
+                  }));     
+                  continue;
+              }else if(replace[i]==='0'){
+                  r.setText(r.get('text').replace(/[^{]0/,function(){            
+                    return "{0}"+arguments[0]+"{1}";
+                  }));     
+                  continue;
+              };
+              var reg=new RegExp("("+replace[i].escapeRegExp()+")","gi");
+              r.setText(r.get('text').replace(reg,function(){            
+                return "{0}"+arguments[0]+"{1}";
+              }));
+            }
+          }
+          r.set('html',r.get('text').format("<font color=red>","</font>"));
+        });
+      }
+    })('<{$search_array}>');
+  }catch(e){}
+
+  if(window.ie6)return;
+
+  // div id='gallerybar' 布局和排序区域dom定位
+  var gallerybar = $('gallerybar'),
+    gallerybarSize = gallerybar.getSize(),
+    gallerybarPos  = gallerybar.getPosition(),
+    fixedStart = gallerybarSize.y+gallerybarPos.y;
+
+  var fixGalleryBar = function(){
+      if(fixedStart<this.getScrollTop()){
+           gallerybar.addClass('fixed').setStyles({'width':gallerybarSize.x});
+      }else{
+           gallerybar.removeClass('fixed').setStyles({'width':'auto'});
+      }
+  };
+
+  window.addEvents({
+     'resize':fixGalleryBar,
+     'scroll':fixGalleryBar
+  });
+
+});
+
+</script>

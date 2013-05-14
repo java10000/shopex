@@ -1,0 +1,56 @@
+<{if count($product.pdt_desc)>1}>
+ <{if $good.marketable =='false'}>
+		<li class="xiajia">
+		</li>
+    <{else}>
+<li class="addcart buy-select" style="z-index:<{$zindex}>">
+<{if $showtextbuy}><a class='lnk'><{t}>加入购物车<{/t}></a><{/if}>
+<div class="buy-select-list" style="display:none;">
+  <textarea lazyload="true" style="display:none;">
+    <h3><{t}><{if count($product.pdt_desc) == 0}>该商品暂时无货<{else}>请选择规格<{/if}><{/t}></h3>
+    <table width="100%">
+    <{foreach from=$product.pdt_desc item=title key=product_id}>
+    <{if is_numeric($product_id)}>
+      <tr>
+        <td width="110" align="left"><{$title}></td>
+        <td nowrap><span class="fontcolorRed fontbold"><{$product.pdt_desc.price.$product_id|cur}></span></td>
+        <td align="right" style="vertical-align:middle">
+        <{if $addcart_disabled != 1}>
+
+          <{if $product.pdt_desc.store.$product_id === null || $product.pdt_desc.store.$product_id - intval($product.pdt_desc.freez.$product_id) > 0}>
+          <a type="g" href="<{link ctl=cart act=addGoodsToCart arg0=$product.goods_id arg1=$product_id}>" buy="<{$product.goods_id}>" product="<{$product_id}>"<{if $setting.buytarget == 2}> target="_blank_cart"<{elseif $setting.buytarget == 3}> target="_dialog_minicart"<{/if}> title="加入购物车" rel="nofollow" class="btnbuy"><{t}>购买<{/t}></a>
+          <{else}>
+          <a type="g" href="<{link ctl=product act=gnotify arg0=$product.goods_id arg1=$product_id}>" rel="nofollow" class="btnbuy" title="缺货登记"><{t}>缺货<{/t}></a>
+        <{/if}>
+          <{/if}></td>
+      </tr>
+    <{/if}>
+    <{/foreach}>
+        </tr>
+    </table>
+  </textarea>
+</div>
+<{/if}>
+<{else}>
+
+  <{if $addcart_disabled != 1}>
+    <{if $good.marketable =='false'}>
+		<li class="xiajia">
+		</li>
+    <{else}>
+		<{if $product.store === null || $product.store - intval($product.freez) > 0}>
+			<li class="addcart">
+			<a href="<{link ctl=cart act=addGoodsToCart arg0=$product.goods_id}>" type="g" buy="<{$product.goods_id}>" class="listact"<{if $setting.buytarget == 2}> target="_blank_cart"<{elseif $setting.buytarget == 3}> target="_dialog_minicart"<{/if}> title="加入购物车" rel="nofollow"><{t}>加入购物车<{/t}></a>
+			</li>
+		<{else}>
+			<li class="nobuy">
+			<a target="_blank" href="<{link ctl="product" act="gnotify" arg0=$product.goods_id arg1=$product.product_id}>" rel="nofollow" class="listact " title="缺货登记"><{t}>缺货登记<{/t}></a>
+		<{/if}>
+    <{/if}>
+  <{/if}>
+
+<{/if}>
+</li>
+
+<li <{if $login!="nologin"}>star="<{$product.goods_id}>"<{/if}> title="<{$product.name|escape:html}>" class="star-off"><a  <{if $login=="nologin"}> href="<{link ctl="passport" act="login"}>" <{else}>href="#" onclick="return false;"<{/if}> class="listact" title="加入收藏" rel="nofollow"><{t}>加入收藏<{/t}></a></li>
+<li class="vdetail zoom"><a title="<{$product.name|escape:html}>" href="<{link ctl=product act=index arg0=$product.goods_id}>" pic='<{$product.big_pic|default:$env.conf.site.default_big_pic|storager}>' target="_blank" class="listact" title="查看详细"><{t}>查看详细<{/t}></a></li>

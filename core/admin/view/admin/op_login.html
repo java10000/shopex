@@ -1,0 +1,35 @@
+<div class="notice">	
+由于安装体验数据会清除到当前网店的已有商品，后果严重，需要有管理权限的人才可以操作：
+</div>
+
+
+
+<{if $error_msg}>
+<div class="notice">	
+<{$error_msg}>
+</div>
+<{/if}>
+<div class="tableform">	
+<div style="position: static;" class="division"> 
+<form method='post' action='index.php?ctl=service/demo_data&act=install_demo_data'>
+<table>
+<tr>
+	<td>请输入系统管理员用户名</td>
+	<td><input type='text'name='usrname'/></td>
+</tr>
+<tr>
+	<td>请输入系统管理员密码</td>
+	<td><input type='password' name='passwd'/></td>
+</tr>
+
+<input type='hidden' name='url' value='<{$download_url}>'/>
+
+<tr>
+<td colspan='2'><input type='submit' value='确定'/></td>
+</tr>
+</table> 
+</form>
+</div>
+
+
+</div>

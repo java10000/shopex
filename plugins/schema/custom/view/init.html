@@ -1,0 +1,26 @@
+<{form action=$nextStep}>
+<div class="division">
+<table width="100%">
+<tr>
+    <th>是否为实体商品</th>
+  <td ><label><input type="radio" value="1" name="is_physical"<{if $_POST.is_physical}> checked="checked"<{/if}>>是</label> &nbsp; &nbsp; <label><input type="radio" value="0" name="is_physical"<{if !$_POST.is_physical}> checked="checked"<{/if}>>否</label></td>
+</tr>
+<tr>
+    <th>是否与品牌关联</th>
+  <td ><label><input type="radio" value="1" name="setting[use_brand]"<{if $_POST.setting.use_brand}> checked="checked"<{/if}>>是</label> &nbsp; &nbsp; <label><input type="radio" value="0" name="setting[use_brand]"<{if !$_POST.setting.use_brand}> checked="checked"<{/if}>>否</label><span class="notice_inline">注意：如果不关联品牌，在前台商品列表页该类型商品将无法使用品牌进行筛选</span></td>
+</tr>
+<tr>
+    <th>是否启用商品扩展属性</th>
+  <td ><label><input type="radio" value="1" name="setting[use_props]"<{if $_POST.setting.use_props}> checked="checked"<{/if}>>是</label> &nbsp; &nbsp; <label><input type="radio" value="0" name="setting[use_props]"<{if !$_POST.setting.use_props}> checked="checked"<{/if}>>否</label></td>
+</tr>
+<tr>
+    <th>是否启用商品参数表</th>
+  <td ><label><input type="radio" value="1" name="setting[use_params]"<{if $_POST.setting.use_params}> checked="checked"<{/if}>>是 &nbsp; &nbsp; <label><input type="radio" value="0" name="setting[use_params]"<{if !$_POST.setting.use_params}> checked="checked"<{/if}>>否</label><span class="notice_inline">详见右上角帮助</span></td>
+</tr>
+<tr>
+    <th>是否启用购物必填信息</th>
+  <td><label><input type="radio" value="1" name="setting[use_minfo]"<{if $_POST.setting.use_minfo}> checked="checked"<{/if}>>是</label> &nbsp; &nbsp; <label><input type="radio" value="0" name="setting[use_minfo]"<{if !$_POST.setting.use_minfo}> checked="checked"<{/if}>>否</label><span class="notice_inline">必填信息是指前台下订单时店主要求购买此类型商品的顾客必须提供的指定信息，如：购买鲜花送人时提供的贺卡附言</span></td>
+</tr>
+</table>
+</div>
+<{/form}>

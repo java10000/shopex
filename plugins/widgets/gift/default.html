@@ -1,0 +1,23 @@
+<div class="GoodsList RecommendGifts">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+       
+        <{foreach from=$data item=data key=key }>
+           <tr>  <td class="item">
+		   <{if $data.thumbnail_pic}>
+		   <div class='goodsImg'><a href="<{link ctl="gift" act="index" arg0=$data.gift_id}>" target="_blank" title="<{$data.name}>" style=" overflow:hidden; display:block; width:<{$setting.picwidth}>px;height:<{$setting.picheight}>px"><img src="<{$data.thumbnail_pic|default:$env.conf.site.default_thumbnail_pic|storager}>"></a></div>
+		   <{/if}>
+		   <h6><a href="<{link ctl="gift" act="index" arg0=$data.gift_id}>" target="_blank" title="<{$data.name}>"><{$data.name|cut:$setting.maxlength}></a></h6><td> </tr>
+    <{/foreach}>
+           
+    </table>
+</div>
+<script>
+
+
+window.addEvent('load',function(){
+         var RecommendGifts=$$('.RecommendGifts .goodsImg a img');
+        try{
+         fixProductImageSize($$(RecommendGifts),'a');
+         }catch(e){}
+    });
+</script>

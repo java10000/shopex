@@ -1,0 +1,140 @@
+<style>
+   .widgets_goods_show_setting .inputstyle{width:50px;}
+   .widgets_goods_show_setting .clearfix{overflow:hidden;height:100%;}
+   .widgets_goods_show_setting .span-auto{width:30%;float:left;border:1px #ccc dotted;padding:3px;height:130px;margin:1px;}
+   .widgets_goods_show_setting .checked{background:#efefef;border-style:solid;}
+   .widgets_goods_show_setting i{display:block;}
+</style>
+<div id='goods-show-config'>
+<div class="division">  
+  <h4>范围设置</h4>
+  <{filter type="goods/products" name="g_filter" from=$setting.g_filter}>
+</div>
+<div class="division widgets_goods_show_setting">  
+  <h4>排列方式设置</h4>
+    <table width="100%" cellpadding="0" cellspacing="0">
+      <tr> 
+        <th>显示商品数：</th>
+        <td><{input name="limit" value=$setting.limit|default:'4' required="true" type="digits" class='inputstyle'}></td>
+        <th>每行显示商品数：</th>
+        <td><{input name="column" value=$setting.column|default:'4' required="true" type="digits" class='inputstyle'}></td>
+        <th>排序设定：</th>
+        <td><select name="goods_orderby"> 
+		<{foreach from=$data item=orderby key=key}>
+		<option value="<{$key}>" <{if $setting.goods_orderby==$key}>selected<{/if}>><{$orderby.label}></option>
+		<{/foreach}>
+		</select>
+		</td>
+      </tr>
+    </table>
+</div>
+<div class="division widgets_goods_show_setting">  
+  <h4>显示设置</h4>
+  <div class='clearfix'>
+      <div class='span-auto'>
+       <label>商品图片<input type='checkbox' name='showGoodsImg' value='<{$setting.showGoodsImg}>'/></label>
+<div class='note'>
+          强制宽高：<br/>
+          <{input name="goodsImgWidth" value=$setting.goodsImgWidth type="digits" class='inputstyle'}>(宽)X(高)<{input name="goodsImgHeight" value=$setting.goodsImgHeight type="digits" class='inputstyle'}><br/>
+         <{* 启用即时放大：<input type='radio' name='zoomhandleable' value='on' <{if $setting.zoomhandleable!="off"}>checked=true<{/if}> />是 <input type='radio' name='zoomhandleable' value='off' <{if $setting.zoomhandleable=="off"}>checked=true<{/if}>/>否*}>
+</div>
+      </div>
+      <div class='span-auto'>
+       <label>商品名称<input type='checkbox' name='showGoodsName' value='<{$setting.showGoodsName}>'/></label>
+       <div class='note'>
+       最多显示<{input name="gname_row_max_length" class='inputstyle' value=$setting.gname_row_max_length|default:'1'}>行<br/>
+       行高<{input name="gname_row_lh" class='inputstyle' value=$setting.gname_row_lh|default:'18'}>px<br/>
+       超过<{input name="gname_max_length" class='inputstyle' value=$setting.gname_max_length|default:'50'}>个字符截断<br/>
+       </div>
+      </div>
+      <div class='span-auto'>
+       <label>市场价<input type='checkbox' name='showGoodsMktPrice' value='<{$setting.showGoodsMktPrice}>'/></label>
+    
+         
+         <div class='note'>
+           <i>显示效果：</i>
+             <input name="mktPriceText" class="inputstyle" value="<{$setting.mktPriceText|default:'市场价'}>">
+             <input name="mktPriceSep" class="inputstyle" value="<{$setting.mktPriceSep|default:':'}>">{价格}
+         </div>
+   
+      </div>
+       <div class='span-auto'>
+       <label>销售价<input type='checkbox' name='showGoodsPrice' value='<{$setting.showGoodsPrice}>'/></label>
+         <div class='note'>
+         <i>显示效果：</i>
+             <input name="priceText" class="inputstyle" value="<{$setting.priceText|default:'销售价'}>">
+             <input name="priceSep" class="inputstyle" value="<{$setting.priceSep|default:':'}>">{价格}
+         </div>
+      </div>
+      <div class='span-auto'>
+       <label>节省<input type='checkbox' name='showGoodsSave' value='<{$setting.showGoodsSave}>'/></label>
+      
+         
+         <div class='note'>
+         <i>显示效果：</i>
+             <input name="saveText" class="inputstyle" value="<{$setting.saveText|default:'节省'}>">
+             <input name="saveSep" class="inputstyle" value="<{$setting.saveSep|default:':'}>">{价格}
+         </div>
+    
+      </div>
+      <div class='span-auto'>
+       <label>折扣<input type='checkbox' name='showCount' value='<{$setting.showCount}>'/></label>
+    
+       
+         <div class='note'>
+           <i>显示效果：</i>
+             <input name="countText" class="inputstyle" value="<{$setting.countText|default:'折扣：'}>">
+             {折扣率}<input name="countSep" class="inputstyle" value="<{$setting.countSep|default:'%'}>">
+         </div>
+      </div>
+      <div class='span-auto'>
+       <label>商品描述<input type='checkbox' name='showGoodsDesc' value='<{$setting.showGoodsDesc}>'/></label>
+       <div class='note'>
+         最多显示<{input name="gdesc_row_max_length" class='inputstyle' value=$setting.gdesc_row_max_length|default:'2'}>行<br/>
+         行高<{input name="gdesc_row_lh" class='inputstyle' value=$setting.gdesc_row_lh|default:'18'}>px<br/>
+         超过<{input name="desc_max_length" value=$setting.desc_max_length|default:'200' class='inputstyle'}>个字符截断
+       </div>
+      </div>
+      <div class='span-auto'><label>在列表最后显示“更多...”连接<input type='checkbox' name='showMore' value='<{$setting.showMore}>'/></label>
+          
+      
+      </div>  
+ 
+  </div>
+</div>
+</div>
+<script>
+   void function(){
+   
+   var defaultOn = ['GoodsImg','GoodsName','GoodsMktPrice','GoodsPrice'];
+   
+   $$('#goods-show-config .span-auto label input[type=checkbox]').each(function(item){
+   
+       item.addEvents({
+            'click':function(){
+                this.getParent('.span-auto')[this.checked?'addClass':'removeClass']('checked');
+                if(!this.checked){
+                   $pick(this.getNext('input[type=hidden]'),new Element('input',{type:'hidden',name:this.name,value:'off'}).injectAfter(this));
+                }else{
+                   $pick(this.getNext('input[type=hidden]'),{remove:$empty}).remove();
+                }
+            },
+            'change':function(){
+             
+               this.value = this.checked?'on':'off';  
+               
+            }
+       
+       });
+
+       if((item.value.trim()=='') && defaultOn.contains(item.name.slice(4))){
+           item.value ='on';
+       }
+       item.checked = (item.value=='on')?true:false;
+       item.fireEvent('click');
+       
+   });
+   
+   }();
+
+</script>

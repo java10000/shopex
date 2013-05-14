@@ -1,0 +1,98 @@
+<!-- right-->
+<div class="MemberMain">
+<div style="margin-right:175px;">
+
+<div class="title"><{t}>我收藏的商品<{/t}></div>
+
+<{if !$favorite}>
+<div class="noinfo">暂无收藏</div>
+<{else}>
+<div class="GoodsSearchWrap" id="mbc-my-fav"> 
+<div class="ItemsWarp clearfix">
+<{foreach from=$favorite item=good key=key}>
+  <div class="items-list" product="<{$good.goods_id}>" id="goods_<{$good.goods_id}>">
+    <table class="memberlist" width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td class="goodpic" width="<{$env.conf.site.thumbnail_pic_width}>"><a style="display:block;<{if $env.conf.site.thumbnail_pic_width !=0 && $env.conf.site.thumbnail_pic_height !=0}> width:<{$env.conf.site.thumbnail_pic_width}>px;height:<{$env.conf.site.thumbnail_pic_height}>px;<{/if}>" href="<{link ctl="product" act="index" arg0=$good.goods_id}>" title="<{$good.name}>"><img src="<{$good.thumbnail|default:$env.conf.site.default_thumbnail_pic|storager}>"  alt="<{$good.name}>"/></a></td>
+        <td class="goodinfo" width="60%"><h6><a href="<{link ctl="product" act="index" arg0=$good.goods_id}>" title="<{$good.name}>"><{$good.name}></a></h6>
+          <{$good.brief}> </td>
+        <td class='price_button' width="7%">
+        <ul>
+            <li><span class="price1"><{$good.price|cur}></span><{if $good.mktprice && $setting.mktprice}><span class="mktprice1"><{t}>市场价: <{/t}><{$good.mktprice|cur}></span><{/if}></li>
+            <{if $product.mktprice > $good.price && $setting.mktprice && $setting.saveprice > 0}>
+            <li style="padding-left:4px; padding-top:8px;">
+			<span class="saveprice1"> <{if $setting.saveprice == 1}>节省:<{$good.mktprice-$good.price|cur}>
+              <{elseif $setting.saveprice == 2}>优惠:<{$good.price/$product.mktprice*100|number:'2'}>%
+              <{elseif $setting.saveprice == 3}><{$good.price/$product.mktprice*10|number:'1'}>折
+			  <{/if}></span></li>
+            <{/if}>
+          </ul>
+          </td>
+         <td>
+          <ul class="button">
+                    <{goodsmenu product=$good compare=true  zindex=10 showtextbuy=true}>
+           </ul>
+		</td>
+        
+        <td>
+		<ul class="button">
+		<{if $good.marketable !='false'}>
+			
+           <li class="btncmp"><a class="btncmp" href="javascript:void(0)" onclick="gcompare.add({gid:'<{$good.goods_id}>',gname:'<{$good.name|escape:'quotes'}>',gtype:'<{$good.type_id}>'});" title="商品对比">
+                  <{t}>商品对比<{/t}>
+           </a>
+			</li>
+			
+		<{/if}>
+
+           	<li class="star-del"><a class="listact"  onClick="doDelFav('<{$good.goods_id}>')"><{t}>删除收藏<{/t}></a></li>
+			</ul>
+        
+        </td>
+		
+      </tr>
+    </table>
+  </div>
+  <{/foreach}> 
+  </div>
+  </div>
+<{pager data=$pager}>
+<{/if}>
+
+<div class='FormWrap goods-compare' id='goods-compare' style='display:none'>
+<div class='title'><h3>商品对比<span class='close-gc' onclick='gcompare.hide()'>[关闭]</span></h3></div>
+   <form action='<{link ctl="product" act="diff"}>' method='post' target='_compare_goods'>
+      <ul class='compare-box'>
+         <li class='division clearfix tpl'>
+            <div class='span-3'>
+               <a href='#' gid='{gid}' title='{gname}'>{gname}</a>
+            </div>
+            <span class='floatRight lnk' onclick='gcompare.erase("{gid}",this);'>删除</span>
+         </li>
+      </ul>
+      <div class='compare-bar'>
+          <input type="button" name="comareing" onclick='gcompare.submit()' class="btn-compare" value="对比">
+          <input type="button" class="btn-compare" onclick="gcompare.empty()" value="清空">
+      </div>
+   </form>
+</div>
+<script>
+  function doDelFav(gid){
+    if(!confirm('确定删除?'))return false;
+    new Request({
+        onComplete:function(){
+           new Fx.Style($('goods_'+gid),'opacity').start(0).chain(function(){
+                $('goods_'+gid).remove();
+           });
+        }
+    }).post('index.php?member-'+ gid +'-ajaxDelFav.html',$H({t:$time()}));
+    $('goods_'+gid).setOpacity(.5);
+    var FAVCOOKIE= new Cookie('S[GFAV]',{duration:365});
+    FAVCOOKIE.write($splat((FAVCOOKIE.read('S[GFAV]')||'').split(',')).erase(gid).join(','));
+	return false;
+  }
+</script>
+
+</div>
+</div>
+<!-- right-->

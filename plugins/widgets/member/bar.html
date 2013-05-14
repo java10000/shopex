@@ -1,0 +1,22 @@
+您好<span id="uname_<{$widgets_id}>"></span>！
+
+<{if !$env.cookie.MEMBER}>
+<span id="loginBar_<{$widgets_id}>">
+	<{foreach from=$data.login_content item=login}>
+		<{$login}>
+	<{/foreach}>
+	<a href="<{link ctl=passport act=login}>"><{t}>[请登录]<{/t}></a>&nbsp;&nbsp;
+	<a href="<{link ctl=passport act=signup}>"><{t}>[免费注册]<{/t}></a>
+</span>
+<{else}>
+<span id="memberBar_<{$widgets_id}>">
+	<a href="<{link ctl=member act=index}>"><{t}>[会员中心]<{/t}></a>&nbsp;&nbsp;
+	<a href="<{link ctl=passport act=logout}>"><{t}>[退出]<{/t}></a>
+</span>
+<{/if}>
+
+<script>
+if((null!=Cookie.get('S[NAME]'))||(null!=Cookie.get('S[UNAME]'))){
+    $('uname_<{$widgets_id}>').setText('：'+(Cookie.get('S[NAME]') ? Cookie.get('S[NAME]'):Cookie.get('S[UNAME]')));
+}
+</script>

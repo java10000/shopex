@@ -1,0 +1,45 @@
+<{if defined('DEBUG_JS') && DEBUG_JS}>
+
+<script>DEBUG_JS=true;</script>
+
+<!--src tools-->
+<script type="text/javascript" src="js_src/moo.js"></script>
+<script type="text/javascript" src="js_src/moomore.js"></script>
+<script type="text/javascript" src="js_src/mooadapter.js"></script>
+<script type="text/javascript" src="js_src/jstools.js"></script>                
+<!--src component-->
+<script type="text/javascript" src="js_src/coms/colorpicker.js"></script>
+<script type="text/javascript" src="js_src/coms/areaselect.js"></script>
+
+<!--src component-->
+<script type="text/javascript" src="js_src/coms/dropmenu.js"></script>
+<script type="text/javascript" src="js_src/coms/messagebox.js"></script>
+<script type="text/javascript" src="js_src/coms/colorpicker.js"></script>
+<script type="text/javascript" src="js_src/coms/datapicker.js"></script>
+<script type="text/javascript" src="js_src/coms/validator.js"></script>
+<script type="text/javascript" src="js_src/coms/dialog.js"></script>
+<script type="text/javascript" src="js_src/coms/areaselect.js"></script>
+<script type="text/javascript" src="js_src/coms/uploader.js"></script>
+<script type="text/javascript" src="js_src/coms/tagopt.js"></script>
+<script type="text/javascript" src="js_src/coms/goodseditor.js"></script>
+
+<!--src admin-->
+<script type="text/javascript" src="js_src/coms/editor.js"></script>
+<script type="text/javascript" src="js_src/coms/editor_style_1.js"></script>
+
+<{elseif defined('GZIP_JS') && GZIP_JS }>
+
+<script type="text/javascript" src="js/package/tools.jgz"></script>
+<script type="text/javascript" src="js/package/component.jgz"></script>
+<script type="text/javascript" src="js/package/wysiwyg.jgz"></script>
+<script type="text/javascript" src="js/package/goodsedit.jgz"></script>
+
+<{else}>
+
+<script type="text/javascript" src="js/package/tools.js"></script>
+<script type="text/javascript" src="js/package/component.js"></script>
+<script type="text/javascript" src="js/package/wysiwyg.js"></script>
+<script type="text/javascript" src="js/package/goodsedit.js"></script>
+
+<{/if}>
+

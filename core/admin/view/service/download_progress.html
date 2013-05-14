@@ -1,0 +1,22 @@
+
+<div style="width: 400px;margin: 20px auto;">
+    <div class="notice">
+        <{t}>注意：下载过程中请勿关闭此页面！<{/t}>
+    </div>
+
+    <div id='download_info'></div>
+</div>
+
+<script>
+function download(url){
+	new Request.HTML({method:'post'}).get(url);
+}
+function success(url){
+   W.page(url);
+}
+window.addEvent('domready', function(){
+	download('<{$request_url}>');
+	$('download_info').setHTML('<div class="note">正在下载...</div>');
+});
+</script>
+

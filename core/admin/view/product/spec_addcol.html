@@ -1,0 +1,476 @@
+<div id='gEditor-sepc-panel'>
+               <table width="100%" class="action-bar mainHead" border="0" cellpadding="0" cellspacing="0"><tr><td><span class="notice-inline"><{t}>1 增加规格项或选择规格标签 » 2 添加需要的规格值 » 3 自定义规格值或关联相册 » 保存<{/t}></span></td><td style="text-align:right;"><span class='sysiconBtn add addspec'><{t}>增加规格项<{/t}></span><input type="hidden" name="ctlType" value="<{$ctlType}>"></td></tr></table>
+               <div class="spec-menu handles" style="height:auto;"><br />
+
+                       <{foreach from=$specs item=sItem}>
+                         <span class="t-handle" specid="<{$sItem.spec_id}>">
+                         <{$sItem.spec_name|escape:'html'}>
+                             <input type="hidden" name="spec_vars[<{$sItem.spec_id}>]" value="<{$sItem.spec_name|escape}>">
+                             <label class="spec-sum-<{$sItem.spec_id}>"></label>
+                             <label class='t-del' style='display:none;'>&nbsp;&nbsp;
+                              <img title="删除" class="delete" src="../statics/icons/icon_delete.gif" border='none'/>
+                             </label>
+                         </span> 
+                         
+                         <{/foreach}>
+                </div>
+    <div class='spec-items division' style='border:1px #ccc solid; margin:2px 5px 0px 5px;'>
+            <{if !$specs}>
+               <div class='notice'><{t}>当前商品类型没有绑定默认规格，请点击右上角增加规格项<{/t}></div>
+            <{/if}>
+            <{foreach from=$specs item=sItem}>
+         <div class='item' style='display:none;' id="spec-tab-<{$sItem.spec_id}>">
+             <table>
+                <tr>
+                   <td width='20%' style='vertical-align:middle;text-align:center'>
+                     <span class="fontcolorGray" style="line-height:18px"><{t}>请点击右侧<{/t}><br /><{t}>添加本商品需要的<{/t}><{$sItem.spec_name|escape:'html'}></span>
+                   </td>
+                   <td width='80%'>
+                           <div>&nbsp;<span class='lnk add-spec-all' specid="<{$sItem.spec_id}>"><{t}>添加全部<{/t}><{$sItem.spec_name|escape:'html'}></span>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="fontcolorGray"><{t}>没有您需要的<{/t}><{$sItem.spec_name|escape:'html'}><{t}>？立刻<{/t}></span><span class="lnk editspec" specid="<{$sItem.spec_id}>"><{t}>编辑<{/t}><{$sItem.spec_name|escape:'html'}></span></div>
+                           <ul class='goods-spec-box spec-name' specid="<{$sItem.spec_id}>" specType="<{$sItem.spec_type}>"> 
+                           
+                           <{if $sItem.spec_type == 'text'}>
+
+                           <{foreach from=$sItem.options item=oItem}>
+                              <li onmouseover="this.style.background='#ff9900';" onmouseout="this.style.background='#ffffff';" specValueId="<{$oItem.spec_value_id}>" specValue="<{$oItem.spec_value|escape:'html'}>">
+
+                              <span><{$oItem.spec_value|htmlspecialchars}></span><span class="spec-add"><label><{t}>添加<{/t}></label></span>
+                              <input type="hidden" name="spec_value_image[<{$oItem.spec_value_id}>]" id="spec_value_image_<{$oItem.spec_value_id}>" value="<{$oItem.spec_image}>"/>
+                              </li>
+                              <{/foreach}>
+                              
+                              <{else}>
+
+                           <{foreach from=$sItem.options item=oItem}>
+                              <li onmouseover="this.style.background='#ff9900';" onmouseout="this.style.background='#ffffff';" specValueId="<{$oItem.spec_value_id}>" specValue="<{$oItem.spec_value|escape:'html'}>">
+                              <img src='<{if $oItem.spec_image}><{$oItem.spec_image|storager}><{else}><{$spec_default_pic|storager}><{/if}>' width=20 height=20 alt="<{$oItem.spec_value|htmlspecialchars}>"><span class="spec-add"><label><{t}>添加<{/t}></label></span>
+                              <input type="hidden" name="spec_value_image[<{$oItem.spec_value_id}>]" id="spec_value_image_<{$oItem.spec_value_id}>" value="<{$oItem.spec_image|storager}>"/>
+                              </li>
+                              <{/foreach}>
+
+                              <{/if}>
+
+                           </ul>
+                   </td>
+                </tr>
+             </table>
+             
+             <div class='tableform'>
+             <div class="division">
+                  <table class="gridlist"  cellspacing="0" cellpadding="0" border="0" width="100%">
+                     <thead>
+                      <tr>
+                        <th style="width:15%"><{t}>系统规格<{/t}></th>
+                        <th><{t}>自定义规格值<{/t}></th>
+                           <{if $sItem.spec_type == 'image'}>
+                        <th style="width:20%"><{t}>自定义规格图片<{/t}></th>
+                        <{/if}>
+                        <th style="width:30%"><{t}>关联商品相册图片<{/t}></th>
+                        <th style="width:25%"><{t}>操作<{/t}></th>
+                      </tr>
+                    </thead>
+                    <tbody class='spec-body'>
+                    <{foreach from=$sItem.sel_options item=soItem key=pSpecId}>
+                       <tr pspecid='<{$pSpecId}>'>
+                        <td width="10%">
+                           <{if $sItem.spec_type == 'text'}>
+                        <span class="goods-spec-span"><{$sItem.options[$soItem.spec_value_id].spec_value|htmlspecialchars}></span>
+                          <{else}>
+                          <{assign var='svid' value=$soItem.spec_value_id}>
+                        <div class="goods-spec-box"><center><img src='<{if $sItem.options[$svid].spec_image}><{$sItem.options[$svid].spec_image|storager}><{elseif $sItem.options[$svid].spec_image}><{$sItem.options[$svid].spec_image|storager}><{else}><{$spec_default_pic|storager}><{/if}>' width=20 height=20 alt="<{$soItem.spec_value|htmlspecialchars}>"/></center></div>
+                          <{/if}>
+                        
+                        </td>
+
+                        <td class='spec-value-input' specid='<{$sItem.spec_id}>' specpvid='<{$pSpecId}>'>
+                          <input type="text" name="goods[spec_desc][<{$sItem.spec_id}>][<{$pSpecId}>][spec_value]" class='spec-value' style="width: 120px;" value="<{$soItem.spec_value|htmlspecialchars}>" oldvalue='<{$soItem.spec_value|htmlspecialchars}>'/>
+
+                          <input type="hidden" name="goods[spec_desc][<{$sItem.spec_id}>][<{$pSpecId}>][spec_type]" value="<{$sItem.spec_type}>"/>
+                          
+                          <input type="hidden" name="goods[spec_desc][<{$sItem.spec_id}>][<{$pSpecId}>][spec_value_id]"  class='spec-value-id' value="<{$soItem.spec_value_id}>"/>
+
+                          <input type="hidden" class="spec-image" name="goods[spec_desc][<{$sItem.spec_id}>][<{$pSpecId}>][spec_image]" value="<{$soItem.spec_image}>" oldvalue='<{$soItem.spec_image}>'/>
+                          
+                        </td>
+
+                           <{if $sItem.spec_type == 'image'}>
+                        <td>
+                          <div class="goods-spec-box" style='float:left'>
+                           <img src='<{if $soItem.spec_image}><{$soItem.spec_image|storager}><{elseif $sItem.options[$soItem.spec_value_id].spec_image}><{$sItem.options[$soItem.spec_value_id].spec_image|storager}><{else}><{$spec_default_pic|storager}><{/if}>' width=20 height=20 align='left' alt="<{$soItem.spec_value|htmlspecialchars}>">
+                          </div>
+                          <span class="sysiconBtn addorder sel_image"><{t}>上传<{/t}></span>
+                        </td>
+                          <{/if}>
+
+                        <td><span class='sel-imgs-area-<{$pSpecId}>'><{if $soItem.spec_goods_images}><{foreach from=','|explode:$soItem.spec_goods_images item=imgItem name=gimgs}><{if $smarty.foreach.gimgs.iteration<5 }><img src="index.php?ctl=goods/product&act=view_src_img&p[0]=<{$imgItem}>" width="22" height="22" style="margin:0 1px" /><{elseif $smarty.foreach.gimgs.iteration==5}>...<{/if}><{/foreach}><{/if}></span>
+                          <input type="hidden" name="goods[spec_desc][<{$sItem.spec_id}>][<{$pSpecId}>][spec_goods_images]" value="<{$soItem.spec_goods_images}>"/>
+                          <span class="sel-albums-images sysiconBtn edit" style="padding-left: 20px;"><{t}>选择<{/t}></span></td>
+                        <td>
+                        <img class="operater"  alt="向上" src="../statics/icons/icon_asc.gif"/> &nbsp; &nbsp; 
+                            <img class="operater"  alt="向下" src="../statics/icons/icon_desc.gif"/> &nbsp; &nbsp; 
+                            <img class="operater"  alt="删除" src="../statics/icons/icon_delete.gif"/>
+                      </td>
+                      </tr>
+                    <{/foreach}>
+                      
+                 </tbody>
+                  </table>
+              </div>
+             </div>
+             
+         </div>
+         <{/foreach}>
+         
+         
+         
+    </div>
+    
+    
+    
+        <div class='mainFoot' style='width:200px;height:40px;margin:0 auto;'>
+            <table style="margin:0 auto; width:auto">
+             <tr>
+               <td><b class='submitBtn save_create'><button><{t}>生成所有货品<{/t}></button></b></td>
+               <td><b class='submitBtn save'><button><{t}>保存<{/t}></button></b></td>
+             </tr>
+            </table>
+        </div>
+</div>
+
+
+
+<script>
+void function(){
+        var goods_args = null;
+        <{if $goods_args}>
+            goods_args = $H(<{$goods_args}>);
+        <{/if}>
+
+       var siteration = 0;
+       /*规格行上下移动删除操作*/
+       var specOp = (function(opArea){
+            opArea.removeEvents('click');
+            opArea.setStyle('cursor','pointer').addEvent('click',function(){
+               var tr=this.getParent('tr');
+               var trp=tr.getPrevious('tr');
+               var trn=tr.getNext('tr');
+       
+               switch (this.get('alt')) {
+                   case '向上':
+                         if(trp)tr.injectBefore(trp);
+                         return ;
+                   case '向下':
+                          if(trn)tr.injectAfter(trn);
+                          return;
+                   case '删除':
+                          if( $$('#productNode tr') ){
+                                var hasFlag = $$('#productNode input[name^=pSpecId]').some(function(psv,i){
+                                    if( psv.get('value') == tr.get('pspecid') ){
+                                        return true;
+                                    }
+                                    return false;
+                                });
+                                if(hasFlag){
+                                    alert('此规格值已有货品使用，请先删除相关货品！');
+                                    return;
+                                }
+                          }
+                          if(confirm('删除后将不能恢复，确认删除本行吗？'))tr.remove();
+                          sumSpecNum();
+                          return;
+               }
+       
+       })});
+
+
+       var sumSpecNum = (function(){
+            $$('#gEditor-sepc-panel label[class^=spec-sum-]').each(function(e){
+                e.setText(' ('+$$('#spec-tab-'+e.getParent('span').get('specid')+' .spec-body tr').length+') ');
+            });
+       });
+
+       var selImage = (function(){
+            $$('#gEditor-sepc-panel .sel_image').removeEvents('click').addEvent('click',function(){
+                 
+                 var input = this.getParent('td').getPrevious('.spec-value-input').getChildren('input[class=spec-image]');
+
+                 var img = this.getPrevious('div[class^=goods-spec-box]').getChildren('img');
+                var selImgDialog= new Dialog('index.php?ctl=editor&act=image&p[0]=0',{title:'选择图片',callback:function(src,_img,ident){
+                      input.set('value',ident);
+                      img.set({'width':'20','height':'20','src':src});
+                      selImgDialog.close();
+                   }});
+            });
+       });
+
+       var selAlbumsImg = (function(){
+        
+            $$('#gEditor-sepc-panel .sel-albums-images').removeEvents('click').addEvent('click',function(e){
+                var imgArea = this.getPrevious('span[class^=sel-imgs-area]');
+                var selImgs = imgArea.getNext('input[name^=goods[spec_desc]]');
+                var _img_data = 'selImgs='+selImgs.get('value');
+                $$('#all-pics  div[class^=gpic-box]').each(function(imgdiv){
+                    var imgid = imgdiv.getChildren('input[name^=goods[image_file][]').get('value');
+                    _img_data += '&img['+imgid+']='+encodeURIComponent(imgdiv.getChildren('span').getElement('img[sn^=_img_'+imgid+']').get('src'));
+                });
+                var _img_tmp = '<img src="{imgsrc}" width="22" height="22" style="margin:0 1px" />';
+                new Dialog('index.php?ctl=goods/spec&act=selAlbumsImg',{title:'关联商品相册图片',
+                 ajaxoptions:{data:_img_data, method:'post'},
+                 callback:function(_sel_img_data){
+                        var outimghtml = '';
+                        _sel_img_data.each(function(selImgId, outImgIteration){
+                            if(outImgIteration < 4)
+                                outimghtml += _img_tmp.substitute({'imgsrc':$E('#all-pics  div[class^=gpic-box] img[sn=_img_'+selImgId+']').get('src')});
+                            if( outImgIteration == 4 )
+                                outimghtml += '...';
+                        });
+                        imgArea.set('html',outimghtml);
+                        selImgs.set('value',_sel_img_data.join());
+
+                }});
+            });
+   });
+
+var addSpecCol =  function(){
+    $$('#gEditor-sepc-panel *').removeEvents('click');
+
+    if($E('#gEditor-sepc-panel .handles .t-handle-current')){
+       $E('#gEditor-sepc-panel .handles .t-handle-current').removeClass('t-handle-current').addClass('t-handle').getElement('.t-del').hide();;
+    }
+   try{
+       $('gEditor-sepc-panel').retrieve('setTabs',function(){
+          
+            $$('#gEditor-sepc-panel .handles .t-handle').removeEvents('click');
+            $$('#gEditor-sepc-panel .handles .t-handle  .t-del').removeEvents('click').setStyle('cursor','pointer').addEvent('click',function(e){
+                e.stop();
+                
+                if(!confirm('确定删除'))return;
+                var tab=this.getParent();
+                $$(tab,tab.retrieve('item')).remove();
+                if( $E('#gEditor-sepc-panel .handles .t-handle'))
+                    $E('#gEditor-sepc-panel .handles .t-handle').fireEvent('click',e);    
+                
+            });
+     
+            new ItemAgg($$('#gEditor-sepc-panel .handles .t-handle'),$$('#gEditor-sepc-panel .spec-items .item'),{
+                         activeName:'t-handle-current',
+                         onActive:function(tab,item){
+                           tab.removeClass('t-handle');
+                           tab.retrieve('item',item);
+                           tab.getElement('.t-del').show();
+                         },
+                         onBackground:function(tab,item){
+                           tab.addClass('t-handle');
+                           tab.getElement('.t-del').hide();
+                         }
+                    }); 
+       })();
+    
+    }catch(e){}
+    
+    var hasProFlag = (function(){
+        return ($$('#productNode tr').length > 0);
+    });
+
+    if( $E('#gEditor-sepc-panel .addspec') ){
+    
+        $E('#gEditor-sepc-panel .addspec').addEvent('click',function(){
+
+        if($E('#gEditor-sepc-panel .notice'))
+        $E('#gEditor-sepc-panel .notice').remove();
+        
+            var _spec_menu = '<span class="t-handle" specid="{spec_id}">'
+                +'{spec_name}'
+                +'<input type="hidden" name="spec_vars[{spec_id}]" value="{spec_name}">'
+                +'<label class="spec-sum-{spec_id}"></label>'
+                +'<label class="t-del">&nbsp;&nbsp;'
+                +'<img title="删除"  style="vertical-align:middle;" class="delete" src="../statics/icons/icon_delete.gif" border="none"/>'
+                +'</label></span>';
+           this.store('dialog',
+             new Dialog('index.php?ctl=goods/spec&act=addSpec',{title:'选择规格',callback:function(id,name){
+                      name=name.replace("'","&#039;");
+                      name=name.replace('"','&quot;');
+                      if($E('#gEditor-sepc-panel .spec-menu span[specid='+id+']'))return;
+                      var newtab=new Element('span',{'class':'t-handle'}).setHTML( 
+                                _spec_menu.substitute({'spec_id':id,'spec_name':name.replace(/\"/g,"&#34;")})
+                            ).getFirst();
+                        
+                       new XHR({data:'spec_id='+id,
+                             onSuccess:function(rs){
+                              $E('#gEditor-sepc-panel .spec-menu').adopt(newtab);
+                            
+                              var newitem=new Element('div').set('html',rs).getFirst();                            
+                                 $E('#gEditor-sepc-panel .spec-items').adopt(newitem);
+                                
+                                addSpecCol();
+                             }
+                       }).send('index.php?ctl=goods/spec&act=addSpecTab');
+
+                    }})
+           );
+        });
+    }
+    
+    $$('#gEditor-sepc-panel .editspec').addEvent('click',function(){
+          var specId=this.get('specid');
+          var specbox=this.getParent('tr').getElement('.goods-spec-box');
+          new Dialog('index.php?ctl=goods/specification&act=edit&p[0]='+specId,{title:'编辑规格',onLoad:function(){
+                 var dlg=this.dialog;
+            
+                 if(dlg.getElement('.nav-bar'))dlg.getElement('.nav-bar').remove();
+                
+                 dlg.getElement('form').removeEvents('submit')
+                 .addEvent('submit',function(e){
+                      
+                    e.stop();
+                    if(!this.bindValidator('_x_ipt'))return false;
+                  
+                    new Request({
+                        data:this,
+                        onRequest:function(){
+                           $('loadMask').amongTo(dlg).show();
+                        },onSuccess:function(re){
+                    
+                           if(re.contains('failedSplash')){
+                              $('loadMask').hide();
+                              return MessageBox.show(re);
+                           }else{
+                             new Request({onSuccess:function(re){
+                                $('loadMask').hide();
+                                specbox.setHTML(re);
+                                addSpecCol();
+                                dlg.retrieve('instance').close();
+                             }}).get("index.php?ctl=goods/spec&act=specValue&p[0]="+specId);
+                           }
+                        
+                          }
+                        }).post(this.action);
+                 
+                 });
+                 
+            
+            }});
+        
+    });
+
+   
+
+    $$('#gEditor-sepc-panel .spec-name li').addEvent('click',function(f){
+        siteration -= -1;
+        var e=this;
+        var sId = e.getParent('ul').get('specId');
+         var spec_add_data ='spec[specType]='+e.getParent('ul').get('specType')+'&spec[specValueId]='+e.get('specValueId')+'&spec[specId]='+sId+'&spec[specValue]='+e.get('specValue')+'&spec[specImage]='+encodeURIComponent( $('spec_value_image_'+e.get('specValueId')).value )+'&sIteration='+siteration;
+         
+        new XHR({data:spec_add_data,onRequest:function(){
+                  $('loadMask').amongTo(e).show();
+        },onSuccess:function(re){
+          $('loadMask').hide();
+          addRow(sId,re);
+            if(f == 'addall'){
+                if(e.getNext('li[specvalueid]')){
+                    e.getNext('li[specvalueid]').fireEvent('click','addall');
+                }
+            }
+        }}).send('index.php?ctl=goods/spec&act=addSpecValue');
+
+
+    });
+    
+specOp( $$('#gEditor-sepc-panel .spec-body .operater'));
+sumSpecNum();
+selImage();
+selAlbumsImg();
+
+    var addRow = (function(sId,re){
+          var newtr=new Element('tr');
+            $E('#spec-tab-'+sId+' .spec-body').adopt(newtr);
+            newtr.set('html', re );
+            specOp( $$('#gEditor-sepc-panel .spec-body .operater'));
+            sumSpecNum();
+            selImage();
+            selAlbumsImg();
+    });
+
+    $$('#gEditor-sepc-panel .add-spec-all').addEvent('click', function(e){
+        e=this;    
+        var sid = e.get('specid');
+        
+        var typeNode=this.getParent().getNext('ul[spectype]').getElements('li');    
+            
+        if(typeNode.length>=1){$$('#gEditor-sepc-panel ul[specid='+sid+']').getFirst('li[specvalueid]').fireEvent('click','addall')}else{return false;}        
+    });
+
+
+    /*保存规格设置*/
+    $$('#gEditor-sepc-panel .submitBtn').addEvent('click',function(e){
+        if(!$E('#gEditor-sepc-panel .spec-menu .t-handle-current')){
+            return MessageBox.error('您还没有添加任何规格值');
+        }
+            var  flag=$$('#gEditor-sepc-panel div[id^=spec-tab-] .spec-body').every(function(etb,index,arr){
+                
+                return etb.getElement('tr');
+            });
+            if( !flag)return MessageBox.error('您还没有添加任何规格值');
+
+        var valueHash = new $H({});
+        
+        var sameValueFlag = true;
+        sameValueFlag = $$('#gEditor-sepc-panel div[id^=spec-tab-] .spec-body tr td[class^=spec-value-input]').every(function(etd){
+            var spid = etd.getChildren('input[class^=spec-value-id]').get('value');
+            var spval = etd.getChildren('input[class^=spec-value]').get('value');
+            if( valueHash.has(spid+'-'+spval) )
+                return false;
+            valueHash.set(spid+'-'+spval, '');
+                return true;
+        });
+        valueHash = null;
+        if( !sameValueFlag )return MessageBox.error('自定义规格值重复，请核实');
+
+          var dialog=this.getParent('.dialog');      
+          var create_flag = this.hasClass('save_create');
+          
+          var needUpValue = {'needUpValue':{}};
+          $$('#gEditor-sepc-panel .spec-value-input').each(function(specTd,si){
+            var cSpecValue = specTd.getElement('.spec-value');
+            var cSpecImg = specTd.getElement('.spec-image');
+            if( cSpecValue.get('value') != cSpecValue.get('oldvalue') || ( (cSpecImg.get('value') || cSpecImg.get('oldvalue')) && cSpecImg.get('value') != cSpecImg.get('oldvalue') ) ){
+                needUpValue.needUpValue[si+'1'] = {'specid':specTd.get('specid'),'specpvid':specTd.get('specpvid')};
+            }
+          });
+
+          new Request.HTML({
+             evalScripts:false,
+              onRequest:function(){
+                 $('loadMask').amongTo(dialog).show();
+              },
+              onComplete:function(){
+                 $('loadMask').hide();
+                 dialog.getElement('.dialog-btn-close').fireEvent('click');
+                 if( !hasProFlag() || create_flag ){
+                     $('goods-spec').empty().set('html',arguments[2]);
+                  }
+                  $exec(arguments[3]);
+              },
+              data:$('gEditor-sepc-panel').toQueryString()+'&'+$H(needUpValue).toQueryString()+(goods_args?'&'+goods_args.toQueryString():'')
+          }).post('index.php?ctl=goods/spec&act=doAddCol'+(create_flag?'&create=true':''));
+            
+      
+    });
+    if( hasProFlag() ){
+        if($E('#gEditor-sepc-panel .save_create')){
+            $E('#gEditor-sepc-panel .save_create').getParent('td').remove();
+        }
+        $ES('#gEditor-sepc-panel .addspec').removeEvents('click').addEvent('click',function(){alert('请先删除所有货品后再新增规格标签')});
+        $$('#gEditor-sepc-panel .handles .t-handle  .t-del').removeEvents('click').addEvent('click',function(){alert('请先删除所有货品后再关闭规格标签')});
+    }
+    
+ };
+ addSpecCol();
+ 
+ 
+}();
+
+
+
+</script>
+

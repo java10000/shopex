@@ -1,0 +1,81 @@
+<div id="message-info" class="tableform">
+
+<h4><{t}>会员信息<{/t}></h4>
+<div class="division">
+<table border="0" cellpadding="0" cellspacing="0">
+    <tr>
+        <th width="80px"><{t}>姓名：<{/t}></th>
+        <td><{$user.msg_from}></td>
+    </tr>
+    <tr>
+        <th><{t}>电话：<{/t}></th>
+        <td><{$user.tel}></td>
+    </tr>
+    <tr>
+        <th><{t}>性别：<{/t}></th>
+        
+        <td><{if $user.sex == 1}><{t}>男<{/t}><{elseif $user.sex == ''}> <{else}><{t}>女<{/t}><{/if}></td>
+    </tr>
+    <tr>
+        <th>E-mail：</th>
+        <td><{$user.email}></td>
+    </tr>
+    </table></div>
+    <h4><{t}>会员留言<{/t}></h4>
+ <div class="division">   
+ <table border="0" cellpadding="0" cellspacing="0">
+    <tr>
+        <th><{t}>时间：<{/t}></th>
+        <td><{$user.date_line}></td>
+    </tr>
+    <tr>
+     <th><{t}>标题：<{/t}></th>
+        <td><{$user.subject|escape:'html'}></td>
+    </tr>
+    <tr>
+        <th><{t}>内容：<{/t}></th>
+        <td><{$user.message|escape:'html'}></td>
+    </tr>
+    <{foreach item=rvt key=key from=$revert}>
+    <tr>
+        <th><{t}>回复时间<{/t}><{$key+1}>：</th>
+        <td><{$rvt.date_line}></td>
+    </tr>
+    <tr>
+        <th><{t}>回复标题<{/t}><{$key+1}>：</th>
+        <td><{$rvt.subject|escape:'html'}></td>
+    </tr>
+    <tr>
+        <th><{t}>回复内容<{/t}><{$key+1}>：</th>
+        <td><{$rvt.message|escape:'html'}></td>
+    </tr>
+    <{/foreach}>
+    </table></div>
+
+<h4><{t}>回复：<{/t}></h4>
+<div id="message-revert-area" class="division">
+
+<form method="POST" action="index.php?ctl=member/member&act=revert" target="{update:'message-info'}">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <th><{t}>标题：<{/t}></th>
+    <td><input type="text" name="subject" size="50" value=""></td>
+  </tr>
+  <tr>
+    <th><{t}>内容：<{/t}></th>
+    <td><input type="hidden" name="for_id" value="<{$msg_id}>">
+  <input type="hidden" name="to_id" value="<{$user.from_id}>">
+  <input type="hidden" name="html" value="yes">
+  <{input type="html" name="message"}></td>
+  </tr>
+</table>
+
+
+ <div class="table-action">
+	<{button type="submit"  label="回复"}>
+</div>
+</form>
+
+</div>
+
+</div>

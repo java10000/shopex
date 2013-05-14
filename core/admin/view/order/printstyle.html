@@ -1,0 +1,33 @@
+<form id="idForm" method='post' action='index.php?ctl=order/order&act=savePrintStyle' target="{update:'messagebox'}" style="margin:5px 10px;">
+<{button label="恢复初始样式" type="submit" id="idresume" style="float:right"}>
+
+<{tabber}>
+  <{tab name="购物清单"}>
+<{input type="textarea" name="txtcontentcart" class="info-text" height="450px" value=$styleContentCart }>
+
+  <{/tab}>
+  <{tab name="配货单" }>
+<{input type="textarea" name="txtcontentsheet" class="info-text" height="450px" value=$styleContentSheet }>
+  <{/tab}>
+
+  <{tab name="旧版订单打印单" }>
+<{input type="textarea" name="txtcontent" class="info-text" height="450px" value=$styleContent }>
+  <{/tab}>
+  <{/tabber}>
+
+<div class="table-action">
+	<{button label="保存" type="submit" id="idsave"}>
+</div>
+
+</form>
+<script>
+  $('idresume').addEvent('click',function(e){
+	if (!confirm('恢复后将覆盖现有样式，确定要恢复吗？'))
+	{
+		return ;
+	}
+    e=new Event(e);
+    $('idForm').action = 'index.php?ctl=order/order&act=rebackPrintStyle';
+    $('idForm').fireEvent('submit', e);
+  });
+</script>

@@ -1,0 +1,81 @@
+<form id="specForm" action="index.php?ctl=goods/gtype&act=saveSpec" method="post">
+<input type="hidden" name="type_id" value="<{$type_id}>">
+<div id="type_spec" style="display:none"></div>
+<h5><{t}>添加类型规格<{/t}></h5>
+<div style="width:150px; padding:10px; float:left; border:1px solid #efefef; margin:10px;">
+  <select id="spec_all" style="width:100%" size="10" multiple="multiple" id="select">
+    <{foreach from=$specs  key=spec_key item=spec_name}>
+    <option value="<{$spec_key}>"><{$spec_name}></option>
+    <{/foreach}>
+    </select></div>
+<div style="width:75px;padding:10px; float:left; padding-top:20px;margin:0;">
+<div style="width:50px; display:block; margin:3px; text-align:center; font-size:18px" class="sysiconBtnNoIcon" onclick="spec.add()">>></div>
+<div style="width:50px;display:block; margin:3px; text-align:center;font-size:18px" class="sysiconBtnNoIcon" onclick="spec.remove()"><<</div>
+<div style="width:50px;display:block; margin:3px; text-align:center" class="sysiconBtnNoIcon"  onclick="spec.reset()"><{t}>重置<{/t}></div>
+</div>
+<div style="width:150px;padding:10px; float:left; border:1px solid #efefef; margin:10px;"><select id="spec_sel" style="width:100%;" size="10" multiple="multiple" id="select">
+      <{foreach from=$spec_type key=spec_key item=spec_name}>
+      <option value="<{$spec_key}>"><{$spec_name}></option>
+      <{/foreach}>
+    </select></div>
+ <div style="clear:both"></div>
+
+ <div class="table-action">
+	<{button label="保存" onclick="spec.submit()"}>
+</div>
+
+</form>
+<script language="javascript">
+function $D(s){
+  return document.getElementById(s);
+}
+var spec={
+  add:function(){
+    var os= $D('spec_sel').getElementsByTagName('option');
+    var sel={};
+    for(var i=0;i<os.length;i++){
+      sel[os[i].value]=1;
+    }
+    os= $D('spec_all').getElementsByTagName('option');
+    for(var i=0;i<os.length;i++){
+      if(os[i].selected && !sel[os[i].value]){
+        $D('spec_sel').appendChild(os[i].cloneNode(true));
+      }
+    }
+  },
+  remove:function(){
+    var os= $D('spec_sel').getElementsByTagName('option');
+    var e=[];
+    for(var i=0;i<os.length;i++){
+      if(os[i].selected)e.push(os[i]);
+    }
+    for(var i=0;i<e.length;i++){
+      e[i].parentNode.removeChild(e[i]);
+    }
+  },
+  reset:function(){
+    var os= $D('spec_sel').getElementsByTagName('option');
+    var e=[];
+    for(var i=0;i<os.length;i++){
+      e.push(os[i]);
+    }
+    for(var i=0;i<e.length;i++){
+      e[i].parentNode.removeChild(e[i]);
+    }
+  },
+  submit:function(){
+    var os= $D('spec_sel').getElementsByTagName('option');
+    var oslen = os.length;
+    var spechtml = '';
+    if(oslen>0){
+      for(var i=0;i<oslen;i++){
+        spechtml+='<input name="specs['+os[i].value+']" type="hidden" value="'+os[i].innerHTML+'" />';
+      }
+    }else{
+      spechtml+='<input name="specs" type="hidden" value="null" />';
+    }
+    $D('type_spec').innerHTML+=spechtml;
+    $D('specForm').submit();
+  }
+}
+</script>

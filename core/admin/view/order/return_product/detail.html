@@ -1,0 +1,186 @@
+<div id="return_detail">
+<div class="tableform">
+
+  <h5><{t}>买家说<{/t}>：<span class="font14px fontcolorBlue"><{$info.title}></span></h5>
+  <div class="division">
+    <{t}>订单编号：<{/t}><span class="font16px fontbold fontcolorBlack"><{$info.order_id}></span>&nbsp;&nbsp;
+    <{t}>订单状态：<{/t}><span id="x-return_item_status-<{$info.return_id}>" class="font14px fontcolorOrange fontbold"><{$info.status}></span>&nbsp;&nbsp;
+    <{t}>提出申请的时间：<{/t}><span class="fontcolorOrange"><{$info.add_time|cdate:FDATE_STIME}></span></div>
+    <{foreach from=$info.comment item=item}>
+    <div class="division pushdown-1"><h4 class="font12px"><{t}>我的反馈<{/t}><span class="font12px fontcolorGray fontnormal"><{$item.time|cdate:FDATE_STIME}></span></h4><{$item.content}></div>
+    <{/foreach}>
+    
+    <h5><{t}>申请售后服务的商品<{/t}></h5>
+    <div class="division">
+      <table cellspacing="0" cellpadding="3" width="100%" class="liststyle">
+        <col class="span-3"/>
+        <col class="span-auto"/>
+        <col class="span-2"/>
+        <thead>
+          <tr>
+            <th><{t}>货号<{/t}></th>
+            <th><{t}>商品名称<{/t}></th>
+            <th><{t}>数量<{/t}></th>
+          </tr>
+        </thead>
+        <tbody>
+          <{foreach from=$info.product_data item=item}>
+          <tr>
+            <td><{$item.bn}></td>
+            <td><{$item.name|escape:"html"}></td>
+            <td><{$item.num}></td>
+          </tr>
+          <{/foreach}>
+        </tbody>
+      </table>
+    </div>
+    <{if $info.image_file}>
+    <h5><{t}>附件下载<{/t}></h5>
+    <div class=" clearfix division thumbnailPic">
+    <a class="margin10" href="javascript:file_download()"><{t}>请点击下载该附件<{/t}></a>
+    </div>
+    <{/if}>
+    <h5><{t}>详细说明<{/t}></h5>
+    <div class="division">
+      <div style="word-break: break-all; "><{$info.content|escape:"html"}></div>
+    </div>
+
+
+<div class="table-action">
+	<{button label="审核中" type="submit" name="butsubmit" onclick="set_status({$info.return_id},2)" id="x-return_status_{$info.return_id}_2"}>
+	<{button label="接受申请" type="submit" name="butsubmit" onclick="set_status({$info.return_id},3)" id="x-return_status_{$info.return_id}_3"}>
+	<{button label="完成" type="submit" name="butsubmit" onclick="set_status({$info.return_id},4)" id="x-return_status_{$info.return_id}_4"}>
+	<{button label="拒绝" type="submit" name="butsubmit" onclick="set_status({$info.return_id},5)" id="x-return_status_{$info.return_id}_5"}>
+</div>
+
+
+
+</table>
+<div id='x-send_comment-<{$info.return_id}>' style='display:<{if $info.status_int == 3}>block<{else}>none<{/if}>;'>
+<form action="index.php?ctl=order/return_product&act=send_comment" method="post">
+<input type="hidden" name="return_id" value="<{$info.return_id}>">
+<div class="division">
+<h4><{t}>给用户留言<{/t}></h4>
+  <textarea style="width:50%; height:150px;" name="comment"></textarea>
+  
+</div>
+<table class="table-action" cellspacing="0" cellpadding="0" border="0" align="center">
+    <tbody>
+      <tr>
+        <td><b class="submitBtn">
+          <input type="submit" value="发送" name="butsubmit"/>
+          </b>
+        </td>
+      </tr>
+    </tbody>
+</table>
+</div>
+</form>
+</div>
+</div>
+<script>
+
+function init_button(status,return_id){
+	
+	var el = $('x-return_status_<{$info.return_id}>_'+status);
+	if( el )
+	{
+		el.disabled = true;
+		var el_b = el.getParents('b');
+		el_b.removeClass('submitBtn');
+		el_b.addClass('submitBtnoff');
+	}
+	
+	if(status == 1 || status == 2 )
+	{
+		$('x-return_status_<{$info.return_id}>_3').disabled = false;
+		var el_b = $('x-return_status_<{$info.return_id}>_3');
+		el_b.removeClass('submitBtnoff');
+		el_b.addClass('submitBtn');
+
+		$('x-return_status_<{$info.return_id}>_4').disabled = false;
+		var el_b = $('x-return_status_<{$info.return_id}>_4');
+		el_b.removeClass('submitBtnoff');
+		el_b.addClass('submitBtn');
+
+		$('x-return_status_<{$info.return_id}>_5').disabled = false;
+		var el_b = $('x-return_status_<{$info.return_id}>_5');
+		el_b.removeClass('submitBtnoff');
+		el_b.addClass('submitBtn');
+	}
+	else if( status == 3 )
+	{
+		$('x-return_status_<{$info.return_id}>_2').disabled = false;
+		var el_b = $('x-return_status_<{$info.return_id}>_2');
+		el_b.removeClass('submitBtnoff');
+		el_b.addClass('submitBtn');
+
+		$('x-return_status_<{$info.return_id}>_4').disabled = false;
+		var el_b = $('x-return_status_<{$info.return_id}>_4');
+		el_b.removeClass('submitBtnoff');
+		el_b.addClass('submitBtn');
+
+		$('x-return_status_<{$info.return_id}>_5').disabled = false;
+		var el_b = $('x-return_status_<{$info.return_id}>_5');
+		el_b.removeClass('submitBtnoff');
+		el_b.addClass('submitBtn');
+	}
+	else if( status == 4 )
+	{
+		$('x-return_status_<{$info.return_id}>_2').disabled = false;
+		var el_b = $('x-return_status_<{$info.return_id}>_2');
+		el_b.removeClass('submitBtnoff');
+		el_b.addClass('submitBtn');
+
+		$('x-return_status_<{$info.return_id}>_3').disabled = false;
+		var el_b = $('x-return_status_<{$info.return_id}>_3');
+		el_b.removeClass('submitBtnoff');
+		el_b.addClass('submitBtn');
+
+		$('x-return_status_<{$info.return_id}>_5').disabled = false;
+		var el_b = $('x-return_status_<{$info.return_id}>_5');
+		el_b.removeClass('submitBtnoff');
+		el_b.addClass('submitBtn');
+	}
+	else if( status == 5 )
+	{
+		$('x-return_status_<{$info.return_id}>_2').disabled = false;
+		var el_b = $('x-return_status_<{$info.return_id}>_2');
+		el_b.removeClass('submitBtnoff');
+		el_b.addClass('submitBtn');
+
+		$('x-return_status_<{$info.return_id}>_3').disabled = false;
+		var el_b = $('x-return_status_<{$info.return_id}>_3');
+		el_b.removeClass('submitBtnoff');
+		el_b.addClass('submitBtn');
+
+		$('x-return_status_<{$info.return_id}>_4').disabled = false;
+		var el_b = $('x-return_status_<{$info.return_id}>_4');
+		el_b.removeClass('submitBtnoff');
+		el_b.addClass('submitBtn');
+	}
+}
+
+init_button(<{$info.status_int}>,<{$info.return_id}>);
+
+
+
+function set_status(return_id,status){
+	init_button(status,return_id);
+	if( status >= 3 && status<=5 )
+	{
+		$('x-send_comment-<{$info.return_id}>').style.display = 'block';
+	}
+	else
+	{
+		$('x-send_comment-<{$info.return_id}>').style.display = 'none';
+	}
+	new Request.HTML({url:"index.php?ctl=order/return_product&act=save",method:"post",update:$("x-return_item_status-<{$info.return_id}>"),data:"return_id="+return_id+"&status="+status}).post();
+
+}
+
+function file_download(){
+    var ifm=new IFrame({src:'index.php?ctl=order/return_product&act=file_download&p[0]=<{$info.return_id}>'});
+    ifm.injectAfter(document.body);
+}
+</script>

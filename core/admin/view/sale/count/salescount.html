@@ -1,0 +1,27 @@
+<div class="tableform">
+<form action="index.php?ctl=sale/salescount&act=index" method="GET">
+  日期:<{input name="search_year" options=$d_year required="true" value=$value_year type="select"}>年
+  <{input name="search_month" options=$d_month required="true" value=$value_month type="select"}>月
+
+<input type="submit" name="search" value="查询">
+</form>
+</div>
+<div id="sales_report" class="tableform">
+
+ <embed src="images/linechart.swf" quality="high" pluginspage="http://www.macromedia.com/go/getflashplayer" flashvars="fillcolor=0xFF9933&reporttype=month&linecolor=0x784016&backcolor=0xffffff&raycolor=0xF5E1AA&xml=<{$month}>" type="application/x-shockwave-flash" width="600" height="300" id="monthReport" name="monthReport"></embed>
+
+
+</div>
+
+<div id="sales_report2" class="tableform">
+<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,29,0" width="680" height="300" id="dayReport"><param name="movie" value="images/linechart.swf?fillcolor=0xFF9933&reporttype=day&linecolor=0x784016&backcolor=0xffffff&raycolor=0xF5E1AA&xml=<{$day}>">
+<embed src="images/linechart.swf" quality="high" pluginspage="http://www.macromedia.com/go/getflashplayer" flashvars="fillcolor=0xFF9933&reporttype=day&linecolor=0x784016&backcolor=0xffffff&raycolor=0xF5E1AA&xml=<{$day}>" type="application/x-shockwave-flash" width="600" height="300" name="dayReport"></embed></object>
+</div>
+
+<script>
+function monthSearch(date){
+  if(date){
+    document['dayReport'].searchYear(date);
+  }
+}
+</script>

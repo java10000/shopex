@@ -1,0 +1,94 @@
+<div class="infoContent" container="true" id="contents" style="visibility: visible; opacity: 1;">
+  <div class="tabs"><div >
+
+  <div style="text-align:right; padding:5px 25px 5px 0;">
+    <label>
+    <input type="button" value="给顾客留言" onclick="$('order_form_msg_<{$orderid}>').style.display=''"/>
+    </label>
+  </div>
+
+  <table cellspacing="0" cellpadding="0" border="0" width="100%">
+    <tbody><tr>
+    <td width="220" valign="top" style="vertical-align: top;">
+      <div class="span-6"><div class="division">
+    <div class="table-grid">
+      <table cellspacing="0" cellpadding="0" border="0" width="100%" class="gridlist">
+        <thead>
+          <th><{t}>订单商品 (购买量)<{/t}></th>
+
+        <tbody>
+        <{foreach from=$goodsItems item=aGoods}>
+        <tr>
+          <td style=" white-space:normal; text-align:left;"><a <{if $aGoods.is_type == 'goods'}>href="../index.php?ctl=product&act=index&p[0]=<{$aGoods.goods_id}>"<{else}>href="../index.php?ctl=package&act=index"<{/if}> target="_blank"><{$aGoods.name}></a><span class="fontcolorOrange">×(<{$aGoods.nums}>)</span></td>
+        </tr>
+        <{/foreach}>
+        </tbody>
+      </table>
+    </div>
+  </div>
+    </div></td>
+        <td style="vertical-align: top;">
+
+        <div>
+
+      <table cellspacing="0" cellpadding="0" border="0" width="100%" id="order_form_msg_<{$orderid}>" style="display:none">
+      <tr>
+      <td width="40"><{t}>标题：<{/t}></td>
+    <td>
+		<{foreach from=$ordermsg item=newmsg }>
+			<{if $newmsg.from_type == '0'}>
+				<{assign var=reSubject value=$newmsg.subject}>
+				<{break}>
+			<{/if}>
+		<{/foreach}>
+		<{input type="text" name="msg[subject]" required='true' maxlength=20 value="Re:{$reSubject}" }>
+	</td>
+    </tr>
+    <tr>
+    <td style="vertical-align: top;"><{t}>内容：<{/t}></td>
+    <td><{input type="textarea" name="msg[message]" rows=3 style="width:40%" }></td>
+    </tr>
+    <tr>
+        <td>&nbsp;<input type="hidden" name="orderid" value="<{$orderid}>"/></td>
+        <td><input type="button" value="提交留言" onclick="W.page('index.php?ctl=order/order&act=saveOrderMsgText',{update:'tab_content',data:$('order_form_msg_<{$orderid}>'),method:'post'},$(this))"/>
+        </td>
+    </tr>
+    </table>
+
+        </div>
+
+         <{foreach from=$ordermsg item=msgitem name="ordermsg"}>
+        <div class="division">
+
+          <table cellspacing="0" cellpadding="0" border="0" style="margin-bottom:5px;" class="gridlist">
+            <col class="Coldate"/>
+
+            <tbody>
+              <tr>
+                <td rowspan="2" style="width:30px; font-weight:bold;"><{$smarty.foreach.ordermsg.iteration}></td>
+                <td style="text-align:left;"><label>标题：
+              </label><{$msgitem.subject}>
+              <label><{t}>时间：<{/t}></label><{$msgitem.date_line|usertime}>
+              <label><{t}>留言人：<{/t}></label><{$msgitem.msg_from}>
+
+              </td>
+                </tr>
+              <tr>
+                <td valign="bottom" style="text-align:left;">
+                  <label>内容：
+                </label><{$msgitem.message|nl2br}></td>
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+          <{/foreach}>
+
+          </td>
+      </tr>
+    </tbody></table>
+</div>
+
+  </div>
+
+</div>

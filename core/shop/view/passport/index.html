@@ -1,0 +1,13 @@
+<{if $mustMember}>
+<p class="highlight">
+必须成为会员才能完成交易
+</p>
+<{/if}>
+<div class="static-col" style=" float:left;width:50%;">
+  <{require file="passport/index/signup.html"}>
+</div>
+<div class="static-col" style="float:left;width:49%;">
+  <{require file="passport/index/login.html"}>
+  <{require file="passport/index/recover.html"}>
+</div>
+<div class="clear"></div>

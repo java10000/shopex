@@ -1,0 +1,55 @@
+<style type="text/css">
+#single-page-tbar .action-bar-btns input {padding:3px 0;}
+</style>
+<span class="action-bar-info"><{t}>采购单状态操作:<{/t}></span>
+<span class="action-bar-btns"><span>
+<ul>
+    <li><input type="button" class="but-pay" value="向供应商付款" <{if $POrder._pay}> <{else}> disabled="disabled"<{/if}> /></li>
+</ul>
+<ul>
+   <li><input type="button"  value="向客户退款" <{if $POrder._refund}> onclick="OrderMgr.act.run('showRefund', this, 'refund')"<{else}> disabled="disabled"<{/if}> /></li>
+</ul>
+<ul>
+   <li><input type="button"  value="撤销该采购单" <{if $POrder._cancel}> onclick="if(confirm('撤消后该采购单何将不允许再做任何操作，确认要执行吗？'))  OrderMgr.act.run('cancel', this)" <{else}> disabled="disabled"<{/if}> /></li>
+</ul>
+</span></span>
+
+<script>
+var actBar = $(document.body).getElement('.action-bar');
+var sid = actBar.getElement('div').getProperty('supplier_id');
+var order_id = actBar.getElement('div').getProperty('dealer_order_id');
+var po_id = actBar.getElement('div').getProperty('order_id');
+$E(".but-pay",actBar).addEvent('click',function(e){
+        var divp = this.getParent('.x-po-detail');
+        new Dialog('index.php?ctl=order/order&act=payPo&p[0]='+order_id+'&p[1]='+sid+'&p[2]='+po_id, {title:'订单['+order_id+']付款操作',
+            width:window.getSize().x*0.85,
+            height:window.getSize().y*0.85,
+            onLoad:function(e){
+                var dialog=this.dialog;
+                dialog.getElement('form').removeEvents('submit').addEvent('submit',function(e){
+                    var checkNum = 0;
+                    $ES('input[name=pay_id]',dialog.getElement('form')).each(function(item){
+                        if(item.checked == true) checkNum++;
+                    });
+                    if(checkNum == 0){
+                        MessageBox.error('请选择支付方式！');
+                        return false;
+                    }
+                    if(dialog.getElement('form').getProperty('action').contains('http://')){
+                        (function(){dialog.retrieve('instance').close()}).delay(200);
+                    }else{
+                        if(e) new Event(e).stop();
+                        this.send({onComplete:function(a){
+                                dialog.retrieve('instance').close();
+                                if(a.contains('Fatal error')){
+                                    MessageBox.error(a);
+                                }else{
+                                    MessageBox.show(a);
+                                }
+                            }});
+                    }
+                    });
+                }
+            });
+        });
+</script>

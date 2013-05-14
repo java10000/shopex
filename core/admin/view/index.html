@@ -1,0 +1,362 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=7" >
+<title><{$title}></title>
+<link rel="shortcut icon" href="../favicon.gif" type="image/gif" />
+
+
+<{if defined('DEBUG_CSS') && DEBUG_CSS}>
+<link rel="stylesheet" href="css_src/reset.css" type="text/css" media="screen, projection"/>
+<link rel="stylesheet" href="css_src/grid.css" type="text/css" media="screen, projection"/>
+<link rel="stylesheet" href="css_src/gridlist.css" type="text/css" media="screen, projection"/>
+<link rel="stylesheet" href="css_src/forms.css" type="text/css" media="screen, projection"/>
+<link rel="stylesheet" href="css_src/typography.css" type="text/css" media="screen, projection"/>
+<link rel="stylesheet" href="css_src/product.css" type="text/css" media="screen, projection"/>
+<link rel="stylesheet" href="css_src/template.css" type="text/css" media="screen, projection"/>
+<link rel="stylesheet" href="css_src/component.css" type="text/css" media="screen, projection"/>
+<link rel="stylesheet" href="css_src/button.css" type="text/css" media="screen, projection"/>
+<link rel="stylesheet" href="css_src/finder.css" type="text/css" media="screen, projection"/>
+<link rel="stylesheet" href="css_src/style.css" type="text/css" media="screen, projection"/>
+<{elseif defined('GZIP_CSS') && GZIP_CSS }>
+<link rel="stylesheet" href="css/shopadmin.zcss" type="text/css" media="screen, projection"/>
+<{else}>
+<link rel="stylesheet" href="css/shopadmin.css" type="text/css" media="screen, projection"/>
+<{/if}>
+
+<script>
+var SHOPVERSION = 'ShopEx48.5';
+var SHOPADMINDIR='<{$shopadmin_dir}>';
+var SHOPBASE='<{$shop_base}>';
+var SHOPMENUS = 'json from=$mlist';
+var DEBUG_JS=true;
+var Setting = {};
+var sess_id = '<{$session_id}>';
+<{$script}>
+<{if $statusId}>
+window.statusId = <{$statusId}>;
+<{/if}>
+</script>
+</head>
+
+<body class="closeLeft" id='shopadmin'>
+
+<span id='version-shopex485' style='display:none;'></span>
+
+<div class="container" style='visibility:hidden'>
+
+<div class="header" id='header'>
+    <div class="hd1">
+        <h1 id="logo" class="shopname">
+        <a href="http://www.shopex.cn" target="_blank"><{img src="images/admin_logo.png"}></a>
+        <a href="index.php?ctl=system/setting&act=basicinfo" id="shop_title_block"><{$shopname}></a>
+            <{if !$env.const.SAAS_MODE}>
+            <span class="certiinfo" id="CertificateInfo">&nbsp;</span>
+            <{else}>
+            <span class="certiinfo" id="CertificateInfo" style="display:none">&nbsp;</span>
+            <span class="certiinfo"><{$shop_service_info}></span>
+            <{/if}>
+        </h1>
+        
+        <div id="msgRunner" dropMenu='msgStorage' style='visibility:hidden;'><div class='runner'></div></div>
+        
+        <!-- 顶部消息提示 -->
+        <ul class="x-drop-menu" id="msgStorage" style='display:none;'></ul>
+        <div id="head_sync_download_tip_msg" style="float:left;text-align:left;margin-top:15px;padding-left:15px;display:none" >
+            <{img src="images/bundle/downinfo.gif"}><span id="downmsg"></span>
+        </div>
+        
+        <!-- 最顶部菜单 -->
+        <div class="top-link-menu">
+            <div>
+                <span class="btn-appstore" id="btn-appstore" onclick="W.page('index.php?ctl=system/appmgr&act=index'); closeSide();">
+                    <{img src="images/bundle/btn_appstore.gif"}><{t}>应用中心<{/t}>
+                </span>
+
+                <a href='http://www.shopex.cn/help/ShopEx48' target="_blank" >
+                    <{img src="images/bundle/ico_help.gif"}><{t}>帮助<{/t}>
+                </a>&nbsp;&nbsp;
+                <a href='javascript:void(0);' class='user_guide'>
+                    <{img src="images/bundle/opguide_ico.gif"}><{t}>开店向导<{/t}>
+                </a>&nbsp;&nbsp;
+                <a href="http://www.ekaidian.cn" target="_blank">
+                    <{img src="images/bundle/ico-chat.gif"}><{t}>客户服务<{/t}>
+                </a>&nbsp;&nbsp;
+                <a href="http://www.ekaidian.cn" target="_blank">
+                    <{img src="images/bundle/ico-buy.gif"}><{t}>购买咨询<{/t}>
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 次顶部菜单 -->
+    <div class="hd2">
+        <div id="mainMenus" class="top-menu">
+            <{foreach from=$menu item=item key=key}>
+            <{if !$item.hidden}>
+            <a name="<{$key}>" href="<{$item.link}>" id="top-tab-<{$key}>" class="tab"><span><span><{$item.label}></span></span></a>
+            <{/if}>
+            <{/foreach}>
+            <{role require="7,8" mode="or"}><div class="tab blankbutton"><span><span><{role require="7"}><a href="index.php?ctl=system/setting&act=welcome" id="top-tab-setting"><{t}>商店配置<{/t}></a><{/role}><{role require="8"}><a href="index.php?ctl=system/tools&act=welcome" id="top-tab-tools"><{t}>工具箱<{/t}></a><{/role}></span></span></div><{/role}>
+            <a class="tab greenbutton" href="../" target="_blank" class="tab"><span><span><{t}>浏览商店<{/t}></span></span></a>
+        </div>
+          
+        <div class="top-link clearfix">
+            <div class='span-auto user-name'><{t}>您好<{/t}>, <{$uname}></div>
+            <div class='span-auto'>[&nbsp;<a href='index.php?ctl=admin/profile&act=operator' dialog='{title:"帐号设置"}'><{t}>帐号设置<{/t}></a>&nbsp;]</div>
+            
+            <div class='span-auto'>[&nbsp;<a href='index.php?ctl=passport&act=logout' target='_top'><{t}>退出<{/t}></a>&nbsp;]</div>
+            
+            <div class='span-auto'><a href='index.php?ctl=dashboard&act=index'><{t}>桌面<{/t}></a></div>
+            <div class='span-auto' id='authinfo'></div>
+            <div class='span-auto'><a href='index.php?ctl=system/about&act=index' dialog='{title:"关于"}'><{t}>关于<{/t}></a></div>
+            
+        </div>
+    </div>
+</div>
+
+<!-- 侧边栏 -->
+<div id="sidecontent"></div>
+<div id="leftToggler" class="toggle-bar" title="开启或关闭侧边栏"><div class="left-toggler">&nbsp;</div></div>
+<div id="workground">
+    <div id="headBar" class='head_content'></div>
+    <div id="main" class='main_content'></div>
+    <div id="footBar" class='foot_content'>&nbsp;</div>
+</div>
+    
+</div>
+
+<div id="shopkits-pannel" class="close">
+    <div class="ctlTools">&nbsp;</div>
+</div>
+
+<!--begin LoadMask-->
+<div id='loadMask' class='loading' style='z-index:65535;display:block;'>
+    <span class='loading_msg'>正在加载...</span>
+</div>
+<!--END loadMask-->   
+        
+<!--JAVASCRIPTS SRC-->     
+<{if defined('DEBUG_JS') && DEBUG_JS}>
+<script>DEBUG_JS=true;</script>
+<!--src tools-->
+<script type="text/javascript" src="js_src/moo.js"></script>
+<script type="text/javascript" src="js_src/moomore.js"></script>
+<script type="text/javascript" src="js_src/mooadapter.js"></script>
+<script type="text/javascript" src="js_src/jstools.js"></script>
+
+<!--src component-->
+<script type="text/javascript" src="js_src/coms/dropmenu.js"></script>
+<script type="text/javascript" src="js_src/coms/messagebox.js"></script>
+<script type="text/javascript" src="js_src/coms/colorpicker.js"></script>
+<script type="text/javascript" src="js_src/coms/datapicker.js"></script>
+<script type="text/javascript" src="js_src/coms/validator.js"></script>
+<script type="text/javascript" src="js_src/coms/tagopt.js"></script>
+<script type="text/javascript" src="js_src/coms/dialog.js"></script>
+<script type="text/javascript" src="js_src/coms/areaselect.js"></script>
+<script type="text/javascript" src="js_src/coms/uploader.js"></script>
+<script type="text/javascript" src="js_src/coms/treelist.js"></script>
+
+<!--src admin-->
+<script type="text/javascript" src="js_src/coms/historymanager.js"></script>
+<script type="text/javascript" src="js_src/coms/ajaks.js"></script>
+<script type="text/javascript" src="js_src/coms/finder.js"></script>
+<script type="text/javascript" src="js_src/coms/editor.js"></script>
+<script type="text/javascript" src="js_src/coms/editor_style_1.js"></script>
+<script type="text/javascript" src="js_src/coms/init.js"></script>
+<{elseif defined('GZIP_JS') && GZIP_JS }>
+<script type="text/javascript" src="js/package/tools.jgz"></script>
+<script type="text/javascript" src="js/package/component.jgz"></script>
+<script type="text/javascript" src="js/package/admin.jgz"></script>
+<{else}>
+<script type="text/javascript" src="js/package/tools.js"></script>
+<script type="text/javascript" src="js/package/component.js"></script>
+<script type="text/javascript" src="js/package/admin.js"></script>
+<{/if}>
+<!--JAVASCRIPTS SRC END--> 
+
+<script type="text/javascript" src="js/fixie6.js"></script>
+
+<iframe name="download" style="display:none" src='about:blank'></iframe>
+
+<div id='elTempBox' style='display:none'></div>
+
+<div id='tabernacle'></div>
+
+<div id="dialogProtoType" style='display:none'>
+    <div class="dialog-box">
+        <div class="dialog-head">
+            <div class="dialog-title"></div>
+            <{img src='images/bundle/close_btn.gif' class="dialog-btn-close" }>
+        </div>
+        <div class="dialog-content-head"></div>
+        <div class="dialog-content-body" container='true'><{t}>正在加载...<{/t}></div>
+        <div class="dialog-content-foot"></div>
+        <img class="dialog-btn-resize" src='images/resize-btn.gif'/>
+    </div>
+</div>
+
+<div id="frameDialogProtoType" style='display:none'>
+    <div class="dialog-box">
+        <div class="dialog-head">
+            <div class="dialog-title"></div>
+            <{img src='images/bundle/close_btn.gif' class="dialog-btn-close" }>
+        </div>
+        <div class="dialog-content-head"></div>
+        <iframe class="dialog-content-body dialog-frame-body" container='true' frameborder="0" src='about:blank'></iframe>
+        <div class="dialog-content-foot"></div>
+        <img class="dialog-btn-resize" src='images/resize-btn.gif'/>
+    </div>
+</div>
+
+ 
+<script>
+
+/*向导弹出*/
+<{if $guide==''||$guide=='false'}>
+    window.addEvent('load',function(){
+        $E('#header .user_guide').store('checked',false).fireEvent('click');
+    });
+<{else}>
+    $E('#header .user_guide').store('checked',true);
+<{/if}>
+
+window.addEvent('load',function(){
+    new Request.JSON({
+        url: 'index.php?ctl=default&act=getAppChange', 
+        onComplete: function(response){
+            if(response.update_count > 0){
+                if ($('app-num-header')) {
+                    $('app-num-header').set('html', response.update_count);
+                } else {
+                    new Element('span', {html: '('+response.update_count+')', id:'app-num-update', title:'应用有更新'}).inject($('btn-appstore'));
+                };
+            }
+            if(response.status == 'succ' && !Cookie.read('newTip:tb')){
+                /*cookie write in appmgr/index*/
+                var newTip = new Element('div', {
+                    'class': 'tip-new',
+                    'html': '新功能',
+                    'title': '新功能：整合淘宝功能使用向导'
+                }).addEvent('click', function(e){
+                    new Dialog('index.php?ctl=default&act=shownewtools', {width:690, height:410, title:'新功能使用向导'});	
+                }).inject($E('#header .blankbutton'));
+            }
+        }
+    }).send();
+
+     // F5 页面刷新 js 截获
+    if( !window.ie ) {
+         window.addEvent('keydown',function(e){
+            if(e.code==116 && !e.control){ // 116 == F5
+                e.stop();
+                var url = historyManager.getHash();
+                W.page('index.php?'+(url?url:'ctl=dashboard&act=index'));
+            }
+        });
+    }
+
+    /*顶部滚动提示*/        
+    var getEvents=function(){return $('msgStorage').retrieve('events');};
+
+    var synMsgRemoete = new Request({
+        onSuccess:function(re){
+            (function(){
+                synMsgRemoete.post("index.php?ctl=default&act=status",{
+                    events:getEvents()
+                });
+            }).delay(60000);
+
+            var msgStorage=$('msgStorage').store('events',{finder_colset:{}}).set('html',re);
+
+            var msgRunner=$E('#msgRunner .runner').empty().scrollTo(0,0);
+            $clear(msgRunner.retrieve('timer'));
+            var els=msgStorage.getElements('li');
+            if(!els||!els.length){
+                return msgRunner.setStyle('visibility','hidden');
+            }else{
+                msgRunner.setStyle('visibility','visible');
+            }
+            
+            els.each(function(el){
+                new Element('span').set('text',el.get('text')).inject(msgRunner);
+            });
+            
+            var runnerSpans=msgRunner.getElements('span');
+            if ( runnerSpans && runnerSpans.length>0 ) {
+                runnerSpans.addEvents({
+                    'mouseenter':function(){
+                        this.getParent().store('stopScroll',true);
+                    },
+                    'mouseleave':function(){
+                        this.getParent().store('stopScroll',false);
+                    }
+                });
+            }
+
+            try{
+                if( !runnerSpans || runnerSpans.length<2)return;
+                var msgRunnerFxScroll= new Fx.Scroll(msgRunner);
+                msgRunner.store('timer',(function(){
+                    if(!this.element.retrieve('stopScroll')){
+                        this.start(0,this.element.getScrollTop()+this.element.getFirst().offsetHeight);
+                        if(this.element.getScrollSize().y<=(this.element.getScrollTop()+this.element.getSize().y)){
+                            this.stop();
+                            this.set(0,0);
+                        }
+                    }
+                }).periodical(2500, msgRunnerFxScroll));
+            }catch(e){}
+        },
+        onCancel:function(){
+            synMsgRemoete.post("index.php?ctl=default&act=status",{
+                events:getEvents()
+            });
+        },
+        onFailure:function(){
+            (function(){
+                synMsgRemoete.post("index.php?ctl=default&act=status",{
+                    events:getEvents()
+                });
+            }).delay(90000);
+        }
+    });
+
+   synMsgRemoete.post("index.php?ctl=default&act=status");
+});
+
+// 遮罩层
+var MODALPANEL=(function(){
+  var mp=$pick($('MODALPANEL'),new Element('div',{'id':'MODALPANEL'}).inject(document.body)).setStyle('display','none');
+    mp.setStyles({
+        'position':'absolute',
+        'background':'#333333',
+        'width':'100%',
+        'height':window.getScrollSize().y,
+        'top':0,
+        'left':0,
+        'zIndex':65500,
+        'opacity':.4
+    });
+    mp.addEvent('onshow',function(el){
+        el.setStyles({
+            'width':'100%',
+            'height':window.getScrollSize().y
+        });
+    });
+    return $(mp);
+})();
+
+window.addEvent('resize',function(){
+    MODALPANEL.setStyles({
+        'width':'100%',
+        'height':window.getScrollSize().y
+    });
+});
+
+</script>
+
+</body>
+</html>
+

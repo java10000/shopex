@@ -1,0 +1,30 @@
+<div class="finder">
+  <div class="action-bar"><a class="sysiconBtn addorder" href="index.php?ctl=trading/delivery&act=showNewCorp"><{t}>添加物流公司<{/t}></a></div>
+</div>
+
+
+<table border="0" cellpadding="0" cellspacing="0" class="gridlist">
+<col class="Colsn"></col>
+<col></col>
+<col></col>
+<col class="Coloption-1b"></col>
+<thead>
+  <tr>
+        <th><{t}>序号<{/t}></th>
+    <th><{t}>物流公司<{/t}></th>  
+    <th><{t}>物流公司类型<{/t}></th>
+    <th><{t}>删除<{/t}></td>
+  </tr>
+  </thead>
+<tbody>
+<{foreach from=$items key=key item=item name="item"}>
+   <tr>
+    <td><{$key+1}></td>
+  <td><a href="index.php?ctl=trading/delivery&act=detailDlCorp&p[0]=<{$item.corp_id}>"><{$item.name}></a></td>
+  <td><{$item.type}></td>
+  <td><a class="sysiconBtnNoIcon" href="index.php?ctl=trading/delivery&act=delCorp&p[0]=<{$item.corp_id}>"><{t}>删除<{/t}></a></td>
+</tr>
+<{/foreach}></tbody>
+</table><div class="footer">
+  <div class="tf"></div>
+</div>

@@ -1,0 +1,16 @@
+<form id='SelectPromotionRuleForm' method='post' action='index.php?ctl=sale/coupon&act=doSelectPromotionRule' class="tableform">
+  <table border="0" cellspacing="0" cellpadding="0" >
+    <{foreach key=key from=$scheme.list item=item key=key}>
+    <tr>      
+      <th style="width:10px;"><input type='radio' id="pmt_schema_<{$key}>" name='pmts_id' value='<{$key}>' <{if $key==$scheme.pmts_id}>checked='checked'<{/if}>></th>
+      <td><label for="pmt_schema_<{$key}>"><{$item.name}></label></td>
+    </tr>
+    <{/foreach}>
+  </table>
+
+  <div class="table-action">
+    <{button label="上一步" type="button" href="index.php?ctl=sale/coupon&act=couponInfo" }>
+    <{button type="submit"  label="下一步"}>&nbsp;&nbsp;
+    <{button label="取消" type="button" href="index.php?ctl=sale/coupon&act=index" }>
+</div>
+</form>

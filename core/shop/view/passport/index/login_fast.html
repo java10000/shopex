@@ -1,0 +1,73 @@
+<form method="post" action='<{link ctl="passport" act="verify"}>' class='mini-loginform' id='mini-loginform'>
+<input type='hidden' name='from_minipassport' value=1 />
+  <div class="RegisterWrap">
+  <iframe id="iframemask" style="position:absolute;top:0;left:0;" frameborder="0" ></iframe>
+      <div class="form" style="display:block; position:relative">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+         <tr>
+            <td colspan=2>
+              <h4><{t}>已注册用户，请登录<{/t}></h4>
+              <i>{login_message}</i>
+            </td>
+            <td class='row-span' rowspan='<{if $valideCode}>5<{else}>4<{/if}>'>
+               <div class='span-auto' style='width:160px'>&nbsp;</div><div class='span-auto close' style='width:25px'>X</div>
+               <div class='clear'></div><br /><br /><br />
+               没有账号？现在<a href='<{link ctl="passport" act="signup"}>' class='lnk'>注册</a></div>
+            </td>
+         </tr>
+          <tr>
+            <th><i>*</i><{t}>用户名：<{/t}></th>
+            <td><{input name="login" class="inputstyle"  required="true" id="in_login" tabindex="1" value=$loginName}><a style="margin-left:6px; " href="<{link ctl='passport' act='signup'}>"><{t}>立即注册<{/t}></a></td>
+          </tr>
+          <tr>
+            <th><i>*</i><{t}>密码：<{/t}></th>
+            <td><{input name="passwd" class="inputstyle" type="password" required="true" id="in_passwd" tabindex="2"}><a style="margin-left:6px;" href="<{link ctl='passport' act='lost'}>"><{t}>忘记密码？<{/t}></a></td>
+          </tr>
+          <{if $valideCode}>
+          <tr>
+            <th><i>*</i><{t}>验证码：<{/t}></th>
+            <td><{input size="8" class="inputstyle"  type="digits" required="true" name="loginverifycode" id="iptlogin"  tabindex="3"}>
+               <span class='verifyCode' style='display:none;'><img src="#" border="1" codesrc='<{link ctl="passport" act="verifyCode" arg0="l"}>'/><a href="javascript:void(0)"><{t}>&nbsp;看不清楚?换个图片<{/t}></a>
+               </span>
+            </td>
+          </tr>
+          <{/if}>
+          <tr>
+            <th></th>
+            <td><input class="actbtn btn-login" type="submit" value="登录" tabindex="4" />
+            	<div class="app-login-wrapper"><{foreach from=$mini_login_content item=con}><div class="app-login-item"><{$con}></div><{/foreach}></div>
+              </td>
+          </tr>
+        </table>
+     </div>
+     
+  </div>
+</form>
+<{if $valideCode}>
+<script>
+
+window.addEvent('domready',function() {
+$('iframemask').width= $('mini-loginform').getCoordinates().width;
+$('iframemask').height= $('mini-loginform').getCoordinates().height;
+
+});
+
+   void function(formclz){
+         var vcodeBox = $E('.'+formclz+' .verifyCode');
+         var vcodeImg  =vcodeBox.getElement('img');
+         var refreshVcodeBtn  = vcodeBox.getElement('a').addEvent('click',function(e){
+              e.stop();
+              vcodeImg.src = vcodeImg.get('codesrc')+'?'+$time();
+         });
+         $$('.'+formclz+' input').addEvent('focus',function(){
+             if (this.form.retrieve('showvcode',false))return;
+             vcodeBox.show();
+             refreshVcodeBtn.fireEvent('click',{stop:$empty});
+             this.form.store('showvcode',true);
+         });
+   
+   }('mini-loginform');
+</script>
+<{/if}>
+
+

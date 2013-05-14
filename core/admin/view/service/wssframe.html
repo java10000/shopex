@@ -1,0 +1,19 @@
+<div class="division mainHead">
+<font id='tjfxloading' color='green'><{t}>正在加载...<{/t}></font>
+<{t}>访问统计分析:<{/t}><span><span id='tjfxDate'></span>,<a href="<{$url}>" target='_blank' class='lnk'><{t}>在新窗口打开统计分析<{/t}></a></span>
+<script>$('tjfxDate').setText(new Date())</script>
+</div>
+<div class="division" style='visibility:hidden;' id='afrmPanel'>
+<iframe id='afrm' frameborder="0" src='<{$url}>'></iframe>
+</div>
+<script>
+
+ $('afrm').addEvent('load',function(){
+ 		if(!$('afrmPanel'))return;		
+		$('afrmPanel').setStyle('visibility','visible');
+	
+        if($('tjfxloading'))$('tjfxloading').remove();
+        $('afrm').setStyles({'width':'100%','height':mainHeight});
+     });
+     closeSide();
+</script>

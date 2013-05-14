@@ -1,0 +1,139 @@
+<form method="post" action="index.php?ctl=goods/category&act=doAdd" id='add-category-form'>
+<div class="tableform">
+    <div class="division">
+      <table cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <th><{t}>分类名称:<{/t}>
+            <input type="hidden" value="<{$cat.cat_id}>" name="cat[cat_id]" /></th>
+          <td><input type="text" value="<{$cat.cat_name|escape:'html'}>" name="cat[cat_name]" vtype='required' class='x-input'/>
+            <{$cat_name}></td>
+        </tr>
+        <tr>
+          <th><{t}>上级分类:<{/t}></th>
+          <td><{input type="select" name="cat[parent_id]" style="font-size:12px;" required='1' value=$cat.parent_id rows=$catList valueColumn="cat_id" labelColumn="cat_name"}>
+            <span class="notice-inline"><{t}>顶级分类请选择“无”<{/t}></span></td>
+        </tr>
+        <{if $gtype.status > 0}>
+        <tr>
+          <th><{t}>商品类型:<{/t}></th>
+          <td><select name="cat[type_id]">
+              <{foreach from=$gtypes item=type}> <option value="<{$type.type_id}>" <{if $type.type_id == $cat.type_id}>selected="selected"<{/if}>><{$type.name}>
+              </option>
+              <{/foreach}>
+            </select></td>
+        </tr>
+        <{else}>
+        <input type="hidden" name="cat[type_id]" value="<{$cat.type_id}>">
+        <{/if}>
+
+		<tr>
+          <th><{t}>分类模板:<{/t}></th>
+          <td><{template_filter type="gallery" name="goodscat_template" id=$cat.cat_id source_type="cat"}>
+          <span class="notice-inline"><{t}>指前台该商品分类列表页的模版样式，可进入模版管理进行编辑<{/t}></span></td>
+        </tr>
+		<tr>
+          <th><{t}>商品详细页模板:<{/t}></th>
+          <td><{template_filter type="product" name="product_template" id=$cat.cat_id source_type="cat"}>
+          <span class="notice-inline"><{t}>顾客访问该分类下的商品时，在商品详细页所看到的模版样式<{/t}></span></td>
+        </tr>
+        <tr>
+          <th><{t}>排序:<{/t}></th>
+          <td><input style="width:50px;" vtype="unsigned" value="<{$cat.p_order}>" name="cat[p_order]" class="_x_ipt"/>
+            <span class="notice-inline"><{t}>数字越小越靠前<{/t}></span></td>
+        </tr>
+
+      </table>
+    </div>
+
+
+
+
+
+    <div class="division">
+      <table cellpadding="0" cellspacing="0" border="0">
+	  <tr>
+          <th><{t}>TITLE<br>
+            (页面标题)<{/t}></th>
+          <td><input type="text" name="cat[title]" style="width:360px" maxlength="255" value="<{$cat.addon.meta.title}>"></td>
+        </tr>
+
+          <tr>
+          <th><{t}>META_KEYWORDS<br>
+            (页面关键词)<{/t}></th>
+          <td><input type="text" name="cat[keywords]" style="width:360px" maxlength="255" value="<{$cat.addon.meta.keywords}>"></td>
+        </tr>
+        <tr>
+          <th><{t}>META_DESCRIPTION<br>
+            (页面描述)<{/t}></th>
+          <td><textarea name="cat[description]" rows=4 style="width:360px" cols=35 maxlength=255><{$cat.addon.meta.description}></textarea></td>
+        </tr>
+      </table>
+    </div>
+
+</div>
+
+
+
+
+<div class="table-action">
+	<{button label="保存" type="submit" }>
+    <{button label="保存并继续添加" type="button" id='easy-save-category'}>
+	<{button label="取消" href="index.php?ctl=goods/category&act=index" }>
+</div>
+
+<script>
+           $E('#add-category-form input[name^=cat[cat_name]').addEvent('keydown',function(e){
+
+               if(e.key=='enter'){
+
+
+                 e.stop();
+
+                   return $('easy-save-category').fireEvent('click',{stop:$empty});
+               }
+
+           });
+
+           $('add-category-form').store('target',{onComplete:function(){
+
+                  if(gms=$('g_menu_sec_2')){
+                      gms.empty();
+                      gms.retrieve('update',$empty)();
+                  }
+
+
+           }});
+
+
+           $('easy-save-category').addEvent('click',function(e){
+                    e.stop();
+                    var _form=this.form;
+
+                    var cname=$E('#add-category-form input[name^=cat[cat_name]');
+                    var value=cname.get('value').clean().trim();
+
+                    //var cid=$E('#add-category-form input[name^=cat[cat_id]');
+                    //if(cid) cid.remove();
+                    
+                    if(!value)return MessageBox.error('分类名称为不能为空.');
+                    if(this.retrieve('tempname',[]).contains(value)){
+                       if(!confirm('您刚才已经添加了分类:"'+value+'"\n要重复添加么?'))return;
+                    }
+
+                    this.retrieve('tempname',[]).include(value);
+
+                    if(!$(_form).get('target')){
+
+                      var _target={
+                         update:'messagebox'
+                      }
+                       _form.set('target',JSON.encode(_target));
+                    }
+                    _form.fireEvent('submit',e).erase('target');
+
+                    var cid=$E('#add-category-form input[name^=cat[cat_id]');
+                    if(cid) cid.remove();
+
+           });
+        </script>
+</form>

@@ -1,0 +1,33 @@
+
+<div class="FeedBackInfo">
+<div class="success clearfix">
+  <div class="span-1 pic"></div>
+  <div class="span-auto ">
+    <h1><{$msg}></h1>
+    <{if $error_info}> 
+        <ol><{foreach from=$error_info item=item}>
+    <li>[<{$item[0]}>]<{$item[1]}>
+    <{if $env.const.debug_code}>
+    (<{$item[2]}>:<{$item[3]}>)
+    <{/if}>    </li>
+    <{/foreach}>
+    </ol>
+       <{/if}>
+
+         <{if $wait>0}>
+         
+        <a class="jumpurl" href="<{if $jumpto=='back'}>javascript:history.back()<{else}><{$jumpto}><{/if}>"><{$wait}><{t}>秒后系统会自动跳转，也可点击本处直接跳转<{/t}></a>
+        <{/if}> 
+        </div>
+</div>
+</div>
+
+
+
+
+<script>
+function jumpurl(){
+  <{if $jumpto=='back'}>history.back()<{else}>location='<{$jumpto}>'<{/if}>;
+}
+setTimeout('jumpurl()',<{$wait*1000}>);
+</script>

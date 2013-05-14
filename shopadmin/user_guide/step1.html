@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>step1</title>
+<link href="images/default.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+<table width="700" class="table1" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr>
+    <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td width="400" height="90"><img src="images/shopex_logo1.jpg"  /></td>
+        <td>&nbsp;</td>
+      </tr>
+    </table>
+    </td>
+  <tr>
+    <td class="bg1" ><div class="guide_text" style="font-size:14px;">
+    
+      <p style="padding-top:30px;">欢迎使用Shopex网店系统使用向导!</p>
+      <p>通过使用向导，我们将帮助您快速访问开设网店需要进行的多项操作设置，大大缩短您的开店时间。</p>
+      <p>快速完成网店设置后，建议您了解一下ShopEx为您提供的更多高级功能，这些将帮助您有效提升网店的前台表现、订单处理、访问量以及顾客购买率。 <br />
+      </p><br />
+      <p><strong>您还可以通过以下种方式来获得帮助：</strong></p>
+      <p><img src="images/tips_info.gif" />&nbsp;&nbsp;小 提 示： 鼠标移上之后您可以看到对主题的注释性说明信息</p>
+      <p><img src="images/tips_help_mid.png" />&nbsp;&nbsp;帮助链接： 鼠标点击后可以打开关于该主题的详细使用帮助</p><br />
+      <p><strong>关闭后找不到向导？到右上角看看 ...</strong></p>
+      <p style="display:none"><a href="../demo_data/install_industry_data.php"><img src="images/view_industry.gif" alt="想要体验其他行业的商品数据？" width="382" height="56" /></a></p>
+    </div></td>
+  </tr>
+  <tr>
+    <td  ><div class="guide_button">
+     <table width="100%" border="0" cellspacing="0" cellpadding="0">
+       <tr>
+         <td><label style='cursor:pointer'>
+            <input type='checkbox' id='pop_ug'/>下次不再显示此向导
+          </label></td>
+         <td align="right"><a href="step2.html"><img src="images/start.gif"  /></a></td>
+       </tr>
+     </table>
+     </div></td>
+  </tr>
+</table>
+<script>
+
+    var popCheck=document.getElementById('pop_ug');
+	if(parent.$E){
+    popCheck.checked=parent.$E('#header .user_guide').retrieve('checked');}
+    popCheck.onclick=function(){
+         new parent.XHR({method:'post',data:'check='+this.checked}).send('index.php?ctl=system/setting&act=guide_status');
+	}
+
+</script>
+</body>
+</html>

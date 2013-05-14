@@ -1,0 +1,54 @@
+<div class="tableform" style=" padding:3px; margin:0;">
+<div onclick="addGrp()" class="sysiconBtn addorder"><{t}>添加一个参数组<{/t}></div>
+<div id="params_box" style="height:400px;overflow:auto">
+<{foreach from=$gtype.a_params.group key=key item=groupitems}>
+<div class="tableform" style=" border:1px solid #C7DBE5; margin:0 0 5px 0" grp="<{$key}>">
+  参数组名称:<{input name="params[group][{$key}]" value="{$groupitems}" vtype="params2"}><span onclick="addGrpItem(this)" class="sysiconBtn addorde"><{t}>为这个参数组添加一个参数<{/t}></span><span class="sysiconBtn delete" onclick="delGrpItem(this)"><{t}>删除此参数组<{/t}></span>
+  <div class="division"><ul>
+<{foreach from=$gtype.a_params.name.$key key=keyx item=option}>
+    <li><{t}>参数名：<{/t}><{input name="params[name][{$key}][{$keyx}]" value="{$option}"  size="15" vtype="params1"}><span<{if !$gtype.type_id}> style="display:none"<{/if}>><{t}>别名：<{/t}><input name="params[alias][<{$key}>][<{$keyx}>]" value="<{$gtype.a_params.alias.$key.$keyx}>"/><span class="notice-inline"><{t}>用“|”分隔：<{/t}></span></span><span onclick="delGrpItem(this)"><{img title="删除" alt="删除"  src="images/bundle/delecate.gif"}></span></li>
+<{/foreach}>
+  </ul></div> 
+</div>
+<{/foreach}>
+</div>
+</div>
+
+<div id="grptpl" style="display:none;"><div class="tableform" style=" border:1px solid #C7DBE5; margin:0 0 5px 0">
+  参数组名称:<{input name="params[group][0]" vtype="params2" }><span onclick="addGrpItem(this)" class="sysiconBtn addorde"><{t}>为这个参数组添加一个参数<{/t}></span><span class="sysiconBtn delete" onclick="delGrpItem(this)"><{t}>删除此参数组<{/t}></span>
+  <div class="division">
+  <ul>
+    <li><{t}>参数名：<{/t}><{input name="params[name][0][]" size="15" vtype="params1"}><span<{if !$gtype.type_id}> style="display:none"<{/if}>><{t}>别名：<{/t}><input name="params[alias][0][]" /><span class="notice-inline"><{t}>用“|”分隔：<{/t}></span></span><span onclick="delGrpItem(this)"><{img src="images/bundle/delecate.gif" border="0" title="删除"}></span></li>
+  </ul></div>
+</div>
+</div>
+<script language="javascript">
+var runTime = {};
+runTime.grpNum = <{$key+1}>;
+function addGrp(){
+  var editBox = $('params_box');
+  runTime.grpNum = runTime.grpNum || 0;
+  $('grptpl').firstChild.setAttribute('grp', runTime.grpNum);
+  var inputs = $('grptpl').getElementsByTagName('input');
+  inputs[0].setAttribute('name','params[group]['+runTime.grpNum+']');
+  inputs[1].setAttribute('name', 'params[name]['+runTime.grpNum+'][]');
+  inputs[2].setAttribute('name', 'params[alias]['+runTime.grpNum+'][]');
+  var clone = $('grptpl').firstChild.cloneNode(true);
+  editBox.appendChild(clone);
+  runTime.grpNum++;
+
+  inputs[0].setAttribute('name','params[group][0]');
+  inputs[1].setAttribute('name', 'params[name][0][]');
+  inputs[2].setAttribute('name', 'params[alias][0][]');
+}
+function addGrpItem(el){
+  var grp = el.parentNode;
+  var grpNum = grp.getAttribute('grp');
+  var item = document.createElement('li');
+  item.innerHTML = '参数名：<{input name="params[name]['+grpNum+'][]" size="15" vtype="params1"}><span<{if !$gtype.type_id}> style="display:none"<{/if}>><{t}>别名：<{/t}><input name="params[alias]['+grpNum+'][]" /><span class="notice-inline"><{t}>用“|”分隔：<{/t}></span></span><span onclick="delGrpItem(this)"><{img title="删除" alt="删除" src="images/bundle/delecate.gif"}></span>';
+  grp.getElementsByTagName('ul')[0].appendChild(item);
+}
+function delGrpItem(el){
+  el.parentNode.parentNode.removeChild(el.parentNode);
+}
+</script>

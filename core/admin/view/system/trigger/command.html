@@ -1,0 +1,2 @@
+<{img src="images/bundle/btn_edit.gif"}>
+<a onclick="new Dialog('index.php?ctl=<{$env.get.ctl}>&act=edit&_num='+Math.random()+'&p[0]=<{$item.trigger_id}>',{modal:1,height:500,width:550,title:'修改网店机器人', onClose:function(){finderGroup['<{$_finder._name}>'].refresh();}})" style="cursor:pointer;"><{t}>编辑<{/t}></a>

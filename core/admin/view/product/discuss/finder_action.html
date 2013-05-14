@@ -1,0 +1,11 @@
+<{button type="button" wrapimg="true" class="btn-xl-large" label="置顶/解除置顶" icon="finder_movetop.gif" submit="index.php?ctl=goods/discuss&act=setIndexOrder" target="refresh"}>
+<{if count($orderby)>0}>
+<{button type="dropmenu" dropmenu="oreder-by" label="操作"}>
+<div id="order-by" class="x-drop-menu">
+<ul>
+      <{foreach from=$orderby item=item}>
+      <li><{$item.label}></li>
+      <{/foreach}>
+</ul>
+</div>
+<{/if}> 

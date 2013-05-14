@@ -1,0 +1,132 @@
+<div  id="flash" class="tableform">
+<div class="division widgetconfig">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <th width="20%"><{t}>Flash宽度：<{/t}></th>
+    <td width="30%" ><{input name="width" style="width:50px" value=$setting.width|default:'100' required="true" type="digits"}></td>
+    <th width="20%" >Flash高度：</th>
+    <td width="30%" ><{input name="height" style="width:50px" value=$setting.height|default:'100' required="true" type="digits"}></td>
+  </tr>
+
+  <tr>
+      <th width="20%" >过渡颜色：</th>
+    <td width="30%" ><{input type="color" name="color" value=$setting.color|default:'default' }></td>
+    <th width="20%" >过渡时间：</th>
+    <td width="30%" ><{input name="duration" style="width:50px" value=$setting.duration|default:'2' required="true" type="digits"}>秒</td>
+  </tr>
+</table>
+</div>
+</div>
+
+<div class="tableform">
+<span class="sysiconBtn addorder" onclick="addFlash();">添加图片</span>
+
+  <div id="listArea" class="division">
+	<{if $setting.flash}>
+	
+    <{foreach from=$setting.flash item=data key=key}>
+	  <div id="flash_<{$data.i}>" class="flash">
+	  <table width="100%" cellpadding="0" cellspacing="0">
+	  <tr>
+		<th>图片地址：</th><td><input  style='width:100px;' name=flash[<{$data.i}>][pic] value="<{$data.pic}>" id=flash[<{$data.i}>][pic]><input type=button value=上传 onClick=addPic($('flash[<{$data.i}>][pic]'))></td>
+		<th>链接地址：</th><td><input name=flash[<{$data.i}>][link] value="<{$data.link|default:$data.url}>" /> 
+		<{img src='images/bundle/delecate.gif' onclick="delLink(this)" style='cursor:pointer;' }>
+		</td>
+		</tr>
+	  </table>
+		<input type=hidden name=flash[<{$data.i}>][i] value="<{$data.i}>">
+	  </div>
+	  <{/foreach}>
+	  <{else}>
+	  <div id="flash_<{$data.i}>">
+
+  <table width="100%" cellpadding="0" cellspacing="0">
+  
+  <tr id="flash_0" class="flash">
+    <th width="2%">图片地址：</th>
+    <td><input type="text" name="flash[0][pic]" style='width:100px;' id="flash[0][pic]" value="<{$setting.img.0}>"><input type=button value=上传 onClick=addPic($('flash[0][pic]'))></td>
+    <th>链接地址：</th>
+    <td><input type="text" name="flash[0][url]" value="<{$setting.url.0}>">
+	<{img src="images/bundle/delecate.gif" onclick="delLink(this);" style="cursor:pointer;" }></td>
+	<input type=hidden name=flash[0][i] value="0">
+  </tr>
+  <tr id="flash_1" class="flash">
+    <th width="2%">图片地址：</th>
+    <td><input type="text" name="flash[1][pic]" style='width:100px;' id="flash[1][pic]" value="<{$setting.img.1}>"><input type=button value=上传 onClick=addPic($('flash[1][pic]'))></td>
+    <th>链接地址：</th>
+    <td><input type="text" name="flash[1][url]" value="<{$setting.url.1}>">
+	<{img src="images/bundle/delecate.gif" onclick="delLink(this);" style="cursor:pointer;" }></td>
+	<input type=hidden name=flash[1][i] value="1">
+	
+  </tr>
+  <tr id="flash_2" class="flash">
+    <th width="2%">图片地址：</th>
+    <td><input type="text" id="flash[2][pic]" style='width:100px;' name="flash[2][pic]" value="<{$setting.img.2}>"><input type=button value=上传 onClick=addPic($('flash[2][pic]'))></td>
+    <th>链接地址：</th>
+    <td><input type="text" name="flash[2][url]" value="<{$setting.url.2}>">
+	<{img src="images/bundle/delecate.gif" onclick="delLink(this);" style="cursor:pointer;" }></td>
+	<input type=hidden name=flash[2][i] value="2">
+  </tr>
+  <tr id="flash_3" class="flash">
+    <th width="2%">图片地址：</th>
+    <td><input type="text" id="flash[3][pic]" style='width:100px;' name="flash[3][pic]" value="<{$setting.img.3}>"><input type=button value=上传 onClick=addPic($('flash[3][pic]'))></td>
+    <th>链接地址：</th>
+    <td><input type="text" name="flash[3][url]" value="<{$setting.url.3}>">
+	<{img src="images/bundle/delecate.gif" onclick="delLink(this);" style="cursor:pointer;" }></td>
+	<input type=hidden name=flash[3][i] value="3">
+  </tr>
+  <tr id="flash_4" class="flash">
+    <th width="2%">图片地址：</th>
+    <td><input type="text" id="flash[4][pic]" style='width:100px;' name="flash[4][pic]" value="<{$setting.img.4}>"><input type=button value=上传 onClick=addPic($('flash[4][pic]'))></td>
+    <th>链接地址：</th>
+    <td><input type="text"  name="flash[4][url]" value="<{$setting.url.4}>">
+	<{img src="images/bundle/delecate.gif" onclick="delLink(this);" style="cursor:pointer;" }></td>
+	<input type=hidden name=flash[4][i] value="4">
+  </tr>
+  <tr id="flash_5" class="flash">
+    <th width="2%">图片地址：</th>
+    <td><input type="text" id="flash[5][pic]" style='width:100px;' name="flash[5][pic]" value="<{$setting.img.5}>"><input type=button value=上传 onClick=addPic($('flash[5][pic]'))></td>
+    <th>链接地址：</th>
+    <td><input type="text" name="flash[5][url]" value="<{$setting.url.5}>">
+	<{img src="images/bundle/delecate.gif" onclick="delLink(this);" style="cursor:pointer;" }></td>
+	<input type=hidden name=flash[5][i] value="5">
+  </tr>
+  </table>
+  </div>
+      <{/if}>
+  </div>
+      
+</div>
+
+<script>
+function addFlash(){
+			  d=new Date();
+			  i=d.getTime();
+			  var content='\
+				<div id="flash_'+i+'" class="flash">\
+					<table width="100%" cellpadding="0" cellspacing="0">\
+					 <tr>\
+					  <th width="2%">图片地址：</th>\
+					  <td><input style="width:100px" name=flash['+i+'][pic] id=flash['+i+'][pic]><input type=button value=上传 onClick=addPic($(\'flash['+i+'][pic]\'))>\</td>\
+					  <th width="2%">链接地址：</th>\
+					  <td><input name=flash['+i+'][link]>\ <{img src="images/bundle/delecate.gif" onclick="delLink(this);" style="cursor:pointer;" }></td>\
+					 </tr>\
+				   <input type=hidden name=flash['+i+'][i] value="'+i+'">\
+				   <table>\
+				</div>\
+			  ';
+			  $E('#listArea').adopt(new Element('div').set('html',content).getFirst());
+}
+function addPic(target){
+			return new Dialog('index.php?ctl=editor&act=image&p[0]=0',{title:'插入<img>',onShow:function(){
+			var dialog=this;
+			this.dialog.store('callback',function(src){
+              target.value=src;
+              dialog.close();
+           });
+        }});
+}
+
+delLink=function(o){
+	$(o).getParent('.flash').remove();}
+</script>

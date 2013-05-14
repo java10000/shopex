@@ -1,0 +1,89 @@
+
+<div class="FeedBackInfo">
+
+<{if $payment.status=='succ'}>
+
+<div class="success clearfix">
+  <div class="span-1 pic"></div>
+  <div class="span-auto">
+    <{if $payment.type=='orderpay'}>
+    <h1>
+      <{t}>订单<{/t}>
+      <{$payment.order_id}><{t}>: 在线付款 <{/t}>
+      <{if $payment.money >0}><{$payment.money|cur:$payment.currency}><{/if}>
+      <{t}>成功。<{/t}>
+    </h1>
+
+    <p>
+      <{if $payment.paycost > 0}>
+        <{t}>支付网关收取<{/t}><{$payment.paycost|cur}><{t}>作为手续费。<{/t}>
+      <{/if}>
+    </p>
+
+    <p>
+      <a href="<{link ctl=order act=index arg0=$payment.order_id}>">
+        <{t}>按此查看订单详细情况<{/t}>
+      </a>
+    </p>
+
+    <{elseif $payment.type=='deposit'}>
+    <h1>
+      <{t}>帐户充值<{/t}><{$payment.money|cur}><{t}>成功。<{/t}>
+    </h1>
+    <p>
+      <{if $payment.paycost > 0}>
+        <{t}>支付网关收取<{/t}><{$payment.paycost|cur}><{t}>作为手续费。<{/t}>
+      <{/if}>
+    </p>
+    <{else}>
+    <h1>
+      <{t}>在线付款<{/t}>
+      <{if $payment.money >0}><{$payment.money|cur:$payment.currency}><{/if}><{t}>成功。<{/t}>
+    </h1>
+    <p>
+      <{if $payment.paycost > 0}>
+        <{t}>支付网关收取<{/t}><{$payment.paycost|cur}><{t}>作为手续费。<{/t}>
+      <{/if}>
+    </p>
+    <{/if}>
+
+    <p><div class="customMessages">{pay_succ}</div></p>
+
+  </div>
+</div>
+
+<{else}>
+
+<div class="error clearfix">
+  <div class="span-1 pic"></div>
+  <div class="span-auto ">
+    <{if $payment.status=='failed'}>
+      <h1><{t}>支付失败<{/t}></h1>
+      <p><{$payment.memo}><{t}>可能是账户余额不足。<{/t}></p>
+    <{elseif $payment.status=='cancel'}>
+      <h1><{t}>支付失败<{/t}></h1>
+      <{$payment.memo}>用户取消支付过程
+    <{elseif $payment.status=='error'}>
+      <h1><{t}>支付失败<{/t}></h1>
+      <{$payment.memo}>支付过程发生错误
+    <{elseif $payment.status=='progress'}>
+      <h1><{t}>支付成功<{/t}></h1>
+      <{$payment.memo}>已经收到付款，请等待发货。
+    <{elseif $payment.status=='invalid'}>
+      <h1><{t}>请稍候<{/t}></h1>
+      <{$payment.memo}>支付反馈信息发生错误，需要联系支付插件作者。
+    <{elseif $payment.status=='timeout'}>
+      <h1><{t}>支付失败<{/t}></h1>
+      <{$payment.memo}>支付过程超时。
+    <{elseif $payment.status=='ready'}>
+      <h1><{t}>请稍候<{/t}></h1>
+      <{$payment.memo}>支付过程尚未开始。
+    <{/if}>
+  </div>
+</div>
+
+<{/if}>
+
+</div>
+
+

@@ -1,0 +1,31 @@
+
+<div class="division">
+<table width="100%" border="0" cellpadding="0" cellspacing="0" class="gridlist">
+<col class="Colordernum"></col>
+<col span="3"></col>
+<col class="Colamount" align="left"></col>
+<col class="Coldate"></col>
+    <thead>
+      <tr>
+      <th><{t}>订单号<{/t}></th>
+      <th><{t}>订单状态<{/t}></th>
+      <th><{t}>支付状态<{/t}></th>
+      <th><{t}>发货状态<{/t}></th>
+      <th ><{t}>总金额<{/t}></th>      
+      <th><{t}>下单日期<{/t}></th>
+      </tr>
+    </thead>
+  <tbody>
+  <{foreach name=finderinform from=$items item=aList}>
+ <tr>
+    <td><a target="_blank" href="index.php?ctl=order/order&act=detail&p[0]=<{$aList.order_id}>"><{$aList.order_id}></a></td>
+    <td><{if $aList.status == 'active'}><{t}>活动订单<{/t}><{elseif $aList.status == 'dead'}><{t}>作废订单<{/t}><{elseif $aList.status == 'finish'}><{t}>已归档<{/t}><{/if}></td>
+    <td><{if $aList.pay_status == 0}><{t}>未支付<{/t}><{elseif $aList.pay_status == 1}><{t}>已支付<{/t}><{elseif $aList.pay_status == 2}><{t}>处理中<{/t}><{elseif $aList.pay_status == 3}><{t}>部分付款<{/t}><{elseif $aList.pay_status == 4}><{t}>部分退款<{/t}><{elseif $aList.pay_status == 5}><{t}>全额退款<{/t}><{/if}></td>
+    <td><{if $aList.ship_status == 0}><{t}>未发货<{/t}><{elseif $aList.ship_status == 1}><{t}>已发货<{/t}><{elseif $aList.ship_status == 2}><{t}>部分发货<{/t}><{elseif $aList.ship_status == 3}><{t}>部分退货<{/t}><{elseif $aList.ship_status == 4}><{t}>已退货<{/t}><{/if}></td>
+    <td class="Colamount"><{$aList.total_amount|cur}></td>
+    <td><{$aList.createtime|cdate:SDATE_STIME}></td>
+  </tr>
+  <{/foreach}>
+  </tbody>
+  </table>
+</div>

@@ -1,0 +1,21 @@
+<form id="goods-editor" name="form1" action="index.php?ctl=goods/product&act=toAdd" method="post" extra="goodsform">
+  <h2><{t}>基本信息<{/t}></h2>
+  <{include file="product/detail/basic.html"}>
+  <h2><{t}>配件<{/t}></h2>
+  <{include file="product/detail/adj.html"}>
+  <h3><{t}>详细介绍<{/t}></h3>
+  <{include file="product/detail/content.html"}>
+  <h3><{t}>参数<{/t}></h3>
+  <{include file="product/detail/spec.html"}>
+  <h3><{t}>缺货登记<{/t}></h3>
+  <{include file="product/detail/notify.html"}>
+  <h3><{t}>搜索优化<{/t}></h3>
+  <{include file="product/detail/adv.html"}>
+  <h3><{t}>相关商品<{/t}></h3>
+  <{input value=$glink.items params=$glink.params type="object:goods/products" name="linkid"}>
+  <input type="hidden" name="goods[cat_id]" value="<{$prototype.cat_id}>">
+  <input type="hidden" name="goods[type_id]" value="<{$prototype.type_id}>">
+  <{if $goods.goods_id}>
+  <input type="hidden" name="goods[goods_id]" value="<{$goods.goods_id}>">
+  <{/if}>  
+</form>

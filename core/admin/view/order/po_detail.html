@@ -1,0 +1,91 @@
+<input type="hidden" name="po_id" value="<{$po_id}>">
+<div class="clearfix">
+  <div style="padding: 2px; float: left;" class="fontcolorBlue">
+    <span style="padding-right: 10px;">供应商：<b style="font-size: 14px;"><{$sItem.name}></b></span>
+	    采购单号(供应商订单号)：<{$po_id}>
+	    <span style="padding: 2px;" class="fontcolorBlue">采购单状态</span>：<b><{$poItem._po_status}></b></div>
+  <div style="float: right;">
+    <span class="sysiconBtn viewRefresh Refreshon but-refresh" style="display:none"><{t}>撤销操作<{/t}></span></div>
+</div>
+<style>
+.finderInform td,.finderInform th{overflow:hidden;}
+</style>
+<table width="100%" cellspacing="0" cellpadding="0" style="background-color: rgb(255, 255, 255);" class="finderInform">
+<colgroup class="span-3"/>
+<colgroup class="auto"/>
+<colgroup class="span-2"/>
+<colgroup class="span-2"/>
+<colgroup class="span-2 ColColorOrange"/>
+<colgroup class="span-2"/>
+<colgroup class="span-2 x-inquiry-model" style="display:none""/>
+<colgroup class="span-2 ColColorRed"/>
+<colgroup class="span-1 x-edit-model" style="display:none"/>
+  <thead>
+	<tr>
+      <th>货号</th>
+      <th>商品名称</th>
+      <th>本店销售价</th>
+      <th>进货价</th>
+      <th>购买量<{if $poItem._action_status.modify}> <span class="but-edit" style="cursor:pointer;font-color:blue;color:blue;"><{t}>修改<{/t}></span><{/if}></th>
+      <th>已下单数量</th>
+      <th class="x-inquiry-model" style="display:none">供应商库存</th>
+      <th>小计</th>
+      <th class="x-edit-model" style="display:none">删除</th>
+    </tr>
+  </thead>
+  <tbody>
+<{foreach from=$poItem.items item=poRow key=local_bn}>
+    <tr>
+      <td><{$poRow.dealer_bn}>
+		<input type="hidden" name="aItems[product_id][]" value="<{$poRow.product_id}>">
+        <input type="hidden" name="aItems[dealer_bn][]" value="<{$poRow.dealer_bn}>">
+        <input type="hidden" name="aItems[supplier_bn][]" value="<{$poRow.supplier_bn}>"></td>
+	  <td nowrap><a href="../index.php?ctl=product&act=index&p[0]=<{$poRow.goods_id}>" target="_blank"><{$poRow.name}></a></td>
+      <td>￥<{$poRow.price}></td>
+      <td>￥<{$poRow.po_price}>
+        <input type="hidden" name="aItems[price][]" value="<{$poRow.price}>">
+        <input type="hidden" name="aItems[po_price][]" value="<{$poRow.po_price}>">
+        </td>
+      <td><input type="text" name="aItems[quiry_num][]" class="itemrow" style="background-color: #ccc" readonly=readonly value="<{if $poRow.quiry_num===null}><{$poRow.nums}><{else}><{$poRow.quiry_num}><{/if}>" size="5"/></td>
+      <td><input type="hidden" name="aItems[nums][]" value="<{$poRow.nums}>">
+        <{$poRow.nums}></td>
+      <td class="x-inquiry-model" style="display:none;<{if $poRow.stock_status===0}>background-color:#CCEEDD;<{elseif $poRow.stock_status===1}>background-color:#FFD850;<{elseif $poRow.stock_status===2}>background-color:#FFA0A0;<{elseif $poRow.stock_status===3}>background-color:#E8E8E8;color:#999999;<{/if}>">
+
+        <{if $poRow.status == 'deleted'}>货品删除 
+        <{elseif $poRow.status == 'shelves'}>货品下架
+        <{else}>
+        <{if $poRow.stock>0}><{$poRow.stock}><{elseif $poRow.stock===0}>无货<{elseif $poRow.stock===-1}>充足<{else}>请先询价<{/if}>
+        <{/if}>
+
+	  
+      </td>
+      <td>￥<{$poRow.amount}></td>
+      <td class="x-edit-model" style="white-space: nowrap;display:none"><span class="sysiconBtnNoIcon" onClick="delgoods(this)">删除</span></td>
+	</tr>
+<{/foreach}>
+    <tr>
+      <td style="text-align: right;" colspan="9"><span class="font14px fontbold">总计：<{$poItem.total_amount|cur}></span> <span class="font12px fontcolorGray">(含运费)</span></td>
+    </tr>
+<{if $poItem.payed > 0}>
+    <tr>
+      <td style="text-align: right;" colspan="9"><span class="font14px fontbold">已付金额：<{$poItem.payed|cur}></span></td>
+    </tr>
+<{/if}>
+    <tr>
+      <td colspan="9">
+        <table cellspacing="0" cellpadding="0" border="0" align="center" style="border: 0pt none ;" class="tableAction">
+          <tbody><tr>
+            <td><b class=""><input type="button"<{if !$poItem._action_status.inquiry}> disabled="disabled"<{/if}> name="butsubmit" value="询价" class="but-inquiry btn wd2"/></b></td>
+            <td><b class=""><input type="button"<{if !$poItem._action_status.create}> disabled="disabled"<{/if}> name="butsubmit" value="向供应商下单" class="but-makepo btn wd3"/></b></td>
+            <td><b class=""><input type="button"<{if !$poItem._action_status.pay}> disabled="disabled"<{/if}> name="butsubmit" value="付款" class="but-pay btn wd2"/></b></td>
+            <td><b class=""><input type="submit"<{if $poItem._action_status.pending =="disabled"}> disabled="disabled"<{/if}> name="butsubmit" value="<{if $poItem._action_status.pending=="cancelpending"}>取消暂停发货" butstatus="1"<{else}>暂停发货"<{/if}> class="but-stop btn wd3"/></b></td>
+            <td><b class=""><input type="submit" name="butsubmit" value="对账" class="but-checkpay btn wd2"<{if !$poItem._action_status.reconciliation}> style="display:none"<{/if}>/></b></td>
+            <td><b class=""><input type="submit" name="butsubmit" value="保存" class="but-save btn wd2" style="display:none"/></b></td>
+            </tr>
+        </tbody></table></td>
+    </tr>
+  </tbody>
+</table>
+<script>
+if($type(initEventPo) == 'function'){initEventPo();}
+</script>

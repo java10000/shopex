@@ -1,0 +1,9 @@
+  <div style=" margin:10px;">
+	<div class="notice">
+		<strong><{t}>注意：<{/t}></strong><{t}>扫描图片分辨率请调整为 96 dpi，图片格式 jpg<{/t}></div>
+	
+	<form enctype="multipart/form-data" action="index.php?ctl=order/delivery_printer&act=do_upload_bg" method="post">
+		<input type="file" name="background" style="height:25px;"/>
+		<input name="dly_printer_id" type="hidden" value="<{$dly_printer_id}>" />
+		<input type="submit" value="上传" style="height:25px;"/>
+</div>

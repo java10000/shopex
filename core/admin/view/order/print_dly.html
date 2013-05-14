@@ -1,0 +1,211 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title><{t}>快递单打印--<{/t}><{$orderInfo.ship_name}></title>
+
+<{if defined('DEBUG_CSS') && DEBUG_CSS}>
+<link rel="stylesheet" href="css/reset.css" type="text/css" media="screen, projection">
+<link rel="stylesheet" href="css/grid.css" type="text/css" media="screen, projection">
+<link rel="stylesheet" href="css/forms.css" type="text/css" media="screen, projection">
+<link rel="stylesheet" href="css/struct.css" type="text/css" media="screen, projection">
+<link rel="stylesheet" href="css/style.css" type="text/css" media="screen, projection">
+<link rel="stylesheet" href="css/typography.css" type="text/css" media="screen, projection">
+<link rel="stylesheet" href="css/print.css" type="text/css" media="print">
+<{elseif defined('GZIP_CSS') && GZIP_CSS }>
+<link rel="stylesheet" href="css/admin.zcss" type="text/css" media="screen, projection">
+<{else}>
+<link rel="stylesheet" href="css/admin.css" type="text/css" media="screen, projection">
+<{/if}>
+
+<{include file="common/header.meta.html"}>
+</head>
+
+<body>
+
+<div class="print-title"><span style="color:#d0d0d0">|</span>&nbsp;&nbsp;&nbsp;&nbsp;<Strong><{t}>快递单打印<{/t}></Strong>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#d0d0d0">|</span></div>
+
+
+<form id="dly_printer_form" action="index.php?ctl=order/delivery_printer&act=do_print" method="post">
+    
+<input type="hidden" name="order[order_id]" value="<{$orderInfo.order_id}>" />
+<input type="hidden" name="order[order_count]" value="<{$orderInfo.itemnum}>" />
+<input type="hidden" name="order[ship_time]" value="<{$orderInfo.ship_time}>" />
+
+<input type="hidden" name="order[order_price]" value="<{$orderInfo.total_amount|cur}>" />
+<input type="hidden" name="order[order_weight]" value="<{$orderInfo.weight}>" />
+<input type="hidden" name="order[member_id]" value="<{$orderInfo.member_id}>" />
+<input type="hidden" name="order[order_print_id]" value="<{$orderInfo.print_id}>" />
+
+<div class="tableform" id="x-order_tableform">
+    <table cellspacing="0" cellpadding="0" border="0" width="100%"><tbody><tr><td>
+       <h4><{t}>收货地址信息<{/t}></h4>
+       </td>
+    </tr>
+    </tbody></table>
+    <div class="division">
+      <table cellspacing="0" cellpadding="0" border="0" width="100%" >
+      <tbody><tr>
+          <th><{t}>姓名：<{/t}></th>
+          <td colspan="3"><input size="10" style="width:80px;" value="<{$orderInfo.ship_name}>"  class="item itemrow _x_ipt" name="order[ship_name]" autocomplete="off"/></td>
+          <td rowspan="5" style="vertical-align:middle;">
+            <center><div class="division" style="width:150px;">
+          <table border="0" cellpadding="0" cellspacing="0">
+             <tr>
+               <td style="text-align:left; color:#aaaaaa;"><{t}>您也可以将编辑过的收货地址更新至订单<{/t}></td>
+             </tr>
+             <tr>
+               <td style="height:40px;"><button id="btn_save_addr"><{t}>保存订单地址<{/t}></button></td>
+             </tr>
+         </table></div></center></td>
+      </tr>
+       
+      <tr>
+          <th><{t}>省区：<{/t}></th>
+          <td><{input type="region" name="order[ship_area]" value=$orderInfo.ship_area}></td>
+          <th><{t}>邮编：<{/t}></th>
+          <td><input style="width:90px;" size="6"  class="item itemrow _x_ipt" name="order[ship_zip]" value="<{$orderInfo.ship_zip}>" autocomplete="off"/></td>
+          </tr>
+            <tr>
+          <th><{t}>地址：<{/t}></th>
+          <td colspan="3"><input size="50" style="width:400px;" class="item itemrow _x_ipt" name="order[ship_addr]" value="<{$orderInfo.ship_addr}>" autocomplete="off"/></td>
+            </tr>
+      
+      <tr>
+          <th><{t}>手机：<{/t}></th>
+          <td><input size="36"  style="width:145px;" class="item itemrow _x_ipt" value="<{$orderInfo.ship_mobile}>" name="order[ship_mobile]" autocomplete="off"/></td>
+          <th><{t}>电话：<{/t}></th>
+          <td><input size="36" style="width:145px;"  class="item itemrow _x_ipt" value="<{$orderInfo.ship_tel}>" name="order[ship_tel]" autocomplete="off"/></td>
+          </tr>
+      <tr>
+        <th><{t}>备注：<{/t}></th>
+        <td colspan="3"><input size="50" style="width:400px;" class="item itemrow _x_ipt" name="order[order_memo]" value="<{$orderInfo.memo}>" autocomplete="off"/></td>
+        </tr>
+       </tbody></table>
+  </div>
+    
+    <h4><{t}>发货地址信息<{/t}></h4>
+    <span style=" padding-left:10px;"><{t}>发货点选择:<{/t}><select name="dly_center" id="dly_center_select">
+    <{foreach from=$dly_centers item=item}>
+        <{if $item.dly_center_id eq $default_dc}>selected="selected"<{/if}>><{$item.name}><{if $item.dly_center_id eq $default_dc}>selected="selected"<{/if}>><{$item.name}><{if $item.dly_center_id eq $default_dc}>selected="selected"<{/if}>><{$item.name}><{if $item.dly_center_id eq $default_dc}>selected="selected"<{/if}>><{$item.name}><option value="<{$item.dly_center_id}>" <{if $item.dly_center_id eq $default_dc}>selected="selected"<{/if}>><{$item.name}></option>
+    <{/foreach}>
+   </select></span>
+        <div class="division" id="dly_center_row">
+      <{include file="order/dly_center.html"}>
+       </div>
+  </div>
+
+<div >
+
+<input type="hidden" name="dly_tmpl_id" id="dly_tmpl_id" />
+ <table align="center" class="table-action">
+ <tr>
+   <td>
+   
+
+    <{foreach from=$printers item=item}>
+        <b class="submitBtn" style="margin-left:3px"><input type="button" value="<{$item.prt_tmpl_title}>" onClick="$('dly_tmpl_id').value='<{$item.prt_tmpl_id}>';$('dly_printer_form').submit()" /></b>
+    <{/foreach}>
+   </td>
+  </tr>
+</tbody></table>
+</div>
+
+  
+
+</form>
+<script>
+Element.implement({
+  getParentMatch:function(m){
+         if(!m)return this.getParent();
+         var e=this;
+         do{
+         e=e.getParent();
+         }
+         while(e.getTag()!='body'&&!!m(e))
+         return e;
+      }
+
+});
+function selectArea(sel,path,depth){
+    var sel=$(sel);
+    if(!sel)return;
+    var sel_value=sel.value;
+    var sel_panel=sel.getParent();
+    var selNext=sel.getNext();
+    var areaPanel= sel.getParentMatch(function(e){
+           return !e.getAttribute('package');
+        });
+    var setHidden=function(sel){
+        var rst=[];
+        var sel_break = true;
+        var sels=$ES('select',areaPanel);
+        sels.each(function(s){
+          if(s.getValue()!= '_NULL_' && sel_break){
+              rst.push($(s.options[s.selectedIndex]).get('text'));
+          }else{
+            sel_break = false;
+          }
+        });
+        if(sel.value != '_NULL_'){
+            $E('input',areaPanel).value = areaPanel.get('package')+':'+rst.join('/')+':'+sel.value;
+        }else{
+            $E('input',areaPanel).value =function(sel){
+                          var s=sels.indexOf(sel)-1;
+                          if(s>=0){
+                             return areaPanel.get('package')+':'+rst.join('/')+':'+sels[s].value;
+                          }
+                          return '';
+            }(sel);
+        }
+        
+    };
+    if(sel_value=='_NULL_'&&selNext&& 
+            (selNext.getTag()=='span' && selNext.hasClass('x-areaSelect'))){
+        sel.nextSibling.empty();
+        setHidden(sel);
+    }else{
+        
+        /*nextDepth*/
+        if($(sel.options[sel.selectedIndex]).get('has_c')){
+          new Request({
+                onSuccess:function(response){
+                    if(selNext && 
+                        (selNext.getTag()=='span'&& selNext.hasClass('x-region-child'))){
+                        var e = selNext;
+                    }else{
+                        var e = new Element('span',{'class':'x-region-child'}).inject(sel_panel);
+                    }
+                    e.set('html',response);
+                    setHidden(sel);
+                }
+            }).get('index.php?ctl=default&act=sel_region&p[0]='+path+'&p[1]='+depth);
+        }else{
+            sel.getAllNext().remove();
+            setHidden(sel);
+        }
+    }
+}
+window.addEvent('domready',function(){
+    $('dly_center_select').addEvent('change',function(e){
+        var dly_center_id =this.getValue();
+        new Request.HTML({url:'index.php?ctl=order/delivery_centers&act=instance&p[0]='+dly_center_id,update:$('dly_center_row')}).get();
+    });
+    $('btn_save_addr').addEvent('click',function(e){
+        new Event(e).stop();
+        new Request({url:'index.php?ctl=order/order&act=save_addr&p[0]=<{$orderInfo.order_id}>',method:'post',data:$('x-order_tableform'),onSuccess:function(r){
+            if(r=='ok'){
+                alert('保存成功!');
+            }else{
+                alert(r);
+            }
+        }}).post();
+    });
+});
+window.addEvent('load',function(){
+    window.focus();
+});
+</script>
+</body>
+</html>

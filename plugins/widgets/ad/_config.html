@@ -1,0 +1,82 @@
+<div id="ad" class="tableform widgetconfig">
+    <span class="sysiconBtn addorder" id="add_ad_pic" onclick="">添加图片广告</span>
+    <span class="sysiconBtn addorder" id="add_ad_flash" onclick="">添加FLASH广告</span>
+    <span class="sysiconBtn addorder" id="add_ad_html" onclick="">自定义广告</span>
+    <div class="division"></div>
+  <{foreach from=$setting.ad item=data key=key}>
+  <div id="ad_<{$data.i}>">
+    <input type=hidden name=ad[<{$data.i}>][type] value="<{$data.type}>">
+    <input type=hidden name=ad[<{$data.i}>][i] value="<{$data.i}>">
+    <{if $data.type=='image'}>
+    图片地址:<input name=ad[<{$data.i}>][link] value="<{$data.link}>">
+    链接地址:<input name=ad[<{$data.i}>][tolink] value="<{$data.tolink}>">
+    <{elseif $data.type=='flash'}>
+    Flash地址:<input name=ad[<{$data.i}>][link] value="<{$data.link}>">
+    <{elseif $data.type=='html'}>
+    广告代码:<textarea name=ad[<{$data.i}>][link]><{$data.link|escape:"html"}></textarea>
+    <{/if}>
+    <span onclick="delLink('ad_<{$data.i}>');"><{img src="images/bundle/delecate.gif" style="cursor:pointer;" alt="删除" title="删除"}></span>
+  </div>
+  <{/foreach}>
+</div>
+<script>
+$('add_ad_pic').addEvent('click',function(){
+  var d=new Date();
+  var i=d.getTime();
+  $E('#ad .division').setHTML($E('#ad .division').innerHTML+='\
+    <div id="ad_'+i+'">\
+       <table cellpadding="0" cellspacing="0">\
+         <tr>\
+            <th>图片地址:</th>\
+          <td><input name=ad['+i+'][link] size=15></td>\
+           <th>链接地址:</th>\
+          <td><input name=ad['+i+'][tolink] size=15></td>\
+          <td style="width:30px"><span onclick="delLink(\'ad_'+i+'\');"><{img src="images/bundle/delecate.gif" style="cursor:pointer;" alt="删除" title="删除"}></span></td>\
+         </tr>\
+       <table cellpadding="0" cellspacing="0">\
+      <input type=hidden name=ad['+i+'][i] value="'+i+'">\
+      <input type=hidden name=ad['+i+'][type] value="image">\
+    </div>\
+  ');
+});
+
+$('add_ad_flash').addEvent('click',function(){
+  d=new Date();
+  i=d.getTime();
+  $E('#ad .division').setHTML($E('#ad .division').innerHTML+='\
+    <div id="ad_'+i+'">\
+        <table cellpadding="0" cellspacing="0">\
+         <tr>\
+            <th>Flash地址:</th>\
+          <td><input name=ad['+i+'][link]>\</td>\
+          <td style="width:30px"><span onclick="delLink(\'ad_'+i+'\');"><{img src="images/bundle/delecate.gif" style="cursor:pointer;" alt="删除" title="删除"}></span></td>\
+         </tr>\
+       <table cellpadding="0" cellspacing="0">\
+      <input type=hidden name=ad['+i+'][i] value="'+i+'">\
+      <input type=hidden name=ad['+i+'][type] value="flash">\
+    </div>\
+  ');
+});
+
+$('add_ad_html').addEvent('click',function(){
+  d=new Date();
+  i=d.getTime();
+  $E('#ad .division').setHTML($E('#ad .division').innerHTML+='\
+    <div id="ad_'+i+'">\
+      <table cellpadding="0" cellspacing="0">\
+         <tr>\
+            <th>广告代码:</th>\
+          <td><textarea name=ad['+i+'][link]></textarea></td>\
+          <td style="width:30px"><span onclick="delLink(\'ad_'+i+'\');"><{img src="images/bundle/delecate.gif" style="cursor:pointer;" alt="删除" title="删除"}></span></td>\
+         </tr>\
+       <table cellpadding="0" cellspacing="0">\
+      <input type=hidden name=ad['+i+'][i] value="'+i+'">\
+      <input type=hidden name=ad['+i+'][type] value="html">\
+    </div>\
+  ');
+});
+
+delLink=function(o){
+  $(o).remove();
+}
+</script>

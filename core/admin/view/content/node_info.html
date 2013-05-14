@@ -1,0 +1,40 @@
+<form action="index.php?ctl=content/sitemaps&act=save&p[0]=<{$node.node_id}>" method="post" class="tableform">
+<input type="hidden" name="node_type" value="<{$node.node_type}>">
+<input type="hidden" name="old_title" value="<{$node.title}>">
+  <div class="division">
+  <table>
+  <tr>
+    <th><{t}>路径<{/t}></th>
+    <td>
+      <select style="width:250px" name="p_node_id" <{if $node.node_type eq 'custompage'}>disabled=true<{/if}>>
+        <option value="0"><{t}>根目录<{/t}></option>
+      <{foreach from=$list item=item}>
+        <option <{if $item.node_id eq $node.p_node_id}>selected="selected"<{/if}> value="<{$item.node_id}>" ><{$item.title|paddingleft:$item.depth*4+4:'&nbsp;'}></option>
+      <{/foreach}>
+      </select>
+    </td>
+  </tr>
+  <tr>
+    <th><{t}>名称<{/t}></th>
+    <td><{input type="text" value=$node.title name="title"}></td>
+  </tr>
+  <tr>
+    <th><{t}>显示在菜单上<{/t}></th>
+    <td><input type="checkbox" name="display" value="1" <{if $node.hidden neq "true"}>checked="checked"<{/if}>></td>
+  </tr>
+
+  <{if $node.node_type eq 'custompage'}>
+  <tr>
+    <th><{t}>是否新开窗口打开<{/t}></th>
+    <td><input type="checkbox" name="item_id" value="1" <{if $node.item_id eq 1}>checked="checked"<{/if}>></td>
+  </tr>
+  <{/if}>
+  </TABLE>
+  </div>
+
+  
+  <div class="table-action">
+    <{button type="submit" id="newNodeBtn" label="保存栏目信息"}>
+</div>
+
+</form>

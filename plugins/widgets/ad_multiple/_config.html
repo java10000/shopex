@@ -1,0 +1,473 @@
+﻿
+
+<div  id="picAddress">
+<div class="tableform">
+
+<div class="division">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <th>选择广告插件样式：</th>
+    <td style="font-size:14px;">
+   
+      <div style="width:150px; padding:5px; float:left; text-align:center;">
+      <label> <img src="../plugins/widgets/ad_multiple/images/style1.gif" /><br />
+
+      <input class="ad_style"  type="radio" name="ad_style" value="normal"  <{if $setting.ad_style=='normal'}>checked="checked"<{/if}> />普通翻页</label>
+      </div>
+      <div style="width:150px; padding:5px; float:left; text-align:center;">
+     <label> <img src="../plugins/widgets/ad_multiple/images/style2.gif" />
+      <br />
+<input class="ad_style"  type="radio" name="ad_style"  value="number" <{if $setting.ad_style=='number'}>checked="checked"<{/if}> />数字按钮</label>
+      </div>
+      
+      <div style="width:150px; padding:5px; float:left; text-align:center;">
+     <label>  <img src="../plugins/widgets/ad_multiple/images/style3.gif" /><br />
+
+     <input class="ad_style"  type="radio" name="ad_style"  value="graphics"  <{if $setting.ad_style=='graphics'}>checked="checked"<{/if}> />图文按钮</label>
+      </div>
+      </td>
+  </tr>
+</table>
+</div>
+
+
+<div class="division">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  
+	<tr>
+    <th>广告宽度：</th>
+    <td ><input name="ad_swf_width" value="<{$setting.ad_swf_width|default:400}>" style="width:50px" ></td>
+	<th>广告高度：</th>
+	<td ><input name="ad_swf_height" value="<{$setting.ad_swf_height|default:300}>" style="width:50px"></td></tr>
+	<tr>
+	  <th>图片切换样式：</th>
+	  <td >
+      
+      <select name="ad_viewstyle">
+        <option value="alpha" <{if $setting.ad_viewstyle=='alpha'}>selected<{/if}> >淡入淡出</option>  
+        <option value="horizontal" <{if $setting.ad_viewstyle=='horizontal'}>selected<{/if}> >水平滚动</option>
+        <option value="vertical" <{if $setting.ad_viewstyle=='vertical'}>selected<{/if}> >垂直滚动</option>
+        <option value="zoom" <{if $setting.ad_viewstyle=='zoom'}>selected<{/if}> >缩放</option>
+        <option value="none" <{if $setting.ad_viewstyle=='none'}>selected<{/if}> >无</option>
+      </select>   
+      
+         </td>
+	  <th>链接跳转方式：</th>
+	  <td >
+      
+        <select name="ad_windowtarget">
+        <option value="_blank" <{if $setting.ad_windowtarget=='_blank'}>selected<{/if}> >跳转至新窗口</option>
+        <option value="_self" <{if $setting.ad_windowtarget=='_self'}>selected<{/if}> >在原窗口打开</option>
+      </select>   
+      
+      </td>
+	  </tr>
+      
+      <tr>
+        <th>图片切换速度：</th><td>
+        
+      <select name="ad_changeimagespeed">
+        <option value=1 <{if $setting.ad_changeimagespeed==1}>selected<{/if}> >普通</option>
+        <option value=0.5 <{if $setting.ad_changeimagespeed==0.5}>selected<{/if}> >快</option>
+      </select>  
+        
+        </td>
+        <th>&nbsp;</th><td>&nbsp;</td>
+      </tr>
+      
+</table>
+</div>
+
+
+<div id="p_number" class="division" style="display:none;">
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <th>鼠标触发类型：</th>
+    <td>
+      <select name="mouseevent"  >
+        <option value="move" <{if $setting.mouseevent=='move'}>selected<{/if}> >鼠标移过</option>
+        <option value="click" <{if $setting.mouseevent=='click'}>selected<{/if}> >鼠标点击</option>
+      </select>   
+     </td>
+    <th>数字栏显示方式：</th>
+    <td>
+      <select name="numberstyle"  >
+        <option value="inner" <{if $setting.numberstyle=='inner'}>selected<{/if}> >图片内测</option>
+        <option value="outer" <{if $setting.numberstyle=='outer'}>selected<{/if}> >图片外侧</option>
+      </select>
+    </td>
+  </tr>
+  <tr>
+    <th>按钮显示位置：</th>
+    <td>
+      <select name="numberposition"  >
+        <option value="rightbottom" <{if $setting.numberposition=='rightbottom'}>selected<{/if}> >右下方</option>
+        <option value="leftbottom" <{if $setting.numberposition=='leftbottom'}>selected<{/if}> >左下方</option>
+        <option value="lefttop" <{if $setting.numberposition=='lefttop'}>selected<{/if}> >左上方</option>
+        <option value="righttop" <{if $setting.numberposition=='righttop'}>selected<{/if}> >右上方</option>
+      </select>
+    </td>
+    <th>按钮显示方式：</th>
+    <td>
+      <select name="numberbtnstyle"  >
+        <option value="horizontal" <{if $setting.numberbtnstyle == 'horizontal'}>selected<{/if}> >横向显示</option>
+        <option value="vertical" <{if $setting.numberbtnstyle == 'vertical'}>selected<{/if}> >垂直显示</option>
+      </select>
+    </td>
+  </tr>
+  
+  <tr>
+    <th>自动切换图片：</th>
+    <td>
+      <label><input class="autochangeimage"  type="radio" name="autochangeimage" value=1 <{if $setting.autochangeimage==1}>checked="checked"<{/if}> />是</label>
+      <label><input class="autochangeimage"  type="radio" name="autochangeimage"  value=0 <{if $setting.autochangeimage==0}>checked="checked"<{/if}> />否</label>
+    </td>
+    <th>切换图片等待时间：</th>
+    <td><input name="imagewait" value="<{$setting.imagewait|default:3}>" style="width:50px" ><span class="notice-inline">秒</span></td>
+</tr>
+  <tr>
+    <th>数字颜色：</th>
+    <td>
+     <{input type="color" name=btncolor style="width:50px;" value=$setting.btncolor|default:'#1072c5'}>
+    </td>
+    <th>按钮背景色：</th>
+    <td>
+     <{input type="color" name=btnbgcolor style="width:50px;" value=$setting.btnbgcolor|default:'#cce4f2'}>
+    </td>
+  </tr>
+  <tr>
+    <th>焦点数字颜色：</th>
+    <td>
+    <{input type="color" name=btnhovercolor style="width:50px;" value=$setting.btnhovercolor|default:'#ffffff'}>
+    </td>
+    <th>焦点按钮背景色：</th>
+    <td>
+    <{input type="color" name=btnhoverbgcolor style="width:50px;" value=$setting.btnhoverbgcolor|default:'#076cb3'}>
+    </td>
+  </tr>
+  <tr>
+    <th>按钮边框色：</th>
+    <td>
+    <{input type="color" name=btnbordercolor style="width:50px;" value=$setting.btnbordercolor|default:'#74b4e1'}>
+    </td>
+    <th>焦点按钮边框色：</th>
+    <td>
+    <{input type="color" name=btnhoverbordercolor style="width:50px;" value=$setting.btnhoverbordercolor|default:'#0a6db2'}>
+    </td>
+  </tr>
+  <tr>
+    <th>数字栏背景色：</th>
+    <td>
+    <{input type="color" name=numbercolumncolor style="width:50px;" value=$setting.numbercolumncolor|default:'#c6d4e1'}>
+    </td>
+    <th>数字栏背景透明度：</th>
+    <td><input name="numbercolumnalpha" value="<{$setting.numbercolumnalpha|default:0.4}>" style="width:50px" ><span class="notice-inline">0-全透明，1-不透明</span></td>
+  </tr>
+   <tr>
+    <th>显示翻页按钮：</th>
+    <td>    
+      
+       <label><input class="displayarrow"  type="radio" name="displayarrow" value=1 <{if $setting.displayarrow==1}>checked="checked"<{/if}> />是</label>
+       <label><input class="displayarrow"  type="radio" name="displayarrow" value=0 <{if $setting.displayarrow==0}>checked="checked"<{/if}> />否</label>
+      
+    </td>
+    <th>Flash背景色：</th>
+    <td><input name="swfbgcolor" value="<{$setting.swfbgcolor|default:'#ffffff'}>" style="width:50px" ><span class="notice-inline">空为背景透明</span></td>
+  </tr>
+</table>
+
+</div>
+
+<div id="p_graphics" class="division" style="display:none;">
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <th>标签模式：</th>
+    <td >    
+      <label><input class="tabmode"  type="radio" name="tabmode" value="text" <{if $setting.tabmode=="text"}>checked="checked"<{/if}> />文字模式</label>
+      <label><input class="tabmode"  type="radio" name="tabmode" value="image" <{if $setting.tabmode=="image"}>checked="checked"<{/if}> />图片模式</label>
+    </td>
+   
+ 
+   <th>标签显示方式：</th>
+    <td >    
+      <select name="tabstyle"  >
+        <option value="inner" <{if $setting.tabstyle=='inner'}>selected<{/if}> >图片内测</option>
+        <option value="outer" <{if $setting.tabstyle=='outer'}>selected<{/if}> >图片外侧</option>
+      </select>
+    </td>
+  </tr>
+  
+  <tr>
+   <th>显示标签数：</th>
+    <td><input name="tabcount" value="<{$setting.tabcount|default:4}>" style="width:50px" ></td>
+   <th>标签高度/宽度：</th>
+    <td><input name="tabsize" value="<{$setting.tabsize|default:60}>" style="width:50px" ></td>
+  </tr>
+  
+  <tr>
+    <th>鼠标触发类型：</th>
+    <td>
+      <select name="mouseevent_graphics"  >
+        <option value="move" <{if $setting.mouseevent_graphics=='move'}>selected<{/if}> >鼠标移过</option>
+        <option value="click" <{if $setting.mouseevent_graphics=='click'}>selected<{/if}> >鼠标点击</option>
+      </select>   
+     </td>
+    <th>标签显示位置：</th>
+    <td>
+      <select name="tabposition"  >
+        <option value="bottom" <{if $setting.tabposition=='bottom'}>selected<{/if}> >下</option>
+        <option value="left" <{if $setting.tabposition=='left'}>selected<{/if}> >左</option>  
+        <option value="right" <{if $setting.tabposition=='right'}>selected<{/if}> >右</option>
+        <option value="top" <{if $setting.tabposition=='top'}>selected<{/if}> >上</option>
+      </select>
+    </td>
+  </tr>
+  <tr>
+    <th>自动切换图片：</th>
+    <td>
+      <label><input class="autochangeimage_graphics"  type="radio" name="autochangeimage_graphics" value=1 <{if $setting.autochangeimage_graphics==1}>checked="checked"<{/if}> />是</label>
+      <label><input class="autochangeimage_graphics"  type="radio" name="autochangeimage_graphics"  value=0 <{if $setting.autochangeimage_graphics==0}>checked="checked"<{/if}> />否</label>
+    </td>
+    <th>切换图片等待时间：</th>
+    <td><input name="imagewait_graphics" value="<{$setting.imagewait_graphics|default:3}>" style="width:50px" >
+    <span class="notice-inline">秒</span></td>
+</tr>
+
+  <tr >
+    <th class="tabfont" style="display:none;">标签字体颜色：</th>
+    <td class="tabfont" style="display:none;">
+    <{input type="color" name=btncolor_graphics style="width:50px;" value=$setting.btncolor_graphics|default:'#1072c5'}>
+    </td>
+     <th class="tabfont" style="display:none;">焦点标签字体颜色：</th>
+    <td class="tabfont" style="display:none;">
+    <{input type="color" name=btnhovercolor_graphics style="width:50px;" value=$setting.btnhovercolor_graphics|default:'#ffffff'}>
+    </td>
+  </tr>
+
+  <tr> 
+  <th>标签背景色：</th>
+    <td>
+    <{input type="color" name=btnbgcolor_graphics style="width:50px;" value=$setting.btnbgcolor_graphics|default:'#cce4f2'}>
+    </td>
+  
+    <th>焦点标签背景色：</th>
+    <td>
+    <{input type="color" name=btnhoverbgcolor_graphics style="width:50px;" value=$setting.btnhoverbgcolor_graphics|default:'#076cb3'}>
+    </td>
+  </tr>
+  
+   <tr> 
+  <th>标签透明度：</th>
+    <td>
+    <input name="tabalpha" value="<{$setting.tabalpha|default:0.7}>" style="width:50px" ><span class="notice-inline">0-全透明，1-不透明</span>
+    </td>
+  
+    <th>焦点标签透明度：</th>
+    <td>
+    <input name="tabhoveralpha" value="<{$setting.tabhoveralpha|default:1}>" style="width:50px" ><span class="notice-inline">0-全透明，1-不透明</span>
+    </td>
+  </tr>
+  
+  <tr>
+    <th>标签栏背景色：</th>
+    <td>
+    <{input type="color" name=tabcolumncolor style="width:50px;" value=$setting.tabcolumncolor|default:'#ffffff'}>
+    </td>
+    <th>标签栏背景透明度：</th>
+    <td><input name="tabcolumnalpha" value="<{$setting.tabcolumnalpha|default:1}>" style="width:50px" ><span class="notice-inline">0-全透明，1-不透明</span></td>
+  </tr>
+  
+  
+   <tr>
+    <th>Flash背景色：</th>
+    <td>
+     <{input type="color" name=swfbgcolor_graphics style="width:50px;" value=$setting.swfbgcolor_graphics|default:'#ffffff'}>
+    <span class="notice-inline">空为背景透明</span>
+    </td>
+    <th>&nbsp;</th>
+    <td>&nbsp;</td>
+  </tr>
+   
+</table>
+
+</div>
+
+
+
+
+  <h5>添加广告图片</h4>
+  
+  <div id="noticepic" class="notice" style=" margin:0px 10px;">请上传jpg,gif,或png格式的图片</div>
+  
+  <div class="division">
+  <{foreach from=$setting.pic item=data key=key}>
+  <table id="pic_<{$data.id}>" width="100%" cellpadding="0" cellspacing="0">
+  <input type=hidden name=pic[<{$data.id}>][id] value="<{$data.id}>">
+  <tr>
+  <th>图片地址：</th>
+  <td><input style="width:100px;" name=pic[<{$data.id}>][link] id=pic[<{$data.id}>][link]  value="<{$data.link}>"><input type=button value=上传图片 onClick=load_photo_collect($('pic[<{$data.id}>][link]'))></td>
+  <th>图片链接地址：</th>
+  <td><input style="width:100px;" name=pic[<{$data.id}>][linktarget] value="<{$data.linktarget}>"></td>
+  <th class="d_txt" style="display:none;">文字说明：</th>
+  <td class="d_txt" style="display:none;"><input style="width:100px;" name=pic[<{$data.id}>][text] value="<{$data.text}>"></td>
+ 
+  <th class="d_pic" style="display:none;">小图地址：</th>
+  <td class="d_pic" style="display:none;"><input style="width:100px;" name=pic[<{$data.id}>][smalllink] id=pic[<{$data.id}>][smalllink]  value="<{$data.smalllink}>"><input type=button value=上传图片 onClick=load_photo_collect($('pic[<{$data.id}>][smalllink]'))></td>
+ 
+ <td><span onclick="delLink('pic_<{$data.id}>');"><{img src="images/bundle/delecate.gif" style="cursor:pointer;" alt="删除" title="删除"}></span></td>
+  </tr>
+  </table>
+<{/foreach}> 
+<div class="addpiccontent">
+</div>
+<div style="padding-top:5px;"><span class="sysiconBtn addorder" onCLick="addPic()">添加图片</span></div>
+</div>
+
+
+</div>
+<script>
+
+var ad_style= '<{$setting.ad_style}>';
+
+window.addEvent('domready',function() {
+
+  if(ad_style== '') {
+    enchecked($$('.ad_style')[0],$$('.tabmode')[0],$$('.autochangeimage')[0],$$('.autochangeimage_graphics')[0]);
+  }
+  else if(ad_style== 'number') {
+    enchecked($$('.ad_style')[1]);
+	blockel($('p_number'));
+	hideel($$('.d_txt'),$$('.d_pic'));
+  }
+  else if(ad_style=='graphics') {
+    enchecked( $$('.ad_style')[2]);
+    blockel($('p_graphics'));
+    checkGraphicsTabMode();
+    $$('.tabmode').addEvent('click',checkGraphicsTabMode);
+  }
+
+  $$('.ad_style').addEvent('click',function() {
+
+  if(this.value == 'normal') {
+    ad_style='normal';
+	hideel($('p_number'),$('p_graphics'),$$('.d_txt'),$$('.d_pic'));
+  }
+
+  else if(this.value == 'number') {
+    ad_style='number';
+	blockel($('p_number'));
+	hideel($('p_graphics'),$$('.d_txt'),$$('.d_pic'));
+  }
+  
+  else if(this.value == 'graphics') {
+    ad_style='graphics';
+	hideel($('p_number'));
+	blockel($('p_graphics'));
+	checkGraphicsTabMode();
+	$$('.tabmode').addEvent('click',checkGraphicsTabMode);
+  }
+
+});
+
+
+
+function checkGraphicsTabMode() {
+  if($$('.tabmode')[0].checked) {
+    showel($$('.tabfont'),$$('.d_txt'));
+    hideel($$('.d_pic'));
+  }
+  else {
+    hideel($$('.tabfont'),$$('.d_txt'));
+	showel($$('.d_pic'));
+  }
+}
+
+});
+
+function addPic(){
+  hideel($('noticepic'));
+
+  var str1;
+  var str2;
+
+if(ad_style== 'graphics') {
+   if($$('.tabmode')[0].checked) {
+     str1='display:';
+	 str2='display:none';
+   }
+   else {
+     str1= 'display:none';
+     str2= 'display:';
+   }
+}
+else {
+   str1='display:none';
+   str2='display:none';
+}
+
+	var d=new Date();
+	var i=d.getTime();
+	
+	var content='\
+			  <table id="pic_'+i+'" width="100%" cellpadding="0" cellspacing="0">\
+			  <input type=hidden name=pic['+i+'][id] value="'+i+'">\
+			  <tr>\
+				  <th>图片地址：</th>\
+				  <td><input style="width:100px;" name=pic['+i+'][link] id=pic['+i+'][link]><input type=button value=上传图片 onClick=load_photo_collect($(\'pic['+i+'][link]\'))></td>\
+				  <th>图片链接地址：</th>\
+				  <td><input style="width:100px;" name=pic['+i+'][linktarget]></td>\
+				   <th class="d_txt" style="'+str1+'">文字说明：</th>\
+                   <td class="d_txt" style="'+str1+'"><input style="width:100px;" name=pic['+i+'][text]></td>\
+                   <th class="d_pic" style="'+str2+'">小图地址：</th>\
+                   <td class="d_pic" style="'+str2+'"><input style="width:100px;" name=pic['+i+'][smalllink] id=pic['+i+'][smalllink]><input type=button value=上传图片 onClick=load_photo_collect($(\'pic['+i+'][smalllink]\'))></td>\
+				   <td><span onclick="delLink(\'pic_'+i+'\');"><{img src="images/bundle/delecate.gif" style="cursor:pointer;" alt="删除" title="删除"}></span></td>\
+			  </tr>\
+			  </table>\
+			  ';
+			  $E('#picAddress .addpiccontent').adopt(new Element('div').set('html',content).getFirst());
+
+
+}
+
+
+delLink=function(o){
+  $(o).remove();
+}
+
+function load_photo_collect(target){
+			return new Dialog('index.php?ctl=editor&act=image&p[0]=0',{title:'插入<img>',onShow:function(){
+			var dialog=this;
+			this.dialog.store('callback',function(src){
+              target.value=src;
+              dialog.close();
+           });
+        }});
+}
+
+
+function enchecked() {
+  for(var i=0;i<arguments.length;i++) {
+    arguments[i].checked= true;
+  }
+}
+
+function showel() {
+  for(var i=0;i<arguments.length;i++) {
+    arguments[i].setStyle("display","");
+  }
+}
+
+function blockel() {
+  for(var i=0;i<arguments.length;i++) {
+    arguments[i].setStyle("display","block");
+  }
+}
+
+function hideel() {
+  for(var i=0;i<arguments.length;i++) {
+    arguments[i].setStyle("display","none");
+  }
+}
+</script>

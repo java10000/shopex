@@ -1,0 +1,398 @@
+<{if count($trading.products)>0 || count($trading.package)>0 || count($trading.gift_e)>0 }>
+<div class="CartWrap" id="cart-index">
+<div class="CartNav clearfix"><div class="floatLeft"><img src="statics/cartnav-step1.gif" alt="购物流程--查看购物车" /></div><div class="floatRight"><img src="statics/cartnav-cart.gif"  /></div></div>
+<{if count($trading.products)>0 || count($trading.package)>0 || count($trading.gift_e)>0 }>
+  <div class="section" id="cart-items">
+  <form id="form-cart" action="<{link ctl="cart" act="checkout"}>" method="post" extra="cart">
+  <div class="FormWrap" id="cartItems">
+    <{if count($trading.products) > 0}>
+    <h3><{t}>已放入购物车的商品:<{/t}></h3>
+{buy_product}
+    <div id="goodsbody" class="division">
+    <table width="100%" cellpadding="3" cellspacing="0" class="liststyle">
+      <col class="span-2 "></col>
+      <col class="span-auto"></col>
+      <col class="span-2"></col>
+      <col class="span-2"></col>
+      <col class="span-2"></col>
+      <col class="span-2"></col>
+      <col class="span-2 ColColorOrange"></col>
+      <col class="span-2"></col>
+      <thead>
+        <tr>
+          <th><{t}>图片<{/t}></th>
+          <th><{t}>商品名称<{/t}></th>
+          <th><{t}>商品积分<{/t}></th>
+          <th><{t}>销售价格<{/t}></th>
+          <th><{t}>优惠价格<{/t}></th>
+          <th><{t}>数量<{/t}></th>
+          <th><{t}>小计<{/t}></th>
+          <th><{t}>删除<{/t}></th>
+        </tr>
+      </thead>
+      <tbody >
+      <{foreach from=$trading.products item="item" key="key"}>
+      <tr number="<{$item.nums}>" urlupdate="<{link ctl=cart act='updateCart' arg0=g arg1=$item.link_key}>" urlremove="<{link ctl=cart act='removeCart' arg0=g}>" price="<{$item._pmt.price|cur:'':true:false}>" >
+        <td>
+             <div class='cart-product-img' isrc="<{$item.thumbnail_pic|default:$env.conf.site.default_thumbnail_pic|storager}>" ghref='<{link ctl=product act="index" arg0=$item.goods_id}>' style='width:50px;height:50px;'>
+                <img src='statics/loading.gif'/>
+             </div>
+    
+        </td>
+        <td style='text-align:left'><a href='<{link ctl=product act="index" arg0=$item.goods_id}>' target='_blank'><{$item.name}><{if $item.spec}> (<{$item.spec}>)<{/if}><{$item.addon.adjname}>
+          <{if $item._pmt.describe}><div class="ht1"><{$item._pmt.describe}></div><{/if}></a></td>
+        <td><{$item._pmt.score|intval}></td>
+        <td class=" mktprice1"><{$item.sale_price|cur}></td>
+        <td><{$item._pmt.price|cur}></td>
+        <td>
+          <div class="Numinput">
+            <input type="text" class="_x_ipt textcenter" value="<{$item.nums}>" onchange="Cart.ItemNumUpdate(this,this.value,event);" size="3" name="cartNum[g][<{$item.key}>]" />
+            <span class="numadjust increase" onclick="Cart.ItemNumUpdate($(this).getPrevious('input'),1,event);"></span>
+            <span class="numadjust decrease" onclick="Cart.ItemNumUpdate($(this).getPrevious('input'),-1,event);"></span>
+            </div><{if !is_null($item.store) && $item.store < $alert_num}><{t}>(提示:商品缺货)<{/t}><{/if}></td>
+        <td class="itemTotal fontcolorRed"><{$item._pmt.amount|cur}></td>
+        <td><span class="lnk quiet fontcolorRed" onclick='Cart.removeItem(this,event);'><{img src="statics/bundle/del.gif" alt="删除"}></span></td>
+      </tr>
+      <{/foreach}>
+      </tbody>
+    </table>
+    </div>
+    <{/if}>
+
+    <{if $trading.gift_e}>
+    <h3><{t}>赠品<{/t}></h3>
+    <div id="giftbody"  class="division" >
+    <table width="100%" cellpadding="0" cellspacing="0" class="liststyle" >
+      <col class="span-2"></col>
+      <col></col>
+      <col class="span-2"></col>
+      <col class="span-2 "></col>
+      <col class="span-1"></col>
+      <col class="span-2 ColColorOrange"></col>
+      <col class="span-2"></col>            
+      <thead>
+        <tr>
+          <th><{t}>图片<{/t}></th>
+          <th><{t}>赠品名称<{/t}></th>
+          <th><{t}>所需积分<{/t}></th>
+          <th><{t}>限购数量<{/t}></th>
+          <th><{t}>数量<{/t}></th>
+          <th><{t}>小计<{/t}></th>
+          <th><{t}>删除<{/t}></th>
+        </tr>
+      </thead>
+      <tbody >
+      <{foreach from=$trading.gift_e item="item" key="key"}>
+        <tr number="<{$item.nums}>" urlupdate="<{link ctl=cart act='updateCart' arg0=f arg1=$item.gift_id}>" urlremove="<{link ctl=cart act='removeCart' arg0=f}>" point="<{$item.point|cur:'':true:false}>">
+          <td><a href="<{link ctl=gift act='index' arg0=$item.gift_id}>" target='_blank' style='margin:0;padding:0;text-decoration:none;'><img src="<{$item.thumbnail_pic|default:$env.conf.site.default_thumbnail_pic|storager}>"  <{if $env.conf.site.thumbnail_pic_width >0 && $env.conf.site.thumbnail_pic_height >0}>width="<{$env.conf.site.thumbnail_pic_width}>" height="<{$env.conf.site.thumbnail_pic_height}>"<{/if}> /></a></td>
+          <td style='text-align:left'><a href="<{link ctl=gift act='index' arg0=$item.gift_id}>" target='_blank'><{$item.name}></a></td>
+          <td><{$item.point}></td>
+          <td><{if $item.limit_num=='0'}><{t}>不限制<{/t}><{else}><{$item.limit_num}><{/if}></td>
+          <td><div class="Numinput"><input type="text" class="_x_ipt textcenter" onchange="Cart.ItemNumUpdate(this,this.value,event);" value=<{$item.nums}> size="3" name="cartNum[f][<{$item.gift_id}>]" >
+          <span class="numadjust increase"  onclick="Cart.ItemNumUpdate($(this).getPrevious('input'),1,event);"></span>
+          <span class="numadjust decrease"  onclick="Cart.ItemNumUpdate($(this).getPrevious('input'),-1,event);"></span>
+          </div></td>
+          <td class="itemTotal"><{$item.amount}></td>
+          <td><span class="lnk quiet" onclick='Cart.removeItem(this,event);'><{img src="statics/bundle/del.gif" alt="删除"}></span></td>                    
+        </tr>
+      <{/foreach}>
+      </tbody>
+    </table>
+    </div>
+    <{/if}>
+    
+    <{if $trading.package}>
+    <h3><{t}>捆绑商品<{/t}></h3> 
+    <div id="pkgbody"  class="division"> 
+    <table width="100%" cellpadding="0" cellspacing="0" class="liststyle">
+      <col class="span-2"></col>
+      <col style="width:auto;"></col>
+      <col class="span-2 "></col>
+      <col class="span-1"></col>
+      <col class="span-2 ColColorOrange"></col>
+      <col class="span-2"></col>                
+      <thead>
+        <tr>
+          <th><{t}>货号<{/t}></th>
+          <th><{t}>捆绑名称<{/t}></th>
+          <th><{t}>优惠价格<{/t}></th>
+          <th><{t}>数量<{/t}></th>
+          <th><{t}>小计<{/t}></th>
+          <th><{t}>删除<{/t}></th>                        
+        </tr>
+      </thead>
+      <tbody>
+      <{foreach from=$trading.package item=item key=key}>
+        <tr number="<{$item.nums}>" urlupdate="<{link ctl=cart act='updateCart' arg0=p arg1=$item.goods_id}>" urlremove="<{link ctl=cart act='removeCart' arg0=p}>" price="<{$item.price|cur:'':true:false}>">
+          <td><{$item.bn}></td>
+          <td style='text-align:left'><a href='<{link ctl=package act="index"}>' target='_blank'><{$item.name}> <{$item.addon.adjname}></a></td>
+          <td><{$item.price|cur}></td>
+          <td><div class="Numinput"><input type="text" class="_x_ipt textcenter" onchange="Cart.ItemNumUpdate(this,this.value,event);" value=<{$item.nums}> size="3" name="cartNum[p][<{$item.goods_id}>]" >
+          <span class="numadjust increase"  onclick="Cart.ItemNumUpdate($(this).getPrevious('input'),1,event);"></span>
+          <span class="numadjust decrease"  onclick="Cart.ItemNumUpdate($(this).getPrevious('input'),-1,event);"></span>
+          </div></td>
+          <td class="itemTotal"><{$item.amount|cur}></td>
+          <td><span class="lnk quiet" onclick='Cart.removeItem(this,event);'><{img src="statics/bundle/del.gif" alt="删除"}></span></td>    
+        </tr>
+      <{/foreach}>
+      </tbody>
+    </table>
+    </div>
+    <{/if}>
+    
+    
+         <div class='span-auto' style='width:45%'>
+               <div id='cart-coupon'>
+                  <{if count($trading.coupon_u)>0}>
+                  <div class="promotion"><{t}>使用的优惠券：<{/t}><{foreach from=$trading.coupon_u item="item" key="key"}><strong><{$key}></strong><{/foreach}><a href="<{link ctl=cart act='removeCoupon'}>" class="lnk" style="margin:0 0 0 20px;"><{t}>取消优惠券<{/t}></a></div>
+                  <{else}>
+                  <{t}>对以上商品使用优惠券：</{t}><{input type="text" name="coupon" id="-s-ipt-coupon" size="30" value="请输入优惠券号码" onclick="this.value=(this.value=='请输入优惠券号码')?'':this.value"}> <input id='cart-coupon-submitBtn' type="button" value="<{t}>确定<{/t}>" />
+                  <script>
+                      $('cart-coupon-submitBtn').addEvent('click',function(e){
+                          e.stop();
+                          new Element('form',{method:'post',action:'<{link ctl="cart" act="applycoupon"}>'}).adopt($('cart-coupon').clone()).inject(document.body).submit();
+                      });
+                  </script>
+                  <{/if}>
+                 </div>
+        </div>
+    <div class="floatRight" style='width:45%'>
+        <div id="cartTotal">
+            <{require file="cart/cart_total.html"}>
+        </div>
+    </div>
+    <div class="clear"></div>
+  </div>
+  
+  <div class="CartBtn clearfix" style="margin-bottom:5px;">
+  <div class="span-auto"><a href="./" class="actbtn btn-return" >&laquo;继续购物</a></div>
+  <div class="span-auto"><a id="clearCart" class="actbtn btn-clearcat" href="javascript:Cart.empty('<{link ctl=cart act='removeCart' arg0=all}>');">清空购物车</a></div>
+  <div class="span-auto floatRight"><input class="actbtn btn-next" type="submit" value="<{t}>下单结算&raquo;<{/t}>" /></div>
+  </div>
+  </form>
+  </div>
+<{/if}>
+
+<div id="cart-none-msg" style='<{if count($trading.products)>0 || count($trading.package)>0 || count($trading.gift_e)>0 }>display:none;<{/if}>'>
+<br/>
+<br/>
+<div  class='success' ><{t}>您已清空了购物车.<{/t}></div>
+<h3><{t}>现在您可以:<{/t}></h3>
+<ul class='list'>
+   <li><a href='./'><{t}>返回网站首页<{/t}></a></li>
+   <li><a href='javascript:opener=null;window.close();'><{t}>关闭此页面<{/t}></a></li>
+</ul>
+
+</div>
+
+</div>
+<script>
+/*
+*CartJs update :2009-9-8 11:33:20
+*
+*@author litie[aita]shopex.cn
+*
+*------------------------/
+
+
+/*购物车小图mouseenter效果*/
+window.addEvent('domready',function(){
+
+  var cart_product_img_viewer=new Element('div',{styles:{'position':'absolute','zIndex':500,'opacity':0,'border':'1px #666 solid'}}).inject(document.body);
+  
+  var cpiv_show=function(img,event){
+       
+      if(!img)return;
+      cart_product_img_viewer.empty().adopt($(img).clone().removeProperties('width','height').setStyle('border','1px #fff solid')).fade(1);
+      
+      var size = window.getSize(), scroll = window.getScroll();
+        var tip = {x: cart_product_img_viewer.offsetWidth, y: cart_product_img_viewer.offsetHeight};
+        var props = {x: 'left', y: 'top'};
+        for (var z in props){
+            var pos = event.page[z] + 10;
+            if ((pos + tip[z] - scroll[z]) > size[z]) pos = event.page[z] - 10 - tip[z];
+            cart_product_img_viewer.setStyle(props[z], pos);
+        }
+  
+  };
+  
+   $ES('#cart-index .cart-product-img').each(function(i){
+  
+       new Asset.image(i.get('isrc'),{onload:function(img){
+   if(!img)return;
+           var _img=img.zoomImg(50,50);
+     if(!_img)return;
+           _img.setStyle('cursor','pointer').addEvents({
+              'mouseenter':function(e){
+                 cpiv_show(_img,e);
+              },
+              'mouseleave':function(e){
+                cart_product_img_viewer.fade(0);
+              }
+           });
+           i.empty().adopt(new Element('a',{href:i.get('ghref'),target:'_blank',styles:{border:0}}).adopt(_img));               
+       },onerror:function(){
+            i.empty();
+
+       }});
+   
+   });
+   
+   
+});
+         
+/*购物车处理*/
+void function(){
+    
+    var cartForm = $('form-cart');
+    var cartTotalPanel = $('cartTotal');
+    
+    Cart=new Object();
+    Cart.utility={
+        keyCodeFix:[48,49,50,51,52,53,54,55,56,57,96,97,98,99,100,101,102,103,104,105,8,9,46,37,39],
+        moneyFormat:{
+            rule:<{$currency|default:'null'}>,/*evaluate form PHP Smarty*/
+            format:function(num){
+                var rule = this.rule;
+                num = num.toFloat();
+                num = num.round(rule.decimals)+'';
+                var p =num.indexOf('.');
+                if(p<0){
+                    p = num.length;
+                    part = '';
+                }else{
+                    part = num.substr(p+1);
+                }
+                    while(part.length<rule.decimals){
+                        part+='0';
+                    }
+                var c=[];
+                while(p>0){
+                    if(p>2){
+                        c.unshift(num.substr(p-=3,3));
+                    }else{
+                        c.unshift(num.substr(0,p));
+                        break;
+                    }
+                }
+                return rule.sign+c.join(rule.thousands_sep)+rule.dec_point+part;
+            }
+        }
+    };
+    
+    
+    $extend(Cart,{
+         removeItem:function(handle,evt){
+             evt = new Event(evt).stop();
+             if(!confirm('确认删除？'))return;
+             var item = $(handle).getParent('tr');
+             var remoteURL = item.get('urlremove');
+             item.getFormElements().set('disabled',true);
+             this.updateTotal(remoteURL,{
+             onRequest:function(){
+                 item.getFirst().set({'html':'正在删除...'});
+                 item.setStyles({'background':'#FBE3E4','opacity':1})
+             },
+             onComplete:function(){
+                 new Fx.Style(item,'opacity').start(0).chain(function(){
+                 
+                       this.element.remove();
+                       /*购物车删除操作到极限时,刷新购物车页*/
+                       if(!$$('#cartItems tr[urlremove]').length){location.reload();}
+                 
+                 });
+             }});
+         },
+         ItemNumUpdate:function(numInput,num,evt){
+              var forUpNum = numInput.value.toInt();
+              if(new Event(evt).target!=numInput){
+                 forUpNum = (isNaN(forUpNum)?1:forUpNum)+num;
+              }
+              numInput.value = forUpNum.limit(1,Number.MAX_VALUE);
+              this.updateItem(numInput,numInput.getParent('tr'));
+         },
+         updateItem:function(input,item){
+             item.retrieve('request',{cancel:$empty}).cancel();
+             item.store('request',new Request({data:cartForm,onSuccess:function(res){
+                    if(res.contains('totalprice')){
+                        var iptValue = input.value;
+                        item.setAttribute('number',iptValue);
+                        cartTotalPanel.set('html',res);
+                        
+                         /*todo*/
+                        if($$('#cart-total-item tr').length){
+                            $('cart-total-item').setStyle('display','');
+                        }
+                       
+                        if(price=item.get('price')){
+                            item.getElement('.itemTotal').set('html', Cart.utility.moneyFormat.format(price.toFloat()*iptValue));
+                        }
+                        if(point=item.get('point')){
+                           item.getElement('.itemTotal').set('html', point.toFloat()*iptValue);
+                        }
+                    }else{
+                      input.focus();
+                      input.value = item.get('number');
+                      MessageBox.error(res);
+                    }
+             
+             }}).post(item.get('urlupdate')));
+         },
+         updateTotal:function(remoteURL,options){
+            options = options||{};
+            new Request.HTML($extend({update:cartTotalPanel,url:remoteURL,data:cartForm},options)).post();
+         },
+         empty:function(remoteURL){
+            if(!confirm('确认清空购物车？'))return;
+            
+            new Request({
+                
+                onRequest:function(){
+                   MessageBox.success('清空购物车成功,正在准备刷新本页');
+                },
+                onComplete:function(){
+                  
+                    location.href=location.href;
+                    
+                    
+                }
+            
+            }).post(remoteURL);
+         }
+    });
+  
+    /*购物数量输入控制*/
+    $$('#form-cart input[name^=cartNum[]').addEvent('keydown',function(e){
+    
+     if(!Cart.utility.keyCodeFix.contains(e.code)){
+        
+         e.stop();
+     }
+     
+    
+    });
+    /*数量调节按钮样式*/
+   $$('#form-cart .numadjust').addEvents({
+             'mousedown':function(){
+                this.addClass('active');
+             },
+             'mouseup':function(){
+               this.removeClass('active');
+             }
+         });
+    
+}();       
+         
+</script>
+<{else}>
+   <div id="cart-none-msg">
+       <div class='note' style='border-width:1px;'>
+         <h3> <{t}>购物车目前没有加入任何商品!<{/t}></h3>
+            <ul class='list'>
+               <li><a href='./'><{t}>继续挑选商品»»<{/t}></a></li>
+               <li><a href='javascript:opener=null;window.close();'><{t}>关闭此页面<{/t}></a></li>
+           </ul>
+       </div>
+   </div>
+<{/if}>
+

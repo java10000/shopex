@@ -1,0 +1,65 @@
+
+<div class="finder-list table-grid">
+    <table class="gridlist" cellpadding="0" cellspacing="0">
+        <thead>
+            <tr>  
+                <th width="200" ><{t}>发送状态<{/t}></th>
+                <th width="150" ><{t}>时间<{/t}></th>
+                <{if $sender_ != "msgbox"}><th width="50"><{t}>发送数量<{/t}></th><{/if}>
+                <{if $sender.hasTitle}><th width="250"><{t}>标题<{/t}></th><{/if}>
+                <th><{t}>内容概要<{/t}></th>
+                <th width="80"><{t}>操作<{/t}></th>
+            </tr>
+        </thead>
+        <tbody>
+            <{foreach from=$data item=item}>
+            <tr>
+            <{if $sender_ == "msgbox"}>
+                <{if $item.unread == 1 }>
+                <td>用户：<{$item.uname}> &nbsp;&nbsp;[已读]</td>
+                <{elseif $item.unread == 0}>
+                <td>用户：<{$item.uname}>&nbsp;&nbsp;[未读]</td>
+                <{/if}>
+            <{else}>
+                <{if $item.status == "ready" || $item.status == "locking" }>
+                <td>准备发送</td>
+                <{elseif $sender_ == "sms" && $item.status == "fail" }>
+                <td>发送失败：<{$item.error_msg}></td>
+                <{else}>
+                <td><{$item.error_msg}></td>
+                <{/if}>
+            <{/if}>
+
+            <{if $sender_ == "msgbox"}>
+                <td><{$item.date_line|cdate:'FDATE_FTIME'}></td>
+            <{else}>
+                <td><{$item.send_time|cdate:'FDATE_FTIME'}></td>
+            <{/if}>
+
+            <td class="Colamount"><{$item.sendnum}></td>
+            
+            <{if $sender_ == "email"}>
+                <td><{$item.title|cut:40}></td>
+            <{elseif $sender_ =="msgbox" }>
+                <td><{$item.subject|cut:40}></td>
+            <{/if}>
+
+            <td class="Coldetails">
+                <{$item.message|escape:'html'|cut:120}>
+            </td>
+
+            <td>
+                <span class="sysiconBtnNoIcon" onClick="if(window.confirm('确认删除吗？'))W.page('index.php?ctl=member/messenger&act=del&p[0]=<{$item.queue_id}>&p[1]=<{$sender_}>&p[2]=<{$queue}>')"><{t}>删除<{/t}></span>
+            </td>
+            </tr>
+            <{/foreach}>
+        </tbody>
+    </table>
+
+    <div class="foot_content" id="footBar" style="width: 1215px;"> 
+        <div class="finder-footer">
+            <{pager data=$pageData}>
+        </div>
+    </div>
+</div>
+

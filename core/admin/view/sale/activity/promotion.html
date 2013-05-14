@@ -1,0 +1,40 @@
+<div class="division">
+<{button label="添加促销规则" href="index.php?ctl=sale/promotion&act=addPromotion&p[0]=0&p[1]={$active_id}"}>
+<{button label="删除选中" type='button' onclick="if(!document.id('pmts_list_form').toQueryString()){MessageBox.error('请选择要删除的项')}else{document.id('pmts_list_form').fireEvent('submit')}"}>
+<form class="table-grid" id="pmts_list_form" action="index.php?ctl=sale/promotion&act=delete" method="post">
+<{if count($pmts)}>
+<table class="gridlist">
+<thead>
+<tr>
+<th style="width:50px"><{t}>操作<{/t}></th>
+<th><{t}>规则描述<{/t}></th>
+<th><{t}>起始时间<{/t}></th>
+<th><{t}>截止时间<{/t}></th>
+</tr>
+</thead>
+<tbody>
+<{foreach from=$pmts item=promotion}>
+<tr>
+<td><a target="{update:$('main')}" href="index.php?ctl=sale/promotion&act=addPromotion&p[0]=<{$promotion.pmt_id}>" >编辑</a><input type="checkbox" name="pmt_id[]" value="<{$promotion.pmt_id}>" /></td>
+<td><{$promotion.pmt_describe}></td>
+<td><{$promotion.pmt_time_begin|cdate}></td>
+<td><{$promotion.pmt_time_end|cdate}></td>
+</tr>
+<{/foreach}>
+</tbody>
+</table>
+<{else}>
+<div class="notice" style="margin:15px"><{t}>没有已关联的促销规则<{/t}></div>
+<{/if}>
+</form></div>
+
+
+<script>
+ $('pmts_list_form').store('target',{
+    update:'messagebox',
+    onComplete:function(){
+	  if(!window.finderGroup)return location.reload();
+      finderGroup['<{$env.get._finder_name}>'].refresh();
+    }
+ });
+ </script>

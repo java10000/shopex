@@ -1,0 +1,18 @@
+<div class="finder-detail-tabs clearfix">
+<span class="finder-detail-btns">
+<a target="_blank" href="index.php?ctl=<{$env.get.ctl}>&act=detail&p[0]=<{$env.get.p.0}>#func-<{$current_func}>" title="在新窗口打开"><{img src="images/bundle/new_window.gif"}></a>|
+<span class="lnk" onclick="eval($(this).getParent('.finder-detail').get('finder')).detail.fireEvent('slideOut');" title="关闭"><{img src="images/bundle/finder_drop_arrow_close.gif"}></span>
+</span>
+
+<{if count($_detail_func)>1}>
+	<{foreach from=$_detail_func item=item key=key}>
+	<{if $key eq $current_func}>
+	<span class="tab cur" id="tab_content"><span><{$item.label}></span></span>
+	<{else}>
+	<span class="tab"><span><a href="index.php?ctl=<{$env.get.ctl}>&act=detail&p[0]=<{$env.get.p.0}>&p[1]=<{$key}>"><{$item.label}></a></span></span>
+	<{/if}>
+	<{/foreach}>
+<{/if}>
+</div>
+
+<{include file=$_PAGE_}>

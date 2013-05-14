@@ -1,0 +1,23 @@
+<BR><p class="notice">
+注意：执行本恢复数据操作将导致<{$mtime|cdate:'FDATE_FTIME'}>后录入或修改的数据丢失，确认吗？
+</p>
+<div id="combackinfo" align="center">&nbsp;
+</div><BR><BR>
+
+
+<div id="btnarea" class="table-action" style="text-align:left;">
+	<{button type="button" label="确定"  onclick="sqlrecover('{$filename}')" }>&nbsp;&nbsp;
+    <{button type="button" label="取消" onclick="sqlcomeback.close()"}>
+</div>
+
+<script>
+function sqlrecover(filename){
+  $('combackinfo').innerHTML ='正在恢复第1卷 共<{$vols}>卷';
+  $('btnarea').innerHTML ='';
+  dorecover('index.php?ctl=system/comeback&act=recover&p[0]='+filename+'&p[1]=<{$vols}>&p[2]=1');
+}
+
+function dorecover(url){
+  new Ajax(url,{update:'combackinfo',evalScripts:true,data:'a=a'}).request();
+}
+</script>

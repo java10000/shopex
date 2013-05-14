@@ -1,0 +1,27 @@
+<div class="tableform">
+  <h5><{t}>您可以从下列预设的商品类型中选择导入<{/t}></h5>
+  <div class="division">
+  <div id="typeLoding" align="center" valign="top"><div style="width:300px;height:80px;"><BR><BR><{t}>正在加载预设商品类型...<{/t}></div><div style="clear:both"></div>
+  </div>
+</div><br /><br />
+<div id="newtypediv">
+  <h5><{t}>如果上面预设类型中没有您需要添加的商品类型，您可以添加一个新的自定义类型<{/t}></h5>
+  <div class="division">
+  <div align="center" valign="top">
+    <{foreach from=$schemas item=schema key=key}>
+    <div style="width:100px;height:80px;float:left"><a href="index.php?ctl=goods/gtype&act=toAdd&p[0]=<{$key}>" style="text-decoration: none"><img src="index.php?ctl=system/sfile&act=goodsicon&p[0]=<{$key}>" border="0"><BR><{$schema.name}></a></div>
+    <{/foreach}>
+    <div style="clear:both"></div>
+  </div>
+  </div>
+</div>
+<script language="javascript">
+W.page('index.php?ctl=goods/gtype&act=fetchProtoTypes&p[0]=index.php',{update:'typeLoding'});
+function feedFetch(link,qs){
+  $('newtypediv').innerHTML = '';
+  W.page('index.php?ctl=goods/gtype&act=fetchProtoTypes&p[0]='+link+'&p[1]='+qs,{update:'typeLoding'});
+}
+function loadLocalBrands(){
+  W.page('index.php?ctl=goods/brand&act=getCheckboxList',{update:'localBrands'});
+}
+</script>

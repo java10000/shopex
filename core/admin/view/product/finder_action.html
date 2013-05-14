@@ -1,0 +1,32 @@
+<div id="x-product-actions" class="x-drop-menu">
+    <ul class="group" label="商品上下架">
+      <li class="item" submit="index.php?ctl=goods/product&act=enable" target="refresh"><{t}>将商品上架<{/t}></li>
+      <li class="item" submit="index.php?ctl=goods/product&act=disable" target="refresh"><{t}>将商品下架<{/t}></li>
+    </ul>
+    <ul class="group">
+      <li class="item" submit="index.php?ctl=goods/product&act=singleBatchEdit&cat_id=<{$cat_id}>&finder=<{$_finder.var}>&p[0]=uniformPrice" target="dialog" dialogtitle="统一调价"><{t}>统一调价<{/t}></li>
+      <li class="item" submit="index.php?ctl=goods/product&act=singleBatchEdit&cat_id=<{$cat_id}>&finder=<{$_finder.var}>&p[0]=differencePrice" target="dialog" dialogtitle="分别调价"><{t}>分别调价<{/t}></li>
+      <li class="item" submit="index.php?ctl=goods/product&act=singleBatchEdit&cat_id=<{$cat_id}>&finder=<{$_finder.var}>&p[0]=uniformStore" target="dialog" dialogtitle="统一调库存"><{t}>统一调库存<{/t}></li>
+      <li class="item" submit="index.php?ctl=goods/product&act=singleBatchEdit&cat_id=<{$cat_id}>&finder=<{$_finder.var}>&p[0]=differenceStore" target="dialog" dialogtitle="分别调库存"><{t}>分别调库存<{/t}></li>
+		</ul>
+		<ul class="group" label="商品信息调整">
+      <li class="item" submit="index.php?ctl=goods/product&act=singleBatchEdit&cat_id=<{$cat_id}>&finder=<{$_finder.var}>&p[0]=name" target="dialog" dialogtitle="批量修改商品名称"><{t}>商品名称<{/t}></li>
+      <li class="item" submit="index.php?ctl=goods/product&act=singleBatchEdit&cat_id=<{$cat_id}>&finder=<{$_finder.var}>&p[0]=brief" target="dialog" dialogtitle="批量修改商品简介"><{t}>商品简介<{/t}></li>
+      <li class="item" submit="index.php?ctl=goods/product&act=singleBatchEdit&cat_id=<{$cat_id}>&finder=<{$_finder.var}>&p[0]=brand" target="dialog" dialogtitle="批量修改商品品牌"><{t}>商品品牌<{/t}></li>
+      <li class="item" submit="index.php?ctl=goods/product&act=singleBatchEdit&cat_id=<{$cat_id}>&finder=<{$_finder.var}>&p[0]=dorder" target="dialog" dialogtitle="批量修改商品排序"><{t}>商品排序<{/t}></li>
+      <li class="item" submit="index.php?ctl=goods/product&act=singleBatchEdit&cat_id=<{$cat_id}>&finder=<{$_finder.var}>&p[0]=weight" target="dialog" dialogtitle="批量修改商品重量"><{t}>商品重量<{/t}></li>
+      
+      <!-- 类型转换相关 -->
+      <li class="item" submit="index.php?ctl=goods/product&act=typeTurn&p[0]=cat&cat_id=<{$cat_id}>&finder=<{$_finder.var}>" target="dialog" dialogtitle="分类转换"><{t}>分类转换<{/t}></li>
+      <li class="item" submit="index.php?ctl=goods/product&act=typeTurn&p[0]=type&cat_id=<{$cat_id}>&finder=<{$_finder.var}>&no_paging=true" target="dialog" dialogtitle="类型转换"><{t}>类型转换<{/t}></li>
+
+    <{if $env.conf.point.get_policy == 2}>
+      <li class="item" submit="index.php?ctl=goods/product&act=singleBatchEdit&cat_id=<{$cat_id}>&finder=<{$_finder.var}>&p[0]=score" target="dialog" dialogtitle="批量修改商品积分"><{t}>商品积分<{/t}></li>
+    <{/if}>
+    </ul>
+    <ul class="group last" label="图片维护">
+      <li class="item" submit="index.php?ctl=goods/product&act=batchImage" target="dialog" dialogtitle="重新生成图片"><{t}>重新生成图片...<{/t}></li>    
+    </ul>
+</div>
+<{button type="link" wrapimg="true" class="btn-blank" label="添加商品" class="btn-blank" icon="finder_add.gif" href="index.php?ctl=goods/product&act=addNew" target="_blank"}>
+<{button type="dropmenu" wrapimg="true" class="btn-x-large" dropmenu_opts="offset:{x:3,y:-2},relative:{$_finder.var}.action,width:200,height:350" dropmenu="x-product-actions" label="批量操作" icon="finder_massive.gif"}>

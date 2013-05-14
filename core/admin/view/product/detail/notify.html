@@ -1,0 +1,15 @@
+<h3><{t}>到货通知<{/t}></h3>
+<div style="background:#fdc;border-bottom:1px solid #ccc;padding:10px;text-align:center;font-weight:bold<{if $goods.store <= 0}>;display:none<{/if}>">
+ <a href="index.php?ctl=goods/product&act=sendNotify&p[0]=<{$goods.goods_id}>"><{t}>发送到货通知<{/t}></a>
+ </div>
+<div style="padding:20px">
+  <table width="100%">
+  <{foreach from=$notify item=item}>
+  <tr>
+    <td><{if $item.uname}><{$item.uname}> <{/if}><{$item.email}></td>
+    <td><{$item.creat_time|cdate}></td>
+    <td><{$item.status}></td>
+  </tr>
+  <{/foreach}>
+  </table>
+</div>

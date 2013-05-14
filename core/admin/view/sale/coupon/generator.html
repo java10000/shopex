@@ -1,0 +1,26 @@
+<div class="division">
+<{button label="添加优惠券发放途径" href="index.php?ctl=sale/activity&act=activityInfo"}>
+<div class="table-grid"> 
+<{if count($pmts)}>
+<table class="gridlist">
+<thead>
+<tr>
+<th><{t}>优惠活动<{/t}></th>
+<th><{t}>起始时间<{/t}></th>
+<th><{t}>截止时间<{/t}></th>
+</tr>
+</thead>
+<tbody>
+<{foreach from=$pmts item=promotion}>
+<tr>
+<td><{$promotion.pmt_describe}></td>
+<td><{$promotion.pmt_time_begin|cdate}></td>
+<td><{$promotion.pmt_time_end|cdate}></td>
+</tr>
+<{/foreach}>
+</tbody>
+</table>
+<{else}>
+<div class="notice" style="margin:15px"><{t}>没有已定义的发放途径<{/t}></div>
+<{/if}>
+</div></div>

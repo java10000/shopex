@@ -1,0 +1,74 @@
+<{form action="commit" onsubmit="brand.submit(this)"}>
+<h5><{t}>添加类型品牌<{/t}></h5>
+<div style="width:150px; padding:10px; float:left; border:1px solid #efefef; margin:10px;"><select id="brand_all" style="width:100%" size="10" multiple="multiple" id="select">
+    <{foreach from=$brands item=brand}>
+    <option value="<{$brand.brand_id}>"><{$brand.brand_name}></option>
+    <{/foreach}>
+    </select></div>
+<div style="width:75px;padding:10px; float:left; padding-top:20px;margin:0;">
+<div style="width:50px; display:block; margin:3px; text-align:center; font-size:18px" class="sysiconBtnNoIcon" onclick="brand.add()">>></div>
+<div style="width:50px;display:block; margin:3px; text-align:center;font-size:18px" class="sysiconBtnNoIcon" onclick="brand.remove()"><<</div>
+<div style="width:50px;display:block; margin:3px; text-align:center" class="sysiconBtnNoIcon"  onclick="brand.reset()"><{t}>重置<{/t}></div>
+</div>        
+<div style="width:150px;padding:10px; float:left; border:1px solid #efefef; margin:10px;"><select id="brand_sel" style="width:100%;" size="10" multiple="multiple" id="select">
+      <{foreach from=$_POST.brands item=brand}>
+      <option value="<{$brand.brand_id}>"><{$brand.brand_name}></option>
+      <{/foreach}>
+    </select></div>   
+ <div style="clear:both"></div> 
+<input name="_SX[f]" type="hidden" value="4" />
+<{/form}>
+<script language="javascript">
+function $D(s){
+  return document.getElementById(s);
+}
+var brand={
+  add:function(){
+    var os= $D('brand_sel').getElementsByTagName('option');
+    var sel={};
+    for(var i=0;i<os.length;i++){
+      sel[os[i].value]=1;
+    }
+    os= $D('brand_all').getElementsByTagName('option');
+    for(var i=0;i<os.length;i++){
+      if(os[i].selected && !sel[os[i].value]){
+        $D('brand_sel').appendChild(os[i].cloneNode(true));
+      }
+    }
+  },
+  remove:function(){
+    var os= $D('brand_sel').getElementsByTagName('option');
+    var e=[];
+    for(var i=0;i<os.length;i++){
+      if(os[i].selected)e.push(os[i]);
+    }
+    for(var i=0;i<e.length;i++){
+      e[i].parentNode.removeChild(e[i]);
+    }
+  },
+  reset:function(){
+    var os= $D('brand_sel').getElementsByTagName('option');
+    var e=[];
+    for(var i=0;i<os.length;i++){
+      e.push(os[i]);
+    }
+    for(var i=0;i<e.length;i++){
+      e[i].parentNode.removeChild(e[i]);
+    }
+  },
+  submit:function(o){
+    var os= $D('brand_sel').getElementsByTagName('option');
+    var oslen = os.length;
+    var brandhtml = '';
+    if(oslen>0){
+      for(var i=0;i<oslen;i++){
+        brandhtml+='<input name="brands[]" type="hidden" value="'+os[i].value+'" />';
+      }
+    }else{
+      brandhtml+='<input name="brands" type="hidden" value="null" />';
+    }
+    o.innerHTML+=brandhtml;
+    return true;
+  }
+}
+</script>

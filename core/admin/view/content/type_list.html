@@ -1,0 +1,25 @@
+<div class="finder">
+<div class="actionItemsSingleLine"><a class="sysiconBtn addorder"  href='index.php?ctl=content/content&act=showNewType'><{t}>添加分类<{/t}></a>
+  
+</div>
+<div class="finder-list table-grid">
+  <table>
+    <thead>
+      <tr>
+        <td style='width:200px;'><{t}>文章分类ID<{/t}></td>
+        <td style='width:200px;'><{t}>文章分类<{/t}></td>
+        <td style='width:200px;'><{t}>操作<{/t}></td>
+      </tr>
+    </thead>
+    <tbody>
+    <{foreach key=key item=item from=$type}>
+    <tr>
+      <td><{$item.pid}></td>
+      <td><{$item.cat_info}></td>
+      <td><a href='index.php?ctl=content/content&act=editType&p[0]=<{$item.cat_id}>'><{t}>编辑<{/t}></a><a href='index.php?ctl=content/content&act=delType&p[0]=<{$item.cat_id}>'><{t}>删除<{/t}></a></td>
+    </tr>
+    <{/foreach}>
+    </tbody>
+    
+  </table>
+</div>

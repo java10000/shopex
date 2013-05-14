@@ -1,0 +1,120 @@
+<{area inject=".mainHead"}>
+<{if $_finder.listViews}>
+<div id="finder-header-<{$_finder._name}>" class="finder-header">
+<{/if}>
+<{button class="finder-col-options" title="列表项配置" type="button" icon="mceico_38.gif"
+onclick="new Dialog('index.php?ctl={$env.get.ctl}&act=colsetting',{width:350,title:'编辑列表项',onClose:{$_finder.var}.refresh.bind({$_finder.var})})"}>
+
+<table width="100%" cellpadding="0" cellspacing="0">
+<!----cols---->
+  <col style="width:24px" class="span-select"></col>
+  <{if $_finder.detail_url && $env.get.act!="recycleIndex"}>
+	<col style="width:48px"></col>
+  <{/if}>
+  <{foreach from=$items.cols item=col key=key name="finderCol"}>
+  <col style="width:<{$col.width}>px" <{if $_finder.order[0]==$col}>class="orderCell"<{/if}>></col>
+  <{/foreach}>
+  <col></col>
+<!----cols---->
+<thead>
+  <tr>
+  <{if $env.get.ctl != "member/advance"}>
+    <td><input type="checkbox" class="sellist" name="<{$_finder.id}>[]" onclick='this.blur()'/></td>
+	<{else}>
+	<td class="sellist"></td>
+	<{/if}>
+  <{if $_finder.detail_url}>
+	<td style="width:48px"><{t}>&nbsp;查看<{/t}></td>
+  <{/if}>
+  <{foreach from=$items.cols item=col key=key name="finderCol"}>
+     <td>
+
+	 <{if $_finder.order[0]==$key}>
+		<div class="cell highlight-<{if $_finder.order[1]=='desc'}>down<{else}>up<{/if}> borderdown orderable" key="<{$key}>" order="<{$_finder.order[1]}>">
+	  <{elseif $col.noOrder}>
+		<div class="cell">
+	  <{else}>
+	  <{if $key neq '_cmd'}>
+		<div class="cell orderable" key="<{$key}>">
+		<{/if}>
+	  <{/if}>
+      <table width="100%" cellpadding="0" cellspacing="0">
+        <tr>
+        <td>
+	  	<span class='finder-col-label'><{$col.label}></span>
+        </td>
+        <td width='5px'>
+        <span class="finder-col-resizer" title='拖动改变列宽' onclick='new Event(event).stopPropagation()'><{t}>列宽<{/t}></span>
+        </td>
+        </tr>
+      </table>
+      </div>
+
+      </td>
+  <{/foreach}>
+	<td>&nbsp;</td>
+  </tr>
+  </thead>
+</table>
+<{if $_finder.listViews}>
+</div>
+<{/if}>
+<{/area}>
+
+<{safehtml}>
+<{assign var="finderId" value=$_finder.var}>
+<div class="finder-list finder-list-normal" id="finder-list-<{$_finder._name}>">
+<{if $sql_error}>
+<div class="error" style="margin:20px;-moz-border-radius:5px;-webkit-border-radius:5px;radius:5px"><b><{t}>发现数据库结构存在错误.<{/t}></b><{button href="index.php?ctl=system/debug&act=check_database" label="自动修复"}><hr />
+<p><{$sql_error}></p></div>
+<{elseif $items.list}>
+<table width="100%" cellpadding="0" cellspacing="0">
+<!----cols---->
+  <col style="width:24px" class="span-select"></col>
+  <{if $_finder.detail_url && $env.get.act!="recycleIndex"}>
+	<col style="width:48px"></col>
+  <{/if}>
+  <{foreach from=$items.cols item=col key=key name="finderCol"}>
+  <col style="width:<{$col.width}>px" idx="<{$env.foreach.finderCol.iteration}>" <{if $_finder.order[0]==$col}>class="orderCell"<{/if}>></col>
+  <{/foreach}>
+  <col></col>
+<!----cols---->
+<tbody>
+  <{foreach from=$items.list item=item name="_finder"}>
+  <tr class="<{if $item.highlight}>highlight-row <{/if}>row<{if $env.foreach._finder.iteration is not odd}> even<{/if}>" item-id="<{$item[$_finder.id]}>">
+
+ <{if $env.get.ctl != "member/advance"}>
+    <td><input type="checkbox" tags="<{$item._tags|escape:"html"}>" class="sel" name="<{$_finder.id}>[]" value="<{$item[$_finder.id]}>"></td>
+<{else}>
+<td><input type="hidden" class="sel"></td>
+<{/if}>
+
+  <{if $_finder.detail_url}>
+	<td class="finder-list-command">
+	<span title="展开查看" class="btn-detail-open"  detail="index.php?ctl=<{$env.get.ctl}>&act=detail&p[0]=<{$item[$_finder.id]}>" >
+       <img src="images/transparent.gif"/>
+    </span>
+	    <a title="在新窗口查看" href="index.php?ctl=<{$env.get.ctl}>&act=detail&p[0]=<{$item[$_finder.id]}>" target="_blank"><{img src="images/bundle/new_window.gif"}></a>
+	</td>
+  <{/if}>
+
+	<{foreach from=$items.cols item=colItem key=col}>
+    <td key="<{$col}>"<{if $colItem.editable && $env.get.act!="recycleIndex"}> class="editable"<{/if}>><div class="cell">
+	<{if $colItem.html}>
+	<{include file=$colItem.html}>
+	<{else}>
+	<{$item[$col]|default:'-'}>
+	<{/if}>
+	</div></td>
+    <{/foreach}>
+	<td>&nbsp;</td>
+  </tr>
+  <{/foreach}>
+</tbody>
+</table>
+<{else}>
+<div style="margin:20px;border:1px solid #999;background:#f0f0f0;padding:20px;-moz-border-radius:5px;-webkit-border-radius:5px;radius:5px"><{t}>没有符合条件的条目.<{/t}></div>
+<{/if}>
+<div id='finder-list-col-editpanel' style='visilibity:hidden;overflow:hidden;' class='finder-list-col-editpanel' onclick='new Event(event).stopPropagation()'></div>
+</div>
+<{/safehtml}>

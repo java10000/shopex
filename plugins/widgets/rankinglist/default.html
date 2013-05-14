@@ -1,0 +1,29 @@
+<div class="RankingList">
+<ul>
+<{foreach from=$data item=data1 key=key}>
+<{if $data1.goods_id > 0}>
+<{if $setting.showPic=="on"}>
+  <{if $key == 0}>
+    <div class="pic" style="overflow:hidden;text-align:center;vertical-align: 
+    <{if $env.thumbnail_pic_width>0 && $env.thumbnail_pic_height>0}>width:<{$env.thumbnail_pic_width}>px;height:<{$env.thumbnail_pic_height}>px;<{/if}>><a href="<{link ctl="product" act="index" arg0=$data1.goods_id}>" target="_blank" title="<{$data1.name}>">
+	<a href="<{link ctl="product" act="index" arg0=$data1.goods_id}>" target="_blank" title="<{$data1.name}>" style="color:<{$setting.fontColor}>;<{$setting.fontStyle|styleset}>">
+	<img src="<{$data1.thumbnail_pic|default:$env.conf.site.default_thumbnail_pic|storager}>">
+	</a>
+	</a></div>
+  <{/if}>
+<{/if}>
+
+<{if $key <= $setting.showing-1}>
+<li class="l<{$key+1}> dotsep hl" style="color:<{$setting.fontColor}>;<{$setting.fontStyle}>"><span><{$key+1}></span>&nbsp;<a href="<{link ctl="product" act="index" arg0=$data1.goods_id}>" target="_blank" title="<{$data1.name}>" style="color:<{$setting.fontColor}>;<{$setting.fontStyle|styleset}>"><{$data1.name|cut:$setting.maxlength}></a></li>
+<{else}>
+<li class="l<{$key+1}> dotsep" style="color:<{$setting.fontColor2}>;<{$setting.fontStyle2}>"><span><{$key+1}></span>&nbsp;<a href="<{link ctl="product" act="index" arg0=$data1.goods_id}>" target="_blank" title="<{$data1.name}>" style="color:<{$setting.fontColor2}>;<{$setting.fontStyle2|styleset}>"> <{$data1.name|cut:$setting.maxlength}></a></li>
+<{/if}>
+<{/if}>
+<{/foreach}>
+</ul>
+</div>
+
+<{if $setting.showMore == "on"}>
+  <div class="more clearfix"><a href="<{$data.link}>">更多...</a></div>
+<{/if}>
+

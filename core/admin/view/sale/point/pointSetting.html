@@ -1,0 +1,90 @@
+<form id='pointSettingForm'  method='post' action='index.php?ctl=sale/point&act=savePointSet' target="{update:'messagebox'}">
+<div class="tableform">
+<div class="division">
+<table>
+    <tr>
+      <th><{t}>积分计算方式：<{/t}></th>
+      <td id="p_a">
+      <label><input type="radio" name="get_policy" value="0" <{if $point.get_policy eq 0}>checked="checked"<{/if}>/><{t}>不使用积分<{/t}></label>
+        <span id='nullNotice' class="notice-inline"><{t}><{/t}></span>
+        <br>
+        <label><input type="radio" name="get_policy" value="1" <{if $point.get_policy eq 1}>checked="checked"<{/if}>/><{t}>按订单商品总价格计算积分<{/t}></label>
+        <br>
+        <label><input type="radio" name="get_policy" value="2" <{if $point.get_policy eq 2}>checked="checked"<{/if}>/><{t}>为商品单独设置积分<{/t}></label>  
+        <span id='goodsNotice' class="notice-inline"><{t}>在添加商品的时候，输入积分<{/t}></span>
+        <div/></td>
+    </tr>
+    <tr id='p_point' style="display: none">
+      <th><{t}>积分换算比率：<{/t}></th>
+      <td>
+        <input vtype="unsigned" class="x-input" type="text" name="get_rate" style="width:50px" value=<{$point.get_rate}>><span class="notice-inline"><{help}><{t}>请输入阿拉伯数字，如：10元赠送1个积分，可设为0.1<{/t}><br /><br /><{t}>积分计算结果如果含有小数则只取整数部分，如：积分计算结果为18.6，系统会按照18累计积分<{/t}><{/help}><br /><span class="fontcolorGray"><{t}>订单所得积分 = 订单商品总价格 X 积分换算比率<{/t}></span></td>
+    </tr>
+
+  </table>
+</div>
+
+
+<div class="table-action">
+	<{button type="submit" label="提交" }>
+</div>
+  
+  
+</div>
+  
+</form>
+<script>
+  var pointSetting = {
+    setInit : function(item){
+      if (item.value==0 || item.value==2){
+        $('p_point').setStyle('display', 'none');
+      }else{
+        $('p_point').setStyle('display', '');
+      }  
+    }
+  }
+  
+  $ES('input', 'p_a').each(function(item){
+    if(item.checked) {
+      pointSetting.setInit(item);    
+      if(item.value == '0') $('nullNotice').style.display = 'inline';
+      else $('nullNotice').style.display = 'none';
+      if(item.value == '2') $('goodsNotice').style.display = 'inline';
+      else $('goodsNotice').style.display = 'none';
+    }
+  });
+  
+  $ES('input', 'p_a').each(function(item){
+    item.addEvent('click',function(e){
+      pointSetting.setInit(item);
+      if(item.value == '0') $('nullNotice').style.display = 'inline';
+      else $('nullNotice').style.display = 'none';
+      if(item.value == '2') $('goodsNotice').style.display = 'inline';
+      else $('goodsNotice').style.display = 'none';
+    });
+  });
+  /*
+  var p_arr = ['b', 'c', 'd'];
+  p_arr.each(function(v){
+    $ES('input', 'p_'+v).each(function(item){
+      if(item.checked) {
+        if (item.value==1){
+          $('p_'+v+'_v').setStyle('display','');
+        }else{
+          $('p_'+v+'_v').setStyle('display','none');
+        }
+      }
+    });
+    
+    $ES('input', 'p_'+v).each(function(item){
+      item.addEvent('click',function(e){
+        if (item.value==1){
+          $('p_'+v+'_v').setStyle('display','');
+        }else{
+          $('p_'+v+'_v').setStyle('display','none');
+        }
+      });
+    });
+
+  });*/
+
+</script>

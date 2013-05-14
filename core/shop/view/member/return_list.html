@@ -1,0 +1,73 @@
+<div class="MemberMain">
+<div style="margin-right:175px;">
+<h1 class="title"><{t}>售后服务列表<{/t}></h1>
+<div class="FormWrap">
+<!--<div class="division">
+<form action="<{link ctl=member act=return_product}>" method="post" name="return_product" id="return_product">
+<table border="0" cellspacing="0" cellpadding="3" class="valignMiddle ">
+  <tr>
+    <td><{t}>售后服务标题：<{/t}></td>
+    <td colspan="4"><input name="title" size="70"/></td>
+    </tr>
+  <tr>
+    <td><{t}>订单号：<{/t}></td>
+    <td><input name="order_id" value="" size="30" /></td>
+    <td><{t}>状态：<{/t}></td>
+    <td><select name="status">
+        <option value="1"><{t}>未审核<{/t}></option>
+        <option value="2"><{t}>审核中<{/t}></option>
+        <option value="3"><{t}>审核通过<{/t}></option>
+        <option value="4"><{t}>已完成<{/t}></option>
+        <option value="5"><{t}>审核未通过<{/t}></option>
+      </select></td>
+    <td><input class="buttonstyle" type="submit" value="搜索" /></td>
+  </tr>
+</table>
+</form>
+</div>-->
+<a href="<{link ctl=member act=return_order_list}>" class='btn-normal'><{t}>申请售后服务<{/t}></a>
+<div class="division pushdown-1">
+
+<table width="100%" cellpadding="3" cellspacing="0" class="liststyle">
+
+<col class="span-3 ColColorGray"></col>
+<col ></col>
+<col class="span-4"></col>
+<col class="span-2"></col>
+<thead>
+	<tr>
+		<th><{t}>订单号<{/t}></th>
+		<th><{t}>售后服务标题<{/t}></th> 
+		<th><{t}>申请时间<{/t}></th>
+	 	<th><{t}>处理状态<{/t}></th>
+	</tr>
+</thead>
+<tbody>
+<{if count($return_list)>0 }>
+<{foreach from=$return_list item="return_item" name=return_list}>
+<tr>
+	<td><{$return_item.order_id}></td>
+	<td>
+    	<a href="<{link ctl=member act=return_details arg0=$return_item.return_id}>"><{$return_item.title}></a>
+    </td>
+	<td class="textright"><{$return_item.add_time|cdate:'FDATE_FTIME'}></td>
+    <td>
+    	<{if $return_item.status == 1}>未审核
+        <{elseif $return_item.status == 2}>审核中
+        <{elseif $return_item.status == 3}>审核通过
+        <{elseif $return_item.status == 4}>已完成
+        <{elseif $return_item.status == 5}>审核未通过
+        <{/if}>
+    </td>
+</tr>
+<{/foreach}>
+<{else}>
+<td colspan="4"><{t}>您还没有提交过售后服务信息，如果您购买的商品需要退换货/维修等服务，您可以“<{/t}><a class="nolnk" href="<{link ctl=member act=return_order_list}>"><{t}>点此申请售后服务<{/t}></a>”。</td>
+<{/if}>
+</tbody>
+</table>
+<{pager data=$pager}>
+</div>
+</div>
+</div>
+</div>

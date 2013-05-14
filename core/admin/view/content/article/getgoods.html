@@ -1,0 +1,40 @@
+<{if $goods}>
+<input type="hidden" id="chnod">
+<div  id="gdetail">
+<{foreach from=$goods item=goods key=key}>
+<div style='padding:5px; float: left;margin:2px;border:#ccc 1px solid;cursor:pointer;' onclick='$(this).getElement("input[type=checkbox]").checked=!$(this).getElement("input[type=checkbox]").checked'>
+<table>
+<tr>
+<td>
+    <input type="checkbox" name="gid[]" value="<{$goods.goods_id}>" onclick='new Event(event).stopPropagation()' <{$goods.checked}>>
+ </td>
+ <td width='250px' >
+	<img src='<{if $goods.thumbnail}><{$goods.thumbnail|storager}><{else}>index.php?ctl=goods/product&act=view_src_img&p[0]=<{$goods.gimage_id}><{/if}>' width="50" height="50" align='left' style='margin-right:10px;'>
+	<{$goods.name}>
+</td>
+</tr>
+</table>
+</div>
+<{/foreach}>
+</div>
+<{area inject='.mainFoot'}>
+   <center>
+        <button class="sysiconBtnNoIcon" id="btncon"/><{t}>确定<{/t}></button>
+   </center>
+ <{/area}>
+<script>
+
+void function(){
+    var pDiag = $('chnod').getParent('.dialog');
+    $('btncon').addEvent('click',function(){
+       var gvalus= $('gdetail').getElements('input[checked]').getValue();
+        $('goodsid').set('value',gvalus.join(','));
+        pDiag.retrieve('instance').close();
+    });
+}();
+</script>
+<{else}>
+<div class="notice">
+    没有查找到相关商品！
+</div>
+<{/if}>

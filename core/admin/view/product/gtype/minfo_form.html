@@ -1,0 +1,68 @@
+﻿<div class="division" style=" padding:3px; margin:0;">
+<div class="action-bar" style="padding:3px;">
+<span onclick="addRow(2)" class="sysiconBtn addorder"><{t}>添加一个可选项<{/t}></span>
+<span onclick="addRow(0)" class="sysiconBtn addorder"><{t}>添加一个单行输入项<{/t}></span>
+<span onclick="addRow(1)" class="sysiconBtn addorder"><{t}>添加一个多行输入项<{/t}></span>
+</div>
+
+<div class="row finder-head">
+   
+    <div class="p_label span-3"><{t}>用户购买必填项<{/t}></div>
+    <div class="p_name span-3" style="display:none"><{t}>标识字段<{/t}></div>
+    <div class="p_type span-3"><{t}>输入类型<{/t}></div>
+    <div class="p_options span-5"><{t}>可选值 (用"<{/t}><font color='blue'>,</font><{t}>"分隔)<{/t}></div>
+  </div>
+<div id="minfo_box" class="finder row" style="height:180px;overflow:auto">
+<{if count($gtype.minfo)>0}>
+<{foreach from=$gtype.minfo item=items}>
+  <div class="row-line">
+    <div class="p_label span-3"><input name="minfo[label][]" size="12"  value="<{$items.label}>" /></div>
+    <div class="p_name span-3" style="display:none"><input name="minfo[name][]" size="12" value="<{$items.name}>" /></div>
+    <div class="p_type span-3"><select name="minfo[type][]">
+      <option value="0"<{if $items.type == 0 || $items.type == 'input'}> selected="selected"<{/if}>><{t}>单行输入项<{/t}></option>
+      <option value="1"<{if $items.type == 1 || $items.type == 'text'}> selected="selected"<{/if}>><{t}>多行输入项<{/t}></option>
+      <option value="2"<{if $items.type == 2 || $items.type == 'select'}> selected="selected"<{/if}>><{t}>选择项<{/t}></option>
+    </select></div>
+    <div class="p_options span-5"><input name="minfo[options][]"  value="<{$items.s_minfo}>" /></div>
+    <div class="p_btn span-1" style=" text-align:center;color:red;" onclick="this.parentNode.parentNode.removeChild(this.parentNode)"><{img title="删除" alt="删除"  src="images/bundle/delecate.gif"}></div>
+
+  </div>
+<{/foreach}>
+<{else}>
+  <div class="row-line">
+    <div class="p_label span-3"><input size="12" name="minfo[label][]" /></div>
+    <div class="p_name span-3" style="display:none"><input size="12" name="minfo[name][]"  /></div>
+    <div class="p_type span-3"><select name="minfo[type][]">
+      <option value="0"><{t}>单行输入项<{/t}></option>
+      <option value="1"><{t}>多行输入项<{/t}></option>
+      <option value="2"><{t}>选择项<{/t}></option>
+    </select></div>
+    <div class="p_options span-5"><input name="minfo[options][]"  /></div>
+        <div class="p_btn span-1" style=" text-align:center;color:red;" onclick="this.parentNode.parentNode.removeChild(this.parentNode)"><{img title="删除" alt="删除"  src="images/bundle/delecate.gif"}></div>
+
+  </div>
+<{/if}>
+</div>
+</div>
+
+<div style="display:none" id="src_box" class="row"><div class="row-line">
+    <div class="p_label span-3"><input size="12" name="minfo[label][]"  /></div>
+    <div class="p_name span-3" style="display:none"><input size="12" name="minfo[name][]"  /></div>
+    <div class="p_type span-3"><select name="minfo[type][]">
+      <option value="0"><{t}>单行输入项<{/t}></option>
+      <option value="1"><{t}>多行输入项<{/t}></option>
+      <option value="2"><{t}>选择项<{/t}></option>
+    </select></div>
+<div class="p_options span-5"><input name="minfo[options][]"  /></div>
+    <div class="p_btn span-1" style=" text-align:center;color:red;" onclick="this.parentNode.parentNode.removeChild(this.parentNode)"><{img title="删除" alt="删除"  src="images/bundle/delecate.gif"}></div>
+
+
+</div>
+<script language="javascript">
+
+function addRow(isSel){
+  var e = $('src_box').firstChild.cloneNode(true);
+  e.getElementsByTagName('select')[0].selectedIndex=isSel;
+  $('minfo_box').appendChild(e);
+}
+</script>

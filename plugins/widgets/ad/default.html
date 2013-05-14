@@ -1,0 +1,15 @@
+<{foreach from=$data item=data key=key}>
+<div class="AdvBanner">
+<{if $data.type=='image'}>
+<a href="<{$data.tolink}>"><img src="<{$data.link}>"></a>
+<{elseif $data.type=='flash'}>
+<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7,0,19,0">
+  <param name="movie" value="<{$data.link}>" />
+  <param name="quality" value="high" />
+  <embed src="<{$data.link}>" quality="high" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash"></embed>
+</object>
+<{elseif $data.type=='html'}>
+<{$data.link}>
+<{/if}>
+</div>
+<{/foreach}>

@@ -1,0 +1,55 @@
+
+<div class="CartWrap">
+<div class="CartNav clearfix"><div class="floatLeft"><img src="statics/cartnav-step2.gif" alt="购物流程--用户认证" /></div><div class="floatRight"><img src="statics/cartnav-cart.gif"  /></div></div>
+</div>
+
+<div class="RegisterWrap clearfix">
+    <div class="leftpart" style="width:47%; margin-right:10px;margin-top:20px;">
+      <{require file="passport/index/login.html"}>
+    </div>
+    <div class="righttop" style=" width:47%; height:auto; margin-top:20px;">
+      <{require file="passport/index/signup.html"}>
+      </div>
+  
+    
+
+      <{foreach from=$cart_login_content item=no}><{$no}><{/foreach}>
+
+
+      <{if !$mustMember}>
+        <div class="rightbottom" style="<{if $cart_login_content}>clear:both;<{/if}> float:left; width:47%; height:auto; margin-top:5px;">
+             <div class="RegisterWrap">
+               <h4><{t}>直接购买<{/t}></h4>
+               <div class="intro"><div class="customMessages">{nologin_buy}</div></div>
+               <div class="form">
+               <a class="lnk" href="<{link ctl=cart act=checkout arg0=$isfastbuy}>" onclick="Cookie.set('S[ST_ShopEx-Anonymity-Buy]', 'true')" id="anonymityBuy"><{t}>直接进入购买<{/t}></a>
+               </div>
+            </div>
+           </div>
+       <{/if}>
+<{if $open_id_status}>
+    <div class="righttop" style=" width:47%; height:auto; margin-top:20px;">
+    <h4>信任登陆</h4>
+    <div class="form">
+      <ul class="trustlogos">
+      <{foreach from=$openid_login item=item key=key}>
+        <li><{if $item.href neq ''}><a href="<{$item.href}>"><img src="statics/accountlogos/<{$key}>.gif"/></a><{else}><img src="statics/accountlogos/<{$key}>.gif"/><{/if}></li>
+        <{/foreach}>
+        <li class="more"><a href="#" style="margin-left:10px;">更多»</a></li>
+      </ul>
+      
+      <style>.actbtn{display:inline;}</style>
+      <center style="height:15px;"><input type="button" tabindex="4" value="登录" class="actbtn btn-login trust__login"></center>
+      </div>
+      </div>
+<{/if}>
+  </div>
+
+
+
+
+
+
+
+<div class="clear"></div>
+<{javascript file='formplus.js'}>

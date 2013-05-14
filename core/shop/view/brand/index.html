@@ -1,0 +1,39 @@
+<div class="BrandDetailWrap">
+<div class="branddetail">
+<table width="100%" cellpadding="0" cellspacing="3" class="brandtitle">
+
+  <tr>
+        <td width="80">
+		<{if $data.brand_logo}>
+		<img src="<{$data.brand_logo|storager}>">
+
+		<{/if}>
+		</td>
+        <td class="prepend-1">
+            <div class="info">
+                <h1><{$data.brand_name}></h1>
+                官方站点:<a href="<{$data.brand_url}>" target="_blank"><{$data.brand_url}></a>
+            </div>
+        </td>
+    </tr>
+</table>
+</div>
+<p class="intro">
+  <{$data.brand_desc}>
+</p>
+
+</div>
+<div class="GoodsSearchWrap">
+  <{require file=$view}>
+</div>
+
+<div class='clearfix' style="clear:both;">
+ <{pager data=$pager}>
+</div>
+
+<!--center>
+<{if $count>20}>
+<a href="<{$link}>" title="全部 <{$data.brand_name}> 商品"><{t}>查看更多 <{/t}><{$data.brand_name}><{t}> 商品 共<{/t}><{$count}><{t}>件...<{/t}></a>
+<{else}>
+已显示所有<{$count}>件 <{$data.brand_name}> 商品</>
+<{/if}></center-->

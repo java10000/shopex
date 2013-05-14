@@ -1,0 +1,53 @@
+<div class="SiteMaps">
+  <table border="0" cellspacing="0" cellpadding="0">
+  <{foreach from=$items item=item}>
+    <tr> 
+      <td><h3><a href="<{$item.link}>"><{$item.title}></a></h3></td>
+     </tr>
+    <{/foreach}> 
+  </table>
+  
+  
+    <{foreach from=$items item=item}>
+        <div class="colborder"><{$item.html}></div>
+        <{/foreach}>
+</div>
+
+
+
+
+
+<script>
+
+
+
+for(var i=0;i<$$(".SiteMaps h3").length;i++) {
+
+$$(".SiteMaps .colborder")[i].inject($$(".SiteMaps h3")[i], 'after');
+
+}
+
+
+
+for(var i=0;i<$$(".SiteMaps ul").length;i++) {
+
+
+if($$(".SiteMaps ul")[i].getStyle("padding-left") > "20px") { 
+
+ $$(".SiteMaps ul")[i].setStyle("float","left");
+
+}
+else { 
+
+
+if(!$$(".SiteMaps ul")[i].getNext("div")) { 
+$$(".SiteMaps ul")[i].setStyle("float","left");
+
+}
+
+else { $$(".SiteMaps ul")[i].setStyle("clear","both");}
+}
+
+}
+
+</script>

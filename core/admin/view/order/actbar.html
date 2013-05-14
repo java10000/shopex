@@ -1,0 +1,57 @@
+<{if $recy == 'false'}>
+
+<{assign var="_if_conf_payed" value=$env.conf.order.flow.payed}>
+<{assign var="_if_conf_consign" value=$env.conf.order.flow.consign}>
+<{assign var="_if_conf_refund" value=$env.conf.order.flow.refund}>
+<{assign var="_if_conf_reship" value=$env.conf.order.flow.reship}>
+
+<span class="action-bar-info"><{t}>订单操作:<{/t}></span>
+
+<span class="action-bar-btns">
+	<span>
+		<ul>
+			<li class="first">
+				<input type="button" value="支付<{if $_if_conf_payed}>...<{/if}>" 
+				<{if in_array($order.pay_status, array(1,2,4,5)) OR $order.status != 'active'}> disabled="disabled" class="inactive"<{/if}> onclick="OrderMgr.act.run('<{if $_if_conf_payed}>showPayed<{else}>toPayed<{/if}>', this, '<{if $_if_conf_payed}>1<{else}>0<{/if}>')"/>
+			</li>
+
+			<li>
+				<input type="button"  value="发货<{if $_if_conf_consign}>...<{/if}>" <{if $order._is_all_ship==1 || $order.ship_status == 1 || $order.status != 'active'}> disabled="disabled" class="inactive"<{/if}> onclick="OrderMgr.act.run('<{if $_if_conf_consign}>showConsignFlow<{else}>toDelivery<{/if}>', this, '<{if $_if_conf_consign}>1<{else}>0<{/if}>')" />
+			</li>
+
+			<li>
+				<input type="button" value="完成" <{if $order.status != 'active'}> disabled="disabled" class="inactive" <{else}> onclick="if(confirm('完成操作 会将该订单归档并且不允许再做任何操作，确认要执行吗？')) OrderMgr.act.run('archive', this);"<{/if}> />
+			</li>
+		</ul>
+	</span>
+</span>
+
+<span class="action-bar-btns">
+	<span>
+		<ul>
+			<li class="first">
+				<input type="button" value="退款<{if $_if_conf_refund}>...<{/if}>" <{if ($order.pay_status==0 || $order.pay_status==5) or $order.status != 'active'}> disabled="disabled" class="inactive"<{/if}> onclick="OrderMgr.act.run('<{if $_if_conf_refund}>showRefund<{else}>toRefund<{/if}>', this, '<{if $_if_conf_refund}>1<{else}>0<{/if}>')" />
+			</li>
+
+			<li>
+				<input type="button" value="退货<{if $_if_conf_reship}>...<{/if}>" <{if ($order.ship_status==4 || $order.ship_status==0) or $order.status != 'active'}> disabled="disabled" class="inactive"<{/if}> onclick="OrderMgr.act.run('<{if $_if_conf_reship}>showReturn<{else}>toReturn<{/if}>', this, '<{if $_if_conf_reship}>1<{else}>0<{/if}>')" />
+			</li>
+		</ul>
+	</span>
+</span>
+
+<span class="action-bar-btns">
+	<span>
+		<ul>
+			<li class="first"> <input type="button"  value="作废" <{if $order.pay_status > 0 || $order.ship_status > 0 || $order.status != 'active'}> disabled="disabled" class="inactive" <{else}> onclick="if(confirm('作废后该订单何将不允许再做任何操作，确认要执行吗？'))  OrderMgr.act.run('cancel', this)" <{/if}> /> </li>
+		</ul>
+	</span>
+</span>
+
+<label>
+	<{if $order.status == 'dead'}><{t}>[已作废]<{/t}>
+	<{elseif $order.status == 'finish'}><{t}>[已完成]<{/t}>
+	<{/if}>
+</label>
+
+<{/if}>

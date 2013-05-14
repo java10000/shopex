@@ -1,0 +1,35 @@
+<{if $message}>
+<div class="error"><{$message}></div>
+<{/if}>
+<table cellpadding="0" cellspacing="0" class="gridlist">
+<thead>
+    <tr>
+        <th><{t}>执行队列<{/t}></th>
+        <th><{t}>时间<{/t}></th>
+        <th><{t}>剩余时间<{/t}></th>
+        <th>&nbsp;</th>
+    </tr>
+</thead>
+<tbody>
+<{foreach from=$items item=item key=key}>
+<tr class="row">
+	<td>
+	<{if $item=="online"}>
+	<{img src="images/bundle/icon_asc.gif" title="即将上架"}> 上架
+	<input type="hidden" name="scheduled[<{$key}>]" value="<{$item}>" />
+	<input type="hidden"  name="uptime"  value="<{$key}>" >
+	<{else}>
+	<{img src="images/bundle/icon_desc_2.gif" title="即将下架"}> 下架
+	<input type="hidden" name="scheduled[<{$key}>]" value="<{$item}>" />
+	<input type="hidden"  name="downtime"  value="<{$key}>" >
+    <{/if}>
+	</td>
+	<td><{$key|cdate:'FDATE_FTIME'}></td>
+	<td><{$key|timeleft}></td>
+	<td><{img src="images/bundle/delecate.gif" onclick="_S(this).getParent('.row').remove()" style="cursor: pointer;" title="删除本项操作"}></td>
+</tr>
+<{/foreach}>
+
+</tbody>
+</table>
+<div id="g_taskman_box_end" style="display:none">别删我</div>

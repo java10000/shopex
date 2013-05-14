@@ -1,0 +1,25 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title><{$goods_name_show}><{t}> 相册 - <{/t}><{$company_name}></title>
+</head>
+<style>
+body{
+  margin:0;
+}
+</style>
+<body>
+<div id="show-pic"><embed src="statics/pic-view.swf" quality="high" id="picview" flashvars="copyright=shopex&xml=<products name='<{$goods_name|escape:html}>' showbuy='false' shopname='<{$company_name|escape:html}>'><{foreach from=$image_file key=key item=item}><smallpic<{if $key==$selected}> selected='selected'<{/if}>><{$item.small|storager}></smallpic><bigpic<{if $key==$selected}> selected='selected'<{/if}>><{$item.big|storager}></bigpic><link><{link ctl='product' act='index' arg0=$item.goods_id}></link><{/foreach}></products>" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" width="100%" height="100%"></embed></object>
+</div>
+</body>
+</html>
+<script>
+function windowClose(){
+  if(window.confirm("您是否关闭当前窗口")){
+    window.close();
+  }
+
+}
+</script>
+
+

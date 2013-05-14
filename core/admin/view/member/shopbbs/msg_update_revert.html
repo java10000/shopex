@@ -1,0 +1,28 @@
+<div id="update-revert-message" style="padding-top:10px;">
+<table>
+  <tr>
+    <td><{t}>发信人:<{/t}></td>
+    <td><{$msg.msg_from}></td>
+  </tr>
+  <tr>
+    <td><{t}>收信人:<{/t}></td>
+    <td><{$msg.msg_to}></td>
+  </tr>
+  <tr>
+    <td><{t}>日期:<{/t}></td>
+    <td><{$msg.date_line}></td>
+  </tr>
+  <tr>
+    <td><{t}>标题:<{/t}></td>
+    <td><{$msg.subject}></td>
+  </tr>
+  <tr>
+    <td><{t}>内容:<{/t}></td>
+    <td><{$msg.message}></td>
+  </tr>
+  <tr>
+    <td><input type="button" value="关闭窗口" onclick="MsgGrid.msgDialog.fireEvent('onHide')"></td>
+    <td></td>
+  </tr>
+</table>
+</div>

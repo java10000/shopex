@@ -1,0 +1,138 @@
+<div class='tableform'  style="margin:2px;" id='spec_select'>
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0" >
+  <tr>
+    <td style=" vertical-align:top;" width='35%' >
+    <h4><{t}>请选择规格<{/t}></h4>
+<div class="division"  style="margin:2px;">    
+    
+	<p style="margin:3px; padding:0"><input type='text' class='spec_select_search shadow' id='spec-select-search-input' style='display:none;' value='搜索规格...' /></p>
+      <div class='spec_search'  style='height:240px;overflow:auto;'>
+          <ul class='g-menu-sec'>
+		  <{foreach from=$specs item=sItem}>
+              <li><label><input name='spec_select' type='radio' value="<{$sItem.spec_id}>" autocomplete='off'/><{$sItem.spec_name|escape:"html"}></label><{if $sItem.spec_memo}> [<{$sItem.spec_memo}>]<{/if}></li>
+			  <{/foreach}>
+          </ul>
+      </div>
+    </div>  
+    <div style="text-align:center">     没有找到需要的规格？
+<span class="sysiconBtn addorder addspec"><{t}>添加新规格<{/t}></span></div>
+
+      
+    </td>
+    <td style="vertical-align:top;" width='70%' >
+  <h4><{t}>规格预览区<{/t}></h4>   
+ <div class="division" style="margin:2px;">     
+    
+     <div id='sel-spec-value-area' class="clearfix">
+         <div class='notice'><{t}>请在左侧列表选择规格！<{/t}></div>
+     </div>
+     
+ </div>    
+    </td>
+  </tr>
+  <tr>
+  </tr>
+</table>
+
+<div class='mainFoot' style='width:60px;height:40px;margin:0 auto;'>
+	<div class="table-action">
+		<{button label="确定"}>
+	</div>
+</div>
+</div>
+
+
+
+
+<script>
+
+   void function(){
+       
+         
+        $E('#spec_select .addspec').addEvent('click',function(){
+            var dialog=this.getParent('.dialog');
+            var addSpecdialog= new Dialog('index.php?ctl=goods/specification&act=addSpec',{title:'增加规格',onLoad:function(){
+            
+/*                 this.dialog.getElement('.nav-bar').remove();*/
+                 var specAddform=this.dialog.getElement('form');
+                 specAddform.removeEvents('submit').addEvent('submit',function(e){
+                 
+                  e.stop();
+                  W.page(specAddform.action,{data:specAddform,method:specAddform.method,update:'messagebox',onComplete:function(){
+                                     
+                         addSpecdialog.close();
+                         dialog.retrieve('instance').reload();
+                        
+                  }});
+                 
+                 });
+            
+            }});
+        
+        });
+        
+        $E('#spec_select .btn').addEvent('click',function(){
+             var dialog=this.getParent('.dialog');
+         
+             if(!dialog)return;
+             var selected=$ES('#spec_select .g-menu-sec li').filter(function(li){
+                  return li.getElement('input[type=radio]').checked;
+             });
+              
+             if(selected.length>0){
+                dialog.retrieve('callback',$empty)(selected[0].getElement('input').value,selected[0].getElement('label').get('text'));
+             }
+             
+            
+            
+             dialog.getElement('.dialog-btn-close').fireEvent('click');
+        
+        });
+
+		$$('#spec_select .g-menu-sec input[name^=spec_select]').addEvent('click',function(sel){
+			var selSId = this.get('value');
+			new XHR({
+				data:'spec_id='+selSId,
+                onRequest:function(){
+                 $('sel-spec-value-area').setText("loading...");
+                },
+				onSuccess:function(rs){
+					$('sel-spec-value-area').set('html',rs);
+				}
+			}).send('index.php?ctl=goods/specification&act=selSpec');
+		});
+
+        if($ES('#spec_select .g-menu-sec li').length>50){
+        
+            $('spec-select-search-input').show().addEvent('focus',function(){
+                   if(this.value=='搜索规格...')
+                    this.value='';
+            }).addEvent('keyup',function(){
+                var value=this.value;
+                if(!!value){
+                    var result=$ES('#spec_select .g-menu-sec li').filter(function(li){
+                         li.alt=li.alt||"";
+                         li.title=li.title||"";
+                         return li.alt.contains(value.trim())
+                                ||li.title.contains(value.trim())
+                                ||$E('label',li).getText().contains(value.trim());
+                    
+                    });
+                    if(result.length>0){
+                       $ES('#spec_select .g-menu-sec li').hide();
+                       $$(result).show();
+                       return;
+                    }
+                }
+                
+               $ES('#spec_select .g-menu-sec li').show();
+
+            });
+        
+        }
+        
+		
+   }();
+
+</script>

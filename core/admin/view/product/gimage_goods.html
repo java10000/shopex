@@ -1,0 +1,47 @@
+  <{if $pic_bar}>
+		<{$pic_bar}>
+  <{else}>
+             <{if $goods.udfimg}>
+                      <{input id="udfimg" name="goods[udfimg]" type="hidden" value=$goods.udfimg}>
+                      <{else}>
+                      <{input id="udfimg" name="goods[udfimg]" type="hidden" value="false"}>
+              <{/if}>
+              <{input name="goods[db_thumbnail_pic]" type="hidden" value=$goods.thumbnail_pic}>
+              <{input name="goods[db_small_pic]" type="hidden" value=$goods.small_pic}>
+              <{input name="goods[db_big_pic]" type="hidden" value=$goods.big_pic}>
+  
+  
+     <div id="imageuparea" style="display:<{if $goods.udfimg=='true'}>block<{else}>none<{/if}>" class="notice">
+                注：<strong><{t}>列表页商品图片<{/t}></strong><{t}>默认由系统自动生成.您也可以上传一张商品图片来覆盖默认的.<{/t}><br />
+                <strong><{t}>单独上传：<{/t}></strong>
+             <{input name="goods_thumbnail_pic" type="file" size='9' onmouseover="this.title=this.value"}><br/><hr/>
+             <{t}>当前缩略图浏览：<{/t}><{input type='viewIMG' value=$goods.thumbnail_pic|default:$env.conf.site.default_thumbnail_pic|storager}>
+     </div>
+      <div id="x-main-pic" class='textcenter'>
+        <{if $goods.image_default}>
+       
+            <script>
+              (function(){
+                try{
+                <{if $goods.small_pic}>
+                  goodsEditor.pic.setDefault('<{$goods.image_default}>','<{$goods.small_pic|storager}>');
+                <{else}>
+                 goodsEditor.pic.setDefault('<{$goods.image_default}>','index.php?ctl=goods/product&act=view_src_img&p[0]=<{$goods.image_default}>');
+                <{/if}>
+                 }catch(e){
+                    arguments.callee.delay(200);
+                 }
+                })();
+            </script>
+        <{else}>
+        <p align="center"><br /><br /><{t}>此处显示商品页默认图片<{/t}><br /><{t}>[您还未上传商品图片！]<{/t}></p>
+        <{/if}>
+      </div>  
+      <div id='all-pics'>
+        <{if $goods.gimages}>
+        <{foreach from=$goods.gimages item=gimage}>
+            <div class="gpic-box"><{include file="product/gimage.html"}></div>
+       <{/foreach}>
+        <{/if}>
+        </div>
+        <{/if}>

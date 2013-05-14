@@ -1,0 +1,18 @@
+<table>
+<tr>
+  <td><label for="aaa">配送地区
+  </label>
+    <select id="aaa" name="areas[]" size="5" multiple="multiple">
+      <option style="font-weight:bold" value="_ANY_" selected="selected"><{t}>任意配送地区<{/t}></option>
+      <{foreach from=$filter.areas item=items name="_s"}><option<{if $smarty.foreach._s.iteration is odd}> class="row2"<{/if}> value="<{$items.name}>"><{$items.name}></option><{/foreach}>
+    </select>
+  </td>
+  <td><label for="aaa">支付方式
+  </label>
+    <select id="payment" name="payment[]" size="5" multiple="multiple">
+      <option style="font-weight:bold" value="_ANY_" selected="selected"><{t}>任意支付方式<{/t}></option>
+      <{foreach from=$filter.payment item=items name="_s"}><option<{if $smarty.foreach._s.iteration is odd}> class="row2"<{/if}> value="<{$items.id}>"><{$items.custom_name}></option><{/foreach}>
+    </select>
+  </td>
+</tr>
+</table>

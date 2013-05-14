@@ -1,0 +1,156 @@
+<style type="text/css">
+.actionBar {
+background:#F0F0F0 none repeat scroll 0 0;
+border-bottom:3px solid #6F777A;
+border-top:1px solid #FFFFFF;
+line-height:30px;
+padding:0 8px;
+}
+.finderInform thead th {
+border-color:#FFFFFF #DBE2E7 #CCCCCC #FFFFFF;
+border-style:solid;
+border-width:1px;
+font-size:12px;
+font-weight:700;
+padding:1px 3px;
+text-align:center;
+white-space:nowrap;
+width:auto;
+background:#E2E8EB none repeat scroll 0 0;
+}
+
+.finderInform tbody td {
+white-space:normal;
+}
+
+.finderInform tbody td, .finderInform tbody th {
+border-color:#FFFFFF #DBE2E7 #DDDDDD #FFFFFF;
+border-style:solid;
+border-width:1px;
+}
+
+.finderInform td {
+text-align:center;
+}
+</style>
+
+<table cellspacing="0" cellpadding="0" width="100%" class="finderInform tongbu">
+<colgroup class="span-2"></colgroup>
+<colgroup class="span-4"></colgroup>
+<colgroup class="span-2"></colgroup>
+<colgroup class="span-2"></colgroup>
+<colgroup class="span-3"></colgroup>
+<colgroup class="span-3 ColColorOrange"></colgroup>
+<colgroup class="span-2"></colgroup>
+<colgroup class="auto ColColorBlue"></colgroup>
+    <thead>
+			<tr>
+				<th>商品图片</th>
+				<th>商品名称</th>
+                <th>商品品牌</th>
+				<th>最后更新时间</th>
+                <th>操作说明</th>
+                <th>状态</th>
+			    <th style="text-align:left; padding-left:10px;">我的操作</th>
+			</tr>
+    </thead>
+   
+    <tbody id='data-sync-list-tbody' class='finder-list'>
+ 
+    <{if $sList}>
+    <{foreach from=$sList item=sitem}>
+			<tr class="row" item-id="<{$sitem.goods_id}>" commandid='<{$sitem.command}>' objectid='<{$sitem.sync_id}>'  supplierid='<{$supplier_id}>' >
+				<td><img src="<{$sitem.thumbnail_pic}>" width='50' height='50' alt="<{$sitem.goods_name}>" /></td>
+				<td style="text-align:left;">
+                <{if $sitem.status == 'finish'}>
+                <a href='<{$supplier_domain}>index.php?product-<{$sitem.supplier_goods_id}>.html' target='_blank'><{$sitem.goods_name}></a> 
+                <{else}>
+                <{$sitem.goods_name}>
+                <{/if}>
+                </td>
+                <td>&nbsp;<{$sitem.brand_name}>&nbsp;</td>
+                <td style="width:200px;"><{$sitem.platform_sync_time|usertime}></td>
+                <td style="width:300px;"><{$sitem.command_action}>
+                <td style="width:200px;"><{$status[$sitem.status]}>
+                <{if $sitem.status == 'finish'}><span class="sysiconBtn edit update-goods-info" >编辑并定价</span><{/if}>
+                </td>
+				<td style="text-align:left;">
+
+            <{if $sitem.status == 'hand' }>
+                        <span class="sysiconBtn BtnviewRefresh sync-goods-products">更新商品</span>
+            <{elseif $sitem.status == 'finish'}>
+                        <span class="sysiconBtn BtnviewRefresh force-sync-goods-products">强制更新</span>
+                        
+            <{/if}>
+<!-- <{if $sitem.command == 3 && $sitem.sync_image == "true"}>
+                  <span class="sysiconBtn BtnviewRefresh update-goods-img">更新商品图片</span>
+            <{/if}>-->
+                </td>
+		  </tr>
+      <{/foreach}>
+      <{/if}>
+						
+			    </tbody>
+		</table>
+<script>
+(function(){
+    var doSyncListEvent = (function(e,posturl,callFunc){
+            new Request({data:'command_id='+e.getParent('tr').get('commandid')+'&object_id='+e.getParent('tr').get('objectid')+'&supplier_id='+e.getParent('tr').get('supplierid'),
+                 onRequest:function(){
+                    e.removeClass('downloadico').removeClass('download-goods').removeEvents('click').addClass('loadingico').set('text','正在同步');
+                 },
+                 onSuccess:function(rs){
+                    callFunc(rs);
+                 },
+                 onFailure:function(){
+                     if(this.xhr.status == 501 && this.getHeader('notify_msg')){
+                    	 alert(decodeURIComponent(this.getHeader('notify_msg')));
+                     }
+                 }
+             }).post(posturl);
+    });
+
+    $ES('#data-sync-list-tbody .sync-goods-products').addEvent('click',function(){
+        var e = this;
+        doSyncListEvent(e,'index.php?ctl=distribution/supplier&act=syncGoodsProducts',function(goods_id){
+            e.getParent('td').getPrevious('td').set('html','<span class="fontcolorLightGray">同步完成</span><span class="sysiconBtn edit update-goods-info" >编辑并定价</span>');
+                e.getParent('td').empty();
+             });
+    });
+    $ES('#data-sync-list-tbody .force-sync-goods-products').addEvent('click',function(){
+        var e = this;
+        doSyncListEvent(e,'index.php?ctl=distribution/supplier&act=syncGoodsProducts',function(goods_id){
+            e.getParent('td').empty();
+            alert('更新成功');
+             });
+    });
+
+    $ES('#data-sync-list-tbody .update-goods-info').addEvent('click',function(e){
+
+        var wsize = window.getSize();
+        var commandtype = $(this).getParent('tr').get('commandtype');
+        var command_id = $(this).getParent('tr').get('commandid');
+        var object_id = $(this).getParent('tr').get('objectid');
+        var supplier_id = $(this).getParent('tr').get('supplierid');
+        var local_goods_id = $(this).getParent('tr').get('item-id');
+         new Request({url:'index.php?ctl=distribution/supplier&act=getSyncGoodsid&supplier_id='+supplier_id+'&object_id='+object_id,onSuccess:function(responseText){
+              local_goods_id = goods_id;
+         }}).send();
+        var product_url = 'index.php?ctl=goods/product&act=edit&commandtype='+commandtype+'&command_id='+command_id+'&object_id='+object_id+'&supplier_id='+supplier_id;
+        var el= this;
+
+        product_url += ('&p[0]='+local_goods_id+'&pop=true');
+        _open(product_url);
+    });
+
+    
+})();
+</script>
+<div class="mainFoot" id="finder-foot-datasync-<{$otype}>">
+<table class="footer" style="clear:both" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+  <td align="center"><{pager data=$pager}></td>
+  <td width="5%" style="white-space:nowrap;text-align:right; "><{t}>共<{/t}><{$pager.total}><{t}>页<{/t}>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+  </tr>
+</table>
+</div>

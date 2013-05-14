@@ -1,0 +1,28 @@
+<div class="finder">
+  <div class="action-bar"><a class="sysiconBtn addorder" href="index.php?ctl=trading/delivery&act=showNewArea"><{t}>添加配送地区<{/t}></a></div>
+</div>
+<table border="0" cellpadding="0" cellspacing="0" class="gridlist">
+<col class="Colsn"></col>
+<col></col>
+<col class="Coloption-1b"></col>
+
+  <thead>
+    <tr>
+      <th><{t}>序号<{/t}></th>
+      <th><{t}>地区名称<{/t}></th>
+      <th><{t}>删除<{/t}></th>
+    </tr>
+  </thead>
+  <tbody>
+  <{foreach from=$items key=key item=item name="item"}>
+   <tr>
+    <td  class="Colsn"><{$key+1}></td>
+    <td><a href="index.php?ctl=trading/delivery&act=detailDlArea&p[0]=<{$item.area_id}>"><{$item.name}></a></td>
+    <td class="options"><a class="sysiconBtnNoIcon" href="index.php?ctl=trading/delivery&act=delDlArea&p[0]=<{$item.area_id}>"><{t}>删除<{/t}></a></td>
+  </tr>
+  <{/foreach}>
+  </tbody>
+</table>
+<div class="footer">
+  <div class="tf"></div>
+</div>

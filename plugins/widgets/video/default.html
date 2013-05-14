@@ -1,0 +1,18 @@
+<div id="<{$widgets_id}>_body" style="background:<{$setting.color1}>}>px;">
+</div>
+<script>
+
+window.addEvent('domready', function(){
+  var obj = new Swiff('images/style1.swf', {
+    width:  '100%',
+    height: <{$setting.height|default:170}>,
+    container: $('<{$widgets_id}>_body'),
+    vars:{
+      playaddress:"<{$setting.address}>",
+      logos:"<{$setting.logo}>",
+      autoplay:"<{$setting.autoplay}>",
+      linkaddress:"<{$setting.linkaddress}>"
+    }
+  });
+});
+</script>

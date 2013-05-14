@@ -1,0 +1,33 @@
+
+*{ font-size:12px;}
+body { font-family:"宋体",Arial, Helvetica, sans-serif; font-size:12px;}
+h2{ font-size:16px; line-height:24px; margin:22px 0 3px 14px; color:#333; font-weight:lighter;  font-family:"黑体",Arial, Helvetica, sans-serif}
+p { margin:4px;}
+img { border:none;}
+.table1 { }
+.guide_step { background:url(step.gif) no-repeat; text-align:center; font-size:22px; font-weight:bold; color:#000000; }
+.guide_title { }
+.guide_text { margin:10px; line-height:24px; color:#6b6b6b; height:350px;  border-top:1px dashed #CCCCCC; }
+.guide_text p { text-indent:24px; margin:4px;}
+.guide_text a { color:#ff7200; text-decoration:underline; }
+.guide_text a:hover { color:#FF9900; text-decoration:none;}
+.guide_button { margin:5px; padding-top:10px; }
+.step_link { padding:2px;}
+.bg1 {}
+.td1 {font-size:14px; border:1px solid #bcbcbc; color:#888888; text-align:center; width:100px; height:30px; cursor:pointer;}
+.td2 {width:40px; background: url(arrow.gif) no-repeat center;}
+.td3 {color:#ff9900; font-weight:bold; border:2px solid #ff9900; font-size:14px; text-align:center; width:100px; height:30px; cursor:pointer;}
+.text1 {font-size:18px; font-weight:bold;}
+
+.newbox a{ color:#8b8b8b; text-decoration:none;}
+.newbox a:hover{ color:#333; width:99px;}
+.new{ background:url(../images/newbg.gif) repeat-x; border:1px solid #ccc;height:55px; width:205px; padding:5px; float:left; margin:5px 0 0px 5px; display:inline; cursor:pointer;}
+.new:hover{ border-color:#ff9900; }
+.new .text{ color:#336699; font-size:12px; font-weight:bold; height:20px; line-height:20px; overflow:hidden;}
+b{ color:#336699}
+
+.guide_p p { line-height:18px;}
+
+.textinfo { line-height:18px;}
+
+.ask { padding:5px; padding-left:18px; background:url(icon_ask.gif) no-repeat left center; }

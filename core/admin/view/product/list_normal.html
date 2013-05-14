@@ -1,0 +1,43 @@
+<{if $_finder.listViews}>
+<{area inject=".mainHead"}>
+<div id="finder-header-<{$_finder._name}>" class="finder-header"><input type="checkbox" class="sellist" name="<{$_finder.id}>[]" />
+</div>
+<{/area}>
+<{/if}>
+<div class="finder-list finder-list-normal" id="finder-list-<{$_finder._name}>">
+<table>
+<col style="width:20px"></col>
+<col style="width:70px"></col>
+<col style="width:320px"></col>
+<col style="width:100px"></col>
+<col style="width:100px"></col>
+<col></col>
+
+<{safehtml}>
+  <{foreach from=$items.list item=item name="_finder"}>
+  <tbody class="row">
+	<tr <{if $env.foreach._finder.iteration is not odd}>class="even"<{/if}>>
+		<td rowspan="2" ><input type="checkbox" tags="<{$item._tags|escape:"html"}>" class="sel" name="<{$_finder.id}>[]" value="<{$item[$_finder.id]}>">		
+		</td>
+		<td rowspan="2">
+		<img src="<{$item.thumbnail_pic}>" style="height:50px;margin-left:10px" />
+		</td>
+		<td style="border-bottom:none;"><h6><{$item.name}><{if $item.type_id}><span style="color:#999; font-weight:normal; margin:0 0 0 5px;">(<{$item.type_id}>)</span><{/if}></h6></td>
+		<td style="border-bottom:none;"><{t}>销售价：<{/t}><{$item.price|cur}></td>
+		<td style="border-bottom:none;"><{t}>本周购买：<{/t}><{$item.buy_w_count}></td>		
+		<td style="border-bottom:none;"><{t}>上架时间：<{/t}><{$item.uptime|cdate}> - <{$item.downtime|cdate}></td>
+	</tr>
+	<tr <{if $env.foreach._finder.iteration is not odd}>class="even"<{/if}>>
+		<td class="finder-list-command">
+		<span detail="index.php?ctl=<{$env.get.ctl}>&act=detail&p[0]=<{$item[$_finder.id]}>"><{img src="images/bundle/finder_drop_arrow.gif" detail="index.php?ctl={$env.get.ctl}&act=detail&p[0]={$item[$_finder.id]}"}></span>
+		<{include file="product/finder_command.html"}>
+		&nbsp;<{if $item.brand_id}><b class="tag" style="color:#009"><{$item.brand_id}></b><{/if}> <{$item._tag_}></td>
+		<td><{t}>积　分：<{/t}><{$item.score+0}></td>
+		<td><{t}>本周访问：<{/t}><{$item.view_w_count}></td>
+		<td></td>
+	</tr>
+	</tbody>
+  <{/foreach}>
+<{/safehtml}>
+</table>
+</div>

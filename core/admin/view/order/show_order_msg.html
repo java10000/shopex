@@ -1,0 +1,31 @@
+<div>
+
+         <{foreach from=$ordermsg item=msgitem name="ordermsg"}>
+        <div class="division">
+
+          <table cellspacing="0" cellpadding="0" border="0" style="margin-bottom:5px;" class="gridlist">
+            <col class="Coldate"/>
+              
+            <tbody>
+              <tr>
+                <td rowspan="2" style="width:30px; font-weight:bold;"><{$smarty.foreach.ordermsg.iteration}></td>
+                <td style="text-align:left;"><label>标题：
+              </label><{$msgitem.subject}>
+              <label><{t}>时间：<{/t}></label><{$msgitem.date_line|usertime}>
+              <label><{t}>留言人：<{/t}></label><{$msgitem.msg_from}>
+              
+              </td>
+                </tr>
+              <tr>
+                <td valign="bottom" style="text-align:left;">
+                  <label>内容：
+                </label><{$msgitem.message|nl2br}></td>
+              </tr>
+            </tbody>
+          </table>
+          
+        </div>
+          <{/foreach}>
+
+
+</div>

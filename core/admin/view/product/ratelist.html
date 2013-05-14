@@ -1,0 +1,7 @@
+<{foreach from=$goods.rates item=g}>
+<div class="rate-goods" goods_id="<{$g.goods_id}>" style="float:left;width:80px;height:80px;padding:10px">
+<input type="hidden" name="goods[rate][<{$g.goods_id}>]" value="<{$g.rate}>">
+<img <{$g.image_default|gimage:tiny}>>
+<div><{$g.name}><span class="lnk" onclick="this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode)"><{img title='É¾³ý' alt='É¾³ý' style='cursor: pointer;' src='images/bundle/delecate.gif'}></span></div>
+</div>
+<{/foreach}>

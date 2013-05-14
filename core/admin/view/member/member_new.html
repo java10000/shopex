@@ -1,0 +1,185 @@
+
+<{capture name="header"}>
+  <{include file="common/header.meta.html"}>
+<{/capture}>
+
+<{capture name="title"}>
+<h1><{img src="images/bundle/spage_editing.gif"}><strong><{t}>正在编辑:<{/t}></strong><{t}>新建会员<{/t}></h1>
+<ul class="btn-bar">
+	<li><{button label="退出编辑" class="btn-quit" onclick="if(confirm('确定退出?'))window.close()"}></li>
+	<li><{button label="保　存" type="button" dropmenu="drop-save" class="btn-save" onclick='subOrderForm()' }></li>
+</ul>
+<ul id="drop-save" class="x-drop-menu">
+	<li onclick='subOrderForm(1)'><span class="info" title="设为默认"><{img src="images/bundle/savesetdef.gif" alt="设为默认"}></span><span><{img src="images/bundle/savetolist.gif"}><{t}>并返回列表<{/t}></span></li>
+</ul>
+<{/capture}>
+
+<form method="POST" id='form_addMemByAdmin' target="{update:'messageBox'}" action="index.php?ctl=member/member&act=addMemByAdmin" class="tableform">
+<div class="division">
+  <table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <th><font color='red'>*</font>&nbsp;<{t}>用户名：<{/t}></th>
+    <td><{input type="text" name="uname" style="width:136px" size="20" required="true"}></td>
+  </tr>
+   <tr>
+    <th><font color='red'>*</font>&nbsp;&nbsp;E-mail：</th>
+    <td><{input type="email" name="email" size="20" required="true"}></td>
+  </tr>
+    <tr>
+    <th><font color='red'>*</font>&nbsp;<{t}>密码：<{/t}></th>
+    <td><{input type="password" name="password" size="20" required="true"}></td>
+  </tr>
+  <tr>
+    <th><font color='red'>*</font>&nbsp;<{t}>确认密码：<{/t}></th>
+    <td><{input type="password" name="psw_confirm" size="20" required="true"}><{$html}></td>
+  </tr>
+   <tr>
+    <th><font color='red'>*</font>&nbsp;<{t}>会员等级：<{/t}></th>
+    <td><{input type="object:member/level"  name="member_lv_id"}></td>
+  </tr>
+    </table></div>
+<div class="division">
+  <table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <{foreach from=$tree item=item name="item" key='row'}>
+  <tr>
+  <th><{if $item.attr_required eq 'true'}><font color='red'>*</font>&nbsp;<{/if}><{$item.attr_name}>：</th>
+  <td>  <{if $item.attr_type =='date'}>
+  <{input class="cal" type='date' name='birthday' }>
+  <{/if}>
+  
+  <{if $item.attr_type =='cal'}>
+  <{input class="cal" type='date' name=$item.attr_id required=$item.attr_required}><{if $item.attr_required eq 'true'}><em>*</em><{/if}>
+  <{/if}>
+  
+  
+  
+ 
+  <{if $item.attr_type =='text'}>
+  
+  <input class='_x_ipt' name='<{$item.attr_id}>' vtype='<{if $item.attr_required eq 'true'}>required&&<{/if}><{$item.attr_valtype}>' type='text'/>
+  
+  <{/if}>
+  
+   <{if $item.attr_group =='defalut' && $item.attr_type != 'area' && $item.attr_type != 'sex' && $item.attr_type != 'date'}>
+  <input type='text' name='<{$item.attr_type}>' <{if $item.attr_required eq 'true'}>class='_x_ipt' vtype='required'<{/if}>>
+  <{/if}>
+  
+  
+   <{if $item.attr_type =='area'}>
+   <{input type="region" name='area' pptype='area2'}>
+    <script>
+		 validatorMap.set('area2',['你没选择完整的地区',function(el,v){
+				 var els=el.getElements('select');
+				 if(els.length==1&&(els[0].getValue()==''||els[0].getValue()=='_NULL_')){
+					 return true;
+				 }else{
+				   return els.every(function(sel){
+								  var selValue=sel.getValue();
+								  var v=selValue!=''&&selValue!='_NULL_';
+								  if(!v){
+								      sel.focus();
+									  return false;
+								  }
+								  return true;
+							 });
+				 }
+				 return true;
+			 }
+		   ]);
+	  </script>
+   <{/if}>
+   
+   <{if $item.attr_type =='sex'}>
+  <input type='radio' name='sex' value='1'><label><{t}>男<{/t}></label> &nbsp; 
+  <input type='radio' name='sex' value=''><label><{t}>女<{/t}></label>
+   <{/if}>
+   
+   <{if $item.attr_type =='select'}>
+ <select name='<{$item.attr_id}>' id='<{$item.attr_id}>'<{if $item.attr_required eq 'true'}>class='_x_ipt' vtype='required'<{/if}>>
+ <option value=''><{t}>- 请选择 -<{/t}></option>
+ <{foreach from=$item.attr_option item=option name="option"  }>
+ <option value='<{$option}>'><{$option}></option>
+ <{/foreach}>
+ </select>
+   <{/if}> 
+  <{if $item.attr_type =='checkbox'}>
+ 
+ <{foreach from=$item.attr_option item=checkbox name="checkbox" }>
+ <input type='checkbox' name=<{$item.attr_id}>[] value='<{$checkbox}>'><label><{$checkbox}></label><br/>
+ <{/foreach}>
+<{if $item.attr_required eq 'true'}>
+<input type='hidden' class='_x_ipt' vtype='selectc'/>
+<{/if}>
+   <{/if}></td>
+  </tr>
+  <{/foreach}>
+  </table>
+  </div>
+
+
+        <div class="table-action">
+	<!--<{button type="submit" label="添加"}>-->
+</div>
+</form>
+<script>
+$ES('.cal','form_addMemByAdmin').each(function(i){i.makeCalable()});
+validatorMap.set('selectc',['本项必填',function(element,value){
+ 
+    var checkboxelement = element.getParent('td').getElements('input[name$=]]');
+    var flag=checkboxelement.some(function(i){
+	  return !!i.checked;
+	});
+	checkboxelement.addEvent('change',function(){
+		validator.removeCaution(element);
+		validator.test($('form_addMemByAdmin'),element);
+		checkboxelement.removeEvent('change',arguments.callee);
+	});
+	return flag;
+}]);
+
+</script>
+
+<script>
+(function(){
+	subOrderForm=function(sign){
+		if(document.getElements('form')){var _form=document.getElements('form').getLast();}			
+		if(sign){
+			window.MessageBoxOnShow=function(box,success){
+				if(MODALPANEL)MODALPANEL.hide();
+				if(!success){
+					return
+				}
+				window.close();
+			}
+		}	
+		_form.fireEvent('submit');		
+	};
+})();
+</script>
+<{capture name='footbar'}>
+<table cellspacing="5" cellpadding="0" style="margin:0 auto; height:50px; width:auto;" class="tableAction">
+      <tbody><tr valign="middle">
+        <td>
+          <b class="submitBtn">
+            <button onclick="subOrderForm(1);">
+            <span class="iconbutton savetolist">保存并关闭窗口</span>
+            </button>
+          </b>
+
+			<b class="submitBtn blue">
+            <button onclick="subOrderForm()">
+            <span class="iconbutton savebutton">保存当前</span>
+            </button>
+          </b>
+
+         <b isclosedialogbtn="true" class="submitBtn blue">
+            <button onclick="if(confirm('确定退出?'))window.close()">
+            <span>关闭</span>
+            </button>
+          </b>
+        </td>
+        </tr>
+        </tbody></table>
+<{/capture}>
+
+

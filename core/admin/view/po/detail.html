@@ -1,0 +1,257 @@
+<div class="ActionBar">
+  <div class="order-ctls" order_id="<{$POrder.order_id}>" dealer_order_id="<{$POrder.dealer_order_id}>" supplier_id="<{$POrder.supplier_id}>"><{include file="po/actbar.html"}><{assign var="order_id" value=$order.order_id}></div>
+</div>
+      <div current="3c6800-1" _i="4" _tabid="3c6801" class="handles"><span id="_3c6800-1" onclick="setTab('3c6800-1',['3c6800-2','3c6800-3'])" class="t-handle-current"><{t}>基本信息<{/t}></span> <span id="_3c6800-2" onclick="setTab('3c6800-2',['3c6800-1','3c6800-3'])" url="index.php?ctl=order/order&amp;act=detail_bills&amp;p[0]=20090203023088" class="t-handle"><{t}>财务往来<{/t}></span> <span id="_3c6800-3" onclick="setTab('3c6800-3',['3c6800-1','3c6800-2'])" url="index.php?ctl=order/order&amp;act=detail_delivery&amp;p[0]=20090203023088" class="t-handle"><{t}>物流往来<{/t}></span></div>
+      <div class="tabs">	
+        <div id="3c6800-1" style=" color:#000">
+        <span style="padding:0 0 0 10px; font-size:14px; color:#336699"><{t}>采购单详情<{/t}></span> （该采购单自动作废时间为：<{$POrder.expire_time}>）
+        <div style=" padding:0 20px; line-height:18px; border-bottom:1px dotted #ccc;">
+        
+        <ol style="margin:0 1.5em 0;">
+            <{foreach from=$POrder.dateInfo item=val}>
+            <li><{$val}></li>
+            <{/foreach}>
+        </ol>
+        
+        </div>
+        
+       
+        <div class="division" style="margin:5px 10px;border: 1px solid rgb(229, 221, 199); background: rgb(245, 244, 236) none repeat scroll 0% 0%; ">
+        <table cellspacing="0" cellpadding="0" border="0" width="100%" class=""><colgroup class="span-auto " style="background-color:#FFf"/><colgroup class="span-5 ColColorGray"/><colgroup class="span-4 ColColorGray"/><tbody><tr><td>订单编号：<a href="index.php?ctl=order/order&act=edit_po&p[0]=<{$POrder.dealer_order_id}>"  target='{update:"main"}'><{$POrder.dealer_order_id}></a></td><td>下单日期：<{$POrder.orderInfo.createtime}></td><td>状态：<{$POrder.orderInfo.pay_status}></td></tr>
+        <tr><td>采购单编号：<{$POrder.order_id}></td><td>下单日期：<{$POrder.createtime}></td><td>状态：<{$POrder.po_status}></td></tr></tbody></table>
+        </div>
+         
+          
+          
+           <div class="tableform">
+           <span style=" font-weight:bolder; color:#666"><{t}>收货人信息<{/t}></span>
+           <div style="background:#FFFFFF none repeat scroll 0 0;border-color:#CCCCCC #BEC6CE #BEC6CE #CCCCCC;border-style:solid;border-width:1px 2px 2px 1px;line-height:150%;margin: 5px 10px;padding:5px;white-space:normal;">
+            <table cellspacing="0" cellpadding="0" border="0" class="purchase">
+                  <tbody>
+                    <tr>
+                      <th>收货日期：</th>
+                      <td><{$POrder.ship_time}></td>
+                      <th>姓名：</th>
+                      <td><{$POrder.ship_name}></td>
+                      <th>电话：</th>
+                      <td><{$POrder.ship_tel}></td>
+                      <th>手机：</th>
+                      <td><{$POrder.ship_mobile}></td>
+                    
+                    </tr>
+                    
+                    <tr>
+                      <th>地区：</th>
+                      <td><{$POrder.ship_area|region}></td>
+                      <th>地址：</th>
+                      <td><{$POrder.ship_addr}></td>
+                      <th>邮编：</th>
+                      <td><{$POrder.ship_zip}></td>
+                      <th>配送方式：</th>
+                      <td><{$POrder.shipping}></td>
+                      
+                    
+                    </tr>
+                      </tbody>
+                </table>
+                </div>
+             <span style=" font-weight:bolder; color:#666"><{t}>购买的商品<{/t}></span>
+            <div class="division" style=" margin:5px 10px;">
+              <div class="table-grid">
+            
+                <table cellspacing="0" cellpadding="0" border="0" width="100%" class="finderInform">
+                  <colgroup class=""></colgroup>
+                  <colgroup class="textleft"></colgroup>
+                  <colgroup class="Colcategory"></colgroup>
+                  <colgroup span="3" ></colgroup>
+                   <colgroup span="3"></colgroup>
+                    <colgroup span="3"></colgroup>
+                  
+                  <thead>
+                    <th><{t}>货号<{/t}></th>
+                    <th><{t}>商品名称<{/t}></th>
+                    <th><{t}>本站售价<{/t}></th>
+                    <th><{t}>采购价<{/t}></th>
+                    <th><{t}>购买量<{/t}></th>
+                    <th><{t}>状态<{/t}></th>
+                    </thead>
+                  <tbody><{foreach from=$POrder.items item=val}>
+                    <tr>
+                      <td><{$val.bn}></td>
+                      <td class="textleft"><a target="_blank" href="../index.php?ctl=product&act=index&p[0]=<{$val.goods_id}>"><{$val.name}></a><{if $val.small_pic}><a style='text-decoration:none;' class='x-view-img' href='javascript:void(0);' onclick='viewIMG("<{$val.small_pic|storager}>",this);this.blur();'  title='点击查看图片'> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a><{/if}> </td>
+                      <td>￥<{$val.local_price}></td>
+                      <td>￥<{$val.price}></td>
+                      <td><{$val.nums}></td>
+                      <td><{$POrder.po_status}></td>
+                    </tr>
+                    <{/foreach}>
+                  </tbody>
+                </table>
+                <table cellspacing="0" cellpadding="0" border="0" width="100%" class="liststyle data">
+                <colgroup class="span-auto ColColorGray"></colgroup>
+                <colgroup class="span-4 ColColorOrange "></colgroup>
+                <tbody>
+                <tr><th style="width:auto;font-size:12px"><{t}>商品总金额：<{/t}></th><td>￥<{$POrder.cost_item}></td></tr>
+                <tr><th style="width:auto;font-size:12px"><{t}>配送费用：<{/t}></th><td>￥<{$POrder.cost_freight}></td></tr>
+                <!-- <tr><th style="width:auto;font-size:12px"><{t}>税金：<{/t}></th><td>￥<{$POrder.cost_tax}></td></tr> -->
+                <tr><th style="width:auto;font-size:12px"><{t}>订单总金额：<{/t}></th><td class="price1">￥<{$POrder.total_amount}></td></tr>
+                </tbody></table>
+              </div>
+            </div>
+          </div>
+          
+          
+          
+          
+        </div>
+
+        <div style="visibility: visible; opacity: 1; display: none;" id="3c6800-2" url="index.php?ctl=order/order&amp;act=detail_bills&amp;p[0]=20090203023088">
+          <table cellspacing="0" cellpadding="0" border="0" width="100%">
+            <tbody>
+              <tr>
+                <td style="vertical-align: top;"><div class="tableform">
+                    <h4><{t}>收款单据列表<{/t}></h4>
+                    <div class="division">
+                      <table cellspacing="0" cellpadding="0" border="0" width="100%" class="finderInform">
+                       <!-- <colgroup class="Coldate"/>
+                        
+                        <colgroup class="Colamount"/>
+                        
+                        <colgroup/>
+                        
+                        <colgroup/>-->
+                        
+                        <thead>
+                          <tr>
+                            <th><{t}>单据日期<{/t}></th>
+                            <th><{t}>支付金额<{/t}></th>
+                            <th><{t}>支付方式<{/t}></th>
+                            <th><{t}>状态<{/t}></th>
+                          </tr>
+                        </thead>
+                        <tbody><{foreach from=$POrder.payInfo item=val}>
+                          <tr>
+                            <td><{$val.t_begin}></td>
+                            <td class="Colamount">￥<{$val.money}></td>
+                            <td><{$val.paymethod}></td>
+                            <td><{$val.status}></td>
+                          </tr><{/foreach}>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div></td>
+                <td style="vertical-align: top;"><div class="tableform">
+                    <h4><{t}>退款单据列表<{/t}></h4>
+                    <div class="division">
+                      <table cellspacing="0" cellpadding="0" border="0" width="100%" class="finderInform">
+                       <!-- <colgroup class="Coldate"/>
+                        
+                        <colgroup class="Colamount"/>-->
+                        
+                        <thead>
+                          <tr>
+                            <th><{t}>单据日期<{/t}></th>
+                            <th><{t}>退款金额<{/t}></th>
+                            <th><{t}>退款方式<{/t}></th>
+                            <th><{t}>状态<{/t}></th>
+                          </tr>
+                        </thead>
+                        <tbody><{foreach from=$POrder.refundInfo item=val}>
+                          <tr>
+                            <td><{$val.t_ready}></td>
+                            <td class="Colamount">￥<{$val.money}></td>
+                            <td><{$val.paymethod}></td>
+                            <td><{$val.status}></td>
+                          </tr><{/foreach}>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div style="visibility: visible; opacity: 1; display: none;" id="3c6800-3" url="index.php?ctl=order/order&amp;act=detail_delivery&amp;p[0]=20090203023088">
+          <div class="tableform">
+            <table cellspacing="10" cellpadding="0" border="0" width="100%">
+              <tbody>
+                <tr>
+                  <td style="vertical-align: top;"><h4><{t}>发货单据列表<{/t}></h4>
+                    <div class="division">
+                      <table cellspacing="0" cellpadding="0" border="0" class="finderInform">
+                       <!-- <colgroup class="Coldate"/>-->
+                        
+                        <thead>
+                          <tr>
+                            <th><{t}>建立日期<{/t}></th>
+                            <th><{t}>物流单号<{/t}></th>
+                            <th><{t}>收件人<{/t}></th>
+                            <th><{t}>配送方式<{/t}></th>
+                          </tr>
+                        </thead>
+                        <tbody><{foreach from=$POrder.deliveryInfo item=val}>
+                          <tr>
+                            <td><{$val.t_begin}></td>
+                            <td><{$val.logi_no}></td>
+                            <td><{$val.ship_name}></td>
+                            <td><{$val.delivery}></td>
+                          </tr><{/foreach}>
+                        </tbody>
+                      </table>
+                    </div></td>
+                  <td style="vertical-align: top;"><h4><{t}>退货单据列表<{/t}></h4>
+                    <div class="division">
+                      <table cellspacing="0" cellpadding="0" border="0" width="100%" class="finderInform">
+                      <!--  <colgroup class="Coldate"/>-->
+                        
+                        <thead>
+                          <tr>
+                            <th><{t}>建立日期<{/t}></th>
+                            <th><{t}>物流单号<{/t}></th>
+                            <th><{t}>退货人<{/t}></th>
+                            <th><{t}>配送方式<{/t}></th>
+                          </tr>
+                        </thead>
+                        <tbody><{foreach from=$POrder.reshipInfo item=val}>
+                          <tr>
+                            <td><{$val.t_begin}></td>
+                            <td><{$val.logi_no}></td>
+                            <td><{$val.ship_name}></td>
+                            <td><{$val.delivery}></td>
+                          </tr><{/foreach}>
+                        </tbody>
+                      </table>
+                    </div></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+<script>  
+var openHandler={};
+OrderMgr = {
+    act:{
+        run:function(method,el, tag){
+            var order_id = $(el).getParent('div[order_id]').get('order_id');
+            alert(order_id);
+            var dealer_order_id = $(el).getParent('div[order_id]').get('dealer_order_id');
+            var supplier_id = $(el).getParent('div[order_id]').get('supplier_id');
+            OrderMgr.currentInfo = el.getParent('.infoContent');
+            if (tag == 'pay') {
+                openHandler = new Dialog('index.php?ctl=order/order&act='+method+'&p[0]='+dealer_order_id+'&p[1]='+supplier_id+'&p[2]='+order_id, {title:'向供应商付款', width:window.getSize().x*0.85, height:window.getSize().y*0.85});
+                // W.page('index.php?ctl=order/order&act='+method+'&p[0]='+dealer_order_id+'&p[1]='+supplier_id+'&p[2]='+order_id, {method:'post',data:{_o:'_'}},el);
+            }else if (tag == 'refund') {
+                openHandler = new Dialog('index.php?ctl=order/order&act='+method+'&p[0]='+dealer_order_id, {title:'采购单['+order_id+']'+el.value+'操作',
+                    width:window.getSize().x*0.85,
+                    height:window.getSize().y*0.85
+                });
+                // W.page('index.php?ctl=order/po&act='+method+'&p[0]='+order_id+'&p[1]='+dealer_order_id,{method:'post',data:{_o:'_'}},el);
+            } else {
+                $(el).setProperty('disabled','disabled');
+                W.page('index.php?ctl=order/po&act='+method+'&p[0]='+order_id,{method:'post',data:{_o:'_'}},el);
+            }
+        }
+    }
+};
+</script>

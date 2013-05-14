@@ -1,0 +1,26 @@
+<div class="finder" id="<{$_finder.domid}>">
+  <div class="action-bar" style="border-bottom:1px solid #fff; padding:4px;"><span class="sysiconBtn addorder" type="button"><{t}>选择添加<{/t}></span><span onclick="" class="sysiconBtn delete" style="margin-left:5px"><{t}>删除选中项<{/t}></span>    
+  </div>
+  
+  <div class="table-grid " style="border:1px solid #efefef;">
+<{if $_finder.from.type!='list'}>
+      <{assign var="items" value=$_finder.items }>
+      <{include file=$_finder.view}>
+      <table width="100%" border="0" cellspacing="0" cellpadding="0" class="gridlist">
+      <thead>
+      <{$smarty.capture.listHeader}>
+      </thead>
+        <tbody>
+        <{$smarty.capture.listBody}>
+        </tbody>
+        
+      </table>
+
+    <{else}>
+    <p><{$_finder.from.label}></p>
+    <input type="hidden" name="<{$_finder.name}>[filter]" value="<{$_finder.from.filter}>"/>
+    <{/if}> </div>
+</div>
+<script>
+var selector = new Selector('<{$_finder.domid}>',{<{if $_finder.params}>params:"<{$_finder.params}>",<{/if}>iptname:'<{$_finder.iptname}>',cols:'<{$_finder.cols}>',view:'<{$_finder.view}>',el:'<{$_finder.domid}>',type:'<{$_finder.type}>',select:'<{$_finder.select}>'});
+</script>

@@ -1,0 +1,63 @@
+<div class='CartWrap'>
+    <div class="CartNav clearfix">
+    <div class="floatLeft">
+    <img src="statics/cartnav-step4.gif" alt="购物流程--确认订单填写购物信息" />
+    </div>
+    <div class="floatRight"><img src="statics/cartnav-cart.gif"  /></div>
+    </div>
+</div>
+<form action="<{link ctl="paycenter" act="order"}>" method="post">
+  <{require file="common/orderinfo.html"}>
+  <input type="hidden" name="order_id" value="<{$order.order_id}>" />
+  <input type="hidden" name="money" value="<{$order.amount.total-$order.amount.payed}>" />
+  <input type="hidden" name="currency" value="<{$order.currency}>" />
+  <input type="hidden" name="cur_money" value="<{$order.cur_money }>" />
+  <input type="hidden" name="cur_rate" value="<{$order.cur_rate }>" />
+  <input type="hidden" name="cur_def" value="<{$order.cur_def }>" />
+<{if $order.selecttype}>
+  <div class="division">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="liststyle data">
+      <tr>
+        <td valign="top">
+          <{require file="common/paymethod.html"}>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div class="division textcenter" style="margin:10px;">
+    <input type="submit" class='actbtn btn-pay' value="立刻支付" />
+  </div>
+<{else}>
+  <input type="hidden" name="payment[payment]" value="<{$order.payment}>" />
+  <div class="FormWrap ">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="liststyle data">
+      <col class="span-6 ColColorBlue"></col>
+      <col class="span-5 ColColorGray textcenter"></col>
+      <col class="span-auto ColColorGray textcenter"></col>
+      <tr>
+        <td>
+        <strong><{t}>共需支付:<{/t}></strong>
+          <span class="hueorange fontcolorRed font20px"><{$order.amount.total-$order.amount.payed|cur:$order.currency}></span>
+        </td>
+        <td>
+          <{if $order.amount.total > $order.amount.payed}>
+            <{if $order.paytype=="OFFLINE"}>
+              <strong><div class="customMessages">{pay_offline}</div></strong>
+            <{elseif $order.payment==-1 || $order.paytype=="PAYAFT"}>
+              <strong><div class="customMessages">{pay_message}</div></strong>
+            <{else}>
+              <{if $order.paytype=="DEPOSIT"}>
+                <strong><{t}>您选择了预存款支付<{/t}></strong>
+              <{/if}>
+           <input type="submit" class='actbtn btn-pay' value="立刻支付" />
+           <a class="lnk" href="<{link ctl=order act=index arg0=$order.order_id arg1=true}>"><{t}>选择其他支付方式&raquo;<{/t}></a></div> 
+            <{/if}>
+           <{else}>
+            订单不需要再支付,请等待我们处理
+            <{/if}>
+        </td>
+      </tr>
+    </table>
+  </div>
+<{/if}>
+</form>

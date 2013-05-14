@@ -1,0 +1,92 @@
+<table cellspacing="1" cellpadding="5" width="100%" border="0">
+  <tr>
+    <td valign="top"><table cellspacing="0" cellpadding="0" border="0">
+        <tr>
+          <td align="right"><span><{t}>行数<{/t}></span>：</td>
+          <td>&nbsp;
+            <input id="txtRows" type="text" maxlength="3" size="2" value="3" name="txtRows" /></td>
+        </tr>
+        <tr>
+          <td align="right"><span><{t}>列数<{/t}></span>：</td>
+          <td>&nbsp;
+            <input id="txtColumns" type="text" maxlength="2" size="2" value="2" name="txtColumns" /></td>
+        </tr>
+        <tr>
+          <td align="right">&nbsp;</td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td align="right"><span><{t}>边框粗细<{/t}></span>：</td>
+          <td>&nbsp;
+            <input id="txtBorder" type="text" maxlength="2" size="2" value="1" name="txtBorder" /></td>
+        </tr>
+        <tr>
+          <td align="right"><span><{t}>对齐标题<{/t}></span>：</td>
+          <td>&nbsp;
+            <select id="selAlignment" name="selAlignment">
+              <option value="" selected="selected"><{t}>默认<{/t}></option>
+              <option value="left"><{t}>左边<{/t}></option>
+              <option value="center"><{t}>中间<{/t}></option>
+              <option value="right"><{t}>右边<{/t}></option>
+            </select></td>
+        </tr>
+      </table></td>
+    <td valign="top"><table cellspacing="0" cellpadding="0" border="0">
+        <tr>
+          <td align="right"><span><{t}>表格宽度<{/t}></span>：</td>
+          <td>
+            <input id="txtWidth" type="text" maxlength="4" size="3" value="200" name="txtWidth" /></td>
+          <td>
+            <select id="selWidthType" name="selWidthType">
+              <option value="px" selected="selected"><{t}>像素<{/t}></option>
+              <option value="%"><{t}>百分比<{/t}></option>
+            </select></td>
+        </tr>
+        <tr>
+          <td align="right"><span><{t}>表格高度<{/t}></span>：</td>
+          <td>
+            <input id="txtHeight" type="text" maxlength="4" size="3" name="txtHeight" /></td>
+          <td><{t}>像素<{/t}></td>
+        </tr>
+        <tr>
+          <td align="right">&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td align="right" nowrap="nowrap"><span><{t}>单元格边距<{/t}></span>：</td>
+          <td>&nbsp;
+            <input id="txtCellSpacing" type="text" maxlength="2" size="2" value="1" name="txtCellSpacing" /></td>
+          <td>&nbsp;</td>
+        </tr>
+        <tr>
+          <td align="right" nowrap="nowrap"><span><{t}>单元格间距<{/t}></span>：</td>
+          <td>&nbsp;
+            <input id="txtCellPadding" type="text" maxlength="2" size="2" value="1" name="txtCellPadding" /></td>
+          <td>&nbsp;</td>
+        </tr>
+      </table></td>
+  </tr>
+</table>
+
+<div class="mainFoot">
+<div class="table-action">
+	<{button label="确定" id="mce_dlg_ok"}>
+	<{button label="取消" isclosedialogbtn="true"}>
+</div>
+</div>
+
+<script>
+$('mce_dlg_ok').addEvent('click',function(){
+  var ret = '<table '+($('selAlignment').value?('align="'+$('selAlignment').value+'" '):'')+'width="'+$('txtWidth').value+$('selWidthType').value+'" '+($('txtHeight').value?('height="'+$('txtHeight').value+'" '):'')+'border="'+$('txtBorder').value+'" cellspacing="'+$('txtCellSpacing').value+'" cellpadding="'+$('txtCellPadding').value+'">';
+    var row='';
+    for(var i=$('txtColumns').value.toInt();i>0;i--){
+      row+='<td>&nbsp;</td>';
+    }
+    for(var i=$('txtRows').value.toInt();i>0;i--){
+      ret+='<tr>'+row+'</tr>';
+    }
+    ret+='</table>';
+  window.curEditor.exec.bind(window.curEditor)('insertHTML',ret);
+});
+</script>

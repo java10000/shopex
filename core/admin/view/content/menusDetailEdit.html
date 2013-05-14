@@ -1,0 +1,86 @@
+
+<form method='post' action='index.php?ctl=content/menus&act=menusDetialEdit' class="tableform">
+  <input type='hidden' name='menu_id' value='<{$menu_id}>'>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <th><{t}>菜单名：<{/t}></th>
+      <td><input type='input' name='label' value='<{$label}>'></td>
+    </tr>
+    <tr>
+      <th><{t}>菜单类型：<{/t}></th>
+      <td><select name='type' id='type'>
+          <option><{t}>-请选择-<{/t}></option>
+          <option value='0' <{if $type==0}>selected='selected'<{/if}>>MNU_LINK
+          </option>
+          <option value='1' <{if $type==1}>selected='selected'<{/if}>>MNU_BROWSER
+          </option>
+          <option value='2' <{if $type==2}>selected='selected'<{/if}>>MNU_PRODUCT
+          </option>
+          <option value='3' <{if $type==3}>selected='selected'<{/if}>>MNU_ARTICLE
+          </option>
+          <option value='4' <{if $type==4}>selected='selected'<{/if}>>MNU_ART_CAT
+          </option>
+          <option value='5' <{if $type==5}>selected='selected'<{/if}>>MNU_TAG
+          </option>
+        </select></td>
+    </tr>
+    <tr id='link'>
+      <th>MNU_LINK：</th>
+      <td><input type='input' name='link' value='<{$link}>'></td>
+    </tr>
+    <tr id='browser'>
+      <th>MNU_BROWSER：</th>
+      <td><input type='input' name='browser' value='<{$browser}>'></td>
+    </tr>
+    <tr id='product'>
+      <th>MNU_PRODUCT：</th>
+      <td><input type='input' name='product' value='<{$product}>'></td>
+    </tr>
+    <tr id='article'>
+      <th>MNU_ARTICLE：</th>
+      <td><input type='input' name='article' value='<{$article}>'></td>
+    </tr>
+    <tr id='art_cat'>
+      <th>MNU_ART_CAT：</th>
+      <td><input type='input' name='art_cat' value='<{$art_cat}>'></td>
+    </tr>
+    <tr id='tag'>
+      <th>MNU_TAG：</th>
+      <td><input type='input' name='tag' value='<{$tag}>'></td>
+    </tr>
+  </table>
+
+
+<div class="table-action">
+	<{button type="submit"  label="保存"}>
+</div>
+    
+</form>
+<script>
+$('type').addEvent('change',getType);
+getType();
+function getType(){
+  hideAll()
+  if($('type').value==0){
+    $('link').show();
+  }else if($('type').value==1){
+    $('browser').show();
+  }else if($('type').value==2){
+    $('product').show();
+  }else if($('type').value==3){
+    $('article').show();
+  }else if($('type').value==4){
+    $('art_cat').show();
+  }else if($('type').value==5){
+    $('tag').show();
+  }
+}
+function hideAll(){
+  $('link').hide();
+  $('browser').hide();
+  $('product').hide();
+  $('article').hide();
+  $('art_cat').hide();
+  $('tag').hide();
+}
+</script>

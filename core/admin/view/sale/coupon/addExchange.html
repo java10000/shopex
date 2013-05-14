@@ -1,0 +1,31 @@
+<form id='doActivityInfoForm'  method='post' action='index.php?ctl=sale/exchangeCoupon&act=addExchange' >
+  <ul>
+    <li><p><{t}>优惠券名称：<{/t}></p>
+      <{if $cpns.cpns_id}>
+      <{$cpns.cpns_name}>
+      <{else}>
+      <select name="cpns_id">
+        <{foreach from=$cpns_list item=item}>
+        <option value="<{$item.cpns_id}>"> <{$item.cpns_name}> 
+        <{/foreach}>
+      </select>
+      <{/if}>
+    </li>
+    <li><p><{t}>积分兑换数额：<{/t}></p><input type='text' style="width:50px" value='<{$cpns.cpns_point}>' name='cpns_point'/>&nbsp; &nbsp; <{help}><{t}>此处填写兑换上述优惠券需要的积分数量<{/t}><{/help}></li>
+  </ul>
+  <input type='hidden' name='cpns_id' value='<{$cpns.cpns_id}>'>
+  
+  
+  
+<div class="table-action">
+<{button label="提交" type="submit"}>
+<{button label="取消" href="index.php?ctl=sale/exchangeCoupon&act=index"}>
+</div>
+
+
+</form>
+
+<script>
+//初始化日期选择控件
+$ES('.cal','doActivityInfoForm').each(function(i){i.makeCalable()});
+</script>

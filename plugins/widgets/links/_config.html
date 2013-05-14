@@ -1,0 +1,111 @@
+<div id="cat-config" style="display:none;"></div>
+
+<div class="tableform widgetconfig">
+
+<div class="division">
+  <table>
+    <tr>
+      <th>显示记录数：</th>
+      <td><{input type="digits" name="limit" size="10" value=$setting.limit|default:'10' required="true"}></td>
+    </tr>
+</table>
+</div>
+</div>
+<div id="links" class="tableform widgetconfig">
+<div class="division">
+<table id="listNum">
+  <tr>
+    <th>列数：</th>
+    <td><input name=colums size="10" value="<{$setting.colums|default:'2'}>"></td>
+  </tr>
+</table>
+</div>  
+
+<div class="division">
+  <table>
+    <tr>
+      <th>是否显示图片：</th>
+      <td><input type="checkbox" name="showPic" size="10" value="show" <{if $setting.showPic=="show"}>checked<{/if}>></td>
+    </tr>
+  </table>
+</div>
+</div>
+
+<div id="links_div" class="tableform widgetconfig">
+  <div class="division">
+    <table>
+      <tr>
+        <th>每条记录的左右间隔：</th>
+        <td><{input type="digits" name="seperate_x" size="10" value=$setting.seperate_x|default:'5'}>px</td>
+         <th>每条记录的上下间隔：</th>
+        <td><{input type="digits" name="seperate_y" size="10" value=$setting.seperate_y|default:'5'}>px</td>
+      </tr>  
+
+	  <tr>
+      <th>显示内容：</th>
+      <td><select name="show_type">
+	  <option value="showFont" <{if $setting.show_type=='showFont'}>selected<{/if}>>显示文字</option>
+	  <option value="showPic" <{if $setting.show_type=='showPic'}>selected<{/if}>>显示图片</option>
+	  <option value="showPicFont" <{if $setting.show_type=='showPicFont'}>selected<{/if}>>显示文字和图片</option>
+	  </select></td>
+    </tr>
+	  
+      
+    
+    </table>
+    
+    <table id="picSize" >
+      <tr>
+        <th>图片宽度：</th>
+        <td><{input type="digits" name="width" size="3" value=$setting.width|default:'88'}>px</td>
+        <th>图片高度：</th>
+        <td><{input type="digits" name="height" size="3" value=$setting.height|default:'31'}>px</td>
+        <th>图片与文字的距离：</th>
+        <td><{input type="digits" name="PictoFont" size="3" value=$setting.PictoFont|default:'5'}>px</td>
+      </tr>
+    </table>
+    
+  </div>
+</div>
+<script>
+function getCfgForm(id){
+  var config = $(id);
+  while(config.tagName != 'FORM'){
+    config = config.getParent();
+  }
+  return config;
+}
+function setCfgView(view){
+  switch(view){
+    case 'default.html':
+      $('links').style.display="";
+      $('links_div').style.display="none";
+    break;
+    case 'linksDiv.html':
+      $('links').style.display="none";
+      $('links_div').style.display="";
+    break;
+    
+  }
+}
+
+
+function getWgtTpl(){
+  var sels = getCfgForm('cat-config').getElements('select');
+  var wgtTpl = '';
+  sels.each(function(sel){
+    if(sel.getProperty('name') == '__wg[tpl]') wgtTpl = sel;
+  });
+  return wgtTpl;
+}
+
+
+
+var catTpl = getWgtTpl();
+setCfgView(catTpl.value);
+catTpl.addEvent('change',function(){
+
+  setCfgView(this.value);
+});
+
+</script>

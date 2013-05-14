@@ -1,0 +1,16 @@
+
+<form action='index.php?ctl=content/content&act=savecustompage' method='post'>
+
+ <div class="division">
+  <table>
+  <tr>
+    <th><{t}>显示内容<{/t}></th>
+<td><{input name="content" type="html" value=$content}></td>
+</tr>
+</table>
+</div>
+<input type='hidden' name='node_id' value='<{$node_id}>'>
+<div class="table-action">
+ <{button type="submit" id="newNodeBtn" label="确认提交"}>
+</div>
+</form>

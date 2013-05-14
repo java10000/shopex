@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title><{t}>快递单打印<{/t}></title>
+<{if defined('DEBUG_CSS') && DEBUG_CSS}>
+<link rel="stylesheet" href="css/print.css" type="text/css" media="print">
+<{/if}>
+
+<{include file="common/header.meta.html"}>
+
+</head>
+
+<body >
+    <div class="print-title">
+        <span style="color:#d0d0d0">|</span>&nbsp;&nbsp;&nbsp;&nbsp;
+        <Strong><{t}>快递单打印<{/t}></Strong>&nbsp;&nbsp;&nbsp;&nbsp;
+        <span style="color:#d0d0d0">|</span>
+    </div><br>
+
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+            <td>
+                <div align="center">
+                    <div id="dly_printer" style="height:<{$prt_tmpl.prt_tmpl_height*$dpi/25.4+200}>px;width:<{$prt_tmpl.prt_tmpl_width*$dpi/25.4}>px;">
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <script>
+    var swf = new Swiff('images/printermode.swf?<{$smarty.now}>', {
+    	width:  '100%',
+    	height: '100%',
+    	params:{wMode:false},
+    	id:'dly_printer_flash',
+    	container: $('dly_printer'),
+    	vars:{xml:'<{$prt_tmpl.prt_tmpl_data}>',data:'<{$data}>'<{if $tmpl_bg}>,bg:'<{$tmpl_bg}>'<{/if}>,copyright:'shopex'}
+    });
+    </script>
+
+</body>
+</html>

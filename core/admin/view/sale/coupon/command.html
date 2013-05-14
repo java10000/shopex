@@ -1,0 +1,2 @@
+<a href="index.php?ctl=<{$env.get.ctl}>&act=addCoupon&p[0]=<{$item.cpns_id}>"><{img src="images/bundle/btn_edit.gif"}><{t}>编辑<{/t}></a>
+<{if $item.download_able}>&nbsp;&nbsp;<span class="lnk" onclick="var h=prompt('请输入需要下载优惠券的数量：',50);if(!h){return};$E('iframe[name=download]').src='index.php?ctl=<{$env.get.ctl}>&act=download&p[0]=<{$item.cpns_id}>&p[1]='+h"><{img src="images/bundle/btn_download.gif"}><{t}>下载<{/t}></span><{/if}>

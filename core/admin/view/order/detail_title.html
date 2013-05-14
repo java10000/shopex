@@ -1,0 +1,16 @@
+<h1><{img src="images/bundle/spage_editing.gif"}><strong><{t}>正在查看:<{/t}></strong><{t}>订单 - <{$order.order_id}><{/t}></h1>
+
+<div class="action-bar action-bar-order">
+    <div class="order-ctls" order_id="<{$order.order_id}>">
+    <{if $_plugin_actbar_}>
+        <{include file=$_plugin_actbar_}>
+    <{else}>
+        <{include file="order/actbar.html"}>
+    <{/if}>
+    <{assign var="order_id" value=$order.order_id}>
+    </div>
+</div>
+
+<ul class="btn-bar">
+	<li><{button label="关 闭" class="btn-quit" onclick="if(confirm('确定关闭窗口?'))window.close()"}></li>
+</ul>

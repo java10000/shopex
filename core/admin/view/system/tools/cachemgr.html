@@ -1,0 +1,29 @@
+<div class="tableform" style="margin:4px;" id="cacheMgr-dialog"> <{if $cache}>
+<h5><{t}>缓存系统名称：<{/t}><{$cache}>&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" onclick="$('x_form_cachemgr').fireEvent('submit',{target:$('x_form_cachemgr'),type:'submit'})" value="清空缓存" /></h5>
+
+<{if $totalBytes}>
+<img src="http://chart.apis.google.com/chart?cht=p3&chd=t:<{$status}>&chs=500x120&chl=Used:<{$curBytes|size}>|Free:<{$freeBytes|size}>&chf=bg,s,f9f9f9&chco=0000ff&time=<{$random}>" />
+<{/if}>
+<div class="division"><{t}>注：只有在系统出现页面打不开、无法访问等严重故障时会需要用到此处清除缓存功能，其余情况下均无需使用此功能，系统会自动清除缓存。<{/t}></div>
+<{if $cache_desc}>
+<p><{$cache_desc}></p>
+<{/if}>
+
+<form id="x_form_cachemgr" action="index.php?ctl=system/about&act=clearCache" method="post" class="division">
+<table>
+  <{if count($cache_status)>0}>
+  <{foreach from=$cache_status item=item}>
+  <tr>
+  <th><{$item.name}></th>
+  <td><{$item.value}></td>
+  <td><{$item.desc}></td>
+  </tr>
+  <{/foreach}>
+  <{/if}>
+</table>
+
+<input type="hidden" name="returnUrl" value="index.php?ctl=system/about&act=cachemgr&p[0]=<{$curBytes}>&p[1]=<{$freeBytes}>">
+</form>
+<{else}>
+<h5><{t}>缓存系统已关闭。<{/t}></h5>
+<{/if}> </div>

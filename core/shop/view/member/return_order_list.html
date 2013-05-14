@@ -1,0 +1,37 @@
+<div class="MemberMain">
+<div style="margin-right:175px;">
+<h1 class="title"><{t}>新增退货申请<{/t}></h1>
+<h4><{t}>请选择需要售后服务的订单号<{/t}></h4>
+<form action="<{link ctl=member act=return_order_list}>" method="post" name="return_order_list" id="return_order_list">
+<div class="division">
+请选择订单号：<input name="order_id" type="text" size="30" /><input type="submit" value="搜索订单" />
+</div>
+</form>
+<h4><{t}>订单列表<{/t}></h4>
+<table cellspacing="0" cellpadding="3" width="100%" class="liststyle">
+  <col class="span-2 ColColorGray"/>
+  <!--<col></col>-->
+  <col class="span-3"/>
+  <col class="span-2 ColColorOrange"/>
+  <col class="span-3"/>
+  <thead>
+    <tr>
+      <th><{t}>订单号<{/t}></th>
+      <th><{t}>下单日期<{/t}></th>
+      <th><{t}>总金额<{/t}></th>
+      <th><{t}>操作<{/t}></th>
+    </tr>
+  </thead>
+  <tbody>
+    <{foreach from=$orders item="order" name=orders}>
+        <tr>
+          <td><{$order.order_id}></td>
+          <td><{$order.createtime|cdate:FDATE_STIME}></td>
+          <td class="textright"><{$order.final_amount|cur:$order.currency:false:true}></td>
+          <td><a class='btn-normal' href="<{link ctl=member act=return_add arg0=$order.order_id}>"><{t}>申请售后服务<{/t}></a></td>        
+        </tr>
+    <{/foreach}>
+    </tbody>
+</table>
+</div>
+</div>

@@ -1,0 +1,168 @@
+<div id="Member_Form_Edit_<{$member.member_id}>">
+
+<form action="index.php?ctl=member/member&act=save" method="post" target="{update:'messagebox'}" id='member_form_name'>
+
+<{if $_is_singlepage}><input type='hidden' name='all_reload' value='1'><{/if}>
+  <input type="hidden" name='member_id' value="<{$member.member_id}>">
+ <div class="division">
+  <table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <th><{t}>用户名:<{/t}></th>
+    <td><{$member.uname|escape:'html'}></td>
+  </tr>
+   <tr>
+    <th><font color='red'>*</font>&nbsp;E-mail:</th>
+    <td><{input type="email" name="email" size="20" required="true" value=$member.email}></td>
+  </tr>
+    <tr>
+      <th><{t}>会员等级:<{/t}></th>
+      <td><{input type="object:member/level" value=$member.member_lv_id required=true name="member_lv_id"}></td>
+    </tr>
+    <tr>
+    <th>
+    <{t}><{/t}>
+    </th>
+    <td><span id='editMemberPassword-<{$member.member_id}>' class="sysiconBtnNoIcon" onclick="$(this).store('dialog',new Dialog('index.php?ctl=member/member&act=updatePassword&p[0]=<{$member.member_id}>&p[1]=<{$member.email}>&p[2]='+encodeURIComponent('<{$member.uname}>')+'&p[3]='+encodeURIComponent('<{$member.name}>'),{width:430,height:170,title:'修改会员密码'}))">
+      <{t}>修改会员密码<{/t}>
+    </span></td>
+  </tr>
+
+    </table></div>
+<div class="division">
+  <table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <{foreach from=$tree item=item name="item" key='row'}>
+  <tr>
+  <th><{if $item.attr_required eq 'true'}><font color='red'>*</font>&nbsp;<{/if}><{$item.attr_name}></th>
+  <td>  <{if $item.attr_type =='date'}>
+  <{input class="cal" type='date' format="normal" name='birthday' value=$item.value }>
+  <{/if}>
+   <{if $item.attr_type =='cal'}>
+  <{input class="cal" type='date' name=$item.attr_id required=$item.attr_required value=$item.value}>
+  <{/if}>
+ 
+ 
+  <{if $item.attr_type =='text'}>
+  <input class='_x_ipt' name='<{$item.attr_id}>' vtype='<{if $item.attr_required eq 'true'}>required&&<{/if}><{$item.attr_valtype}>' type='text' value='<{$item.value}>'/>
+  <{/if}>
+  
+  
+<{if $item.attr_group =='defalut' && $item.attr_type != 'area' && $item.attr_type != 'sex' && $item.attr_type != 'date'}>
+  <input type='text' name='<{$item.attr_type}>' value='<{$item.value}>' <{if $item.attr_required eq 'true'}>class='_x_ipt' vtype='required'<{/if}>>
+  <{/if}>
+  
+  
+  
+  
+  
+   <{if $item.attr_type =='area'}>
+   <{if $item.rStatus}>
+   <{input type="region" name='area' value=$item.value pptype='area2'}>
+   <{else}>
+   <{input type="region" name='area' pptype='area2'}>
+   <{/if}>
+    <script>
+         validatorMap.set('area2',['你没选择完整的地区',function(el,v){
+                 var els=el.getElements('select');
+                 if(els.length==1&&(els[0].getValue()==''||els[0].getValue()=='_NULL_')){
+                     return true;
+                 }else{
+                   return els.every(function(sel){
+                                  var selValue=sel.getValue();
+                                  var v=selValue!=''&&selValue!='_NULL_';
+                                  if(!v){
+                                      sel.focus();
+                                      return false;
+                                  }
+                                  return true;
+                             });
+                 }
+                 return true;
+             }
+           ]);
+      </script>
+
+
+   <{/if}>
+   
+   <{if $item.attr_type =='sex'}>
+  <input type='radio' name='sex' value='1'<{if $item.value==1}>checked<{/if}>><label><{t}>男<{/t}></label>
+  <input type='radio' name='sex' value='0' <{if $item.value==0}>checked<{/if}>><label><{t}>女<{/t}></label>
+   <{/if}>
+   
+   <{if $item.attr_type =='select'}>
+ <select name='<{$item.attr_id}>' <{if $item.attr_required eq 'true'}>class='_x_ipt' vtype='required'<{/if}>>
+ <option value='' <{if $item.value == ''}>selected='true'<{/if}>><{t}>- 请选择 -<{/t}></option>
+ <{foreach from=$item.attr_option item=option name="option"}>
+ <option value='<{$option}>' <{if $item.value == $option}>selected='true'<{/if}>><{$option}></option>
+ <{/foreach}>
+ </select>
+ <{if $item.attr_required eq 'true'}><em>*</em><{/if}>
+   <{/if}>
+   
+  <{if $item.attr_type =='checkbox'}>
+  <{foreach from=$item.attr_option item=checkbox name="checkbox" }>
+  <input type='checkbox' name=<{$item.attr_id}>[]" value='<{$checkbox}>' <{foreach from=$item.value item=checkboxvalue name="checkboxvalue" }>
+ <{if $checkboxvalue.value==$checkbox}>
+ checked ='true'
+ <{/if}>
+
+ <{/foreach}>><label><{$checkbox}></label><br/>
+   <{/foreach}><input type='hidden' name='<{$item.attr_id}>[]' value='%no%'>
+
+<{if $item.attr_required eq 'true'}>
+<input type='hidden' class='_x_ipt' vtype='selectc'/><{/if}>
+   <{/if}></td>
+  </tr>
+  
+ 
+  <{/foreach}>
+  </table>
+  </div>
+  <div class="division">
+  <table width="100%" border="0" cellpadding="0" cellspacing="0" >  
+    <tr>
+      <th><{t}>当前积分:<{/t}></th>
+      <td><{$member.point}></td>
+    </tr>
+    <tr>
+      <th><{t}>预存款金额:<{/t}></th>
+      <td><{$member.advance|cur}></td>
+    </tr>
+    <tr>
+      <th><{t}>注册日期:<{/t}></th>
+      <td><{$member.regtime|cdate:FDATE}></td>
+    </tr>
+    <tr>
+      <th><{t}>注册IP:<{/t}></th>
+      <td><{$member.reg_ip}></td>
+    </tr>
+  </table>
+  </div>  
+  	 <{if !$nosubmit}>
+   <div class="table-action">	
+    <input type="submit" class="btn" value="保存" />
+</div>
+<{/if}>
+</form>
+</div>
+<script>
+//初始化日期选择控件   
+
+$ES('.cal','Member_Form_Edit_<{$member.member_id}>').each(function(i){i.makeCalable()});
+
+
+validatorMap.set('selectc',['本项必填',function(element,value){
+ 
+    var checkboxelement = element.getParent('td').getElements('input[name$=]]');
+    var flag=checkboxelement.some(function(i){
+      return !!i.checked;
+    });
+    checkboxelement.addEvent('change',function(){
+        validator.removeCaution(element);
+        validator.test($('Member_Form_Edit_<{$member.member_id}>'),element);
+
+        checkboxelement.removeEvent('change',arguments.callee);
+    });
+    return flag;
+}]);
+</script>

@@ -1,0 +1,44 @@
+
+<script>
+var cover_goods_info = $H(<{$goodsInfoJson}>);
+</script>
+
+<textarea id='cover-goods-type'>
+          <{foreach from=$prototype.props key=key item=aProp}>
+          <tr class="prop">
+            <th><{$aProp.name}>：</th>
+            <td>
+              <{if $aProp.type eq 'select'}>
+              <{input name="goods[p_{$key}]" type="select" nulloption="1" options=$aProp.options value=$aProp.selected }>
+              <{else}>
+              <{input type="text" value=$aProp.selected name="goods[p_{$key}]" maxlength="25"}>
+              <{/if}></td>
+            
+          </tr>
+          <{/foreach}>
+</textarea>
+
+<div id='cover-goods-type-params'>
+<br>
+<table>
+<{foreach from=$prototype.params item=param key=group}>
+     <tr>
+         <th colspan="2" style="text-align:left; background:none;"><{$group}></th>
+    </tr>
+        <{foreach from=$param item=value key=item}>
+       <tr>
+           <th><{$item}></th>
+           <td><{input type="text" name=$value.name value=$value.selected }></td>
+      </tr>
+      <{/foreach}>
+<{/foreach}>
+</table>
+</div>
+
+<div id='cover-goods-type-brand'>
+<{input type="select" name="goods[brand_id]" nulloption="1" rows=$brandList valueColumn="brand_id" labelColumn="brand_name" value=$goods.brand_id}>
+</div>
+
+
+<textarea id='cover-goods-type-intro'><{$goods.intro}></textarea>
+

@@ -1,0 +1,20 @@
+<div id="mce_htmleditor_<{$env.post.seri}>" align="center" style='padding:5px;'>
+<textarea style="width: 90%; height:250px;font-size: 12px; font-family:Verdana, Arial, Helvetica, sans-serif" dir="ltr"  wrap="on">
+<{$env.post.htmls|escape:'html'}>
+</textarea><br>
+<br>
+<span class="sysiconBtn buttonsave" style="cursor:pointer"><{t}>确定编辑<{/t}></span>&nbsp;<span class="sysiconBtn delete" style="cursor:pointer"><{t}>关闭<{/t}></span>
+</div>
+
+<script>
+  var mce_htmleditor_textarea=$E('textarea','mce_htmleditor_<{$env.post.seri}>');
+  var btn=$ES('span','mce_htmleditor_<{$env.post.seri}>');
+  mce_htmleditor_textarea.value=mce_htmleditor_textarea.value.clean().trim().replace(/\\/gi,'');
+  btn[0].addEvent('click',function(){
+     curEditor.inc.doc.body.innerHTML=mce_htmleditor_textarea.value.clean().trim();
+   curEditor.dlg.close();
+  });
+  btn[1].addEvent('click',function(){
+      curEditor.dlg.close();
+  });
+</script>

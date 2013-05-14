@@ -1,0 +1,90 @@
+<div class="division" style=" padding:3px; margin:0;">
+<div class="action-bar" style="padding:3px;">
+
+<span onclick="addPropsItem()" class="sysiconBtn addorder"><{t}>添加一个扩展属性<{/t}></span><span class="notice-inline"><{t}>输入项最多能够添加8个，选择项最多能添加20个<{/t}></span>
+</div>
+<div class="gridlist-head">
+    
+    <div class="p_name span-3" style="text-align:center"><{t}>属性名<{/t}></div>
+    <{if $gtype.type_id}><div class="p_name span-3" style="text-align:center"><{t}>属性别名(|分割)<{/t}></div><{/if}>
+    <div class="p_type span-5" style="text-align:center"><{t}>前台列表页表现类型<{/t}><{help}><{t}>选择项需要店主设置好多个可选值，在商品添加时只需从预设值中选择即可；如果选择渐进式筛选，前台使用该类型的商品分类列表页上方会列出店主设置好的多个可选值供顾客点击筛选商品；如果选择下拉筛选，商品分类列表页上的样式表现为下拉菜单筛选<{/t}><br /><br /><{t}>输入项用于属性值差别较大的情况，店主直接为每个商品手工输入属性值，供顾客搜索，如：手机配置（一电一充）<{/t}><{/help}></div>
+    <div class="p_optionalias span-8" style="text-align:center"><{t}>选择项可选值<{/t}><{help}><{t}>多个可选值请用逗号"<{/t}><font color='blue'>,</font><{t}>"分割<{/t}><{if $gtype.type_id}><{t}>，如果某个可选值包含别名，请用竖线"<{/t}><font color='blue'>|</font><{t}>"分隔<{/t}><{/if}><br /><br /><{t}>例如：手机的制式有GSM、CDMA、双模（别名：G/C双模）。写成格式如：GSM,CDMA,双模|G/C双模<{/t}><{/help}></div>
+    <div class="p_optionalias span-2" style="text-align:center"><{t}>显示<{/t}><{help}><{t}>此处控制该属性是否显示在商品详细页<{/t}><{/help}></div>
+    <div class="p_optionalias span-2" style="text-align:center"><{t}>排序<{/t}><{help}><{t}>此处请填写数字，数字越小排列越靠前，不修改则表示采用默认顺序<{/t}><{/help}></div>
+    <div class="p_optionalias span-1" style="text-align:center"><{t}>刪除<{/t}></div>
+  </div>
+    
+<div id="props_box" class="gridlist" style=" height:300px; overflow:auto;border:1px solid #efefef; margin-bottom:10px;">
+<{if count($gtype.props)>0}>
+<{foreach from=$gtype.props item=prop key=k}>
+  <div class="row">
+   
+    <div class="p_name span-3"><input size=12 name="props[name][]"  value="<{$prop.name}>" /></div>
+    <{if $gtype.type_id}><div class="p_name span-3"><input size=12 name="props[alias][]"  value="<{$prop.alias}>" /></div><{/if}>
+    <div class="p_type span-5"><select name="props[type][]" onchange='changePropsType(this)'>
+      <optgroup label="选择项">
+        <option value="2"<{if ($prop.type == 'select' && $prop.search == 'nav')}> selected="selected"<{/if}>><{t}>选择项 - 渐进式筛选<{/t}></option>
+        <option value="3"<{if ($prop.type == 'select' && $prop.search == 'select')}> selected="selected"<{/if}>><{t}>选择项 - 下拉筛选<{/t}></option>
+        <option value="4"<{if ($prop.type == 'select' && $prop.search == 'disabled')}> selected="selected"<{/if}>><{t}>选择项 - 不可筛选<{/t}></option>
+      </optgroup>
+      <optgroup label="输入项">
+        <option value="0"<{if ($prop.type == 'input' && $prop.search == 'input')}> selected="selected"<{/if}>><{t}>输入项 - 可搜索<{/t}></option>
+        <option value="1"<{if ($prop.type == 'input' && $prop.search == 'disabled')}> selected="selected"<{/if}>><{t}>输入项 - 不可搜索<{/t}></option>
+      </optgroup>
+    </select></div>
+    <div class="p_optionalias span-8"><input  style='width:95%;' name="props[options][]" value="<{$prop.s_props|escape:html}>" /></div>
+    <div class="p_optionalias span-2"><input type="checkbox" <{if $prop.show}>checked<{/if}>/><input type="hidden" name="props[show][]" value="<{$prop.show}>"></div> 
+    <div class="p_optionalias span-2"><{input  type='digits'  style='width:50%;' name="props[ordernum][]" value=$prop.ordernum}></div>
+     <div class="p_btn span-1" style="text-align:center; color:red;cursor:pointer" onclick="$(this).getParent('.row').remove()"><{img title="删除" alt="删除"  src="images/bundle/delecate.gif"}></div>
+        <div style="clear:both"></div>
+  </div>
+<{/foreach}>
+<{else}>
+  <div class="row">
+    <div class="p_name span-3"><input size=12 name="props[name][]"  /></div>
+    <{if $gtype.type_id}><div class="p_name span-3"><input size=12 name="props[alias][]"  /></div><{/if}>
+    <div class="p_type span-5"><select name="props[type][]" onchange='changePropsType(this)'>
+      <optgroup label="选择项">
+        <option value="2"><{t}>选择项 - 渐进式筛选<{/t}></option>
+        <option value="3"><{t}>选择项 - 下拉筛选<{/t}></option>
+        <option value="4"><{t}>选择项 - 不可筛选<{/t}></option>
+      </optgroup>
+      <optgroup label="输入项">
+        <option value="0"><{t}>输入项 - 可搜索<{/t}></option>
+        <option value="1"><{t}>输入项 - 不可搜索<{/t}></option>
+      </optgroup>
+    </select></div>
+    <div class="p_optionalias span-8"><input style='width:95%;'  name="props[options][]"  /></div>
+    <div class="p_optionalias span-2"><input  type="checkbox" checked /><input type="hidden" name="props[show][]" value="1"></div> 
+    <div class="p_optionalias span-2"><{input type='digits' style='width:50%;' name="props[ordernum][]"}></div>
+        <div class="p_btn span-1" style="text-align:center;color:red;cursor:pointer" onclick="$(this).getParent('.row').remove()" ><{img title="删除" alt="删除"  src="images/bundle/delecate.gif"}></div>
+
+        <div style="clear:both"></div>
+  </div>
+<{/if}>
+</div>
+</div>
+
+<script>
+function changePropsType(t){
+    var inputType = '';
+    if(t.get('value') <= 1 ){
+        inputType = 'hidden';
+    }else{
+        inputType = 'visible';
+    }
+    var inputArea = t.getParent('.p_type').getNext('.p_optionalias').getElements('*');
+    inputArea.set('styles',{'visibility':inputType});
+}
+function addPropsItem(){
+  var e = new Element('div').setHTML($('props_tmpl').get('html')).getFirst();
+  $E('select',e).selectedIndex=0;
+  $E('input[type=checkbox]',e).addEvent('change',function(){
+      this.getNext('input[type=hidden]').set('value',this.checked?1:0);
+  });
+  $('props_box').adopt(e);
+}
+$('props_box').getElements('input[type=checkbox]').addEvent('change',function(){
+      this.getNext('input[type=hidden]').set('value',this.checked?1:0);       
+});
+</script>

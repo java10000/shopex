@@ -1,0 +1,79 @@
+<form method="post" action='<{link ctl="passport" act="verify"}>' class='mini-loginbuyform' id='mini-loginbuyform'>
+<input type='hidden' name='from_minipassport' value=1 />
+  <div class="RegisterWrap">
+      <div class="form">
+        <table width="98%" border="0" cellspacing="0" cellpadding="0" style="margin:0 auto;">
+         <tr>
+            <td colspan=2><h4><{t}>已注册用户，请登录<{/t}></h4></td>
+            <td class='row-span' rowspan='<{if $valideCode}>5<{else}>4<{/if}>'>
+               <div class='span-auto' style='width:160px; text-align:left;'><h4 style="padding-top:0;"><{t}>还不是会员?<{/t}></h4></div><div class='span-auto close' style='width:25px'>X</div>
+               <div class='clear'></div>
+               <ul class="list fast-login">
+                 <li><span>没有账号？</span><a href='<{link ctl="passport" act="signup"}>' class="actbtn btn-newregister">立即注册</a></li>
+                 <{if !$mustMember}>
+                 <li><span>您还可以...</span><a class="actbtn btn-buynow" href="<{link ctl=cart act=checkout}>" onclick="Cookie.set('S[ST_ShopEx-Anonymity-Buy]', 'true');$(this).getParent('.dialog').retrieve('chain',$empty)();return false;" ><{t}>无需注册直接快读购买<{/t}></a></li>
+                 <{/if}>
+               </ul>
+            </td>
+         </tr>
+          <tr>
+            <th><i>*</i><{t}>用户名：<{/t}></th>
+            <td><{input name="login" class="inputstyle"  required="true" id="in_login" tabindex="1" value=$loginName}><a style="margin-left:6px; " href="<{link ctl='passport' act='signup'}>"><{t}>立即注册<{/t}></a></td>
+          </tr>
+          <tr>
+            <th><i>*</i><{t}>密码：<{/t}></th>
+            <td><{input name="passwd" class="inputstyle" type="password" required="true" id="in_passwd" tabindex="2"}><a style="margin-left:6px;" href="<{link ctl='passport' act='lost'}>"><{t}>忘记密码？<{/t}></a></td>
+          </tr>
+          <{if $valideCode}>
+          <tr>
+            <th><i>*</i><{t}>验证码：<{/t}></th>
+            <td><{input size="8" class="inputstyle"  type="digits" required="true" name="loginverifycode" id="iptlogin"  tabindex="3"}>
+               <span class='verifyCode' style='display:none;'><img src="#" border="1" codesrc='<{link ctl="passport" act="verifyCode" arg0="l"}>'/><a href="javascript:void(0)"><{t}>&nbsp;看不清楚?换个图片<{/t}></a>
+               </span>
+            </td>
+          </tr>
+          <{/if}>
+          <tr>
+            <th></th>
+            <td><input class="actbtn btn-login" type="submit" value="登录" tabindex="4" />
+                <div class="app-login-wrapper"><{foreach from=$mini_login_content item=con}><div class="app-login-item"><{$con}></div><{/foreach}></div>
+              </td>
+          </tr>
+          </table>
+        <{if $open_id_status}>
+            <h4>信任登陆</h4>
+            <div class="form">
+              <ul class="trustlogos " >
+              <{foreach from=$openid_login item=item key=key}>
+                <li><{if $item.href neq ''}><a href="<{$item.href}>"><img src="statics/accountlogos/<{$key}>.gif"/></a><{else}><img src="statics/accountlogos/<{$key}>.gif"/><{/if}></li>
+                <{/foreach}>
+                <li class="login-beli"><input type="button" tabindex="4" value="1" class="trust__login btn-login">&nbsp;&nbsp;&nbsp;<a href="#">更多»</a>
+              </div></li>
+              </ul>
+        <{/if}>
+     </div>
+  </div>
+</form>
+<{if $valideCode}>
+<script>
+    (function(){
+        <{if $open_id_status}> if(RemoteLogin){RemoteLogin.init();}<{/if}>
+    })();
+   void function(formclz){
+         var vcodeBox = $E('.'+formclz+' .verifyCode');
+         var vcodeImg  =vcodeBox.getElement('img');
+         var refreshVcodeBtn  = vcodeBox.getElement('a').addEvent('click',function(e){
+              e.stop();
+              vcodeImg.src = vcodeImg.get('codesrc')+'?'+$time();
+         });
+         $$('.'+formclz+' input').addEvent('focus',function(){
+             if (this.form.retrieve('showvcode',false))return;
+             vcodeBox.show();
+             refreshVcodeBtn.fireEvent('click',{stop:$empty});
+             this.form.store('showvcode',true);
+         });
+
+   }('mini-loginbuyform');
+</script>
+<{/if}>
+

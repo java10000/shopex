@@ -1,0 +1,18 @@
+<{if count($items)==0}>
+<div class='row'>
+    <div class='row-line'>筛选结果为空</div>
+</div>
+
+<{else}>
+
+<{foreach from=$items item=item key="key"}>
+	<div class='row'>
+		<div class='row-line'>
+            <input type="<{$ipt_type}>" name="_obj_sel" value="<{$item[$idColumn]}>" id="edit_sel_<{$obj_id}>_<{$key}>" />
+            <label for="edit_sel_<{$obj_id}>_<{$key}>"><{$item[$textColumn]}></label>
+        </div>
+	</div>
+<{/foreach}>
+<{/if}>
+
+<div class="gridlist-footer"><{pager data=$pager}></div>

@@ -1,0 +1,24 @@
+<h3><{t}>详细介绍<{/t}></h3>
+<div class="division">
+<button class="lnk" style="background:none;border:none; width:180px;line-height:20px" type="button" >将商品相册图片插入编辑区</button>
+<{input type="html" name="goods[intro]" class="" value=$goods.intro includeBase=true}>
+</div>
+
+<script >
+$E('#gEditor-Body .lnk[type=button]').addEvent('click',function(e){
+	if(!$ES('#all-pics .gpic-box').length){MessageBox.error("商品相册没有图片!!!");return;}
+	var mce=<{$var}>;
+	if(!mce.inc){MessageBox.error("请先将光标移到编辑框内,激活编辑框!!!");return;}
+	if(mce.inc.editType=='textarea'){MessageBox.error("请在可视化编辑模式下操作此功能!!!");return;}
+	var path='<{$env.const.HOME_DIR|basename}>/upload/';	
+	var html='';		
+	$ES('#all-pics .gpic-box input[type=hidden]').each(function(el){		
+		var url=el.get('bigPic')?el.get('bigPic').split('|')[0]:path+el.get('soucre');
+		var img=new Element('img',{src:url}).setStyle('marginTop','30px');		
+		img.removeProperties('width','height');
+		var imgBox=new Element('div').adopt(img).get('html');
+		html+='<center>'+imgBox+'</center>';
+	});
+	mce.exec('insertHTML',html);	
+});
+</script>

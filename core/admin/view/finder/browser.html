@@ -1,0 +1,54 @@
+<script>
+  <{$_finder.var}> = new Finder("<{$_finder._name}>",<{json from=$_finder}>);
+</script>
+
+<div class="finder" id="finder-<{$_finder._name}>">
+  
+  <{if $_finder.type eq "goods" || $_finder.type eq "products" && !$_finder.params.cat_id}>
+    <div class="mainHead">
+        <select onchange="$('filter_<{$_finder.domid}>_ipt').value=this.value?'cat_id='+this.value:'';W.page('index.php?ctl=goods/product&act=showfilter&p[0]='+this.value,{update:'filter_<{$_finder.domid}>_body',data:'view=<{$_finder.view}>&obj=filter.f_<{$_finder.domid}>','method':'post'})">
+    <option value=""><{t}>- 所有分类 -<{/t}></option>
+    <{foreach from=$filter.cats item=cat}>
+    <option<{if $_finder.data.cat_id eq $cat.id}> selected="selected"<{/if}> value="<{$cat.id}>"><{$cat.label|paddingleft:$cat.step*4-4:'&nbsp;'}></option>
+    <{/foreach}>
+    </select>
+    </div>
+  <{/if}>
+  
+    <div view="<{$_finder.filter}>" id="finder-filter-<{$_finder._name}>" class="mainHead finder-filter" target="_finder" action="index.php?ctl=<{$_finder.controller}>&act=finder&p[0]=<{$_finder.type}>&p[1]=<{$_finder.view}>&p[2]=<{$_finder.cols}>&p[3]=<{$_finder.var}>&p[4]=<{$_finder.plimit}>">
+    <input name="_finder[select]" value="<{$_finder.select}>" type="hidden" />
+    <input name="_finder[id]" value="<{$_finder.id}>" type="hidden" />
+    <input name="_finder[type]" value="<{$_finder.type}>" type="hidden" />
+    <input name="_finder[without_rowselect]" value="1" type="hidden" />
+    <input type="hidden" class="keywords" />
+    <{toinput from=$_finder.params}>
+    
+    <{if $_finder.searchOptions}>
+    <select onchange="$('finder-filterInput-<{$_finder._name}>').name=this.value">
+      <{foreach from=$_finder.searchOptions key=key item=item}>
+      <option value="<{$key}>"><{$item}></option>
+      <{/foreach}>
+    </select>
+    <{/if}>      
+    <input name="<{$_finder.currentSearchKey}>" style="margin:0;padding:0;font-size:12px;" id="finder-filterInput-<{$_finder._name}>" />
+    <button onclick="<{$_finder.var}>.refresh.call(<{$_finder.var}>);return false"><{t}>搜索<{/t}></button>      
+    <{if $_finder.finder_filter_tpl}>    
+    <span class="lnk" onclick="$('finder-filterBody-<{$_finder._name}>').toggleDisplay()" style="margin-left:10px"><{t}>高级搜索<{/t}></span>
+    <{/if}>    
+    
+    <{if $_finder.finder_filter_tpl}>
+    <div id="finder-filterBody-<{$_finder._name}>" class="finder-filter-body">
+      <{include file=$_finder.finder_filter_tpl }>
+    </div>
+    <{/if}>
+  </div>
+  
+  </div>
+  <form method="post" id="finder-listForm-<{$_finder._name}>">
+  <{include file="finder/list.html"}>
+  </form>
+  
+  <div class="mainFoot" style="text-align:center;padding:10px">
+    <button onclick="window.fbox.onSelect(<{$_finder.var}>.selection.get.bind(<{$_finder.var}>)());window.fbox.hide();"/><{t}>确定<{/t}></button>
+  </div>
+</div>

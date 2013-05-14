@@ -1,0 +1,9 @@
+<div class="CartInfoItems" style="text-align:center;">
+<{t}>目前选购商品共 <{/t}><span><{$cartCount}></span><{t}> 种 <{/t}><span><{$cartNumber}></span><{t}> 件<{/t}>&nbsp;&nbsp;&nbsp;&nbsp;<{t}>合计:<{/t}><span><{$trading.totalPrice|cur}></span>
+  
+      <div class='btnBar clearfix' style="margin-top:10px; padding-left:60px;">
+        <a class="actbtn btn-viewcart" href="<{link ctl=cart act=index}>" target="_blank"><{t}>进入购物车<{/t}></a>
+        <span class="actbtn btn-continue" onclick="$(this).getParent('.dialog').remove();" ><{t}>继续购物<{/t}></span>
+        
+      </div> 
+</div>

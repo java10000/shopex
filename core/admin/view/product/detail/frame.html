@@ -1,0 +1,136 @@
+<script hold=true>
+  function chainImgLoader(call){
+        var el=$(call);
+        var _src=el.get('lsrc');
+        var _sn=el.get('sn');
+        var _span=el.getParent('span');
+        new Asset.image(_src,{
+           onload:function(img){
+               if(!img||!img.width)return;
+               var _img=img.zoomImg(50,50);
+               _span.empty().adopt(_img.set('sn',_sn));             
+               _img.setStyles({
+                  
+                  'margin-top':Math.abs((51-_img.height.toInt())/2)
+                 
+               });               
+               
+            },onerror:function(){
+                
+                _span.empty();
+            
+            }
+        });
+};
+</script>
+<form action="index.php?ctl=goods/product&act=toAdd" method="post" name="gEditor" id="gEditor">
+  <input type="hidden" name="goods[goods_id]" value="<{$goods.goods_id}>" id="gEditor-GId-input"/>
+  <input type="hidden" name="goods[old_marketable]" value="<{$goods.marketable}>"/>
+
+  <div id="gEditor-Body">
+     <{include file="product/detail/page.html"}>
+  </div>
+</form>
+<script>
+
+
+var goodsEditor = new ShopExGoodsEditor('gEditor',{imgtype:'<{$uploader}>',url:'<{$url}>',goods_id:'<{$goods.id}>'});
+
+
+
+(function(){
+    
+    var _form=$('gEditor');
+    
+    var _formActionURL=_form.get('action');
+    _form.set('target',"{ure:'messagebox',update:'messagebox'}");
+    var _goodsIdHidden=_form.getElement('input[name^=goods[goods_id]');
+    
+	var reloadPicAction=function(){
+        	if( !$E('#action-pic-bar input[name^=goods[image_file]'))return;
+            new XHR({
+                /*data:$E('#action-pic-bar .pic-area').toQueryString(),,*/
+                onSuccess:function(picrs){
+                    $E('#action-pic-bar .pic-area').set('html',picrs);
+                    
+                }
+            }).send('index.php?ctl=goods/product&act=clone_goods_img');
+									
+    };
+    
+      
+ 
+
+    
+
+    subGoodsForm = function (sign,submitBtn){
+        
+         /*
+         *  sign:{
+               1:保存并增加相似商品,
+               2:保存并返回,
+               3:保存当前不返回，
+               
+         *    }
+         *
+         */
+         window.MessageBoxOnShow=function(box,success){	 
+  								 if(MODALPANEL)MODALPANEL.hide();
+								 if(!success)return;							
+                                     try{
+                                      var goodsid=box.getElement('input[type=hidden]').getValue();
+                                      _goodsIdHidden.set('value',goodsid);
+                                      switch (sign){
+                                            case 1:
+                                             _goodsIdHidden.set('value','');
+                                               $E('input[name^=goods[name]',_form).value='';
+                                               $E('input[name^=goods[bn]',_form).set('value','');
+                                               if(pbn=$E('input[name^=goods[product_bn]',_form)){
+                                                    pbn.value='';
+                                               }
+                                               if(pbns=$$('input[name^=bn[]',_form)){
+                                                  if(pbns.length){
+                                                   pbns.set('value','');
+                                                   }
+                                               }
+                                               reloadPicAction();
+                                               clearOldBn(false);
+                                            break;
+                                            case 2:
+											if($chk($('g_id'))&&window.winTag)window.winTag.finderTag.fireEvent('apply',$('g_id').value);	 
+											(function(){window.close();}).delay(500);			
+                                            break;
+                                            case 3:
+                                            clearOldBn(true);
+                                            default:
+                                            break;
+                                      }
+								  if($chk($('g_id'))&&window.winTag&&sign!=2)window.winTag.finderTag.fireEvent('apply',$('g_id').value);	  
+                                  }catch(e){console.info(e)}	
+								 
+          };
+
+        _form.set('action',_formActionURL+'&but='+sign).fireEvent('submit');
+    };
+    
+    /* 保存当前和添加相似商品时 修改或清除oldbn */
+    clearOldBn = function(bool){
+        if($E('input[name^=old_bn[]',_form)) { /* 多规格 */
+            $ES('input[name^=old_bn[]',_form).each(function(item){
+                if(bool) { /* 是否修改 */
+                    $(item).set('value',$E('input[name^=bn[]',$(item).getParent('tr')).get('value'));
+                } else {
+                    $(item).set('value','');
+                }
+            });
+        }else if($E('input[name^=old_bn]',_form)) {/* 单规格 */
+            if(bool) { /* 是否修改 */
+                $E('input[name^=old_bn]',_form).set('value',$E('input[name^=goods[product_bn]',_form).get('value'));
+            } else {
+                $E('input[name^=old_bn]',_form).set('value','');
+            }
+        }
+    }
+    
+})();
+</script>

@@ -1,0 +1,9 @@
+<{if $file.filetype eq "css" ||$file.filetype eq "html"||$file.filetype eq "xml"||$file.filetype eq "js"}>
+<{include file="system/template/templateSource.html"}>
+<{elseif $file.filetype eq "Folder"}>
+<script>
+W.page('index.php?ctl=system/tmpimage&act=index&theme=<{$path}>/<{$file.name}>');
+</script>
+<{else}>
+<{include file="system/template/templateImage.html"}>
+<{/if}>

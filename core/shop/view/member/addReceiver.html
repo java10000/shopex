@@ -1,0 +1,79 @@
+<!-- right-->
+  <div class="MemberMain">
+  <div style="margin-right:175px;">
+
+<div class="title"><{t}>添加收货地址<{/t}></div>
+<form method="post" action="<{link ctl="member" act="insertRec"}>" class="section" extra="subMemAddr" id="member_addr">
+<div class="FormWrap">
+<div class="division">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="forform">
+  <tr>
+    <th><em>*</em><{t}>姓名：<{/t}></th>
+    <td><{input class="inputstyle" name="name" type="text" required="true" id="name" size="30" vtype="name" value=$name|escape:'html'}></td>
+  </tr>
+  <tr>
+    <th><em>*</em><{t}>手机：<{/t}></th>
+    <td><{input class="inputstyle" name="mobile" type="text" id="mobile" size="30" value=$mobile|escape:'html'}></td>
+  </tr>
+  <tr>
+    <th><{t}>固定电话：<{/t}></th>
+    <td><{input class="inputstyle" name="tel" type="order_tel" size="30" value=$tel}><span class="infotips"><{t}>其中联系电话和联系手机必须填写一项<{/t}></span></td>
+  </tr>
+  
+</table>
+
+</div>
+<div class="division">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="forform">
+  <tr>
+     <th><em>*</em><{t}>地区：<{/t}></th>
+     <td><span id="checkout-select-area"><{input type="region" name="area" required="true" value=''}></span></td>
+  </tr>
+  <tr>
+    <th><em>*</em><{t}>地址：<{/t}></th>
+    <td><{input class="inputstyle" type="textarea" required="true" name="addr" id="addr"  rows="2" cols="30" value=$addr|escape:'html'}></td>
+  </tr>
+  <tr>
+    <th><em>*</em><{t}>邮政编码：<{/t}></th>
+    <td><{input class="inputstyle" name="zip" size="30" required="true" value=$zip}></td>
+  </tr>
+  <tr>
+    <th></th>
+    <td><input  type="submit" name="submit" value="保存"/><input type="button" onclick="window.location='<{link ctl="member" act="receiver"}>'" value="取消" /></td>
+  </tr>
+</table>
+</div>
+</div>
+</form>
+
+<script>
+(function(){
+$E('#checkout-select-area input[name=area').store('lastsel',function(lastselect){
+        var areaSels=$ES("#checkout-select-area select");
+        var selected=[];
+        areaSels.each(function(s){
+           var text = s[s.selectedIndex].text.trim().clean();
+           if(['<{t}>北京<{/t}>','<{t}>天津<{/t}>','<{t}>上海<{/t}>','<{t}>重庆<{/t}>'].indexOf(text)>-1)return;
+           selected.push(text);
+        });
+        var selectedV = selected.join('');
+        $('addr').value = selectedV;
+    });
+if(!extra_validator['subMemAddr']){
+  extra_validator['subMemAddr'] ={
+    'order_tel':['请至少输入联系电话和联系手机中的一项',function(f,i){
+        var tel = $('member_addr').getElement('input[name=tel]').getProperty('value');
+        var mob = $('member_addr').getElement('input[name=mobile]').getProperty('value');
+        if(tel.trim() == '' && mob.trim() == ''){
+          return false;
+        }else{
+            return true;
+        }
+      }]
+  };
+}
+})();
+</script>
+</div>
+</div>
+<!-- right-->

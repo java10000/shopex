@@ -1,0 +1,49 @@
+html{
+	background:#666;
+}
+html,body{
+	padding:0;margiin:0;
+	font: normal 90% "Lucida Grande", Helvetica, Verdana, Arial;
+}
+body{
+	padding-top:40px;
+
+}
+
+#toolbox{
+	line-height:36px;
+	position: fixed;
+	background:url(images/print-toolbox-bg.png);
+	height:40px;
+	top:0;
+	left:0;
+	width:100%;
+}
+.box{
+	position: absolute;
+	left:50%;
+}
+#footer,#footer a{
+	color:#ccc;
+	text-align:center;
+	line-height:100px;
+}
+.printNow{
+	background:url(images/print-printer.png) no-repeat 50% 50%;
+	width:64px;
+	height:64px;
+	left:-32px;
+	display:block;
+	position: absolute;
+	overflow:hidden;
+	text-indent: -500px;
+	cursor: pointer;
+}
+.pager{
+	padding:50px;
+	background:#fff;
+	border:1px solid #000;
+	min-height:1000px;
+}
+
+

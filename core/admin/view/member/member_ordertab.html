@@ -1,0 +1,10 @@
+<div class='infoPanel' style='display:block;background:none;padding:1px'>
+<div container="true" class="infoContent" id='dialog_order_info_<{$order_id}>'>
+   Loading...
+</div>
+</div>
+<script>
+    new Request.HTML({update:$('dialog_order_info_<{$order_id}>'),evalScript:true,onComplete:function(){
+          $ES('.t-handle','dialog_order_info_<{$order_id}>').setStyles({'padding-left':3,'padding-right':3})
+    }}).get('index.php?ctl=order/order&act=detail&p[0]=<{$order_id}>');
+</script>

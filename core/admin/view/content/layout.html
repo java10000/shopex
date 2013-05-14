@@ -1,0 +1,14 @@
+<{foreach from=$layouts item=layout key=key}>
+  <div style="display:block;float:left;padding:5px;cursor:pointer" 
+    onclick="_content_pages_changeLayout(event,'index.php?ctl=content/pages&act=editor&p[0]='+encodeURIComponent('<{$ident}>')+'&p[1]=<{$key}>')">
+    <img class="hover" src='../plugins/layout/<{$key}>/preview.png' />
+    <center><{$layout.name}></center>
+  </div>
+<{/foreach}>
+<script>
+   function _content_pages_changeLayout(e,layoutTempleteUrl){
+          e=new Event(e);
+         $('themeFrame').src=layoutTempleteUrl;
+        $(e.target).getParent('.dialog').retrieve('instance').close();
+   }
+</script>

@@ -1,0 +1,85 @@
+<{finder_lister}>
+
+<{area inject=".mainFoot"}>
+<{if $_finder.listViews}>
+<div class="finder-footer" id="finder-footer-<{$_finder._name}>">
+<{/if}>
+
+<!-- 分页区域 -->
+<div class='finder-page clearfix'>
+    <div class='span-3'>
+        <span style="cursor: pointer" id="finder-pageset-<{$_finder._name}>" dropmenu="finder-pagesel-<{$_finder._name}>">
+            <{t}>每页显示<{/t}><i><{$_finder.plimit}></i><{t}>条<{/t}>
+            <{img src="images/bundle/arrow-up.gif"}>
+        </span>
+    </div>
+    
+    <{if $_finder.pager.total > 1}>
+    <div class='span-5'>
+        <form id="finder-pagejump-<{$_finder._name}>" class='clearfix' max="<{$_finder.pager.total}>">
+            <div class='span-auto'><{t}>跳转到第<{/t}>
+                <input type="text" class='x-input' style="width:20px; height:1em; padding:0" />页
+            </div>
+            <div class='span-auto'>
+                <em onclick='$(this).getParent("form").fireEvent("submit",{stop:$empty});' class='lnk'><span class='fontcolorBlack'>Go</span></em>
+            </div>
+        </form>
+    </div>
+    <{/if}>
+    
+    <div class='span-auto'><{pager data=$_finder.pager}></div>
+    <{if $_finder.statusStr}>
+        <div class='span-auto'><{$_finder.statusStr}></div>
+    <{/if}>
+    <div class='span-auto textright'><{t}>共<{/t}><i><{$_finder.count}></i><{t}>条<{/t}>
+        <{if $finder.statusStr}><span style="margin-left:150px;"><{$finder.statusStr}></span><{/if}>
+    </div>
+</div>
+
+<{if $_finder.listViews}>
+</div>
+<{/if}>
+
+<{/area}>
+
+<!-- 全选 取消全选等 操作区域-->
+<{area inject=".mainHead"}>
+    <div class="finder-tip" id="finder-tip-<{$_finder._name}>" count=<{$_finder.count}> style='display:none;'>
+        <i class='selected'>
+            <{t}>您当前选定了<{/t}><em>0</em><{t}>条记录，<{/t}>
+            <strong onclick="<{$_finder.var}>.unselectAll()"><{t}>点此取消选定<{/t}></strong>。
+            <strong onclick="<{$_finder.var}>.selectAll()"><{t}>点此选定全部<{/t}></strong>
+            <{t}>的<{/t}><span><{$_finder.count}></span><{t}>条记录<{/t}>
+        </i>
+        <i class='selectedall'>
+            <{t}>您当前选定了全部的<{/t}>
+            <span><{$_finder.count}></span><{t}>条记录，<{/t}>
+            <strong onclick="<{$_finder.var}>.unselectAll()"><{t}>点此取消选定<{/t}></strong>
+            <{t}>全部记录<{/t}>
+        </i>
+    </div>
+<{/area}><!-- 全选 取消全选等 操作区域 end -->
+
+<!-- 选择每页记录条数区域 -->
+<div id="finder-pagesel-<{$_finder._name}>" class="x-drop-menu">
+    <{foreach from=$_finder.plimit_in_sel item="pnumber"}>
+    <div class="item" onclick="<{$_finder.var}>.request({method:'post',data:{plimit:<{$pnumber}>}})">
+        <input type="radio" <{if $_finder.plimit eq $pnumber}>checked="checked"<{/if}> />
+        <{t}>每页<{/t}><i><{$pnumber}></i><{t}>条<{/t}>
+    </div>
+    <{/foreach}>
+</div>
+
+<script>
+if($('finder-pagejump-<{$_finder._name}>')){
+	$('finder-pagejump-<{$_finder._name}>').addEvent('submit',function(e){
+		e.stop();
+		var v = $E('input',this).value.toInt();
+		if(v<1)v=1;
+		if(v>this.get('max')) v = this.get('max');
+		<{$_finder.var}>.page(v);
+	});
+}
+
+new DropMenu($('finder-pageset-<{$_finder._name}>'),{offset:{y:-115}});
+</script>

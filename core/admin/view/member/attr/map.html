@@ -1,0 +1,122 @@
+<form action="index.php?ctl=member/memberattr&act=changeorder" id="attrEditor" method="post" target="{update:'messagebox'}">
+<{area inject='.mainHead'}>
+<div class="action-bar mainHead"><span class="sysiconBtn addorder" onclick="W.page('index.php?ctl=member/memberattr&act=showNewMemAttr')"><{t}>新增注册项<{/t}></span>&nbsp; <{help}><{t}>您可以在此处自定义商店顾客在前台注册会员时需要填写的表单项目，系统自带注册项不允许删除，但您可以设置显示状态为不可见<{/t}><{/help}></div> 
+<div class='headBox mainHead'>
+ <div class='headContent'>
+   <div class='gridlist-head'>
+        <div class='span-9' style='text-align:center'><{t}>注册项名称<{/t}></div>
+        <div  class='span-4'><{t}>注册项类型<{/t}></div>
+        <div  class='span-1'><{t}>编辑<{/t}></div>
+        <div  class='span-1'><{t}>删除<{/t}></div>
+        <div  class='span-1'><{t}>显示<{/t}></div>
+   </div>
+ </div>
+</div>
+<{/area}>
+
+<div class='finder' id='member_reg_attr'>
+     <{foreach from=$tree item=item name="item" key='row'}>
+<div  class='row member_reg_attr' >
+ <input type='hidden' name='attr_order[]' value='<{$item.attr_id}>'>
+  <div class='row-line' style=" padding-bottom:4px;">
+  <div class="span-9">
+    <table width="100%">
+      <tr>
+<td width="130">
+  <span style="width:130px; font-size:12px;text-align:right;white-space:nowrap; overflow:hidden;"><{$item.attr_name}>:</span>
+  </td>
+  <td style="white-space:nowrap; vertical-align:top;">
+  <{if $item.attr_type =='date'}>
+  <input value='日期选择器' type='text' /><{if $item.attr_required eq 'true'}><em>*</em><{/if}>
+  <{/if}>
+ 
+  <{if $item.attr_type =='text'}>
+  <{input class="inputstyle" name=$item.attr_id }><{if $item.attr_required eq 'true'}><em>*</em><{/if}>
+  <{/if}>
+   <{if $item.attr_group =='defalut' && $item.attr_type != 'area' && $item.attr_type != 'sex' && $item.attr_type != 'date'}>
+  <input type='text' name='<{$item.attr_type}>'> 
+  <{/if}>
+   <{if $item.attr_type =='area'}>
+   <select><option><{t}>地区选择项<{/t}></option></select>
+   <{/if}>
+   
+   <{if $item.attr_type =='sex'}>
+   <input type="radio" name='<{$item.attr_id}>' value='男' /><label><{t}>男<{/t}></label>
+   <input type="radio" name='<{$item.attr_id}>' value='女' /><label><{t}>女<{/t}></label>
+   <{/if}>
+   
+   <{if $item.attr_type =='select'}>
+ <select name='$item.attr_id'>
+ <{foreach from=$item.attr_option item=option name="option"  }>
+ <option value='<{$option}>'><{$option}></option>
+ <{/foreach}>
+ </select>
+ <{if $item.attr_required eq 'true'}><em>*</em><{/if}>
+   <{/if}>
+   
+   
+   
+     <{if $item.attr_type =='cal'}>
+  <{input class="cal" type='date' name=$item.attr_id }><{if $item.attr_required eq 'true'}><em>*</em><{/if}>
+  <{/if}>
+  <{if $item.attr_type =='checkbox'}>
+ 
+ <{foreach from=$item.attr_option item=checkbox name="checkbox" }>
+ 
+ <input type='checkbox' name="<{$checkbox.attr_id}>[]"><label><{$checkbox}></label>
+ 
+ <{/foreach}>
+<{if $item.attr_required eq 'true'}><em>*</em><{/if}>
+   <{/if}>
+   
+          </td>
+      </tr>
+    </table>
+   </div>
+  <div class="span-4">
+     <span class="quiet" style="font-weight:normal;padding:0 5px"><{$item.attr_tyname}></span>
+  </div>
+   <div class="span-1 textcenter">
+      <{if $item.attr_tyname !='系统默认'}>
+      <a class="i" href='index.php?ctl=member/memberattr&act=edit&p[0]=<{$item.attr_id}>'><{img src="images/bundle/editcate.gif" border="0" alt="编辑"}></a><{else}>&nbsp;
+  <{/if}></div>    
+  <div class="span-1 textcenter"><{if $item.attr_tyname !='系统默认'}><span onclick="javascript: if(confirm('若删除了本选项，则无法恢复。会员所填写的本注册项的信息也将丢失!')){ W.page('index.php?ctl=member/memberattr&act=toRemove&p[0]=<{$item.attr_id}>',{method:'get'});}" style="cursor:pointer"><{img src="images/bundle/delecate.gif" border="0" alt="删除"}></span><{else}>&nbsp;<{/if}>
+  </div>
+   <div class="span-1 textcenter">
+        <{if $item.attr_show == "false"}>
+         <a href="index.php?ctl=member/memberattr&act=enableAttrshow&p[0]=<{$item.attr_id}>"><{img src="images/bundle/hidden.gif"}></a>
+       <{else}>
+         <a href="index.php?ctl=member/memberattr&act=disableAttrshow&p[0]=<{$item.attr_id}>"><{img src="images/bundle/visible.gif"}></a>
+       <{/if}>
+   </div>
+   </div>
+</div>
+<{/foreach}>
+</div>
+
+<{area inject='.mainFoot'}>
+  <div class="mainFoot">
+    <div class="footer">
+    
+    <div class="table-action" style="margin-top:10px;">
+	<{button label="确定" type="submit" onclick="_S('attrEditor').fireEvent('submit',{type:'submit',target:$('attrEditor')})"}>
+   </div>
+
+    </div>
+  </div>
+<{/area}>
+
+</form>
+<script>
+   $ES('table','member_reg_attr').each(function(i){
+      i.setStyle('cursor','move');
+      i.store('tip:text','<span class="success"><{t}>您可以拖拽注册项到相应的位置,点击[保存]后生效<{/t}></span>');
+      $$($E('input',i),$E('select',i),$E('textarea',i)).set('readonly','readonly');
+   });
+   new Tips($ES('table','member_reg_attr'),{'className':'memberEditAttr-tip',hideDelay:0,showDelay:0,onShow:function(tip){
+       tip.setStyle('visibility','visible');
+       if($('main').getElement('.memberEditAttr-tip')){return;}
+       $E('.memberEditAttr-tip').injectBottom($('main'));
+   }});
+   new Sortables($('member_reg_attr'),{handle:'.row',clone:true,opacity:.7});
+</script>

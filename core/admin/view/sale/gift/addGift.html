@@ -1,0 +1,118 @@
+<form method='post' id='sale-addGift' action='index.php?ctl=sale/gift&act=addGift' >
+<div class="tableform">
+<div class="division">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <th><{t}>赠品编号：<{/t}></th>
+    <td><{input type='text' value=$gift.gift_bn name='gift_bn' required='true'}></td>
+  </tr>
+  <tr>
+    <th><{t}>赠品名称：<{/t}></th>
+    <td><{input type='text' value=$gift.name name='name' required='true'}></td>
+  </tr>
+</table>
+</div>
+<div class="division">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <th><{t}>赠品分类：<{/t}></th>
+    <td><select name="giftcat_id">
+        <{foreach from=$catList item=item}>
+        <{if $item.giftcat_id==$gift.giftcat_id}>selected="selected"<{/if}>><{$item.cat}><{if $item.giftcat_id==$gift.giftcat_id}>selected="selected"<{/if}>><{$item.cat}><{if $item.giftcat_id==$gift.giftcat_id}>selected="selected"<{/if}>><{$item.cat}><option value="<{$item.giftcat_id}>" <{if $item.giftcat_id==$gift.giftcat_id}>selected="selected"<{/if}>><{$item.cat}></option>
+        <{/foreach}>
+      </select></td>
+  </tr>
+  <tr>
+    <th><{t}>赠品模板：<{/t}></th>
+    <td><{template_filter type="gift" id=$gift.gift_id name="gift_template" source_type="gift"}></td>
+  </tr>
+    <tr>
+    <th><{t}>发布：<{/t}></th>
+    <td><label><input type='radio' name='shop_iffb' value=1 <{if $gift.shop_iffb eq '1'}>checked="checked"<{/if}>><{t}>是<{/t}></label>&nbsp; &nbsp;<label><input type='radio' name='shop_iffb' value=0 <{if $gift.shop_iffb eq '0'}>checked="checked"<{/if}>><{t}>否<{/t}></label></td>
+  </tr>
+  <tr>
+    <th><{t}>作为推荐赠品：<{/t}></th>
+  <td><label><input type='radio' name='ifrecommend' value=1 <{if $gift.ifrecommend eq '1'}>checked="checked"<{/if}>><{t}>是<{/t}></label>&nbsp; &nbsp;<label><input type='radio' name='ifrecommend' value=0 <{if $gift.ifrecommend eq '0'}>checked="checked"<{/if}>><{t}>否<{/t}></label></td>
+  </tr>
+    <tr>
+    <th><{t}>排序：<{/t}></th>
+    <td><{input type='unsignedint' style="width:50px" value=$gift.orderlist name='orderlist'}></td>
+  </tr>
+  <tr>
+    <th><{t}>每人限购数量：<{/t}></th>
+    <td><{input type='digits' value=$gift.limit_num style="width:50px" name='limit_num' required='true'}></td>
+  </tr>
+  <tr>
+    <th><{t}>兑换起始时间：<{/t}></th>
+    <td><{input type='date' value=$gift.limit_start_time name='limit_start_time' class='cal' required='true'}></td>
+  </tr>
+  <tr>
+    <th><{t}>兑换终止时间：<{/t}></th>
+    <td><{input type='date' value=$gift.limit_end_time name='limit_end_time' class='cal' required='true'}></td>
+  </tr>
+  <tr>
+  <th><{t}>允许兑换的会员等级<{/t}></th>
+  <td>
+    <{foreach from=$mLev key=key item=item}>
+        <input type='checkbox' name='limit_level[]' <{$item.checked}> value="<{$key}>"><{$item.name}>
+    <{/foreach}>
+   </td>
+  </tr>
+</table>
+</div>
+<div class="division">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <th><{t}>价格：<{/t}></th>
+    <td><{input type='money' value=$gift.price style="width:50px" name='price'}></td>
+  </tr>
+  <tr>
+    <th><{t}>简介：<{/t}></th>
+    <td><{input type='text' value=$gift.intro name='intro'}></td>
+  </tr>
+  <tr>
+    <th><{t}>列表页缩略图：<{/t}></th>
+    <td><{input name="thumbnail_pic" type="file" size='9' }><{if $gift.thumbnail_pic}>&nbsp;<a href="<{$gift.thumbnail_pic|default:$env.conf.site.default_thumbnail_pic|storager}>" target="_blank"><{t}>查看<{/t}></a><{/if}></td>
+  </tr>
+  <tr>
+    <th><{t}>赠品页详细图：<{/t}></th>
+    <td><{input name="small_pic" type="file" size='9' }><{if $gift.small_pic}>&nbsp;<a href="<{$gift.small_pic|storager}>" target="_blank"><{t}>查看<{/t}></a><{/if}></td>
+  </tr>
+
+  <tr>
+    <th><{t}>兑换所需积分：<{/t}></th>
+    <td><{input type='digits' value=$gift.point style="width:50px" name='point' required='true'}></td>
+  </tr>
+  <tr>
+    <th><{t}>重量：<{/t}></th>
+    <td><{input type='unsigned' value=$gift.weight style="width:50px" name='weight' required='true'}><{t}> 克<{/t}></td>
+  </tr>
+  <tr>
+    <th><{t}>库存：<{/t}></th>
+    <td><{input type='digits' value=$gift.storage style="width:50px" name='storage' required='true'}></td>
+  </tr>
+</table>
+</div>
+<div class="division">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <th><{t}>详细描述：<{/t}></th>
+    <td><{input type='html' height='200px' value=$gift.gift_describe name='gift_describe'}></td>
+  </tr>
+</table>
+<{if $gift.gift_id}>
+<input type='hidden' value='<{$gift.gift_id}>' name='gift_id'>
+<{/if}>
+</div>
+
+<div class="table-action">
+<{button label="完成" type="submit"}>
+</div>
+
+
+
+</form>
+<script>
+//初始化日期选择控件
+$ES('.cal','sale-addGift').each(function(i){i.makeCalable()});
+</script>

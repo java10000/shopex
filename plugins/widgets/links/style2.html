@@ -1,0 +1,6 @@
+<div class="LinkList clearfix"> <{foreach from=$data item=data key=key}>
+  <ul class="LinkListItem">
+    <li><a href="<{$data.href}>" target="_blank"><{if $setting.showPic=='show' && $data.image_url}><img src="<{$data.image_url|storager}>"><{/if}></a></li>
+    <li><a href="<{$data.href}>" target="_blank"><{$data.link_name}></a></li>
+  </ul>
+  <{/foreach}> </div>

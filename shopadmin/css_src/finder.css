@@ -1,0 +1,128 @@
+/*---------------------------------------------------------------------------------------------------------------
+	finder-action
+---------------------------------------------------------------------------------------------------------------*/
+.finder-action { background:url(../images/finder_bar_bg.gif) no-repeat; padding-left:9px; height:50px; overflow:hidden; }
+.finder-action-inner { background:url(../images/finder_bar_bg.gif) no-repeat right 0; padding-right:5px; height:50px; }
+.finder-action .btn { background:none; font-family:Tahoma, Geneva, sans-serif; font-size:12px; border:none; min-width:60px; width:auto !important; width:60px; height:50px; vertical-align:top; padding-top:0; *padding-top:1px;}
+.finder-action a.btn, .finder-action span.btn { padding-top:1px;}
+.finder-action .btn-blank span{ *text-decoration:underline;}
+.finder-action .btn .finder-icon { display:block; width:50px; height:24px; overflow:hidden; margin:0 auto 1px; *margin:0 0 1px;}
+.finder-action .btn .icon { margin:0;}
+.finder-action .btn .drop-handle { margin:0 -3px 0 0;}
+.finder-action .btn span { background-color:transparent; background-image:url(../images/finder_btn_bg.gif); border:none; height:50px; line-height:normal; color:#eaeef6; padding-left:5px; }
+.finder-action .btn span span { padding:5px 5px 0 0; text-align:center; }
+.finder-action .x-drop-menu { background:#f5faff; border:1px solid #949ba0; color:#000; padding:2px 4px; }
+.finder-action .x-drop-menu .group { margin-top:1px; }
+.finder-action .x-drop-menu .item { font-size:12px; padding:0 10px; height:22px; line-height:22px; border:1px solid #f5faff; cursor:pointer; -moz-border-radius:4px; -khtml-border-radius: 4px; -webkit-border-radius: 4px; }
+.finder-action .x-drop-menu .item  a{ text-decoration:none;}
+.finder-action .x-drop-menu .item:hover { background:url(../images/finder_dropmenu_hover.gif) repeat-x; border:1px solid #f6cc25; border-bottom:1px solid #ebbe0b; color:#271606; }
+.finder-search { float:right; *width:180px; margin:15px 5px 0 0; background:url(../images/finder_search_bg.gif) no-repeat; padding:0 0 0 2px;}
+.finder-search-inner { cursor:pointer; height:21px; padding:0 2px 0 0; background:url(../images/finder_search_bg.gif) no-repeat right 0;}
+.finder-search-select { margin:1px 0 0 1px; *margin-top:3px; _margin-top:5px; padding:0 2px; float:left;  }
+.finder-search-select label{ color:#3E526F;}
+.finder-search-btn { margin:2px 1px 0 0; cursor:pointer; float:right;}
+.finder-search-input { border:none; border-left:1px solid #ddd; background:none; font-size:12px; color:#333; width:60px; cursor:text; margin-top:2px; *margin-top:1px; padding:0 3px;}
+.finder-search-adv { float:left; }
+.finder-filter { background:#DFEEFF; color:#333333; padding:2px 5px; line-height:22px; border-top:1px solid #EFFAFF; overflow:hidden; }
+.finder-filter .lnk { color:#1064B7;}
+.finder-filter-info { overflow:hidden; margin:0; padding:0 0 0 10px; display:inline;}
+.finder-filter-item { display:inline; list-style-type:none; margin-left:5px; }
+.finder-filter .ffitpl { display:none; }
+.finder-filter-item img { cursor:pointer; }
+/*---------------------------------------------------------------------------------------------------------------
+	finder-tab
+ ---------------------------------------------------------------------------------------------------------------*/
+.finder-tab { position:relative; margin-bottom:-1px; height:25px; overflow:hidden; zoom:1; padding:0 10px; }
+.finder-tab div { border-right:1px solid #879397; border-left:1px solid #879397; padding-left:20px; height:1em; line-height:1em; margin:5px -1px 0 0; *line-height:1.1em; *margin-top:7px;
+white-space:nowrap; _width:60px; }
+.finder-tab div span { padding-right:20px; }
+.finder-tab a { font-weight:bold; text-decoration:none; color:#d3d3d3; }
+.finder-tab .cur { background:url(../images/finder_tab.gif) no-repeat; height:25px; line-height:normal; margin:0 1px 0 2px; border:none; }
+.finder-tab .cur span { background:url(../images/finder_tab.gif) no-repeat right 0; display:block; height:25px; color:#FFF; line-height:23px;  *line-height:25px;
+font-weight:bold; }
+.finder-tab .nobl { border-left:none; }
+.finder-tab .nobr { border-right:none; }
+/*---------------------------------------------------------------------------------------------------------------
+	finder-list
+ ---------------------------------------------------------------------------------------------------------------*/
+.finder-header { background:url(../images/tablethbg.gif); border-top:1px solid #cfd8dd; border-bottom:1px solid #ccc; font-weight:bold; height:23px; overflow:hidden; color:#000;}
+.finder-header td { border-right:1px solid #DBE2E7; border-left:1px solid #fff; padding:1px 0; vertical-align:top; overflow:hidden; }
+.finder-header table table td { padding:0; border:none; }
+.finder-header .orderable { cursor:pointer; }
+.finder-header .orderable:hover { color:#f90; cursor:pointer; }
+.finder-header .highlight-up { cursor:pointer; background:url(../images/arrow-up.gif) no-repeat 95% 8px; color:#369; padding-left:3px; }
+.finder-header .highlight-down { cursor:pointer; background:url(../images/arrow-down.gif) no-repeat 95% 8px; color:#369; padding-left:3px; }
+.finder-header table,
+.finder-list table { table-layout:fixed; }
+.finder-header .cell,
+.finder-list .cell { white-space:nowrap; overflow:hidden; padding:1px 5px 1px 3px; height:22px; line-height:22px;}
+.finder-header .cell { padding-right:0; }
+
+.finder-col-label { display:block; white-space:nowrap; }
+.finder-col-resizer { text-indent:2000px; display:block; width:5px; overflow:hidden; cursor:col-resize; }
+.finder-col-options { background:none; border:none; padding:5px 0; *padding:2px 0; position:absolute; right:0;}
+
+.finder-list {z-index:1; }
+.finder-list table { border-collapse: collapse; }
+.finder-list td { border:none; overflow:hidden; padding:0;  *padding:0 0 0 2px; }
+.finder-list .row { line-height:22px; background-color:#fff; }
+.finder-list .row td { border-bottom:1px solid #ebebeb; }
+.finder-list .highlight-row td { font-weight:bold;}
+.finder-list .view-detail td { background-color:#5187e4; color:#fff; }
+.finder-list .view-detail td a,
+.finder-list .view-detail h6 { color:#FFF;}
+.finder-list .view-detail .edit-ready,
+.finder-list .view-detail .tag { color:#222222;}
+.finder-list .btn-detail-open img{ width:16px; height:16px; background:url(../images/finder_drop_arrow.gif) no-repeat;}
+.finder-list .view-detail .btn-detail-open img{ background-position:0 -16px;}
+
+
+
+.finder-list .even { background-color:#f8f8f8; }
+.finder-list .edit-ready .cell { border:1px solid #6ea3f8; background:#EFF6FF; padding:0 4px 0 3px; }
+.finder-list .edit-begin .cell { background-image:url(../images/finder_loading.gif); background-repeat:no-repeat; background-position:98% center; }
+.finder-list .edit-ing .cell { background-image:none; }
+.finder-list-col-editpanel { position:absolute; }
+.finder-list-col-editpanel .cell-edit-action { border:3px solid #6ea3f8; padding:8px; background:#eff6ff url(../images/finder_celledit_bg.gif) repeat-x; }
+.finder-list-col-editpanel .btn { margin-top:4px; }
+.finder-list-col-editpanel .cell-edit-action-remote { background:#fff url(../images/loading.gif) no-repeat center center; }
+td.finder-list-command { padding-left:3px; }
+.finder-list-command span,
+.finder-list-command a { margin:2px 1px 0 0; float:left; cursor:pointer; }
+
+
+
+.loading-content { visibility:hidden; }
+.loading-content { background:#fff url(../images/loading.gif) no-repeat center center; }
+
+.finder-tip { background:#FFFFCC; text-align:center; color:#333; line-height:25px; border-bottom:1px solid #EBEBEB;  overflow:hidden; }
+.finder-tip strong { margin:0 3px; font-weight:normal; cursor:pointer; color:#1064b7; text-decoration:underline; }
+.finder-tip i { display:none; font-style:normal; }
+.finder-tip em,
+.finder-tip span { font-weight:bold; margin:0 2px; font-style:normal; }
+.finder-tip .selected { }
+.finder-tip .selectedall { background:#fff666; }
+
+col { display:table-column; }
+
+/*---------------------------------------------------------------------------------------------------------------
+ finder foot
+ ---------------------------------------------------------------------------------------------------------------*/
+.finder-footer { background:transparent url(../images/tablethbg.gif) repeat scroll 0 0; border-top:1px solid #CFD8DD;padding:3px;line-height:23px;overflow:hidden;}
+.finder-footer span{line-height:23px;}
+.finder-footer .pager{border:none;margin:0;border-collapse: collapse;}
+/*---------------------------------------------------------------------------------------------------------------
+	finder-detail
+---------------------------------------------------------------------------------------------------------------*/
+.finder-detail { overflow:hidden; overflow-y:scroll; height:0; }
+
+.finder-detail-close { background-image:url(../images/arrow-down.gif); height:8px; }
+.finder-detail-tabs { background:url(../images/finder_detail_tb_bg.gif) repeat-x; padding:6px 5px 0; height:24px; zoom:1; }
+.finder-detail-btns { float:right; color:#ddd;}
+.finder-detail-tabs .tab { background:#fff; border:1px solid #CCC; border-bottom:none; padding:1px 10px; margin:2px 1px 0 0; ; }
+.finder-detail-tabs a,
+.finder-detail-tabs .lnk { text-decoration:none; color:#1559ae; margin:2px 0; }
+.finder-detail-tabs img { vertical-align:middle; }
+.finder-detail-tabs .tab a { color:#000; }
+.finder-detail-tabs .cur { border-top:2px solid #FF9900; font-weight:bold; margin-top:0; padding:2px 10px; }
+.finder-detail-inner .action-bar { background:#EFEFEF; padding:2px 10px; }

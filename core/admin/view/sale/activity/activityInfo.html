@@ -1,0 +1,59 @@
+<form id='doActivityInfoForm'  method='post' action='index.php?ctl=sale/activity&act=doActivityInfo&p[0]=<{$_S.act}>'  >
+<div class="tableform" >
+<div class="division">
+  <table border="0" cellspacing="0" cellpadding="0" width="100%">
+    <tr>
+      <th><{t}>促销活动名称:<{/t}></th>
+      <td><{input type='text' value=$pmta.pmta_name name='pmta_name' required='true'}></td>
+    </tr>
+    </table></div>
+    <div class="division">
+  <table border="0" cellspacing="0" cellpadding="0" width="100%">
+   <tr>
+      <th><{t}>是否发布:<{/t}></th>
+    <td><label><input type='radio' name='pmta_enabled' value=true  <{if $pmta.pmta_enabled eq 'true'}>checked="checked"<{/if}>}/><{t}>是<{/t}></label>&nbsp;<label><input type='radio' name='pmta_enabled' value=false <{if $pmta.pmta_enabled eq 'false'}>checked="checked"<{/if}>}/><{t}>否<{/t}></label>
+        <input type='hidden' name='pmta_id' value='<{$pmta.pmta_id}>'></td>
+    </tr>    
+    <tr>
+      <th><{t}>开始时间:<{/t}></th>
+      <td><{input type='date'  class='x-input' value=$pmta.pmta_time_begin name='pmta_time_begin' vtype="required" required="true"}></td>
+    </tr>
+    <tr>
+      <th><{t}>结束时间:<{/t}></th>
+      <td><{input type='date' class='x-input' value=$pmta.pmta_time_end name='pmta_time_end' vtype="required" required="true"}></td>
+    </tr>
+    </table></div>
+    <div class="division">
+    <table border="0" cellspacing="0" cellpadding="0" width="100%">
+    <tr>
+      <th><{t}>促销活动描述:<{/t}></th>
+      <td><{input type='textarea' name='pmta_describe' cols="60" rows="6" value=$pmta.pmta_describe class="x-input" vtype="required"}>
+<!--      <td><textarea name='pmta_describe' cols="50" rows="10"><{$pmta.pmta_describe}></textarea>-->
+      </li></td>
+    </tr>
+    
+  </table>
+  </td>
+
+ </div>
+ 
+ 
+ 
+<div class="table-action">
+<{button label="下一步" type="submit"}>
+<{button label="取消"}>
+</div>
+
+
+</form>
+<script>
+//初始化日期选择控件
+$ES('.cal','doActivityInfoForm').each(function(i){i.makeCalable()});
+$ES('.btn[type=button]','#doActivityInfoForm').removeEvents('click').addEvent('click',function(e){
+		if($E('body[id=shopadmin]')){
+			W.page('index.php?ctl=sale/activity&act=index');
+		}else{
+			window.close();
+		}	
+	})
+</script>

@@ -1,0 +1,65 @@
+
+<div class="division" id="advance_list_page" style="margin:0;width:100%">
+<table width="100%" border="0" cellpadding="0" cellspacing="0" class="gridlist">
+<col class="Coldate"></col>
+<col class="Colamount"></col>
+<col></col>
+<col></col>
+<col></col>
+<col></col>
+<col></col>
+<col></col>
+<col></col>
+  <thead>
+    <tr>
+      <th><{t}>交易时间<{/t}></th>
+      <th><{t}>业务摘要<{/t}></th>
+      <th><{t}>存入金额<{/t}></th>
+      <th><{t}>支出金额<{/t}></th>
+      <th><{t}>当前余额<{/t}></th>
+      <th><{t}>支付方式<{/t}></th>
+      <th><{t}>支付单号<{/t}></th>
+      <th><{t}>订单号<{/t}></th>
+      <th><{t}>管理备注<{/t}></th>
+    </tr>
+  </thead>
+  <tbody>
+  <{foreach from=$items item=adv}>
+  <tr>
+    <td width="13%"><{$adv.mtime|cdate:SDATE_STIME}></td>
+    <td width="12%"><{$adv.memo}></td>
+    <td class="Colamount" width="7%"><{if $adv.import_money > 0}><{$adv.import_money|cur}><{else}>-<{/if}></td>
+    <td class="Colamount" width="7%"><{if $adv.explode_money > 0}><{$adv.explode_money|cur}><{else}>-<{/if}></td>
+    <td class="Colamount" width="7%"><{$adv.member_advance|cur}></td>
+    <td><{if $adv.paymethod}><{$adv.paymethod}><{else}>-<{/if}></td>
+    <td><{if $adv.payment_id}><{$adv.payment_id}><{else}>-<{/if}></td>
+    <td><{if $adv.order_id}><{$adv.order_id}><{else}>-<{/if}></td>
+    <td><{if $adv.message}><{$adv.message}><{else}>-<{/if}></td>
+  </tr>
+  <{/foreach}>
+  </tbody>
+  
+</table>
+
+<div>
+
+<br/>
+<div>
+<div class="textright"><{$statusStr}></div>
+<{if $totalpage > 1}>
+<{if $page > 1}>
+<div class="sysiconBtnNoIcon" onclick="W.page('index.php?ctl=member/advance&act=advancelist&p[0]=<{$member_id}>&p[1]=<{$page-1}>', {update:$('advance_list_page').parentNode, method:'post'})"><{t}>上一页<{/t}></div>
+<{else}>
+<div class="sysiconBtnNoIcon"><{t}>上一页<{/t}></div>
+<{/if}>
+
+<{if $page < $totalpage}>
+<div class="sysiconBtnNoIcon" onclick="W.page('index.php?ctl=member/advance&act=advancelist&p[0]=<{$member_id}>&p[1]=<{$page+1}>', {update:$('advance_list_page').parentNode, method:'post'})"><{t}>下一页<{/t}></div>
+<{else}>
+<div class="sysiconBtnNoIcon"><{t}>下一页<{/t}></div>
+<{/if}>
+<{/if}>
+</div>
+
+</div>
+</div>

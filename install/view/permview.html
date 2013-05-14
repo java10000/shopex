@@ -1,0 +1,14 @@
+<div style="padding-left:20%">
+  <h2>一些目录没有可写权限：</h2>
+<table width="300px">
+  <{foreach from=$dirs item=item}>
+  <tr<{if !$item.is_writable}> style="background:red;color:#fff"<{/if}>>
+    <td><{$item.path}></td>
+    <td><{if $item.is_writable}>ok<{else}>:(<{/if}></td>
+  </tr>
+  <{/foreach}>
+</table>
+<br />
+<br />
+<span style="lnk" onclick="window.location.reload()">刷新一下检查是否已解决。</span>
+</div>

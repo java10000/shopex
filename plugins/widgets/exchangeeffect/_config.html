@@ -1,0 +1,49 @@
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="sysiconBtn addorder" onCLick="addPic()">添加图片</span>
+<div id="picAddress" class="tableform widgetconfig">
+
+
+
+<div class="division widgetconfig" style="margin:-5px 0 0 0">
+
+
+
+
+<table width="100%" cellpadding="0" cellspacing="0">
+	  <tr>
+		<th>版块宽度:</th><td><input name='height' value="<{$setting.height}>" size="4"></td>
+		<th>版块高度:</th><td><input name='width' value="<{$setting.width}>" size="4"></td>
+		</tr>
+  </table>
+      <{foreach from=$setting.pic item=data key=key}>
+<table id="pic_<{$data.id}>" width="100%" cellpadding="0" cellspacing="0">
+	  <tr>
+	    <th>链接图片地址:</th>
+	    <td colspan="3">   
+  <input name=pic[<{$data.id}>][link] value="<{$data.link}>">
+    
+        </td>
+        <td>
+        <span onclick="delLink('pic_<{$data.id}>');"><{img src='images/bundle/delecate.gif' style='cursor:pointer;' alt="删除" title="删除"}></span>
+        </td>
+      </tr>
+</table>
+<{/foreach}>
+</div>
+</div>
+
+<script>
+addPic=function(){
+  var d=new Date();
+  var i=d.getTime();
+  $E('#picAddress .division').setHTML($E('#picAddress .division').innerHTML+'\
+  <table id="pic_'+i+'" width="100%" cellpadding="0" cellspacing="0"><tr><th>链接图片地址:</th><td>\
+    <input type=hidden name=pic['+i+'][id] value="'+i+'">\
+      <input name=pic['+i+'][link]></td>\
+      <td><span onclick="delLink(\'pic_'+i+'\');"><{img src="images/bundle/delecate.gif" style="cursor:pointer;" alt="删除" title="删除"}></span>\
+  </td></tr></table>\
+');
+}
+delLink=function(o){
+  $(o).remove();
+}
+</script>

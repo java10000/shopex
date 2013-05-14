@@ -1,0 +1,73 @@
+<div class="GoodsInfoWrap">
+  <div class="info">
+    <table width="100%">
+      <tr>
+        <td valign="top" align="center" class="goodspic">
+         <table width="100%" >
+          <tr>
+              <td align="center" class="gift_details">
+              <div class="goods-detail-pic" >
+              <a href="<{$details.small_pic|storager:'small'}>" target='_blank' style='font-family:Arial;display:table-cell; vertical-align:middle;font-size:263px;color:#fff;'>
+                 <img src="<{$details.small_pic|storager:'thumbnail'}>" alt="<{$details.name}>"/>
+              </a>
+              </div>
+                <{* <a href="<{$details.small_pic|storager:'small'}>" target="_blank" onclick='_open(this.href);return false;'>
+                    <{img src="statics/icons/btn_goods_gallery.gif" alt="查看大图"}>
+                </a>*}>
+              </td>
+            </tr>
+        </table>
+    </td>
+        <td valign="top">
+        <h1 class="goodsname"><{t}>赠品名：<{/t}><{$details.name}></h1>
+        <{if $details.brief}>
+    <p class="brief"><{$details.intro}></p>
+     <{/if}>
+        <ul class="goodsprops clearfix">
+          <li><span><{t}>赠品分类：<{/t}></span><{$details.cat}></li>
+            <li><span><{t}>商品重量：<{/t}></span><{$details.weight}> g</li>
+            <li><span><{t}>起始时间：<{/t}></span><{$details.limit_start_time|userdate}></li>
+            <li><span><{t}>库存数量：<{/t}></span><{$details.storage}></li>
+            <li><span><{t}>截止时间：<{/t}></span><{$details.limit_end_time|userdate}></li>
+            <li><span><{t}>数量限制：<{/t}></span><{if $details.limit_num==0}><{t}>无数量限制<{/t}><{else}><{$details.limit_num}><{/if}></li>
+            <li class="memberprice"><span><{t}>市场价格：<{/t}></span><i><{$details.price|cur}></i></li>
+            <li ><span><{t}>所需积分：<{/t}></span><{$details.point}></li>
+            <li class="spec" style="white-space:normal;"><span><{t}>兑换级别：<{/t}></span>
+              <{foreach from=$details.limit_level item=level}><{$level.name}>&nbsp;&nbsp;<{/foreach}></li>
+        </ul>
+
+        <div>
+          <{if $details.sale_status == '1'}><a class="actbtn btn-gift" href="<{link ctl="cart" act="addGiftToCart" arg0=$details.gift_id}>" target="_blank" ><{t}>换取<{/t}></a><{else}>
+           <div class="actbtn btn-nogift"><{t}>暂无赠品<{/t}></div>
+        <{/if}>
+        </div>
+    </td>
+      </tr>
+    </table>
+  </div>
+
+
+
+  <{if $details.gift_describe}>
+  <div class="goodspackagewrap clearfix">
+    <div class="active"><span><{t}>详细介绍<{/t}></span></div>
+</div>
+<div class="section pdtdetail">
+  <div class="body indent">
+      <{$details.gift_describe}>
+    </div>
+</div>
+
+ <{/if}>
+</div>
+
+ <script>
+
+
+window.addEvent('load',function(){
+         var gift_details=$$('.gift_details div img');
+        try{
+         fixProductImageSize($$(gift_details),'div');
+         }catch(e){}
+    });
+</script>

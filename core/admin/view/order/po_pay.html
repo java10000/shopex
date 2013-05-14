@@ -1,0 +1,144 @@
+<form class="tableform" method='post' action='<{$payurl}>' target="_blank">
+<input type="hidden" name="order_id" value="<{$order_id}>">
+<input type="hidden" name="act" value="online_pay_center" />
+<input type="hidden" name="currency" value="CNY" />
+<input type="hidden" name="api_version" value="<{$api_version}>" />
+  <table width="100%" cellspacing="0" cellpadding="0" border="0" class="liststyle data">
+    <colgroup class="span-auto ColColorBlue">
+    </colgroup><colgroup class="span-8 ColColorGray">
+    </colgroup><tbody>
+      <tr>
+        <td width="50%"><strong>订单编号：<{$order_id}></strong><br/>
+          <a href="javascript: show_po_detail();">查看详细</a></td>
+        <td><div style="padding: 3px 6px;">共需支付</div>
+          <h1 style="margin: 0pt 0pt 15px; font-size: 30px; color: rgb(255, 0, 0);"><span class="hueorange" id="span_amount"><{$po.total_amount-$po.payed|b2bcur:$supplierid}></span></h1></td>
+      </tr>
+    </tbody>
+  </table>
+
+<div id="x-po-pay-items" style="display:none">
+  <h4 style="border-top: 2px dotted rgb(204, 204, 204); padding: 10px 5px 0pt;">采购的商品</h4>
+  <table width="100%" cellspacing="0" cellpadding="0" style="background-color: rgb(255, 255, 255);" class="finderInform">
+   <!-- <colgroup class="span-3"></colgroup>
+    <colgroup class="auto"></colgroup>
+    <colgroup class="span-3"></colgroup>
+    <colgroup class="span-2"></colgroup>
+    <colgroup class="span-2 ColColorOrange"></colgroup>-->
+    <thead>
+      <tr>
+        <th>货号</th>
+        <th>商品名称</th>
+        <th>代销价格</th>
+        <th>购买量</th>
+        <th>小计</th>
+      </tr>
+    </thead>
+    <tbody>
+      <{foreach from=$po.items item=product}>
+      <tr>
+        <td><{$product.supplier_bn}></td>
+        <td><a href="../index.php?ctl=product&act=index&p[0]=<{$product.goods_id}>" target="_blank"><{$product.name}></a></td>
+        <td><{$product.price|cur}></td>
+        <td><{$product.nums}></td>
+        <td><{$product.amount|cur}></td>
+      </tr>
+      <{/foreach}>
+    </tbody>
+  </table>
+</div>
+
+<div style="padding-top: 5px;" class="clearfix" id="zhifubox"> 
+ <div style="border: 1px dotted rgb(153, 153, 153); display: ;" class="ColColorGray" id="z_edit">
+  <h4 class="purchase">选择支付方式</h4>
+  <table width="100%" cellspacing="0" cellpadding="0">
+    <tbody>
+      <tr <{if $delivery.pad==0}>style="display:none"<{/if}>>
+        <th style="text-align: left; width: 300px;"><label>
+          <input type="radio" onclick="pay_po_chg_payment(this,0)" paytype="-1" formatmoney="0"  moneyamount="" value="-1" name="pay_id" class="x-payMethod"/>
+          <input type="hidden" name="payment[pay_type][-1]" value="-1">货到付款
+          </label></th>
+        <td></td>
+      </tr>
+      <{foreach from=$payment item=pItem}>
+      <tr>
+        <th style="text-align: left; width: 300px;"><label>
+          <input type="radio" onclick="pay_po_chg_payment(this,<{$pItem.fee}>)" paytype="<{$pItem.pay_type}>" formatmoney="<{$pItem.fee}>" moneyamount="" value="<{$pItem.id}>" name="pay_id"/>
+          <{$pItem.custom_name}>
+          <{if $pItem.fee > 0}>
+          (支付费率: +<{$pItem.fee*100}>%)
+          <{/if}></label></th>
+        <td><{$pItem.des}></td>
+      </tr>
+      <{/foreach}>
+    </tbody>
+  </table>
+ </div>
+</div>
+
+  <div class="clearfix" style="float: right;">
+  <table width="100%" cellspacing="0" cellpadding="0" border="0" class="tableAction">
+    <tbody>
+      <tr>
+        <td><b style="margin: 5px 0pt;" class="submitBtn">
+          <input type="submit" name="sumbit" value="立即付款"/>
+          </b></td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+</form>
+<script>
+var pay_money = <{$po.total_amount-$po.payed}>;
+var cost_item = <{$po.cost_item}>;
+var cost_dprice = <{$po.cost_freight}>;
+var cost_protectprice = <{$po.cost_protect}>;
+var cost_taxprice= <{$po.cost_tax}>;
+var decimal_digit = <{$order_setting.decimal_digit}>;
+var decimal_type = <{$order_setting.decimal_type}>;
+var decimals = <{$order_setting.decimals}>;
+var carryset = <{$order_setting.carryset}>;
+
+function show_po_detail(obj, price){
+    if($('x-po-pay-items').style.display == "none"){
+        $('x-po-pay-items').style.display = '';
+    }else{
+        $('x-po-pay-items').style.display = 'none';
+    }
+};
+
+function pay_po_chg_payment(obj,fee){
+    if($(obj).getProperty('paytype') == "deposit"){
+        $(obj).getParent('form').set('action','index.php?ctl=order/order&act=payByDeposits');
+        $(obj).getParent('form').removeProperty('target');
+    }else{
+        $(obj).getParent('form').set('action','<{$payurl}>');
+        $(obj).getParent('form').set('target','_blank');
+    }
+	chg_payment(obj,fee);
+}
+
+function chg_payment(obj,fee){
+    cost_payfee = ((pay_money) * fee);
+    cost_payfee = Number(cost_payfee);
+    var o_price = pay_money+cost_payfee;
+    $('span_amount').innerHTML = ($('span_amount').innerHTML).substr(0,1) + order_decimal(o_price,decimal_digit,decimal_type);
+}
+
+function order_decimal(number,decimal_digit,decimal_type){
+    mul = Math.pow(10, decimal_digit);
+    switch(decimal_type){
+        case 0:
+            number = Math.round(number*mul) / mul;
+        break;
+        case 1:
+            number = Math.ceil(number*mul) / mul;
+        break;
+        case 2:
+            number = Math.floor(number*mul) / mul;
+        break;
+    }
+
+    return number.toFixed(decimal_digit);
+}
+</script>

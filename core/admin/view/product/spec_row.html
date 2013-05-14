@@ -1,0 +1,41 @@
+<td>
+<input type="text" size=15  name="bn[]" value="<{$goods_args.product_bn}>"/></td>
+<{foreach from=$goods.spec_desc item=sitem key=specid}>
+<td>
+<div class="select-spec-unselect" specid="<{$specid}>"><span><{t}>-请选择-<{/t}></span></div>
+
+<div class='select-spec-value' style="display:none">
+<ul class='goods-spec-box' style="width:200px;">
+</ul>
+</div>
+
+<input type="hidden" name="val[<{$specid}>][]" value="" />
+<input type="hidden" name="pSpecId[<{$specid}>][]" value=""/>
+<input type="hidden" name="specVId[<{$specid}>][]" value="">
+</td>
+<{/foreach}>
+
+<{foreach from=$spec.idata item=item key=ikey}>
+  <td><input type="text" name="idata[<{$ikey}>][]" value="<{$spec.idata[$ikey][$id]}>" /></td>
+<{/foreach}>
+
+<td><input type="text" size=4 name="store[]" value="<{$goods_args.store}>"/></td>
+<td>
+<input type="text" size=8 name="price[]" value="<{$goods_args.price}>"/><br/><span onclick="goodsEditor.mprice.bind(goodsEditor)(this)" class="sysiconBtn edit"><{t}>会员价<{/t}></span>
+<{foreach from=$mLevels item=rows}><input name="mprice[<{$rows.member_lv_id}>][]" level="<{$rows.member_lv_id}>" type="hidden" value="<{$goods_args.mprice[$rows.member_lv_id]}>" /><{/foreach}>
+</td>
+<td><input type="text" size=10  name="cost[]" value="<{$goods_args.cost}>"/></td>
+<td><input type="text" size=10  name="mktprice[]" value="<{$goods_args.mktprice}>"/></td>
+ <td><input type="text" size=10  name="weight[]" value="<{$goods_args.weight}>"/></td>
+<{if $env.conf.storeplace.display.switch}>
+<td><input type="text" size=15 name="store_place[]" value="<{$goods_args.store_place}>"/></td>
+<{/if}>
+
+<td><input type='checkbox' class='pro-marketable-check' checked/>
+<input type='hidden' name='marketable[]' value='true'/>
+</td>
+
+  <td>
+	 <input type="hidden" name="disabled[]" value='false' >
+	  <img class="operater" alt="删除" src="../statics/icons/icon_delete.gif"/>
+  </td>

@@ -1,0 +1,79 @@
+<!-- right-->
+<div class="MemberMain">
+<div style="margin-right:175px;">
+
+<script>
+function checkAll(obj,box) {
+  var tag = obj.getElementsByTagName('input');
+  for(var i = 0;i < tag.length;i++){
+    tag[i].checked = box.checked;
+  }
+}
+</script>
+<div class="title"><{t}>草稿箱<{/t}></div>
+<form action="<{link ctl="member" act="delOutBoxMsg"}>" method="post">
+<table width="100%" cellspacing="0" cellpadding="0" class="liststyle_option">
+    <col class="span-0 textcenter"></col>
+    <col class=" textleft"></col>
+
+    <tr>
+      <th class="textcenter"><input type="checkbox" onclick="checkAll(this.form,this)" name="chkall" id="chkall" title="全选"></th>
+            <td><input type="submit" value="删除" name="pmsend /"></td>
+            <td class="textright"><{t}>共有短消息:<{/t}><em id="pmtotalnum"><{$total_msg}></em></td>
+    </tr>
+
+    </table>
+  <table width="100%" cellspacing="0" cellpadding="0" summary="草稿箱" class="memberlist">
+     <col class="span-0 ColColorGraydark"></col>
+    <col class="span-15 textleft"></col>
+    <col class="span-3 ColColorOrange"></col>
+    <col class="span-4"></col>
+    <thead>
+      <tr>
+        <th class="selector">&nbsp;</th>
+        <th><{t}>标题<{/t}></th>
+        <th class="user"><{t}>发送到<{/t}></th>
+        <th class="time"><{t}>时间<{/t}></th>
+      </tr>
+    </thead>
+    <tbody>
+      <{if count($message)>0}>
+      <{foreach item=msg from=$message}>
+      <tr>
+        <td><input type="checkbox" value=<{$msg.msg_id}> name="deloutbox[]"></td>
+        <td class="textleft"><span><a href="<{if $msg.to_type == 1}><{link ctl="member" act="message" arg0=$msg.msg_id}><{else}><{link ctl="member" act="send" arg0=$msg.msg_id}><{/if}>" class="lnk"><{$msg.subject|cut:60|escape:'html'}></a></span></td>
+        <td><{if $msg.to_type == 1}><{t}>管理员<{/t}><{else}><{$msg.to_name|escape:'html'}><{/if}></td>
+        <td><{$msg.date_line|cdate:FDATE_STIME}></td>
+      </tr>
+      <tr id="view_msg_pro_<{$msg.msg_id}>" style="display:none">
+        <td></td>
+        <td id="view_msg_<{$msg.msg_id}>"  class="msgcnt lft" colspan="3">&nbsp;</td>
+      </tr>
+      <{/foreach}>
+      <{else}>
+      <tr>
+      <td height="60" colspan="4" class="ColColorWhite">
+        草稿箱中无内容
+      </td>
+      </tr>
+      <{/if}>
+    </tbody>
+  </table>
+    <table width="100%" cellspacing="0" cellpadding="0" class="liststyle_option">
+    <col class="span-0 textcenter"></col>
+    <col class=" textleft"></col>
+
+    <tr>
+      <th class="textcenter"><input type="checkbox" onclick="checkAll(this.form,this)" name="chkall" id="chkall" title="全选"></th>
+            <td><input type="submit" value="删除" name="pmsend /"></td>
+            <td class="textright"><{t}>共有短消息:<{/t}><em id="pmtotalnum"><{$total_msg}></em></td>
+    </tr>
+
+    </table>
+  <{pager data=$pager}>
+
+</form>
+
+</div>
+</div>
+<!-- right-->

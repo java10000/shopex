@@ -1,0 +1,35 @@
+<div class="ItemsWarp items-text clearfix">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="liststyle ">
+<col class=" textleft"></col>
+<col class="span-3 ColColorGray textright"></col>
+<col class="span-2 ColColorGray textcenter"></col>
+<col class="span-2 ColColorGray textcenter"></col>
+<col class="span-2 ColColorGray textcenter"></col>
+<{if count($products) > 0}>
+<thead>
+  <th><{t}>商品名称<{/t}></th>
+  <th><{t}>商品价格<{/t}></th>
+  <th><{t}>查看大图<{/t}></th>
+    <th><{t}>商品对比<{/t}></th>
+    <th><{t}>操作<{/t}></th>
+</thead>
+<tbody>
+<{foreach from=$products item=product}>
+  <tr product="<{$product.goods_id}>" valign="top" class="<{$mask_webslice}>" id="pdt-<{$product.goods_id}>">
+  <td class="textcenter"><a target="_blank" href="<{link ctl="product" act="index" arg0=$product.goods_id}>" title="<{$product.name|escape:html}>" class="entry-title"><{$product.name|escape:"html"}><span style="display:none"><img src="<{$product.thumbnail_pic|default:$env.conf.site.default_thumbnail_pic|storager}>" <{if $env.conf.site.thumbnail_pic_width !=0}> width="<{$env.conf.site.thumbnail_pic_width}>px"<{/if}> <{if $env.conf.site.thumbnail_pic_height !=0}>height="<{$env.conf.site.thumbnail_pic_height}>px"<{/if}> ></span></a></td>
+  <td class="textright"><{$product.price|cur}></td>
+    <td class="textcenter"><a  href="<{link ctl=product act=viewpic arg0=$product.goods_id arg1=def}>" target="_blank" title="查看图片"><{t}>查看大图<{/t}></a></td>
+    <td class="textcenter">
+    <a href="javascript:void(0);" onclick="gcompare.add({gid:'<{$product.goods_id}>',gname:'<{$product.name|addslashes|escape:html}>',gtype:'<{$product.type_id}>'});" class="btncmp" title="商品对比">
+              <{t}>商品对比<{/t}>
+             </a>
+    </td>
+    <td class="textbutton textcenter">
+    <{goodsmenu product=$product setting=$setting}>
+    </td>
+  </tr>
+<{/foreach}>
+</tbody>
+<{/if}>
+</table>
+</div>

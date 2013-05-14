@@ -1,0 +1,155 @@
+<!-- right-->
+<div class="MemberMain">
+<div style="margin-right:175px;">
+
+<div class="title"><{t}>为订单付款<{/t}></div>
+<form id="f_order_pay" action='<{link ctl="paycenter" act="order"}>' method="post">
+<input type="hidden" name="order_id" value="<{$order.order_id}>" />
+<input type="hidden" name="money" value="<{$order.amount.total-$order.amount.payed}>" id="hidden_money"/>
+<input type="hidden" name="currency" value="<{$order.currency}>" />
+<input type="hidden" name="cur_money" value="<{$order.cur_money }>" id="hidden_cur_money"/>
+<input type="hidden" name="cur_rate" value="<{$order.cur_rate }>" />
+<input type="hidden" name="cur_def" value="<{$order.cur_def }>" /> 
+
+<h3>订单信息</h3>
+  <div class='ColColorBlue' style='padding:5px;border:1px #ccc solid;'>
+      <span><{t}>订单编号：<{/t}></span><strong class='font14px'><{$order.order_id}></strong>&nbsp;&nbsp;[ <a href="<{link ctl=member act=orderdetail arg0=$order.order_id}>" >查看订单详细信息&raquo;</a> ]
+      <div id="billNo" style="display:none"></div>
+  </div>
+  <div class='division' style='padding:15px;'>
+     <span><{t}>订单金额:<{/t}></span><strong class="hueorange fontcolorRed font20px" id="span_amount"><{$order.amount.total-$order.amount.payed|amount}></strong>
+     
+  </div>
+
+
+<h3>订单支付</h3>
+  <div class='ColColorOrange' style='padding:5px;border:1px #ccc solid;'>
+      <{if !$order.selecttype}>
+         <{t}>您选择了：<{/t}><strong  class="hueorange fontcolorRed font14px"><{$order.paymethod}></strong>
+         <a  class="link"  href='<{link ctl=member act=orderpay arg0=$order.order_id arg1=true}>' >[ 如需更改，您还可以选择其他支付方式 ]</a>
+      <{else}>
+         <{t}>请选择支付方式:<{/t}>
+     <{/if}>
+  </div>
+  <div class='division'>
+  
+  <{if $order.selecttype}>
+  <div class='select-paymethod'>
+  <{require file="common/paymethod.html"}>
+</div>
+  <div class="textcenter" style="padding:10px;">
+    <input type="submit" class='actbtn btn-pay' value="立刻支付" />
+  </div>
+<{else}>
+  <input type="hidden" name="payment[payment]" value="<{$order.payment}>" />
+  <{if $extendInfo}>
+      <div class='division paymethodextendInfo'>
+      <{foreach from=$extendInfo item=item key=key}>
+        <{if $item.type=='select'}>
+            <select name=<{$key}>>
+                <{foreach from=$item.value item=vitem key=vkey}>
+                    <option value="<{$vitem.value}>" <{if $vitem.checked}>selected<{/if}>><{$vitem.name}></option>
+                <{/foreach}>
+            </select>
+        <{else}>
+            <{foreach  from=$item.value item=vitem key=vkey}>
+                <{if $item.type=='radio'}>
+                <input type='radio' name=<{$key}> value=<{$vitem.value}> <{$vitem.checked}>><{if $vitem.imgname}><{$vitem.imgname}><{else}><{$vitem.name}><{/if}>
+                <{else if $item.type=='checkbox'}>
+                <input type='checkbox' name="<{$key}>[]" value=<{$vitem.value}> <{$vitem.checked}>><{if $vitem.imgname}><{$vitem.imgname}><{else}><{$vitem.name}><{/if}>
+                <{/if}>
+            <{/foreach}>
+        <{/if}>
+      <{/foreach}>
+      </div>
+  <{/if}>
+  
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td>
+          <{if $order.amount.total > $order.amount.payed}>
+            <{if $order.paytype=="OFFLINE"}>
+                <{$order.paytype}>
+              <div class="customMessages">{pay_offline}</div>
+            <{else}>
+              <{if $order.payment==-1}><div class="customMessages" >{pay_wait}</div><{else}>
+              <{if $order.paytype=="DEPOSIT"}>
+                <strong><{t}>您选择了预存款支付<{/t}></strong>
+              <{else}>
+               <div class="customMessages">{pay_message}</div>
+              <{/if}><{/if}>
+            </td>
+            </tr>
+            <tr>
+            <td>
+            <{if $order.payment!=-1}>
+           <input type="submit" class='actbtn btn-pay' value="立刻支付" /> <{/if}>
+            <{/if}>
+          <{else}>
+             订单不需要再支付,请等待我们处理
+          <{/if}>
+        </td>
+      </tr>
+    </table>
+
+<{/if}>
+  
+  </div>
+
+</form>
+
+
+<script>
+        void function(){
+        var form= $('f_order_pay');
+            Order ={
+                
+                paymentChange:function(target){
+                         if(!target)return;
+                         target = $(target);
+                     var money  = target.get('moneyamount');
+                     var fmoney = target.get('formatmoney');
+                     var paytype= target.get('paytype');
+                     var cur_money= target.get('cur_money');
+                     
+                     $('hidden_money').set('value',money);
+                   if(cur_money)$('hidden_cur_money').set('value',cur_money);
+                     $('span_amount').set('text',fmoney);
+                     form.getElement('input[type=submit]').set('value',paytype!='offline'?'立即付款':'确定');
+                     form.getElement('input[type=submit]')[(paytype=='offline'?'addClass':'removeClass')]('btn-pay-ok');
+                     /* $$('#_normal_payment th .ExtendCon input[type=radio]').fireEvent('checkedchange');*/
+                }
+            
+            };
+            
+            if($E('#f_order_pay .select-paymethod')){
+                Order.paymentChange($E('#f_order_pay .select-paymethod input[checked]'));
+                
+                if(form&&form.getElement('input[type=submit]')){
+                    form.getElement('input[type=submit]').addEvent('click',function(e){
+                        
+                        if(!$E('#f_order_pay .select-paymethod input[checked]')){
+                        MessageBox.error('请选择支付方式');
+                        return e.stop();
+                        }
+                    
+                    });
+                }
+            }
+
+            selecttype = "<{$order.selecttype}>";
+            paytype = "<{$order.paytype}>";
+            if(selecttype != 1 && paytype.toLocaleLowerCase()=="lakala"){
+                if($('billNo').getText() == ""){
+                    new Request.HTML({update:'billNo'
+                        
+                    }).post("<{$base_url}>/index.php?action_getinfo_ctl-get_billno.html",{order_id:"<{$order.order_id}>", payment_id:"<{$order.payment}>"});
+                }
+                $('billNo').setStyle('display','block');
+            }
+        }();
+</script>
+
+</div>
+</div>
+<!-- right-->

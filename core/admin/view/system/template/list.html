@@ -1,0 +1,190 @@
+<{area inject='.mainHead'}>
+<div class="clearfix ColColorGray borderup">
+<{if $currentTheme.name}>
+<h4><{t}>正在使用的模板<{/t}><{help docid="77" type="link"}><{t}>点击查看帮助<{/t}><{/help}></h4>
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <td valign="top" style="padding:5px; vertical-align:top" width="160">
+  <img id="<{$currentTheme.theme}>_img"style="padding:3px;border-top: 2px solid #eee;border-left: 2px solid #eee;    border-right: 2px solid #bec6ce;border-bottom: 2px solid #bec6ce;" src="index.php?ctl=system/template&act=previewImg&p[0]=<{$currentTheme.theme}>" width="120" height="160"/>
+  	<div class="template-color">
+	<{if $currentTheme.config.config}>
+	<{foreach from=$currentTheme.config.config item=c_info key=key}>
+		<{if $c_info[type]=='fullstyle'}>
+			<span class="template-color-item" <{if $c_info[value]==$selected_css}>style="border:2px solid #336699;"<{/if}>><span title="<{$c_info[label]}>" onMouseOver="$('<{$currentTheme.theme}>_img').src='index.php?ctl=system/template&act=previewImg&p[0]=<{$currentTheme.theme}>&p[1]=<{$c_info[preview]}>'" onClick="W.page('index.php?ctl=system/template&act=setColor&p[0]=<{$currentTheme.theme}>&p[1]=<{$c_info[value]}>')" style="background-color: <{$c_info[color]}>;"></span></span>
+		<{/if}>
+	<{/foreach}>
+	<{/if}></div>
+    </td>
+
+
+
+
+    <td width="200" valign="top" style="padding:5px; vertical-align:top"><h4><{$currentTheme.name}>(<{$currentTheme.version}>)</h4>
+      <ul class="info">
+        <li><{t}>作者<{/t}><a href="<{$currentTheme.site}>" target="_blank"><{$currentTheme.author}></a></li>
+    </ul>     
+    <{$currentTheme.desc}>
+    <div class="template-options">
+      <a class="sysiconBtnNoIcon" href="index.php?ctl=system/template&act=edit&p[0]=<{$currentTheme.theme}>"><{t}>编辑模板<{/t}></a>
+      <a class="sysiconBtnNoIcon" href='index.php?ctl=system/tmpimage&act=index&theme=<{$currentTheme.theme}>&istheme=1'><{t}>模板文件管理<{/t}></a>
+      
+    </div>
+    </td>
+     <td><iframe src="<{$install_url}>/adminintro.html" width="500" height="182" scrolling="no" frameborder="0"></iframe>
+	</td>
+  </tr>
+</table>
+<{else}>
+<div class="error">
+当前应用的模板<{$currentTheme.theme}>不存在！请重新设置！
+</div>
+<{/if}>
+
+
+<table border="0" cellspacing="0" cellpadding="0" style="width:auto">
+  <tr>
+    <td><h4><{t}>其他可供使用的模板<{/t}></h4></td>
+    <td><{if $cantUploadMsg=='writeable'}>
+  因为模板目录无法写入，因此无法通过后台直接上传模板包。
+  <{else}>
+  <table><tr>
+  <td>
+ <{button type="button" label="上传模板" id="fix_fl10upload_panel" style="float:left;" icon="btn_edit.gif"}>
+  </td><td>
+
+   <{button label="在线安装模板" type="button" onclick="
+  new Dialog('{$install_url}#http://{$env.server.HTTP_HOST}{$env.server.PHP_SELF}?ctl={$env.get.ctl}&act=install_online',
+  {frameable:true,title:'在线安装模板',onClose:function(){
+		W.page('index.php?ctl=system/template&act=index');
+	}})"}><sup class='font10px fontcolorRed'>NEW</sup>
+  </td></tr></table>
+
+</div>
+<{/area}>
+
+
+<div id="template">
+<div class="template-list">
+
+<div class="tableform clearfix ">
+<script language="javascript">
+function install_template_click_handle(){
+
+}
+
+
+new Swiff.Uploader( { 
+            verbose: true,
+			url:'index.php?ctl=system/template&act=upload&sess_id='+sess_id,
+            path: 'images/uploader.swf',
+            typeFilter: {
+                'Images (*.tgz, *.tar.gz, *.theme)': '*.tgz;*.tar.gz;*.theme'
+            },
+            fileSizeMax:5242880,
+            target:'fix_fl10upload_panel',
+            onSelectFail:function(rs){
+               rs.each(function(v){
+                    if(v.validationError=='sizeLimitMax'){
+                        alert(v.name+'\n\n文件超出大小限制');
+                    };
+                });			
+            },
+            onSelectSuccess:function(rs){       
+				rs.each(function(v,i){
+					new Element('div',{'class':'item',id:'uping-'+v.id}).inject($('all-themes'));
+					$('uping-'+v.id).setHTML('<div class="progress-bar" style="width:100px"><i>&nbsp;</i></div><center>0%</center>');
+			    });   
+                this.start();                 
+            },
+            onFileOpen:function(e){  
+				$('uping-'+e.id).getElement('center').set('text','生成中...');
+            },
+            onFileProgress:function(e){
+                var pt=Number(e.progress.bytesLoaded*100/e.size).toFixed()+'%';  
+				   $('uping-'+e.id).getElement('i').setStyle('width',pt);
+                    $('uping-'+e.id).getElement('center').set('text',pt);
+                
+            },		
+            onFileComplete: function(res){	
+               if(res.response.error){
+                    return  new MessageBox('文件'+res.name+'上传失败',{type:'error',autohide:true});
+               }
+			   $('uping-'+res.id).setHTML(res.response.text);
+			  
+            }
+ });	
+  </script>
+  <{/if}></td>
+  </tr>
+</table>
+
+
+
+<div id="all-themes">
+
+<{foreach from=$themes item=theme name=theme}>
+<{if $theme.name}>
+<div class="item">
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td align="center" valign="top">
+
+    <div class="template-img"><img id="<{$theme.theme}>_img" src="index.php?ctl=system/template&act=previewImg&p[0]=<{$theme.theme}>" width="120" height="160" />
+   <div>
+   	<div class="template-color">
+	<{if $theme.config}>
+	<{foreach from=$theme.config.config item=c_info key=key}>
+		<{if $c_info[type]=='fullstyle'}>
+			<span class="template-color-item"><span title="<{$c_info[label]}>" onMouseOver="$('<{$theme.theme}>_img').src='index.php?ctl=system/template&act=previewImg&p[0]=<{$theme.theme}>&p[1]=<{$c_info[preview]}>'" style="background-color: <{$c_info[color]}>;"></span></span>
+		<{/if}>
+	<{/foreach}>
+	<{/if}></div>
+   <a href="index.php?ctl=system/template&act=setDefault&p[0]=<{$theme.theme}>" class="sysiconBtnNoIcon"><{t}>使用模板<{/t}></a>
+   <{if !$env.const.SAAS_MODE}>
+   <a href="index.php?ctl=system/template&act=edit&p[0]=<{$theme.theme}>" class="sysiconBtnNoIcon"><{t}>编辑<{/t}></a>
+   <a href="<{$base_url}>?previewtheme-<{$theme.theme}>-index.html" class="sysiconBtnNoIcon" target="_blank"><{t}>预览<{/t}></a>
+   <{else}>
+   <a target="download" href="index.php?ctl=system/template&act=dlpkg&p[0]=<{$theme.theme}>" class="sysiconBtnNoIcon"><{t}>下载<{/t}></a>
+   <{/if}><span class="sysiconBtnNoIcon" onClick="void function(themeitem){
+    if(window.confirm('删除后将无法恢复，确认删除吗？')){
+      W.page('index.php?ctl=system/template&act=remove&p[0]=<{$theme.theme}>',{update:'messagebox',onComplete:function(){themeitem.remove()}});
+    }}($(this).getParent('.item'))"><{t}>删除<{/t}></span></div>
+<!--   <ul class="info widgets">
+            <li style="color:#666" ><{$theme.info}></li>
+      <li><{t}>占用空间：<{/t}><{$theme.size|size}></li>
+            <li><{t}>使用到的版块：<{/t}></li>
+
+                            <{if count($theme.widgets)>0}>
+                                <{$theme.widget}>
+                                <{foreach from=$theme.widgets item=widget}>
+                                        <{if $widget.installed}>
+                                            <{$widget.name}> | <{else}><span style="color:red"><{t}>缺失:<{/t}><{$widget.name}></span> |
+                                        <{/if}>
+                                <{/foreach}>
+                            <{/if}>
+
+     </ul> -->
+
+
+
+
+
+        </div>
+
+    <h5 style="margin:0; height:20px; padding:0"><{$theme.name|cut:16}>(<{$theme.version|cut:20}>)</h5>
+    <span style="color:#999; font-size:11px; font-weight:normal;"><a href="<{$theme.site}>" target="_blank"><{$theme.author|cut:20}></a>| <{$theme.stime|cdate}></span>
+
+    </td>
+
+  </tr>
+</table>
+
+  </div>
+<{/if}>
+<{/foreach}>
+
+
+  </div>
+</div>
+</div>
+</div>

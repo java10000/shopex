@@ -1,0 +1,66 @@
+<div style="border: 1px solid #efefef;" class="table-grid">  
+  <input type="hidden" name="order_id" value="<{$order.order_id}>">
+
+  <table width="100%" id="order_items" border="0" cellspacing="0" cellpadding="2" class="gridlist">
+    <col class="Colsn"></col>
+    <col></col>
+    <col class="Colamount"></col>
+    <col class="Colamount"></col>
+    <col class="Colamount"></col>
+    <col class="Coloption-1b"></col>
+    <thead>
+      <tr>
+        <th><{t}>货号<{/t}></th>
+        <th><{t}>商品名称<{/t}></th>
+        <th><{t}>价格<{/t}></th>
+        <th><{t}>购买数量<{/t}></th>
+        <th><{t}>小计<{/t}></th>
+        <th></th>
+      </tr>
+    </thead>
+
+  	<{input type="hidden" id='itemgoodnums' value=$goodnums}>
+    <tbody>
+      <{foreach from=$order.items item=aItems key=iLoop}>
+      <{assign var="itemid" value=$aItems.item_id}>
+      <{assign var="itemprice" value=$aItems.price}>
+      <{assign var="itemnums" value=$aItems.nums}>
+      <tr>
+        <input type="hidden" name='aItems[<{$itemid}>]' value='<{$aItems.product_id}>'>
+        <td><{$aItems.bn}></td><td><{$aItems.name}></td>
+        <td>
+          <{input class="itemrow" name="aPrice[{$itemid}]" value=$itemprice size=8 readonly='yes'}>
+        </td>
+        <td><{input class="itemrow" name="aNum[{$itemid}]" required="true" value=$itemnums size=4 }></td>
+        <td class="itemSub_<{$itemid}> itemCount Colamount"><{$aItems.amount}></td>
+        <td><span class="sysiconBtnNoIcon" onClick="delgoods(this)"><{t}>删除<{/t}></span></td>
+      </tr>
+      <{/foreach}>
+    </tbody>
+  </table>
+
+  <table width="100%" border="0" cellspacing="0" cellpadding="2" class="gridlist">
+    <tr>
+      <td style="text-align:left">
+        输入商品货号：<{input type="text" name=newbn }>
+        <input type="button" id="newbtn" value="添加" />
+      </td>
+    </tr>
+  </table>
+
+  <{$order.alertJs}>
+</div>
+
+<script type="text/javascript">
+$('newbtn').addEvent('click', function(){
+  new Request({
+    onComplete:function(rs){
+      if(rs.substr(0,3)!='<tr'){
+        alert(rs); return;
+      }
+
+      $E('table#order_items tbody').adopt((new Element('tbody',{html:rs})).getChildren());
+      countF();
+    }}).post('index.php?ctl=order/order&act=addItem',$('orderItemList'));
+});
+</script>

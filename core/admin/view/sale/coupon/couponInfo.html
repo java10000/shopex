@@ -1,0 +1,72 @@
+<form id='doCouponInfoForm'  method='post' action='index.php?ctl=sale/coupon&act=doCouponInfo' >
+<div class="tableform">
+<div class="division">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <th><{t}>名称:<{/t}></th>
+    <td><{input type='text' value=$cpns.cpns_name name='cpns_name' required='true'}></td>
+  </tr>
+  </table>
+</div>
+<div class="division">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <th><{t}>号码:<{/t}></th>
+  <{if $sys.act=='edit'}><{assign var="disabledElement" value=true}><{/if}>
+    <td><span id='c_p'></span><{input type='space&&alphaint' value=$cpns.cpns_prefix name='cpns_prefix' disabled=$disabledElement required='true'}></td>
+  <{if $sys.act=='edit'}><{assign var="disabledElement" value=false}><{/if}>
+  </tr>
+  <tr>
+    <th><{t}>状态:<{/t}></th>
+    <td><input type='radio' name='cpns_status' value=1  <{if $cpns.cpns_status eq 1}>checked="checked"<{/if}>}/>启用
+           <input type='radio' name='cpns_status' value=0 <{if $cpns.cpns_status eq 0}>checked="checked"<{/if}>}/><{t}>禁用<{/t}></td>
+  </tr>
+  <tr>
+    <th><{t}>优惠券类型:<{/t}></th>
+    <td id='c_t'>
+    <input id="c_t" type='radio' name='cpns_type' value=0  <{if $cpns.cpns_type eq 0}>checked="checked"<{/if}> <{if $sys.act=='edit'}>disabled='disabled'<{/if}>/><{t}>A类优惠券&nbsp;&nbsp;<{/t}><span class="fontcolorGray"><{t}>说明：此类优惠券，顾客只需获得一张，即可在规定的时间内重复使用。<{/t}></span><br>
+    <input type='radio' name='cpns_type' value=1  <{if $cpns.cpns_type eq 1}>checked="checked"<{/if}> <{if $sys.act=='edit'}>disabled='disabled'<{/if}>/><{t}>B类优惠券<{/t}>&nbsp;&nbsp;<span class="fontcolorGray"><{t}>说明：此类优惠券，顾客可一次获得多张，但在规定时间内每张只能使用一次，无法重复使用。<{/t}></span></td>
+  </tr>
+</table>
+</div>
+
+<div class="table-action">
+	<{button type="submit"  label="下一步"}>&nbsp;&nbsp;
+   <a href="index.php?ctl=sale/coupon&act=index"><{t}>取消<{/t}></a>
+
+</div>
+
+
+</div>
+
+<input type='hidden' name='ediateable' value='<{$ediateable}>'/>
+
+<{if $sys.act=='edit'}>
+<input type='hidden' name='cpns_type' value='<{$cpns.cpns_type}>'/>
+<input type='hidden' name='cpns_prefix' value='<{$cpns.cpns_prefix}>'/>
+<{/if}>
+
+</form>
+<script>
+
+  $ES('input', 'c_t').each(function(item){
+    if(item.checked) {
+      if (item.value==0){
+        $('c_p').setHTML('A');
+      }else if (item.value==1){
+        $('c_p').setHTML('B');
+      }
+    }
+  });
+
+  $ES('input', 'c_t').each(function(item){
+    item.addEvent('click',function(e){
+      if (item.value==0){
+        $('c_p').setHTML('A');
+      }else if (item.value==1){
+        $('c_p').setHTML('B');
+      }
+    });
+
+  });
+</script>

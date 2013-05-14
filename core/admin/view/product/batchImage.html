@@ -1,0 +1,52 @@
+<div id="batchImage_rebulid">
+<{toinput from=$filter}>
+<input type="hidden" name="allcount" value="<{$goodscount}>">
+<input type="hidden" name="present_id" value="0">
+<div class="notice"><{t}>正在对<{/t}><strong><{$goodscount}></strong><{t}>个商品重新生成列表页缩略图、商品页详细图、商品相册图。<{/t}><br><{t}>1：此功能将会根据“商店配置--商品图片设置”中的图片尺寸重新生成商品的三种图片以及重新添加水印。<{/t}><br><{t}>2：重新生成新图片后，原有旧图片将被删除或覆盖。<{/t}><br>3：该处理过程可能会比较慢，请您耐心等候。
+</div>
+
+<div style="padding:10px 0 10px 120px">
+      <label>
+        <input type="radio" checked value="0" name="alter_link" />新图片仍使用原有图片文件名
+      </label><br />
+      <label>
+        <input type="radio" value="1" name="alter_link" />新图片使用新文件名
+      </label>
+</div>
+
+<div class="progessarea" align="center" style='visibility:hidden'></div>
+<div>
+<table cellspacing="0" cellpadding="0" border="0" align="center" class="table-action">
+  <tr>
+  <td>
+    <button class="sysiconBtnNoIcon btnbuild"><{t}>开始生成<{/t}></button>      
+    </td>
+  </tr>
+</table></div>
+</div>
+<script>
+function batchImage_rebulidRequest(data){
+   if($('batchImage_rebulid'))
+   return new Request.HTML({url:'index.php?ctl=goods/product&act=nextImage&p[0]='+($E('#batchImage_rebulid input[name=alter_link]').checked?'1':'0'),update:$E('.progessarea','batchImage_rebulid'),evalResponse:true}).post(data); 
+}
+void function(){
+     
+     var batchImage_rebulid=$('batchImage_rebulid');
+     var dialogCloseBtn= batchImage_rebulid.getParent('.dialog').getElement('.dialog-btn-close');
+        batchImage_rebulid.store('closebtn',dialogCloseBtn);
+     
+     batchImage_rebulid.getElement('.btnbuild').addEvent('click',function(){
+        batchImage_rebulid.getElement('.progessarea').setStyle('visibility','visible').set('text','生成中...');
+        dialogCloseBtn.setStyle('visibility','hidden');
+        batchImage_rebulidRequest(batchImage_rebulid);
+        this.set('text','取消').addEvent('click',function(){
+          dialogCloseBtn.fireEvent('click');
+        });
+        this.removeEvent('click',arguments.callee);
+     });
+
+
+}();
+
+
+</script>

@@ -1,0 +1,31 @@
+<td style="goods-spec-box" width='10%'>
+
+<{if $specType == 'text'}>
+<span class="goods-spec-span"><{$specValue|escape:'html'}></span>
+<{else}>
+<div class="goods-spec-box"><center><img src='<{if $specImage}><{$specImage|storager}><{else}><{$spec_default_pic|storager}><{/if}>' width=20 height=20 alt="<{$specValue|escape:'html'}>"/></center></div>
+<{/if}>
+
+</td>
+<td  class='spec-value-input'>
+<input type="text" name="goods[spec_desc][<{$specId}>][<{$pSpecId}>][spec_value]" class='spec-value' style="width: 120px;" value="<{$specValue|escape:'html'}>"/>
+<input type="hidden" name="goods[spec_desc][<{$specId}>][<{$pSpecId}>][spec_type]" value="<{$specType}>"/>
+
+<input type="hidden" name="goods[spec_desc][<{$specId}>][<{$pSpecId}>][spec_value_id]"  class='spec-value-id' value="<{$specValueId}>"/>
+ <input type='hidden' class="spec-image"  name='goods[spec_desc][<{$specId}>][<{$pSpecId}>][spec_image]' value=''/>
+</td>
+<{if $specType == 'image'}>
+<td>
+  <div class="goods-spec-box" style='float:left'>
+   <img src='<{if $specImage}><{$specImage|storager}><{else}><{$spec_default_pic|storager}><{/if}>' width=20 height=20 align='left' alt="<{$specValue|escape:'html'}>">
+  </div>
+  <span class="sysiconBtn addorder sel_image"><{t}>上传<{/t}></span>
+</td>
+<{/if}>
+<td><span class='sel-imgs-area-<{$pSpecId}>'></span>
+<input type="hidden" name="goods[spec_desc][<{$specId}>][<{$pSpecId}>][spec_goods_images]" value=""/>
+<span class="sel-albums-images sysiconBtn edit" style="padding-left: 20px;"><{t}>选择<{/t}></span></td>
+<td><img class="operater"  alt="向上" src="../statics/icons/icon_asc.gif"/> &nbsp; &nbsp; 
+<img  class="operater" alt="向下" src="../statics/icons/icon_desc.gif"/> &nbsp; &nbsp; 
+<img  class="operater" alt="删除" src="../statics/icons/icon_delete.gif"/>
+</td>

@@ -1,0 +1,7 @@
+<div id="finder-tag" class="tag-editor" style="overflow:hidden"> <ul class="tag-editor-group"> </ul> <div class="tag-editor-btns"> <span class="sysiconBtnNoIcon btn-apply"><span>应用</span></span> <span class="sysiconBtnNoIcon btn-create-tag"><span>新建</span></span> </div> <div class="dialogTag" style="display:none"> <p>请输入一个新的标签名称：</p> <input type="text" maxlength="20" class="tag-editor-value"/> <div style="margin:20px 10px 0;float:right"><span class="sysiconBtnNoIcon btnSmt">确定</span> <span class="sysiconBtnNoIcon btnCancel">取消</span></div> </div> <ul class="theme_tag" style="display:none"> <li class="selected_none"><img src="images/transparent.gif" class="imgbundle" style="width:9px;height:9px;background-position:0 -2276px;" /></li> <li class="selected_part"><img src="images/transparent.gif" class="imgbundle" style="width:9px;height:9px;background-position:0 -2285px;" /></li> <li class="selected_all"><img src="images/transparent.gif" class="imgbundle" style="width:9px;height:9px;background-position:0 -2267px;" /></li> </ul> </div> <script>
+(function(){
+	var options={'finderTag':$('finder-tag')};
+	window.winTag=new Tags_opt(options,'<?php echo $this->_vars['tag_id']; ?>');
+	window.winTag.finderTag.fireEvent('show');
+ })();
+</script> 

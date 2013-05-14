@@ -1,0 +1,57 @@
+<{capture name="header"}>
+    <{include file="common/header.meta.html"}>   
+<{/capture}>
+
+<{capture name="title"}>
+    <{include file=$_title_page}>
+<{/capture}>
+
+<{if count($_detail_func)>1}>
+<{capture name="sidebar"}>
+<div class="spage-side-nav">
+<ul>
+	<{foreach from=$_detail_func item=item key=key name="menu"}>
+        <li class="l-handle" name="func-<{$key}>"><span><{$item.label}></span></li> 
+	<{/foreach}>
+</ul> 
+</div>
+<{/capture}>
+<{/if}>
+
+<script>
+(function(){
+ if(!$$('.spage-side-nav li').length)return;
+ $('main').retrieve('setTabs',function(){
+		 var tabs=$ES('#single-page-sidebar .spage-side-nav li');
+         var hash=location.hash.slice(1);
+         var showIndex=tabs.indexOf($E('#single-page-sidebar .spage-side-nav li[name='+hash+']')).limit(0,1000);
+         new ItemAgg(tabs,$ES('#main .spage-main-box'),{
+         activeName:'cur',
+         onActive:function(tab,item){	
+                  var anotherItems=$$($A(this.items).remove(item));
+                  if(tab.hasClass('all')){
+                     anotherItems.show();
+                  }else{
+                     anotherItems.hide();
+                  }
+        },onBackground:function(tab){
+             tab.style.cssText='';
+             tab.removeClass('l-handle');
+        },
+         show:showIndex
+        });
+    
+    })();
+})();
+</script>
+
+<{foreach from=$_detail_func item=item key=key}>
+<div class="spage-main-box">
+	<h3><{$item.label}></h3>
+    
+    <{*<a id="func-<{$key}>" name="func-<{$key}>"></a>*}>
+    
+	<{include file=$item.tpl}>
+</div>
+<{/foreach}>
+

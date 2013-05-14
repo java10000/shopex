@@ -1,0 +1,14 @@
+<div id="member-messenger" class="x-drop-menu">
+	<ul class="group">
+	<{foreach from=$messenger item=item key=key}>
+      <li class="item" target='dialog' submit="index.php?ctl=member/messenger&act=write&p[0]=<{$key}>&finder=<{$_finder.var}>"><{t}><{$item.name_show}><{/t}></li>
+    <{/foreach}>
+    </ul>
+</div>	
+
+
+
+
+<{button href="index.php?ctl=member/member&act=showNew" wrapimg="true" label="添加会员" type="link" target="_blank" class="btn-blank" icon="finder_add.gif"}>
+<{button label="群发" wrapimg="true" dropmenu_opts="relative:{$_finder.var}.action" type="dropmenu" dropmenu="member-messenger"  icon="finder_mail.gif"}>
+<{button class="btn-large" wrapimg="true" label="批量编辑" target="dialog" submit="index.php?ctl=member/member&act=batchEdit" icon="finder_massive.gif"}>

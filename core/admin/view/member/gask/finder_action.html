@@ -1,0 +1,10 @@
+<{button class="btn-xl-large" wrapimg="true" type="button" label="置顶/解除置顶" icon="finder_movetop.gif" submit="index.php?ctl=member/gask&act=setIndexOrder" target="refresh"}>
+<{if count($orderby)>0}>
+<{button type="dropmenu" dropmenu="oreder-by" label="排序依据"}>
+<div id="oreder-by" class="x-drop-menu">
+    <ul class="group">
+      <li class="item" submit="index.php?ctl=goods/product&act=enable" target="refresh"><{t}>排序依据<{/t}></li>
+      <li class="item" submit="index.php?ctl=goods/product&act=disable" target="refresh"><{t}>排序依据<{/t}></li>
+    </ul>
+</div>
+<{/if}>

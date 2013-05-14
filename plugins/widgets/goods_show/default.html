@@ -1,0 +1,68 @@
+<div class="GoodsListWrap GoodsList GoodsShow">
+<{if count($data) > 0}>
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+     <tbody>
+      <tr valign="top"> 
+      <{foreach from=$data item=product name=goodslist}>
+	  <{if $product.goods_id>0}>
+
+        <td  id="item-<{$product.goods_id}>"  width="<{math equation=floor(100/x) x=$setting.column}>%;" class='item textcenter'>
+      
+        <{if $setting.showGoodsImg=="on"}>
+          <{if $setting.goodsImgWidth>0 && $setting.goodsImgHeight>0 }>
+              <a target="_blank" href='<{link ctl="product" act="index" arg0=$product.goods_id}>' style='width:<{$setting.goodsImgWidth}>px;height:<{$setting.goodsImgHeight}>px;' class='pic'>
+              <img src="<{$product.thumbnail_pic|default:$env.conf.site.default_thumbnail_pic|storager}>" alt="<{$product.name|escape:html}>" style='width:<{$setting.goodsImgWidth}>px;height:<{$setting.goodsImgHeight}>px;'/>
+            </a>
+          <{else}>
+            <a target="_blank" href='<{link ctl="product" act="index" arg0=$product.goods_id}>'   style='<{if $env.conf.site.thumbnail_pic_width !=0 && $env.conf.site.thumbnail_pic_height !=0}> width:<{$env.conf.site.thumbnail_pic_width}>px;height:<{$env.conf.site.thumbnail_pic_height}>px;<{/if}>' class='pic'>
+              <img src="<{$product.thumbnail_pic|default:$env.conf.site.default_thumbnail_pic|storager}>" alt="<{$product.name|escape:html}>"/>
+            </a>
+            <{/if}>
+         <{/if}>
+          <div class="info">
+          <{if $setting.showGoodsName=="on"}>
+            <div class='gname' style='height:<{$setting.gname_row_max_length*$setting.gname_row_lh}>px;line-height:<{$setting.gname_row_lh}>px;'>
+             <a href='<{link ctl="product" act="index" arg0=$product.goods_id}>' title="<{$product.name|escape:html}>"><{$product.name|cut:$setting.gname_max_length*3}></a>
+            </div>
+          <{/if}>
+            <div class='clearfix'>
+              <{if $setting.showGoodsMktPrice=="on"}>
+                <div class='mktprice  textcenter'><{$setting.mktPriceText|default:'市场价'}><{$setting.mktPriceSep|default:':'}><del><{$product.mktprice|cur}></del></div>
+              <{/if}>
+              <{if $setting.showGoodsPrice=="on"}>              
+                <div class='price  textcenter'><{$setting.priceText|default:'销售价'}><{$setting.priceSep|default:':'}><em class='price1'><{$product.price|cur}></em></div>
+              <{/if}>  
+              <{if $setting.showGoodsSave=="on"}> 
+               
+                <div class='save  textcenter'><{$setting.saveText|default:'节省'}><{$setting.saveSep|default:':'}><em><{$product.mktprice - $product.price|cur}></em></div>
+              <{/if}> 
+              <{if $setting.showCount=="on"}>               
+                <div class='countsave  textcenter'><{$setting.countText|default:'折扣'}><em><{math equation=x/y*100 x=$product.mktprice-$product.price y=$product.mktprice  format="%.0f"}><{$setting.countSep|default:':'}></em></div>
+              <{/if}> 
+                
+            </div>
+            <{if $setting.showGoodsDesc=="on"}>
+             <div class='desc' style='height:<{$setting.gdesc_row_max_length*$setting.gname_row_lh}>px;line-height:<{$setting.gdesc_row_lh}>px;'><{$data.brief|cut:$setting.desc_max_length*3}><{$product.brief}></div>
+             <{/if}>
+          </div>
+          </td>
+        <{if !($smarty.foreach.goodslist.iteration % $setting.column)}> 
+        </tr>
+          <{if !$smarty.foreach.goodslist.last}>
+        <tr valign="top"> 
+          <{/if}>
+        <{elseif $smarty.foreach.goodslist.last}>
+            <td colspan="<{math equation=y y=$setting.column-$smarty.foreach.goodslist.iteration%$setting.column }>">&nbsp;</td>
+         </tr>
+        <{/if}>
+		 <{/if}>
+      <{/foreach}>
+      </tbody>
+</table>
+<{if $setting.showMore=="on"}> 
+<div class='more'><a href='<{$data.link}>'>更多&raquo;&raquo;</a></div>.
+<{/if}>
+<{else}>
+<div class='note'>暂无商品数据</div>
+<{/if}>
+</div>

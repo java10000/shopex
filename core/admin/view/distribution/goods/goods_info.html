@@ -1,0 +1,167 @@
+<div class="section GoodsEditSection">
+<span class="font14px fontcolorBlue fontbold"> 供应商：<{$supplier_brief_name}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;商品：<{$b2b_goods.name}></span>
+<div id='cover-data-info' style='display:none'></div>
+<table width="100%">
+  <tr>
+      <th><h5 class="sec-title"><{t}>基本信息<{/t}></h5></th>
+      <{if $b2b_goods.params || $b2b_goods.type_props}><th><h5 class="sec-title"><{t}>商品扩展属性<{/t}>/<{t}>属性参数<{/t}></h5></th><{/if}>
+      <th><h5 class="sec-title"><{t}>详细介绍<{/t}></h5></th>
+  </tr>
+  <tr>
+     <td width="<{if $b2b_goods.params || $b2b_goods.type_props}>33<{else}>50<{/if}>%" style="vertical-align:top">
+         
+         <div class="division">
+           <table>
+                <tbody>
+                     <tr>
+                         <th><{t}>所属类型<{/t}>：</th><td>&nbsp;<{$b2b_goods.type_name}></td>
+                     </tr>
+                     <tr>
+                         <th><{t}>商品名称<{/t}>：</th><td>&nbsp;<{$b2b_goods.name}></td>
+                     </tr>  
+                     <tr>
+                          <th><{t}>品牌<{/t}>：</th><td>&nbsp;<{$b2b_goods.brand}></td>
+                     </tr>
+                     <tr>
+                          <th><{t}>计量单位<{/t}>：</th><td>&nbsp;<{$b2b_goods.unit}></td>
+                     </tr>
+                     <tr>
+                         <th><{t}>简介<{/t}>：</th> <td>&nbsp;<{$b2b_goods.brief}></td>
+                     </tr>
+                     <tr>
+                         <th><{t}>市场价<{/t}>：</th><td>&nbsp;<{$b2b_goods.mktprice}></td>
+                     </tr>
+                     
+                     <{if $b2b_goods.spec}>
+                     <{else}>
+                     <tr>
+                         <th><{t}>销售价<{/t}>：</th><td>&nbsp;<{$b2b_goods.price}></td>
+                     </tr>
+                     <tr>
+                         <th><{t}>重量<{/t}>：</th><td>&nbsp;<{$b2b_goods.weight}><{t}>克(g)<{/t}></td>
+                     </tr>
+                     <tr>
+                         <th><{t}>库存<{/t}>：</th><td>&nbsp;<{$b2b_goods.store}></td>
+                     </tr>     
+                     <{/if}>
+                     
+                </tbody>
+            </table>
+         </div>
+         
+     </td>
+     <{if $b2b_goods.params || $b2b_goods.type_props}>
+     <td width="33%" style="vertical-align:top">
+     
+        <{if $b2b_goods.type_props}>
+        <div class="division">  
+               <table border="0" cellpadding="0" cellspacing="0">
+                   <{foreach from=$b2b_goods.type_props key=key item=aProp}>
+                   <tr class="prop">
+                       <th><{$aProp.name}>：</th>
+                       <td><{$aProp.selected}></td>    
+                   </tr>
+                   <{/foreach}>
+              </table>
+        </div>
+        <{/if}>
+         
+        <{if $b2b_goods.params}>
+        <div class="division">
+           <table>
+              <{foreach from=$b2b_goods.params item=param key=group}>
+                    <tr>
+                       <th colspan="2" style="text-align:left; background:none;"><{$group}></th>
+                    </tr>
+                    <{foreach from=$param item=value key=item}>
+                    <tr>
+                       <th><{$item}></th>
+                       <td><{$b2b_goods.params.$group.$item }></td>
+                    </tr>
+                    <{/foreach}>
+             <{/foreach}>
+           </table>
+       </div>
+       <{/if}>
+        
+     </td>
+     <{/if}>
+     <td width="<{if $b2b_goods.params || $b2b_goods.type_props}>33<{else}>50<{/if}>%" style="vertical-align:top">
+     
+        <div class="division"> 
+        <div class="section GoodsEditSection" style="border-style: solid; border-color: rgb(199, 219, 229); border-width: 1px 1px 1px 4px; background: rgb(236, 242, 245) none repeat scroll 0% 0%; -moz-background-clip: -moz-initial; -moz-background-origin: -moz-initial; -moz-background-inline-policy: -moz-initial;">
+             <div style="background-color:#FFFFFF; border:1px solid #93a6b4; width:98%; height:250px; overflow:auto; margin:5px 0"><{$b2b_goods.intro}></div>
+        </div>
+        </div>
+     
+     </td>
+  </tr>
+</table>
+</div>
+<script>
+var B2BView = {
+    hide : function() {
+        $('b2bview').style.display = 'none';
+        $E('span span',$('b2bview_btn').getParent('li')).set('text',"显  示");
+        $('b2bview_btn').onclick = B2BView.show;
+    },
+    show : function() {
+        $('b2bview').style.display = 'block';
+        $E('span span',$('b2bview_btn').getParent('li')).set('text',"隐  藏");
+        $('b2bview_btn').onclick = B2BView.hide;
+    }
+}
+
+void function(){
+    $('cover-data').addEvent('click',function(){
+        new Request.HTML({data:"command_id=<{$command_id}>&supplier_id=<{$supplier_id}>&object_id=<{$object_id}>&local_goods_id=<{$goods.goods_id}>",
+        onRequest:function(){
+            $('loadMask').show();
+        },
+        onComplete:function(e){
+
+            $exec(arguments[3]);
+            $('cover-data-info').set('html',arguments[2]);
+            var cover_info = function(){
+                $('id_gname').set('value',cover_goods_info.get('name'));
+                $E('#x-g-basic input[name^=goods[unit]').set('value',cover_goods_info.get('unit'));
+                $E('#x-g-basic textarea[name^=goods[brief]').set('value',cover_goods_info.get('brief'));
+                
+                $E('#gEditor-Body textarea[name^=goods[intro]').set('value',$('cover-goods-type-intro').get('value'));
+
+                var teditArea = $E('#gEditor-Body div[id^=mce_handle_mce_]').get('id').substring(11);
+                $('mce_body_'+teditArea+'_frm').contentWindow.document.body.innerHTML = $('cover-goods-type-intro').get('value');
+                if($E('#x-g-basic input[name^=goods[mktprice]')){
+                     $E('#x-g-basic input[name^=goods[mktprice]').set('value',cover_goods_info.get('mktprice'));
+                }
+                
+                if($('goods_type_brand')){
+                    $('goods_type_brand').set('html',$('cover-goods-type-brand').get('html'));
+                }
+                if($E('#x-g-basic select[name^=goods[brand_id] option[value='+cover_goods_info.get('brand_id')+']')){
+                    $E('#x-g-basic select[name^=goods[brand_id] option[value='+cover_goods_info.get('brand_id')+']').set('selected',true);
+                }
+                if($E('#nospec_body input[name^=goods[weight]')){
+                    $E('#nospec_body input[name^=goods[weight]').set('value',cover_goods_info.get('weight'));
+                }
+                if($('goods_type_props')){
+                    $('goods_type_props').set('html',$('cover-goods-type').get('value'));
+                }
+                if($('goods-type-params')){
+                    $('goods-type-params').set('html',$('cover-goods-type-params').get('html'));
+                }
+            }
+
+            if($E('#x-g-basic select[name^=goods[type_id]').value == cover_goods_info.get('type_id')){
+                cover_info();
+            }else{
+                $E('#x-g-basic select[name^=goods[type_id] option[value='+cover_goods_info.get('type_id')+']').set('selected',true);
+                goodsEditor.updateEditorBody.call(goodsEditor,cover_info);
+            }
+
+            $('loadMask').hide();
+        }
+        }).post('index.php?ctl=distribution/supplier&act=coverGoodsInfo');
+    });
+}();
+</script>

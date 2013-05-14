@@ -1,0 +1,1 @@
+<span><img src="images/transparent.gif" class="imgbundle" style="width:15px;height:16px;background-position:0 -133px;" /><a href="index.php?ctl=<?php echo $_GET['ctl']; ?>&act=edit&p[0]=<?php echo $this->_vars['item']['goods_id']; ?>" title="编辑商品" target="_blank" style="margin:0 2px 0 1px; line-height:1.5em;">编辑</a></span>

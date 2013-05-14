@@ -1,0 +1,20 @@
+<div class="division" id="Member_Form_Experience_<{$member.member_id}>">
+	<{if $_is_singlepage}><input type='hidden' name='all_reload' value='1'><{/if}>
+    <table width="100%" cellspacing="0" cellpadding="0" border="0">
+      <tbody>
+        <tr>
+          <th><{t}>当前经验值:<{/t}></th>
+          <td><{$experience}></td>
+        </tr>
+        <tr>
+          <th><{t}>调整经验值（增/减）:<{/t}></th>
+          <td><input type="text" size="20" name="modify_experience" class='_x_ipt' vtype='number'/><{t}>输入负值即可减少经验值；<{/t}></td>
+        </tr>
+      </tbody>
+    </table>
+    <input type="hidden" name='member_id' value="<{$member_id}>">
+
+</div>
+<div class="table-action">
+	<{button label="保存" onclick="W.page('index.php?ctl=member/member&act=modifyExperience',{data:$('Member_Form_Experience_{$member.member_id}'),method:'post'},$(this))" }>
+</div>

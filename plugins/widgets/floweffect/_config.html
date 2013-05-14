@@ -1,0 +1,22 @@
+<div class="tableform widgetconfig">
+<h4>选择范围</h4>
+<{filter type="goods/products" name=filter from=$setting.filter}>
+<h4>样式设置</h4>
+<div class="division">
+
+<table>
+<tr>
+  <th>背景颜色</th>
+  <td><{input type="color" name="color1" value=$setting.color1 selected=$setting.color1|default:'default'}></td>
+</tr>
+<tr>
+  <th>文字颜色</th>
+  <td><{input type="color" name="color2" value=$setting.color2 selected=$setting.color2|default:'default'}></td>
+</tr>
+<tr>
+  <th>高度</th>
+  <td><{input type="digital" name="height" value=$setting.height|default:'300'}></td>
+</tr>
+</table>
+</div>
+</div>

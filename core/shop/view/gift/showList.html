@@ -1,0 +1,42 @@
+<div class="GoodsSearchWrap">
+<div class="ItemsWarp clearfix">
+<{foreach from=$giftList item=item key=key}>
+  <div class="items-list">
+     <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <td class="goodpic gift_showlist" valign="middle" width="1%" style='padding:0 12px;'>
+         <a style="<{if $env.conf.site.thumbnail_pic_width !=0 && $env.conf.site.thumbnail_pic_height !=0}> width:<{$env.conf.site.thumbnail_pic_width}>px;height:<{$env.conf.site.thumbnail_pic_height}>px;<{/if}>" href="<{link ctl=gift act=index arg0=$item.gift_id}>"><img src="<{$item.thumbnail_pic|default:$env.conf.site.default_thumbnail_pic|storager}>"  alt="<{$item.name}>"/></a>
+         </td>
+         <td class="goodinfo">
+     <h6><a href="<{link ctl=gift act=index arg0=$item.gift_id}>"><{$item.name}></a></h6>
+      <{$item.intro}>
+      </td>
+        <td class="price_button" width="250">
+          <ul>
+            <li><span class="price1"><{t}>积分：<{/t}><{$item.point}></span><{if $item.price}><span class="mktprice1"><{t}>原价格: <{/t}><{$item.price|cur}></span><{/if}></li>
+      </ul>
+    <{if $item.sale_status == '1'}>
+    <ul>
+        <li class="button"><a href="<{link ctl=cart act=addGiftToCart arg0=$item.gift_id arg1=1}>" class="present"><{t}>兑换赠品<{/t}></a></li>
+        <li><a href="<{link ctl=gift act=index arg0=$item.gift_id}>"><{t}>赠品详细<{/t}></a></li>
+        </ul>
+    <{/if}>
+        </td>
+     <tr>
+     </tr>
+     </table>
+    
+  </div>
+<{/foreach}>
+</div>
+<{pager data=$pager}>
+</div>
+<script>
+
+
+window.addEvent('load',function(){
+         var gift_showlistImg=$$('.gift_showlist a img');
+        try{
+         fixProductImageSize($$(gift_showlistImg),'a');
+         }catch(e){}
+    });
+</script>

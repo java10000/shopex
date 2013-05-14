@@ -1,0 +1,62 @@
+<table cellspacing="0" cellpadding="0" border="0" width="100%">
+    <tr>
+       <td style="vertical-align: top;">
+            <div class="tableform">
+                <h4><{t}>收款单据列表<{/t}></h4>
+                    <div class="division">
+                      <table cellspacing="0" cellpadding="0" border="0" width="100%" class="finderInform">
+                           <colgroup class="Coldate"/>
+                           <colgroup class="Colamount"/>
+                           <colgroup/>
+                           <colgroup/>
+                           <thead>
+                           <tr>
+                                <th><{t}>单据日期<{/t}></th>
+                                <th><{t}>支付金额<{/t}></th>
+                                <th><{t}>支付方式<{/t}></th>
+                                <th><{t}>状态<{/t}></th>
+                           </tr>
+                        </thead>
+                        <tbody>
+                        <{foreach from=$POrder.payInfo item=val}>
+                            <tr>
+                                <td><{$val.t_begin}></td>
+                                <td class="Colamount">￥<{$val.money}></td>
+                                <td><{$val.paymethod}></td>
+                                <td><{$val.status}></td>
+                            </tr>
+                        <{/foreach}>
+                        </tbody>
+                      </table>
+                    </div>
+             </div>
+       </td>
+       <td style="vertical-align: top;"><div class="tableform">
+                    <h4><{t}>退款单据列表<{/t}></h4>
+                    <div class="division">
+                      <table cellspacing="0" cellpadding="0" border="0" width="100%" class="finderInform">
+                        <colgroup class="Coldate"/>
+                        
+                        <colgroup class="Colamount"/>
+                        
+                        <thead>
+                          <tr>
+                            <th><{t}>单据日期<{/t}></th>
+                            <th><{t}>退款金额<{/t}></th>
+                            <th><{t}>退款方式<{/t}></th>
+                            <th><{t}>状态<{/t}></th>
+                          </tr>
+                        </thead>
+                        <tbody><{foreach from=$POrder.refundInfo item=val}>
+                          <tr>
+                            <td><{$val.t_ready}></td>
+                            <td class="Colamount">￥<{$val.money}></td>
+                            <td><{$val.paymethod}></td>
+                            <td><{$val.status}></td>
+                          </tr><{/foreach}>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div></td>
+     </tr>
+</table>

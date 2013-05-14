@@ -1,0 +1,62 @@
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td style="vertical-align:top"><div class="tableform">
+        <h4><{t}>收款单据列表<{/t}></h4>
+        <div class="division">
+          <table width="100%" border="0" cellspacing="0" cellpadding="0" class="gridlist">
+          <col class="Coldate"></col>
+          <col class="Colamount"></col>      
+      <col></col> 
+      <col></col> 
+            <thead>
+              <tr>
+                <th><{t}>单据日期<{/t}></th>
+                <th><{t}>支付金额<{/t}></th>
+                <th><{t}>支付方式<{/t}></th>
+                <th><{t}>状态<{/t}></th>
+              </tr>
+            </thead>
+            <tbody>
+            <{foreach from=$bills item=aBill}>
+            <tr>
+              <td><{$aBill.t_end|cdate:SDATE_STIME}></td>
+              <td class="Colamount"><{$aBill.money}></td>
+              <td><{$aBill.paymethod}></td>
+              <td><{if $aBill.status=='succ'}><{t}>支付成功<{/t}><{elseif $aBill.status=='failed'}><{t}>支付失败<{/t}><{elseif $aBill.status=='cancel'}><{t}>未支付<{/t}><{elseif $aBill.status=='error'}><{t}>参数异常<{/t}><{elseif $aBill.status=='progress'}><{t}>处理中<{/t}><{elseif $aBill.status=='timeout'}><{t}>超时<{/t}><{elseif $aBill.status=='ready'}><{t}>准备中<{/t}><{/if}></td>
+            </tr>
+            <{/foreach}>
+            </tbody>
+            
+          </table>
+        </div>
+      </div></td>
+    <td  style="vertical-align:top" ><div class="tableform">
+        <h4><{t}>退款单据列表<{/t}></h4>
+        <div class="division">
+          <table width="100%" border="0" cellspacing="0" cellpadding="0" class="gridlist">
+           <col class="Coldate"></col>
+          <col class="Colamount"></col>     
+            <thead>
+              <tr>
+                <th><{t}>单据日期<{/t}></th>
+                <th><{t}>退款金额<{/t}></th>
+                <th><{t}>退款方式<{/t}></th>
+                <th><{t}>状态<{/t}></th>
+              </tr>
+            </thead>
+            <tbody>
+            <{foreach from=$refunds item=aBill}>
+            <tr>
+              <td><{$aBill.t_sent|cdate:SDATE_STIME}></td>
+              <td class="Colamount"><{$aBill.money}></td>
+              <td><{$aBill.paymethod}></td>
+              <td><{if $aBill.status=='sent'}><{t}>已退钱<{/t}><{elseif $aBill.status=='received'}><{t}>用户确认到款<{/t}><{elseif $aBill.status=='progress'}><{t}>处理中<{/t}><{elseif $aBill.status=='ready'}><{t}>准备中<{/t}><{/if}></td>
+            </tr>
+            <{/foreach}>
+            </tbody>
+            
+          </table>
+        </div>
+      </div></td>
+  </tr>
+</table>

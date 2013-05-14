@@ -1,0 +1,3 @@
+<{foreach from=$local_op_list item=local_op}>
+  <label><input type="radio" name="local_op_id" <{if $local_op.checked}>checked<{/if}> value="<{$local_op.op_id}>"><{$local_op.op_name}></label>
+<{/foreach}>

@@ -1,0 +1,400 @@
+<form id="x-makepo" class="tableform" method='post' action='index.php?ctl=order/order&act=toMakePo&p[0]=<{$order.order_id}>' target="{'update':OrderMgr.currentInfo,'onRequest':function(){openHandler.dialog_body.setText('sending....');},'onComplete':function(re){openHandler.close();}}">
+<input type="hidden" name="supplier_id" value="<{$order.supplier_id}>">
+<div class="division">
+<!--left收货人-->
+<div style="border-bottom: 2px dotted rgb(204, 204, 204); padding-bottom: 5px;" class="clearfix">
+  <div style="width: 48%; float: left;border-right:1px dotted rgb(204, 204, 204); overflow:hidden">
+    <div  id="s_edit">
+      <h4 class="purchase">确认收货人信息</h4>
+      <table width="100%" cellspacing="0" cellpadding="0" border="0" id="shouhuo" class="purchase">
+        <tbody>
+          <tr>
+            <th>用户地区：</th>
+            <td><input style="width: 180px;" size="30" value=<{$order.ship_area|region}> ></td>
+          </tr>
+          <tr>
+            <th><em style="color: red;">*</em> 收货地区：</th>
+            <td style="width:250px;"><select name="shipinfo[area_list][]" onchange="get_b2b_area(this)" style="float:left">
+                <option is_node="1" value="0">- 请选择 -</option>
+                <{foreach from=$order.area_list item=area}>
+                <option is_node="<{$area.is_node}>" value="<{$area.region_id}>" ><{$area.local_name}></option>
+                <{/foreach}></select></td>
+          </tr>
+          <tr>
+            <th><em style="color: red;">*</em> 地址：</th>
+            <td><{input name="shipinfo[ship_addr]" style="width: 260px;" size="30" required="true" value=$order.ship_addr}></td>
+          </tr>
+          <tr>
+            <th><em style="color: red;">*</em> 邮编：</th>
+            <td><{input type="text" name="shipinfo[ship_zip]" value=$order.ship_zip style="width: 60px;" size="30" required="true" }></td>
+          </tr>
+          <tr>
+            <th><em style="color: red;">*</em> 收货人姓名：</th>
+            <td><{input type="text" name="shipinfo[ship_name]" value=$order.ship_name style="width: 60px;" size="30" required="true" }></td>
+          </tr>
+          <tr>
+            <th>联系电话：</th>
+            <td><{input type="text" name="shipinfo[ship_tel]" value=$order.ship_tel size="30" style="width: 180px;" id="tel" vtype="text"}></td>
+          </tr>
+          <tr>
+            <th>联系手机：</th>
+            <td><{input type="text" name="shipinfo[ship_mobile]" value=$order.ship_mobile size="30" style="width: 180px;" }></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>  
+ 
+<!--endleft收货人--> 
+
+
+<!--right发货人-->
+<div style=" width: 48%; float: left; margin-left:5px;">
+  <div  id="f_edit">
+    <h4 class="purchase">采购商信息</h4>
+    <table width="100%" cellspacing="0" cellpadding="0" border="0" id="shouhuo" class="purchase">
+      <tbody>
+        <tr>
+          <th><em style="color: red;">*</em>发货地区：</th>
+          <td><input type="text" name="sender_info[area]" value="<{$sender.region|region}>"/>
+          </td>
+        </tr>
+        <tr>
+          <th><em style="color: red;">*</em> 地址：</th>
+          <td><input value="<{$sender.address}>" style="width: 260px;" size="30" name="sender_info[addr]" required="true"/></td>
+        </tr>
+        <tr>
+          <th><em style="color: red;">*</em> 邮编：</th>
+          <td><input type="text" value="<{$sender.zip}>" style="width: 60px;" size="30" name="sender_info[zip]" required="true" vtype="text"/></td>
+        </tr>
+        <tr>
+          <th><em style="color: red;">*</em> 发货人姓名：</th>
+          <td><input type="text" value="<{$sender.uname}>" name="sender_info[name]" style="width: 60px;" size="30" required="true" vtype="text"/></td>
+        </tr>
+        <tr>
+          <th>联系电话：</th>
+          <td><input type="text" value="<{$sender.phone}>" size="30" style="width: 180px;" name="sender_info[tel]" vtype="text"/></td>
+        </tr>
+        <tr>
+          <th>联系手机：</th>
+          <td><input type="text" value="<{$sender.cellphone}>" size="30" style="width: 180px;" name="sender_info[mobile]" vtype="text"/></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<!--endright发货人--> 
+</div>
+<!--配送-->
+<div style="border-bottom: 2px dotted rgb(204, 204, 204); padding-bottom: 10px; clear:both" class="clearfix">
+  <h4 style="padding-top: 10px;" class="purchase">配送方式及时间</h4>
+  <div id="make-po-dlivery">
+    <{include file="order/po_delivery.html"}>
+  </div>
+  <div>
+   <table width="100%" cellspacing="0" cellpadding="0" border="0" class="purchase">
+    <tbody>
+    <tr>
+        <th></th>
+        <td></td>
+      </tr>
+      <tr>
+        <th>送货日期：</th>
+        <td><select name="shipinfo[ship_date]">
+            <option selected="selected" value="任意日期">任意日期</option>
+            <option value="仅工作日">仅工作日</option>
+            <option value="仅休息日">仅休息日</option>
+          </select></td>
+          </tr>
+          <tr>
+        <th>送货时间：</th>
+        <td><select name="shipinfo[ship_time]">
+            <option selected="selected" value="任意时段">任意时段</option>
+            <option value="上午">上午</option>
+            <option value="上午">下午</option>
+          </select></td>
+      </tr>
+    </tbody>
+    </table>
+  </div>
+</div>
+<!--end配送 -->
+
+<div style="border-bottom: 2px dotted rgb(204, 204, 204); padding-bottom: 10px;" class="clearfix">
+  <h4 class="purchase">给供应商留言</h4>
+  <textarea name="member_memo" style="width: 500px; height: 100px;"/></textarea>
+</div>
+<div><label><input type="checkbox" class="checkpayment"/>暂不支付</label></div>
+<div style="padding-top: 5px;" class="clearfix paymentlist"> 
+ <div style="border: 1px dotted rgb(153, 153, 153); display: ;" class="ColColorGray" id="z_edit">
+  <h4 class="purchase">选择支付方式</h4>
+  <table width="100%" cellspacing="0" cellpadding="0">
+    <tbody>
+      <tr id="x-make-po-payment" style="display:none">
+        <th style="text-align: left; width: 300px;"><label>
+          <input type="radio" paytype="-1" formatmoney="0" onclick="chg_payment(this, 0)" moneyamount="" value="-1" name="payment[payment_id]" class="x-payMethod"/>
+          <input type="hidden" name="payment[pay_type][-1]" value="-1">货到付款
+          </label></th>
+        <td></td>
+      </tr>
+      <{foreach from=$order.payment item=pItem}>
+      <tr>
+        <th style="text-align: left; width: 300px;"><label>
+          <input type="radio"  formatmoney="<{$pItem.fee}>" onclick="chg_payment(this, <{$pItem.fee}>)" moneyamount="" value="<{$pItem.id}>" name="payment[payment_id]" class="x-payMethod"/>
+          <input type="hidden" name="payment[pay_type][<{$pItem.id}>]" value="<{$pItem.pay_type}>">
+          <{$pItem.custom_name}>
+          <{if $pItem.fee > 0}>
+          (支付费率: +<{$pItem.fee*100}>%)
+          <{/if}></label></th>
+        <td><{$pItem.des}></td>
+      </tr>
+      <{/foreach}>
+    </tbody>
+  </table>
+ </div>
+</div>
+<{assign var=supplier_id value=$order.supplier_id}>
+  <h4 style="border-top: 2px dotted rgb(204, 204, 204); padding: 10px 5px 0pt;">采购的商品</h4>
+  <table id="make-po-items" width="100%" cellspacing="0" cellpadding="0" style="background-color: rgb(255, 255, 255);" class="finderInform">
+    <colgroup class="span-3"></colgroup>
+    <colgroup class="auto"></colgroup>
+    <colgroup class="span-3"></colgroup>
+    <colgroup class="span-2"></colgroup>
+    <colgroup class="span-2 ColColorOrange"></colgroup>
+    <thead>
+      <tr>
+        <th>货号</th>
+        <th>商品名称</th>
+        <th>采购价</th>
+        <th>购买量</th>
+        <th>小计</th>
+      </tr>
+    </thead>
+    <tbody>
+      <{foreach from=$order.items item=product}>
+      <tr>
+        <td><{$product.bn}>
+            <input type="hidden" name="dealer_bn[]" value="<{$product.dealer_bn}>">
+            <input type="hidden" name="supplier_bn[]" value="<{$product.supplier_bn}>">
+            <input type="hidden" name="price[]" value="<{$product.price}>">
+            <input type="hidden" name="nums[]" value="<{$product.nums}>"></td>
+        <td><a href="../index.php?ctl=product&act=index&p[0]=<{$product.goods_id}>" target="_blank"><{$product.name}></a></td>
+        <td>￥<{$product.price}></td>
+        <td><{$product.nums}></td>
+        <td>￥<{$product.amount}></td>
+      </tr>
+      <{/foreach}>
+    </tbody>
+  </table>
+  <table width="100%" cellspacing="0" cellpadding="0" style="background-color: rgb(255, 255, 255);" class="finderInform">
+    <tbody>
+    </tbody><colgroup class="auto ColColorGray">
+    </colgroup>
+    <colgroup class="span-3 ColColorOrange">
+    </colgroup>
+    <tbody><tr>
+      <td style="text-align: right;"><span class="font14px">商品总金额：</span></td>
+      <td style="text-align: right;"><span class="fontbold">￥<{$order.total_amount}></span></td>
+    </tr>
+    <tr id="x-dprice" style="display:none">
+      <td style="text-align: right;"><span class="font14px">配送费用：</span></td>
+      <td style="text-align: right;"><span class="fontbold">￥</span></td>
+    </tr>
+    <tr id="x-protectprice" style="display:none">
+      <td style="text-align: right;"><span class="font14px">保价费用：</span></td>
+      <td style="text-align: right;"><span class="font14px">￥</span></td>
+    </tr>
+    <tr id="x-payfee" style="display:none">
+      <td style="text-align: right;"><span class="font14px">支付手续费：</span></td>
+      <td style="text-align: right;"><span class="fontbold">￥</span></td>
+    </tr>
+    <tr id="x-taxprice" <{if $order.is_tax=='false'}>style="display:none"<{/if}>>
+      <td style="text-align: right;"><span class="font14px">税金：</span></td>
+      <td style="text-align: right;"><span class="fontbold">￥<{$order.cost_tax}></span></td>
+    </tr>
+    <tr id="x-totalprice" style="display:none">
+      <td style="text-align: right;"><span class="font14px">采购费用总计：</span></td>
+      <td style="text-align: right;"><span class="font14px fontbold fontcolorOrange">￥</span></td>
+    </tr>
+    </tbody>
+  </table>
+  <div class="clearfix" style="float: right;">
+  <table width="100%" cellspacing="0" cellpadding="0" border="0" class="tableAction">
+    <tbody>
+      <tr>
+        <td>
+        <b style="margin: 5px;" class="submitBtn">
+          <input type="button" class="but-make" name="butsubmit" onclick="sub_pay_form(this, 1)" value="确认下单"/>
+          </b>
+        <b style="margin: 5px 0pt;" class="submitBtn">
+          <input type="button" class="but-makepay" name="butsubmit" onclick="sub_pay_form(this,2)" value="确认并且支付"/>
+          </b></td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+</form>
+<script>
+var cost_item= <{$order.total_amount}>;
+cost_item = cost_item.toFloat();
+var cost_dprice= 0;
+var cost_protectprice= 0;
+var cost_payfee= 0;
+var cost_taxprice= <{$order.cost_tax}>;
+var decimal_digit = <{$order_setting.decimal_digit}>;
+var decimal_type = <{$order_setting.decimal_type}>;
+var decimals = <{$order_setting.decimals}>;
+var carryset = <{$order_setting.carryset}>;
+function chg_delivery(obj, price){
+    $ES('input[type=checkbox]', 'make-po-dlivery').each(function(item){
+            if(item.checked && item.id != 'make-po-protect-'+obj.value){
+                item.checked = false;
+                $('x-protectprice').style.display = 'none';
+                cost_protectprice = 0;
+            } else {
+                item.checked = false;
+                $('x-protectprice').style.display = 'none';
+                cost_protectprice = 0;
+            }
+        });
+    if(obj.pad === '1'){
+        $('x-make-po-payment').style.display = '';
+    }else{
+        $('x-make-po-payment').style.display = 'none';
+    }
+    cost_dprice = price;
+	cost_dprice = order_decimal(cost_dprice,decimals,carryset).toFloat();
+    $ES('span', 'x-dprice')[1].innerHTML = (obj.getAttribute('price_show')).substr(0,1) + cost_dprice;
+    $('x-dprice').style.display = '';
+    var o_price = cost_item + cost_dprice + cost_protectprice  + cost_taxprice + cost_payfee;
+    $ES('span', 'x-totalprice')[1].innerHTML = ($ES('span', 'x-totalprice')[1].innerHTML).substr(0,1) + order_decimal(o_price,decimal_digit,decimal_type);
+    $('x-totalprice').style.display = '';
+}
+
+function chg_protect(obj, price){
+    if($(obj).checked){
+        cost_protectprice = price;
+        $ES('span', 'x-protectprice')[1].innerHTML = (obj.getAttribute('price_show')).substr(0,1) + order_decimal((obj.getAttribute('price_show')).substr(1),decimals,carryset);
+        $('x-protectprice').style.display = '';
+        
+        $ES('input[type=radio]', 'make-po-dlivery').each(function(item){
+            if(item.checked && item.get('value') != obj.value){
+                item.checked = false;
+            }
+        });
+
+//        var radioDelivery = $('make-po-delivery-'+obj.getValue());
+//        chg_delivery(radioDelivery, radioDelivery.get('price_show'));
+    }else{
+        $('x-protectprice').style.display = 'none';
+        cost_protectprice = 0;
+    }
+	cost_protectprice = order_decimal(cost_protectprice,decimals,carryset).toFloat();
+    var o_price = cost_item + cost_dprice + cost_protectprice + cost_payfee + cost_taxprice;
+    $ES('span', 'x-totalprice')[1].innerHTML = ($ES('span', 'x-totalprice')[1].innerHTML).substr(0,1) + order_decimal(o_price,decimal_digit,decimal_type);
+    $('x-totalprice').style.display = '';
+    
+    $ES('input[type=radio]', 'make-po-dlivery').each(function(item){
+        if(item.value == obj.value){
+            item.checked = true;
+            
+            cost_dprice = $(item).get('price');
+	        cost_dprice = order_decimal(cost_dprice,decimals,carryset).toFloat();
+	        
+            $ES('span', 'x-dprice')[1].innerHTML = (obj.getAttribute('price_show')).substr(0,1) + cost_dprice;
+            $('x-dprice').style.display = '';
+            var o_price = cost_item + cost_dprice + cost_protectprice  + cost_taxprice + cost_payfee;
+            $ES('span', 'x-totalprice')[1].innerHTML = ($ES('span', 'x-totalprice')[1].innerHTML).substr(0,1) + order_decimal(o_price,decimal_digit,decimal_type);
+            $('x-totalprice').style.display = '';
+        } else {
+            item.checked = false
+        }
+        
+    });
+    
+}
+
+function chg_payment(obj, fee){
+    cost_payfee = ((cost_item + cost_dprice + cost_protectprice) * fee);
+    cost_payfee = Number(cost_payfee);
+	cost_payfee = order_decimal(cost_payfee,decimals,carryset).toFloat();
+    $ES('span', 'x-payfee')[1].innerHTML = ($ES('span', 'x-payfee')[1].innerHTML).substr(0,1) + cost_payfee;
+    $('x-payfee').style.display = '';
+    var o_price = cost_item + cost_dprice + cost_protectprice + cost_payfee + cost_taxprice;
+    $ES('span', 'x-totalprice')[1].innerHTML = ($ES('span', 'x-totalprice')[1].innerHTML).substr(0,1) + order_decimal(o_price,decimal_digit,decimal_type);
+    $('x-totalprice').style.display = '';
+}
+
+function sub_pay_form(obj, sign){
+	var objform=$('x-makepo');
+    new Element('input', {'type':'hidden','name':"subtype",'value':sign}).inject(objform);	
+    objform.setProperty('subtypes',sign);
+    objform.fireEvent('submit');
+}
+
+function get_b2b_area(obj){
+    var obj = $(obj);
+    if(obj.options[obj.selectedIndex].getAttribute('is_node')=='0'){
+        W.page('index.php?ctl=order/order&act=get_delivery&p[0]=<{$order.supplier_id}>&p[1]='+obj.get('value'),{
+            update: 'make-po-dlivery',data:$('make-po-items'),
+            method: 'post',
+            onFailure:function(){
+                if(this.xhr.status == 501 && this.getHeader('notify_msg')){
+                    MessageBox.error(decodeURIComponent(this.getHeader('notify_msg')));
+                }
+                if(typeof(po_Dialog) == 'object') (function(){po_Dialog.close()}).delay(1000);
+            }
+        });
+        var arr_area=[];
+        var area_id = 0;
+        $ES('select[name^=shipinfo[area_list]', 'x-makepo').each(function(item){
+            arr_area.push(item.options[item.selectedIndex].text);
+            area_id = item.options[item.selectedIndex].value;
+            });
+        new Element('input', {name:'shipinfo[ship_area]', type:'hidden', value:'mainland:'+arr_area.join('/')+':'+area_id}).inject($('x-makepo'));
+    }else{
+        new Request({url:'index.php?ctl=order/order&act=get_area&p[0]=<{$order.supplier_id}>&p[1]='+obj.get('value'),
+            method: 'get',
+            onFailure:function(){
+                if(this.xhr.status == 501 && this.getHeader('notify_msg')){
+                    MessageBox.error(decodeURIComponent(this.getHeader('notify_msg')));
+                }
+                if(typeof(po_Dialog) == 'object') (function(){po_Dialog.close()}).delay(1000);
+            },
+            onSuccess:function(sSel){
+                obj.getAllNext('span').remove();
+                new Element('span').set('html', sSel).inject(obj, 'after');
+                }
+            }).send();
+    }
+}
+
+$E('.checkpayment', 'x-makepo').addEvent('click', function(e){
+    if(this.checked){
+        $E('.paymentlist', 'x-makepo').style.display = 'none';
+        $E('.but-makepay', 'x-makepo').getParent('b').style.display = 'none';
+    }else{
+        $E('.paymentlist', 'x-makepo').style.display = '';
+        $E('.but-makepay', 'x-makepo').getParent('b').style.display = '';
+    }
+    });
+
+function order_decimal(number,decimal_digit,decimal_type){
+    mul = Math.pow(10, decimal_digit);
+    switch(decimal_type){
+        case 0:
+            number = Math.round(number*mul) / mul;
+        break;
+        case 1:
+            number = Math.ceil(number*mul) / mul;
+        break;
+        case 2:
+            number = Math.floor(number*mul) / mul;
+        break;
+    }
+
+    return number.toFixed(decimal_digit);
+}
+
+</script>

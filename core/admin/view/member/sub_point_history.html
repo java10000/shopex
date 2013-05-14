@@ -1,0 +1,25 @@
+
+<div class="division">
+<table width="100%" border="0" cellpadding="0" cellspacing="0" class="gridlist">
+<col class="Coldate"></col>
+<col class="Coldetails"></col>
+<col class="Colamount"></col>
+<thead>
+<tr>
+  <th><{t}>日期<{/t}></th>
+  <th><{t}>摘要<{/t}></th>
+  <th><{t}>积分<{/t}></th>
+</tr></thead><tbody>
+
+<{if count($historys)>0}>
+<{foreach from=$historys item="logs"}>
+<tr>
+  <td><{$logs.time|cdate:SDATE_STIME}></td>
+  <td class="Coldetails"><{$logs.describe}></td>
+  <td class="Colamount"><{$logs.point}></td>
+</tr>
+<{/foreach}>
+<{/if}>
+</tbody>
+</table>
+</div>

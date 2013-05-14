@@ -1,0 +1,51 @@
+<div id="Tmp_Image_Edit_<{$tmpid}>-<{$file.name}>">
+<input type="hidden" name="id" value="<{$tmpid}>-<{$file.name}>">
+<input type="hidden" name="tmpid" value="<{$tmpid}>">
+<input type="hidden" name="name" value="<{$file.name}>">
+<div class="division">
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+<tr>
+  <th><{t}>文件源码：<{/t}></th>
+  <td><{input type="textarea" name="file_source" style="width:95%; height:450px" value=$file.content}></td>
+</tr>
+</table>
+</div>
+<{if count($file.files) > 0}>
+<div class="division">文件修改历史：
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+<{foreach from=$file.files item=bakfile}>
+<tr>
+  <th><{$bakfile.name}></th>
+  <td><a href="index.php?ctl=system/tmpimage&act=recoverSource&p[0]=<{$bakfile.name}>&p[1]=<{$file.name}>&p[2]=<{$tmpid}>"><{t}>还原<{/t}></a>
+    <span style="cursor: pointer" onclick="if(confirm('确认删除？')) delImage('<{$bakfile.name}>');"><{t}>删除<{/t}></span></td>
+</tr>
+<{/foreach}>
+</table>
+</div>
+<{/if}>
+<table border="0" align="center" cellpadding="0" cellspacing="0" class="table-action">
+  <tr>
+    <td><span><input type="checkbox" name="isbak" value="1" checked="checked"><{t}>保留备份<{/t}></span></td>
+    <td>
+    <div class="table-action">
+<{button label="保存" type="submit" onclick="tmpsave();"}>
+<{button type="button"  label="返回" onclick="tmpback();"}>
+</div>
+</td>
+  </tr>
+</table>
+</div>
+<script>
+var tmpsave=function(){
+	W.page('index.php?ctl=system/tmpimage&act=saveSource',{data:$('Tmp_Image_Edit_<{$tmpid}>-<{$file.name}>'),update:$('Tmp_Image_Edit_<{$tmpid}>-<{$file.name}>'),method:'post'});
+
+}
+var tmpback=function(){
+
+	W.page('index.php?ctl=system/tmpimage&act=index&theme=<{$path}>');
+}
+
+  function delImage(imgname){
+    W.page('index.php?ctl=system/tmpimage&act=delete&p[0]='+imgname,{data:$('Tmp_Image_Edit_<{$tmpid}>-<{$file.name}>'),update:$('Tmp_Image_Edit_<{$tmpid}>-<{$file.name}>'),method:'post'});
+  }
+</script>

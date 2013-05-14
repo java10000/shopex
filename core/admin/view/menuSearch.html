@@ -1,0 +1,71 @@
+<script>
+   if(!window.meunJsonSchema){
+      new Request.JSON({
+          onComplete:function(re){
+            window.meunJsonSchema=re;
+          }
+      }).get('index.php?ctl=default&act=get_menulist');
+   }
+</script>
+<FIELDSET id='menuPop' class='menuSearch division'>
+   <legend style='padding:4px;'><{t}>近期使用:<{/t}></legend> 
+   <ul class='links' style='color:#ff9900'>
+   </ul>
+</FIELDSET>
+<FIELDSET class="menuSearch division" id='menuSearch'>
+<legend style='padding:4px;'><{t}>功能查找:<{/t}></legend> 
+ <input id='menuSearchInput' type='text' value='' class='shadow'/>
+ <ul class='links'>
+ </ul>
+ <iframe id='foucusMSinput' src='about:blank' style='display:none' />
+</FIELDSET>
+ <script>
+    (function(){
+          $('foucusMSinput').addEvent('load',function(){
+              $('menuSearchInput').focus();
+          });
+          var linksUl=$E('ul.links','menuSearch');
+          var linkTemplete="<span go='{link}' >{label}</span>"
+          //$('menuSearchInput').focus();
+          $('menuSearchInput').addEvent('keyup',function(e){
+            
+            var val=this.value;
+            
+            if(val.trim()=='')return linksUl.empty();
+            
+            if(e.control&&e.key!='v')return;
+            
+            if(val.test(/[\x00-\xFF]/i)&&val.length<3)return linksUl.empty();
+            
+            var result=meunJsonSchema.filter(function(i){
+                  var match=(i['label']+"#"+i['link']).toLowerCase();
+                  return match.contains(val.toLowerCase());
+            });
+            linksUl.empty();
+            result.each(function(lk){
+               new Element('li').setHTML(linkTemplete.substitute(lk)).inject(linksUl);
+            });
+            linksUl.getElements('span').addEvent('click',function(){
+                var url=this.get('go');
+                if(url.test(/javascript/))return;
+                searchMenuDialog.close();
+                W.page(this.get('go'));
+            });
+        });
+        if(window.meunPopSchema){
+        $E('ul.links','menuPop').empty();
+          window.meunPopSchema.reverse().each(function(lk){
+               new Element('li').setHTML(linkTemplete.substitute(lk)).inject($E('ul.links','menuPop'));
+            });
+         $E('ul.links','menuPop').getElements('span').addEvent('click',function(){
+                var url=this.get('go');
+                if(url.test(/javascript/))return;
+                searchMenuDialog.close();
+                W.page(this.get('go'));
+            });
+            }else{
+               $('menuPop').hide();
+            }
+    })();
+    
+ </script>

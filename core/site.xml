@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<site>
+<!-- 	<item type="page" id="index" title="首页"/> -->
+<!-- 	<item type="goodsCat" title="全部商品" /> -->
+<!-- 	<item type="action" ctl="search" act="index" title='高级搜索' /> -->
+	<item type="action"  ctl="brand" act="showList" title='品牌专区'></item>
+	<item type="action" ctl="gift" act="showList" title='兑换赠品' />
+	<item type="action" ctl="package" act="index" title='捆绑促销' />
+	<item type="action" ctl="member" act="index" title='会员中心' />
+	<item type="action" ctl="cart" act="index" title='购物车' hidden="true"/>
+	<item type="action" ctl="message" act="index" title='客户留言' />
+	<item type="action" ctl="link" act="showList" title='友情链接' />
+	<item type="page" node_id="68" id='helpcenter' title='帮助中心'>
+		<item type="page" node_id="69" id='newguide' title='新手上路'>
+			<item type="page" node_id="70" id="notice" title='顾客必读' />
+			<item type="page" node_id="71" id="memberrank" title='会员等级折扣' />
+			<item type="page" node_id="72" id="orderstatus" title='订单的几种状态' />
+			<item type="page" node_id="73"  id="scoreplan" title='积分奖励计划' />
+			<item type="page" node_id="74" id="returngood" title='商品退货保障' />
+		</item>
+		<item type="page" node_id="75" id='shoppingguide' title='购物指南'>
+			<item type="page" node_id="76" id="nonmember" title='非会员购物通道' />
+			<item type="page" node_id="77" id="service" title='体贴的售后服务' />
+			<item type="page" node_id="78" id="terms" title='网站使用条款' />
+			<item type="page" node_id="79" id="disclaimer" title='网站免责声明' />
+			<item type="page" node_id="80" id="process" title='简单的购物流程' />
+		</item>
+		<item type="page" node_id="81" id='method' title='支付/配送方式'>
+			<item type="page" node_id="82" id="payment" title='支付方式' />
+			<item type="page" node_id="83" id="shipping" title='配送方式' />
+			<item type="page" node_id="84" id="orderinfo" title='订单何时出库？' />
+			<item type="page" node_id="85" id="onlinepayment" title='网上支付小贴士' />
+			<item type="page" node_id="86" id="shippinginfo" title='关于送货和验货' />
+		</item>
+		<item type="page" node_id="87" id='shoppingrule' title='购物条款'>
+			<item type="page" node_id="88" id='license' title='会员注册协议' />
+			<item type="page" node_id="89" id='privacy' title='隐私保护政策' />
+		</item>
+	</item>
+	<item type="page" node_id="90" id='cominfo' hidden="true" title='公司简介'>
+		<item type="page" node_id="91" id='about' title='关于我们' />
+		<item type="page" node_id="92" id='contact' title='联系我们' />
+		<item type="page" node_id="93" id='jobs' title='招聘信息' />
+		<item type="articles" node_id='100' title='最新公告' />
+		<item type="articles" node_id='101' title='促销信息' />
+		<item type="page" node_id="102" id='business' title='业务合作' />
+		<item type="action" ctl="sitemaps" act="view" title='站点地图' />
+	</item>
+</site>

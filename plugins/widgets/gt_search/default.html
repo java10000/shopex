@@ -1,0 +1,34 @@
+<form action="<{link ctl=search act=result}>" method="post" class="SearchBar">
+  <table cellpadding="0" cellspacing="0">
+    <tr>
+      <td class="search_price1"> 
+      <select onchange="sel_cat($(this).value);">
+                    <option value="0">----请选择----
+                    </option><{foreach from=$data.cat item=cat}> <option value="<{$cat.link}>"><{$cat.title}>
+                    </option>
+                    <{/foreach}>
+      </select>
+</td>
+      <td class="search_price2">&nbsp;&nbsp; &nbsp;&nbsp; 
+                  <select onchange="sel_menu($(this).value);">
+                    <option value="0">----请选择商品分类----
+                    </option><{foreach from=$data.menu item=menu}> <option value="<{link ctl='gallery' act=index arg0=$menu.cat_id}>"><{$menu.label}>
+                    </option>
+                    <{/foreach}>
+                  </select>
+</td>
+      </td>
+    </tr>
+  </table>
+</form>
+<script>
+    var sel_menu=function(val){
+    if(val == 0){return ;}
+        return window.location.href = val;
+    }
+
+    var sel_cat=function(val){
+    if(val == 0){return ;}
+        return window.location.href = val;
+    }
+</script>

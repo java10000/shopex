@@ -1,0 +1,164 @@
+<script>
+var art_list = new Class({
+    divSrc:'',
+    divSrc2:'',
+    initialize: function(div1,div2){
+      this.divSrc=div1;
+      this.divSrc2=div2;
+      this.tab = 'ttp_<{$widgets_id}>';
+    },
+    changeTableing:function(type){
+      var i;
+      for(i=0;i<"<{$setting.columNum}>";i++){
+        if(i==type){
+          $(this.divSrc2+i).setStyles({
+            'display':''
+          });
+          $(this.tab+i).addClass('current');
+        }else{
+          $(this.divSrc2+i).setStyles({
+            'display':'none'
+          });
+          $(this.tab+i).removeClass('current');
+        }
+      }
+    }
+  }); 
+
+var ef_<{$widgets_id}>=new art_list('top_<{$widgets_id}>','<{$widgets_id}>_list');
+</script>
+
+
+
+<{if $setting.columNum gt 1}>
+<div class="ArticleListWrap" name="ar_<{$widgets_id}>" id="ar_<{$widgets_id}>">
+    <div id="top_<{$widgets_id}>" class="Article-Tabs">
+    <{foreach from=$data item=titleDate key=key1}>
+    <{if $key1 == $setting.onSelect }>
+            <div class="current" style="float:left" id="ttp_<{$widgets_id}><{$key1}>" <{if $setting.changeEffect==1}>onClick<{/if}><{if $setting.changeEffect==2}>onMouseOver<{/if}> ="ef_<{$widgets_id}>.changeTableing(<{$key1}>)"><span><{$setting.explain.$key1}></span>&nbsp;</div>
+          <{else}>
+            <div style="float:left" id="ttp_<{$widgets_id}><{$key1}>" <{if $setting.changeEffect==1}>onClick<{/if}><{if $setting.changeEffect==2}>onMouseOver<{/if}> ="ef_<{$widgets_id}>.changeTableing(<{$key1}>)"><span><{$setting.explain.$key1}></span>&nbsp;</div>
+          <{/if}>
+    <{/foreach}>
+    </div>
+    <{foreach from=$data item=data key=key1}>
+    
+    
+    <div class="ArticleList" id="<{$widgets_id}>_list<{$key1}>" <{if $key1 neq $setting.onSelect}>style="display:none"<{else}><{/if}>>
+        
+        <table width="100%" cellpadding="0" cellspacing="0">
+          <{counter start=1 assign="result" print=false }>
+            <{foreach from=$data item=sData key=key2}>
+            <{if ($result mod $setting.colums) eq 1 }>
+          <tr>
+            <td>
+          <{if $setting.smallPic==6 }>
+            <{if $setting.picaddress}>
+            <img src="<{$setting.picaddress}>" />
+            <{/if}>
+          <{else}>
+          <{img src=$setting.smallPic path="icons"}>
+          <{/if}>
+            
+            <a href="<{link ctl=article act=index arg0=$sData.article_id}>" title="<{$sData.title}>"><{$sData.title|cut:$setting.max_length}></a></td>
+            <{elseif ($result mod $setting.colums) eq 0}>
+            <td>
+            
+            <{if $setting.smallPic==6 }>
+      <{if $setting.picaddress}>
+      <img src="<{$setting.picaddress}>" />
+      <{/if}>
+    <{else}>
+    <{img src=$setting.smallPic path="icons"}>
+    <{/if}>
+
+            <a href="<{link ctl=article act=index arg0=$sData.article_id}>" title="<{$sData.title}>"><{$sData.title|cut:$setting.max_length}></a></td>
+          </tr>
+          <{else}>
+            <td>
+                <{if $setting.smallPic==6 }>
+      <{if $setting.picaddress}>
+      <img src="<{$setting.picaddress}>" />
+      <{/if}>
+    <{else}>
+    <{img src=$setting.smallPic path="icons"}>
+    <{/if}>
+
+            
+            
+            <a href="<{link ctl=article act=index arg0=$sData.article_id}>" title="<{$sData.title}>"><{$sData.title|cut:$setting.max_length}></a></td>
+          <{/if}>
+          <{counter assign="result" print=false }>
+		  
+          <{/foreach}>
+          
+        
+        </table>
+		<{if $setting.showMore == "on"}>
+        <div class="more clearfix">
+            <a href="<{link ctl=artlist act=index arg0=$setting.id.$key1}>">更多...</a>
+        </div>
+		<{/if}>
+    </div>
+    <{/foreach}>
+</div>
+<{else}>
+
+<div class="ArticleListWrap" name="ar_widgets_190" id="ar_widgets_190">
+    <div class="article-tabs">
+        <table width="100%" cellpadding="0" cellspacing="0">
+          <{counter start=1 assign="result" print=false }>
+            <{foreach from=$data item=data key=key}>
+            <{if ($result mod $setting.colums) eq 1 }>
+          <tr>
+            <td>
+            
+                <{if $setting.smallPic==6 }>
+      <{if $setting.picaddress}>
+      <img src="<{$setting.picaddress}>" />
+      <{/if}>
+    <{else}>
+    <{img src=$setting.smallPic path="icons"}>
+    <{/if}>
+
+            
+            
+            <a href="<{link ctl=article act=index arg0=$data.article_id}>" title="<{$data.title}>"><{$data.title|cut:$setting.max_length}></a></td>
+            <{elseif ($result mod $setting.colums) eq 0}>
+            <td>
+                <{if $setting.smallPic==6 }>
+      <{if $setting.picaddress}>
+      <img src="<{$setting.picaddress}>" />
+      <{/if}>
+    <{else}>
+    <{img src=$setting.smallPic path="icons"}>
+    <{/if}>
+
+            
+            <a href="<{link ctl=article act=index arg0=$data.article_id}>" title="<{$data.title}>"><{$data.title|cut:$setting.max_length}></a></td>
+          </tr>
+          <{else}>
+            <td>
+                  <{if $setting.smallPic==6 }>
+      <{if $setting.picaddress}>
+      <img src="<{$setting.picaddress}>" />
+      <{/if}>
+    <{else}>
+    <{img src=$setting.smallPic path="icons"}>
+    <{/if}>
+
+            <a href="<{link ctl=article act=index arg0=$data.article_id}>" title="<{$data.title}>"><{$data.title|cut:$setting.max_length}></a></td>
+          <{/if}>
+          <{counter assign="result" print=false }>
+          <{/foreach}>
+        </table>
+        <{if $setting.showMore == "on"}>
+        <div class="more clearfix">
+           <a href="<{link ctl=artlist act=index arg0=$setting.id1}>">更多...</a>
+        </div>
+        <{/if}>
+    </div>
+</div>
+
+<{/if}>
+

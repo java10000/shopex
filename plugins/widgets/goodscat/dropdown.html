@@ -1,0 +1,67 @@
+<div class="GoodsCategoryWrap">
+  <ul class="s-cat-depth-1">
+  <{foreach from=$data item=parent key=parentId}>
+    <{if $parent.sub}>
+      <li>
+        <span><a href="<{link ctl='gallery' act=$setting.view arg0=$parentId}>"><{$parent.label}></a></span>
+                <{if $setting.showCatDepth_dropdown == '3'}>
+        <ul class="s-cat-depth-2">
+          <{foreach from=$parent.sub item=child key=childId}>                    
+            <{if $child.sub }>
+                    <li>
+                       <span><a href="<{link ctl='gallery' act=$setting.view arg0=$childId}>"><{$child.label}></a></span>
+                        <ul class="s-cat-dropdown">
+                        <{foreach from=$child.sub item=gChild key=gChildId}>
+                            <li><a href="<{link ctl='gallery' act=$setting.view arg0=$gChildId}>"><{$gChild.label}></a></li>
+                        <{/foreach}>
+                        </ul>
+                        
+                    </li>
+        <{else}>
+           <li>
+                      <a href="<{link ctl='gallery' act=$setting.view arg0=$childId}>"><{$child.label}></a>
+                    </li>
+            <{/if}>
+          <{/foreach}>
+        </ul>
+                <{elseif $setting.showCatDepth_dropdown == '2'}>
+                <ul class="s-cat-dropdown">
+                  <{foreach from=$parent.sub item=child key=childId}>
+                                  <li>
+                                        <a href="<{link ctl='gallery' act=$setting.view arg0=$childId}>"><{$child.label}></a>
+                                    </li>
+                    <{/foreach}>
+                </ul>
+                <{/if}>
+      </li>
+    <{else}>
+      <li><a href="<{link ctl='gallery' act=$setting.view arg0=$parentId}>"><{$parent.label}></a></li>
+    <{/if}>
+  <{/foreach}>
+  </ul>
+</div>
+
+<script>
+(function(){
+	var depth = <{$setting.showCatDepth_dropdown}> - 1;
+    var handlers = $ES('.s-cat-depth-'+depth+' span','<{$widgets_id}>');
+	handlers.each(function(handler, index){
+      var view = handler.getNext();
+      var section = handler.getParent();
+      leftPos = handler.getSize().x + 10;	  
+      view.setStyles({
+        'position': 'absolute',
+        'left': leftPos,
+        'top': 0,
+        'display': 'none'
+      });
+      section.setStyles({
+        'position': 'relative',
+        'cursor': 'pointer'
+        }).addEvents({
+        'mouseenter':function(e){view.setStyle('display','');},
+        'mouseleave':function(e){view.setStyle('display','none');}
+      });
+    });		
+})()   
+</script>

@@ -1,0 +1,55 @@
+<div class='item' style='display:none;' id="spec-tab-<{$spec.spec_id}>">
+ <table>
+	<tr>
+     <td width='20%' style='vertical-align:middle;text-align:center'>
+     <span class="fontcolorGray" style="line-height:18px"><{t}>请点击右侧<{/t}><br /><{t}>添加本商品需要的<{/t}><{$spec.spec_name|escape:'html'}></span>
+     </td>
+	   <td width='80%'>
+			   <div>&nbsp;<span class='lnk add-spec-all' specid="<{$spec.spec_id}>"><{t}>添加全部<{/t}><{$spec.spec_name|escape:'html'}></span>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<span class="fontcolorGray"><{t}>没有您需要的<{/t}><{$spec.spec_name|escape:'html'}><{t}>？立刻<{/t}></span><span class="lnk editspec" specid="<{$spec.spec_id}>"><{t}>编辑<{/t}><{$spec.spec_name|escape:'html'}></span></div>
+			   <ul class='goods-spec-box spec-name' specid="<{$spec.spec_id}>" specType="<{$spec.spec_type}>"> 
+			   
+			   <{if $spec.spec_type == 'text'}>
+
+			   <{foreach from=$specValue item=oItem}>
+				  <li onmouseover="this.style.background='#ff9900';" onmouseout="this.style.background='#ffffff';" specValueId="<{$oItem.spec_value_id}>" specValue="<{$oItem.spec_value|escape:'html'}>">
+				  <span><{$oItem.spec_value|escape:'html'}></span><span class="spec-add"><label><{t}>添加<{/t}></label></span>
+				  <input type="hidden" name="spec_value_image[<{$oItem.spec_value_id}>]" id="spec_value_image_<{$oItem.spec_value_id}>" value="<{$oItem.spec_image}>"/>
+				  </li>
+				  <{/foreach}>
+				  
+				  <{else}>
+
+			   <{foreach from=$specValue item=oItem}>
+				  <li onmouseover="this.style.background='#ff9900';" onmouseout="this.style.background='#ffffff';" specValueId="<{$oItem.spec_value_id}>" specValue="<{$oItem.spec_value|escape:'html'}>">
+				  <img src='<{if $oItem.spec_image}><{$oItem.spec_image|storager}><{else}><{$spec_default_pic|storager}><{/if}>' width=20 height=20 alt="<{$oItem.spec_value|escape:'html'}>"><span class="spec-add"><label><{t}>添加<{/t}></label></span>
+				  <input type="hidden" name="spec_value_image[<{$oItem.spec_value_id}>]" id="spec_value_image_<{$oItem.spec_value_id}>" value="<{$oItem.spec_image|storager}>"/>
+				  </li>
+				  <{/foreach}>
+
+				  <{/if}>
+
+			   </ul>
+	   </td>
+	</tr>
+ </table>
+ 
+ <div class='tableform'>
+ <div class="division">
+	  <table class="gridlist"  cellspacing="0" cellpadding="0" border="0" width="100%">
+		 <thead>
+		  <tr>
+			<th style="width:15%"><{t}>系统规格<{/t}></th>
+			<th><{t}>自定义规格值<{/t}></th>
+			   <{if $spec.spec_type == 'image'}>
+			<th style="width:20%"><{t}>自定义规格图片<{/t}></th>
+			<{/if}>
+			<th style="width:25%"><{t}>关联商品相册图片<{/t}></th>
+			<th style="width:25%"><{t}>操作<{/t}></th>
+		  </tr>
+		</thead>
+		<tbody class='spec-body'></tbody>
+	  </table>
+  </div>
+ </div>
+ 
+</div>

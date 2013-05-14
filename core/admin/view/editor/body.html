@@ -1,0 +1,26 @@
+<div id="mce_body_<{$id}>" class='wysiwyg_body' style="height:<{$height|default:'300px'}>;<{$style}>;">
+<{if $editor_type=='textarea'}>
+<textarea name="<{$name}>"  style="height:<{$height|default:'300px'}>;"><{$value|escape:'html'}></textarea>
+<{else}>
+<textarea name="<{$name}>" style="display:none" style="height:<{$height|default:'300px'}>;"><{$value|escape:'html'}></textarea>
+<div id='mce_body_<{$id}>_frm_container' style="height:100%;">
+
+</div>
+<{/if}>
+</div>
+<div align='left' style='font-size:14px;font-weight:bold;'>
+<script>
+ var mce_body_<{$id}>_Height=function(v){
+     v=v?$('mce_body_<{$id}>').getStyle('height').toInt()+100:$('mce_body_<{$id}>').getStyle('height').toInt()-100;
+   if(v<100)return MessageBox.error("不能再小");
+   $('mce_body_<{$id}>').setStyle('height',(v));
+   if($E('iframe','mce_body_<{$id}>'))
+   $E('iframe','mce_body_<{$id}>').setProperty('height',v);
+   if($E('textarea','mce_body_<{$id}>'))
+   $E('textarea','mce_body_<{$id}>').setStyle('height',v);
+   
+ };
+</script>
+<input type='button' class='button-add' onclick="mce_body_<{$id}>_Height(true);this.blur();" title='增大高度' />
+<input type='button' class='button-cut' onclick="mce_body_<{$id}>_Height(false);this.blur();" title='减小高度' />
+</div>

@@ -1,0 +1,86 @@
+/*表内树形列表
+ ---------------------------------------------------------------*/
+.gridlist-head { background:url(../images/tablethbg.gif); border-top:1px solid #fff; border-bottom:1px solid #ccc; font-weight:bold; line-height:24px; height:24px; white-space: nowrap; overflow:hidden; color:#000;  }
+table.gridlist-head { border-bottom:none; }
+.gridlist-head th,
+.gridlist-head td { background:url(../images/tablethbg.gif); border-right:1px solid #DBE2E7; border-left:1px solid #fff; padding:0 2px; text-align:left; }
+.gridlist-head .pointer { cursor:pointer; }
+.gridlist-head .pointer:hover { color:#f90; cursor:pointer; }
+.gridlist-head .highlight-up { cursor:pointer; background:url(../images/arrow-up.gif) no-repeat 95% 50%; color:#369; padding-left:3px; }
+.gridlist-head .highlight-down { cursor:pointer; background:url(../images/arrow-down.gif) no-repeat 95% 50%; color:#369; padding-left:3px }
+
+.gridlist-head div.span-1,
+.gridlist-head div.span-2,
+.gridlist-head div.span-3,
+.gridlist-head div.span-4,
+.gridlist-head div.span-5,
+.gridlist-head div.span-6,
+.gridlist-head div.span-7,
+.gridlist-head div.span-8,
+.gridlist-head div.span-9,
+.gridlist-head div.span-10,
+.gridlist-head div.span-11,
+.gridlist-head div.span-12 { border-right:1px solid #DBE2E7; border-left:1px solid #fff; margin:0; padding:0 2px; text-align:center; }
+.gridlist { border-top:1px solid #EBEBEB; }
+table.gridlist { border:1px solid #efefef; width:100%; margin:0; }
+.division td .gridlist { width:auto; }
+.gridlist thead th { font-size:12px; padding:1px 3px; height:22px; line-height:22px; background:url(../images/tablethbg.gif); border:1px solid; border-color:#fff #DBE2E7 #ccc #fff; font-weight:bold; text-align:center; white-space: nowrap; color:#000; }
+
+.gridlist-footer { background:transparent url(../images/tablethbg.gif) repeat scroll 0 0; border-top:1px solid #CFD8DD; padding:2px 0 3px; }
+
+.gridlist tbody td,
+.gridlist tbody th { text-align:center; border:1px solid; border-color:#fff #DBE2E7 #ddd #fff; white-space:normal;height:27px; }
+
+.gridlist div.span-1,
+.gridlist div.span-2,
+.gridlist div.span-3,
+.gridlist div.span-4,
+.gridlist div.span-5,
+.gridlist div.span-6,
+.gridlist div.span-7,
+.gridlist div.span-8,
+.gridlist div.span-9,
+.gridlist div.span-10,
+.gridlist div.span-11,
+.gridlist div.span-12 { border-right:1px solid #DBE2E7; border-left:1px solid #fff; margin:0; padding:0 2px; }
+
+.highlight div.span-1,
+.highlight div.span-2,
+.highlight div.span-3,
+.highlight div.span-4,
+.highlight div.span-5,
+.highlight div.span-6,
+.highlight div.span-7,
+.highlight div.span-8,
+.highlight div.span-9,
+.highlight div.span-10,
+.highlight div.span-11,
+.highlight div.span-12 { border:none; margin:0; padding:0 3px; }
+
+.gridlist-colChanger { border:1px solid #ccc; background:#E7EFF4 url(../images/sysrightbackgroud.gif) repeat-x }
+.gridlist .opt { display:block; padding:3px 0; cursor:pointer; text-align:center; }
+/*---------------------------------------------------------------------------------------------------------------
+	gridlist-tab
+ ---------------------------------------------------------------------------------------------------------------*/
+.gridlist-tab { position:relative; background:#6F777A; margin:-20px 0 -1px 0; height:23px; font-size:13px; overflow:hidden; zoom:1; }
+.gridlist-tab div { border-right:1px solid #879397; border-left:1px solid #879397; padding-left:15px; height:1em; line-height:1em; margin:5px -1px 0 0; white-space:nowrap; _width:60px; float:left; cursor:pointer; }
+.gridlist-tab div span { padding-right:15px; }
+.gridlist-tab a { font-weight:bold; text-decoration:none; color:#d3d3d3; }
+.gridlist-tab a:hover { color:#d3d3d3; }
+.gridlist-tab .cur { background:url(../images/gridlist_tab.gif) no-repeat; height:24px; line-height:normal; margin:0 1px 0 2px; border:none; cursor:default; }
+.gridlist-tab .cur span { background:url(../images/gridlist_tab.gif) no-repeat right 0; display:block; height:24px; color:#000; line-height:23px;  *line-height:25px;
+font-weight:bold; }
+.gridlist-tab .nobl { border-left:none; }
+.gridlist-tab .nobr { border-right:none; }
+
+.row-line { cursor: default; }
+div.row { line-height:24px; clear:both; white-space: nowrap; background-color:#F1F5FA; border-bottom:1px solid #fff; }
+div.row .lnk { color:#336699; margin:0 2px; }
+div.highlight-row { font-weight:bold; background-color:#fff; }
+div.row:hover { background-color:#FFFFD4; }
+div.row div { overflow:hidden; }
+div.row div.span-relative { position:relative; overflow:visible; }
+div.row .row-line { height:24px; overflow:hidden; border-bottom:1px solid #ddd; }
+div.highlight .row-line { border-bottom:0; }
+.footer { background:#E8EFF5 url(../images/tablethbg.gif) repeat-x; border-top:1px solid #CFD8DD; padding:0 0 3px; text-align:center;}
+.footer .table-action { width:auto; margin:0 auto;}

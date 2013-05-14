@@ -1,0 +1,40 @@
+<form id="_new_wg_cfg" action='index.php?ctl=system/template&act=insertWg' method='post'>
+
+  <{include file="system/template/widgetHeader.html"}>
+
+<div class="table-action">
+	<{button type="submit" id="on_submit" label="添加"}>
+</div>
+
+</form>
+<script>
+  $('_new_wg_cfg').addEvent('submit',function(e){
+    e=new Event(e).stop();
+    //指向框架内对象
+    //验证输入
+    if(!this.bindValidator('_x_ipt'))return;
+    $ES('textarea[ishtml=true]',this).getValue();
+    var frameWin=$('themeFrame').contentWindow;
+    var shopWidgets=frameWin.shopWidgets;
+    //临时容器
+    var wg=frameWin.document.createElement('div');
+    var temId=$time()+$random(100,999);
+    $(wg).setProperty('id','wg'+$time());
+    this.action+='&p[0]=<{$widgetsType}>&p[1]='+temId+'&p[2]=<{$theme}>';
+    
+    new Request({url:this.action,method:this.get('method'),onSuccess:function(re){
+        wg.setHTML(re);
+        wg= wg.getFirst();
+        wg.setProperty('id',temId);
+        wg.setProperty('widgets_id', 'tmp_' + '<{$i}>');
+        var sw_curDrop=shopWidgets.curDrop;
+        wg.injectTop(sw_curDrop);
+        
+        shopWidgets.drags.include($(wg));
+        shopWidgets.initDrags([wg]);
+        shopWidgets.checkEmptyDropPanel(sw_curDrop);
+        shopWidgets.curdialog.close();
+    }}).send(this);
+    
+  });
+</script>

@@ -1,0 +1,39 @@
+<style>
+.dropdown-select {
+	background:transparent url(statics/bundle/select_row.gif) no-repeat scroll right top;
+	border:1px solid #999999;
+	height:18px;
+	line-height:18px;
+	width:80px;
+}
+.shop-select-selected{
+}
+</style>
+<input id="<{$id}>_view" name="<{$name}>_view" class="dropdown-select" type="text" readonly="" value="<{$selected}>"/>
+<input id="<{$id}>" name="<{$name}>" type="hidden"/>
+<br>
+<div name="<{$name}>_div" id="<{$id}>_div" style="border: 1px solid rgb(102, 102, 102);  background-color: rgb(255, 255, 255); width: 81px; height: 100px;position:absolute;float:left; overflow-x: hidden; overflow-y: auto; z-index: 99999; display: none;">
+	<{foreach from=$options item=item key=key}>
+		<div value='<{$item.cat_id}>' <{if $item.value==$selected}>class='shop-select-selected'  style="text-align: left; padding-left: 5px;"<{/if}>><{$item.cat_name}></div>
+	<{/foreach}>
+</div>
+<script>
+$('<{$id}>_view').addEvent('click',function(){
+	var visible=$('<{$id}>_div').style.display;
+	$('<{$id}>_div').setStyle('display',(visible=='none')?'':'none');
+});
+$ES('div',$('<{$id}>_div')).each(function(e){
+		e.addEvent('mouseover',function(){
+			e.setStyles({'background-color':'#cccccc'});
+		});
+		e.addEvent('mouseout',function(){
+			e.setStyles({'background-color':'#ffffff'});
+		});
+		e.addEvent('click',function(){
+			$('<{$id}>_view').value=e.getText();
+			$('<{$id}>_div').setStyle('display','none');
+		})
+});
+</script>
+
+

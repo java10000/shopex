@@ -1,0 +1,66 @@
+<form class="tableform" method="post" action="index.php?ctl=member/messenger&act=send&p[0]=<{$messenger}>" id='messenger-form' target="{}">
+    <h4><{t}>收件人<{/t}></h4>
+    <div class="division">
+    <{if $filter}>
+        符合以下条件：
+        <{filter type="member" from=$filter name="filter"}>
+        <{else}>
+          <{foreach from=$members item=member}>
+          <span><input type="hidden" name="targets[<{$member.member_id}>]" value="<{$member.target}>" /><{$member.uname}> &lt;<em style="color:#009"><{$member.target}></em>&gt;;</span>&nbsp;
+          <{/foreach}>
+          <{if $badListCount > 0 }>
+          <div class="error">
+            <h5><{t}>以下<{/t}><{$badListCount}><{t}>位会员由于没有填写<{/t}><{if $sender.name == "电子邮件"}>邮箱地址<{else}><{$sender.name}><{/if}><{t}>联系方式，将无法收到信息。<{/t}></h5>
+                 
+              <{foreach from=$badList item=member}>
+              <span><{$member.uname}>(<{$member.member_id}>),</span>&nbsp;
+              <{/foreach}>
+          </div>
+          <{/if}>
+        <{/if}>
+    </div>
+
+    <{if $sender.hasTitle}>
+        <h4><{t}>标题<{/t}></h4>
+        <div class="division"><{input type="text" name="title" }></div>
+    <{/if}>
+     
+    <h4><{t}>信息内容<{/t}><{if 'sms'==$messenger}>(小于255字)<{/if}></h4>  
+    <div class="division"><{input type=$type name="content" width="633px"}></div>
+    
+    <{if 'sms' == $messenger}><input type="checkbox" name="is_reply">是否允许会员回复
+    <div class="notice">提示：如果您选择了“允许会员回复”,会员回复的信息将会在“短信服务”->“购买短信套餐”->“回复短信”中出现</div><{/if}>
+    <div class="table-action"><{button label="发送" type="submit"}></div>
+</form>
+
+<script>
+
+<{if 'sms' == $messenger}>
+var _sms_tip_ = '请输入短信内容，每条短信长度不超过70字，超出部分将被拆成多条发送...';
+(function(){
+    $E('textarea[name="content"]').setStyles({color:'#999'}).set('value',_sms_tip_);
+    $E('textarea[name="content"]').addEvents({
+        'focus':function(){
+            if( _sms_tip_==this.get('value') ) {
+                this.set('value','');
+            }
+            this.setStyles({color:'black'});
+        },
+        'blur':function(){
+            if( (0 == this.get('value').length) || (_sms_tip_==this.get('value')) ) {
+                this.setStyles({color:'#999'}).set('value',_sms_tip_);
+            } else {
+                this.setStyles({color:'black'});
+            }
+        }
+    });
+})();
+<{/if}>
+
+$('messenger-form').store('target',{
+    update:'messagebox',
+    onComplete:function(){
+       finderDialog.close();
+    }
+});
+</script>

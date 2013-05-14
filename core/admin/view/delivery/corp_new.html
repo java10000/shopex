@@ -1,0 +1,47 @@
+<form method="POST" action="index.php?ctl=trading/delivery&act=addCorp" class="tableform">
+  <div class="division">
+    <table width="100%" border="0" cellpadding="0" cellspacing="0">
+      <tr>
+        <th><{t}>物流公司选择:<{/t}></th>
+        <td><select name="type" id="select_crop">
+            <{foreach from=$ctype item=corp}>
+            <option value="<{$corp.0}>" crop_name="<{$corp.2}>"><{$corp.1}>
+            <{/foreach}>
+          </select></td>
+      </tr>
+      <tr>
+        <th><{t}>物流公司全称:<{/t}></th>
+        <td><input type="text" style="width:120px" name="name" vtype="required" class="_x_ipt" id="corp_whole_name" ></td>
+      </tr>
+    <tr>
+    <th><{t}>物流公司网址:<{/t}></th>
+    <td><input type="text" name="website" style="width:240px" value="http://" id="website"></td>
+    </tr>
+    <tr>
+    <th><{t}>排序:<{/t}></th>
+    <td><{input style="width:50px;" name="ordernum" type="unsignedint" class="_x_ipt"}></td>
+  </tr>
+    </table>
+  </div>
+  <table cellspacing="0" cellpadding="0" border="0" align="center" class="table-action">
+    <tr>
+      <td>
+           
+ <div class="table-action">
+	<{button type="submit" label="提交"}>
+</div>
+        
+        </td>
+    </tr>
+  </table>
+</form>
+<script>
+$('select_crop').addEvent('change',function(){
+	$('corp_whole_name').value=$('select_crop').options[$('select_crop').selectedIndex].text;
+	try{
+		$('website').value=$('select_crop').options[$('select_crop').selectedIndex].get('crop_name');
+	}catch(e){
+		$('website').value=$('select_crop').options[$('select_crop').selectedIndex].crop_name;
+	}
+});
+</script>

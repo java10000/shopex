@@ -1,0 +1,34 @@
+<div id="ad">
+<div class="tableform">
+<div style="margin: -5px 0pt 0pt;" class="division widgetconfig">
+<table cellspacing="0" cellpadding="0" border="0" width="100%">
+  <tbody><tr>
+    <th>广告尺寸：</th>
+    <td>宽
+  <input type="text" name="ad_pic_width" value="<{$setting.ad_pic_width}>" style="width:40px">px 高<input type="text" name="ad_pic_height" style="width:40px" value="<{$setting.ad_pic_height}>">px
+	</td>
+  </tr>
+  <tr>
+    <th>图片：</th>
+    <td>  <input type="text" name="ad_pic" id="ad_pic" value="<{$setting.ad_pic}>"  class="_x_ipt" vtype="required"> <span class='sysiconBtn addorder' onclick="addPic()">添加图片</span>
+</td>
+  </tr>
+  <tr>
+    <th>图片链接：</th>
+    <td><input type="text" name="ad_pic_link" value="<{$setting.ad_pic_link}>"></td>
+  </tr>
+</tbody></table>
+</div>
+</div>
+</div>
+<script>
+		function addPic(){
+			return new Dialog('index.php?ctl=editor&act=image&p[0]=0',{title:'插入<img>',onShow:function(){
+			var dialog=this;
+			this.dialog.store('callback',function(src){
+              $('ad_pic').value=src;
+              dialog.close();
+           });
+        }});
+		}
+</script>

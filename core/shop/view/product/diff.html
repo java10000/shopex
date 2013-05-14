@@ -1,0 +1,56 @@
+<h3>商品对比</h3>
+<{if $diff.error==1}>
+<p><{t}>抱歉，您选的对比物品超过4个<{/t}></p>
+<{else}>
+<div class="cmpresult" style="*width:100%;overflow:hidden; overflow-x:scroll"> <{if $diff.goods}>
+  <table width="100%" border="0" cellpadding="0" cellspacing="0" class="liststyle">
+  <col class="ColColorGray"></col>
+<thead>
+      <tr>
+        <th><{t}>商品名称<{/t}></th>
+        <{foreach from=$diff.goods item=goods}>
+        <th><a href="<{link ctl="product" act="index" arg0=$goods.goods_id}>" title="<{$goods.name}>"><strong><{$goods.name}></strong></a></th>
+        <{/foreach}> </tr>
+        </thead>
+     <tbody>
+      <tr>
+
+
+      <tr>
+        <th ><{t}>商品图片<{/t}></th>
+        <{foreach from=$diff.goods item=goods}>
+        <td width="<{$diff.length}>%"><a href="<{link ctl="product" act="index" arg0=$goods.goods_id}>"><img src="<{$goods.thumbnail|default:$env.conf.site.default_thumbnail_pic|storager}>" title="<{$goods.name}>"<{if $env.conf.site.thumbnail_pic_width !=0}> width="<{$env.conf.site.thumbnail_pic_width}>px"<{/if}> <{if $env.conf.site.thumbnail_pic_height !=0}>height="<{$env.conf.site.thumbnail_pic_height}>px"<{/if}> ></a></td>
+        <{/foreach}> </tr>
+      <tr>
+        <th ><{t}>商品价格<{/t}></th>
+        <{foreach from=$diff.goods item=goods}>
+        <td width="<{$diff.length}>%"><{$goods.price|cur}></td>
+        <{/foreach}> </tr>
+    <tr>
+    <td ></td> <{foreach from=$diff.goods item=goods}>
+      <td width="<{$diff.length}>%"><div class="GoodsSearchWrap">
+     <div class="items-list price_button">
+          <ul class="button">
+            <{goodsmenu product=$goods compare=true setting=$setting  zindex=10}>
+          </ul>
+    </div>
+        </div></td><{/foreach}>
+    </tr>
+
+    <{foreach from=$diff.params item=params key=group }>
+        <tr>
+      <th class="colspan" colspan="<{$diff.colp}>" ><{$group}></th>
+		<{foreach from=$params item=p key=item name="param"}>
+           <tr >
+            <th><{$item}></th>
+            <{foreach from=$diff.goods item=goods}>
+            <td width="<{$diff.length}>%"><{$p[$goods.goods_id]}>&nbsp;</td>
+            <{/foreach}> </tr>
+          <{/foreach}>
+    <{/foreach}>
+    </tbody>
+  </table>
+  <{else}>
+  <p><{t}>没有选中商品<{/t}></p>
+  <{/if}> </div>
+<{/if}>

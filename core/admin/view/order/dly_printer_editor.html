@@ -1,0 +1,411 @@
+
+<div style="padding-left: 0pt;" class="action-bar mainHead">
+    
+  <table id="dly_printer_form" cellspacing="0" cellpadding="0" border="0" width="100%">
+    <input name="prt_tmpl_id" type="hidden" value="<{$tmpl.prt_tmpl_id}>" />
+    <tbody>
+      <tr> 
+        <td><div class="actionItems"> 
+            <table cellspacing="0" cellpadding="0" border="0" width="100%">
+              <tbody>
+                <tr> 
+                  <td class="functop"><h3><{t}>单据名称<{/t}></h3></td>
+                </tr>
+                <tr> 
+                  <td class="func"><input style="width:100px" id="prt_tmpl_title" name="prt_tmpl_title" size="15" maxlength="30" value="<{$tmpl.prt_tmpl_title}>" />                    
+                  <span onclick="printer_editor.save()" style="padding-left: 4px; background-position: 0pt -100000px;" class="sysiconBtn"><{t}>保存<{/t}></span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div></td>
+        <td><div class="actionItems"> 
+            <table cellspacing="0" cellpadding="0" border="0" width="100%">
+              <tbody>
+                <tr> 
+                  <td class="functop"><h3><{t}>单据尺寸<{/t}></h3></td>
+                </tr>
+                <tr> 
+                  <td class="func"> 宽
+                    <input id="ipt_prt_tmpl_width" name="prt_tmpl_width" size="2" maxlength="4" onchange="printer_editor.resize(); printer_editor.resizeWidth(this.value);" value="<{$tmpl.prt_tmpl_width}>" style="width:24px">
+                    × 高
+                    <input id="ipt_prt_tmpl_height" name="prt_tmpl_height" size="2" maxlength="4" onchange="printer_editor.resize(); printer_editor.resizeHeight(this.value);" value="<{$tmpl.prt_tmpl_height}>" style="width:24px">
+                    mm</td>
+                </tr>
+              </tbody>
+            </table>
+          </div></td>
+       
+        <td><div class="actionItems"> 
+            <table cellspacing="0" cellpadding="0" border="0" width="100%">
+              <tbody>
+                <tr> 
+                  <td class="functop"><h3><{t}>单据背景图<{/t}></h3></td>
+                </tr>
+                <tr> 
+                  <td class="func"><span onclick="printer_editor.uploadBg(<{$tmpl.prt_tmpl_id}>)" style="padding-left: 4px; background-position: 0pt -100000px;" class="sysiconBtn"><{t}>上传<{/t}></span> 
+                  <span onclick="printer_editor.delBg(<{$tmpl.prt_tmpl_id}>)" style="padding-left: 4px; background-position: 0pt -100000px;" class="sysiconBtn"><{t}>删除<{/t}></span> 
+                    <input type="checkbox" id="lock_bg" checked onclick="printer_editor.lockbg(this.checked)"><label for="lock_bg"><{t}>锁定<{/t}></label></td>
+                </tr>
+              </tbody>
+            </table>
+          </div></td>
+        <td><div class="actionItems"> 
+            <table cellspacing="0" cellpadding="0" border="0" width="100%">
+              <tbody>
+                <tr> 
+                  <td class="functop"><h3><{t}>单据打印项<{/t}></h3></td>
+                </tr>
+                <tr> 
+                  <td class="func"><span id="btn-dropMenu" dropmenu="finder-export-mod1" style="padding-left: 4px;" class="sysiconBtn arrow-down"><{t}>添加<{/t}></span> 
+                    <div style="display:none;" class="x-drop-menu" id="finder-export-mod1"> 
+                      <{foreach from=$elements key=key item=item}> <span onclick="printer_editor.addElement('<{$key}>','<{$item}>')" class="item"><{$item}></span> 
+                      <{/foreach}> </div>
+                      <span  class="sysiconBtnNoIcon" onClick="printer_editor.delItem()"><{t}>删除<{/t}></span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div></td>
+                    <td>
+            <table cellspacing="0" cellpadding="0" border="0" width="100%"><tbody><tr><td><div id="edititem" class="actionItems"><table cellspacing="0" cellpadding="0" border="0" width="100%"><tbody><tr>
+            <td>
+                  <select name="font" id="jianju2" style="height:20px;" onChange="if(this.value!='--')printer_editor.setFontSize(this.value);">
+                    <option value="--"><{t}>大小<{/t}></option>
+                     <option value="10">10</option>
+                      <option value="12">12</option>
+                    <option value="14">14</option>
+                     <option value="18">18</option>
+                     <option value="20">20</option>
+                      <option value="24">24</option>
+                       <option value="27">27</option>
+                        <option value="30">30</option>
+                         <option value="36">36</option>
+                  </select>                
+                    <select id="ziti" onChange="if(this.value!='--')printer_editor.setFont(this.value);">
+                    <option value="--"><{t}>字体<{/t}></option>
+                    <option value="宋体"><{t}>宋体<{/t}></option>
+                    <option value="黑体"><{t}>黑体<{/t}></option>
+                    <option value="Arial">Arial</option>
+                    <option value="Verdana">Verdana</option>
+                    <option value="Serif">Serif</option>
+                    <option value="Cursive">Cursive</option>
+                    <option value="Fantasy">Fantasy</option>
+                    <option value="Sans-Serif">Sans-Serif</option>
+                    <{foreach from=$font key=key item=item}>
+                    <option value="<{$item}>"><{$item}></option>
+                    <{/foreach}>
+                    
+                    </select>
+                    
+                    偏移 x：<input id="pianyix" type="text" onchange="printer_editor.setOffestX(this.value)" style="width:20px;" value="0" maxlength="3" />mm&nbsp;&nbsp;y：
+                           <input id="pianyiy" type="text" onchange="printer_editor.setOffestY(this.value)" style="width:20px;" value="0" maxlength="3" />mm
+                    
+                </td></tr><tr><td class="func">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                <td  >
+                  <select name="jianju" id="jianju" style="height:20px;" onChange="if(this.value!='--')printer_editor.setFontSpace(this.value);">
+                    <option value="--" selected="selected"><{t}>间距<{/t}></option>
+                    <option value="-4">-4</option>
+                    <option value="-2">-2</option>
+                    <option value="0">0</option>
+                    <option value="2">2</option>
+                    <option value="4">4</option>
+                    <option value="6">6</option>
+                    <option value="8">8</option>
+                    <option value="10">10</option>
+                    <option value="12">12</option>
+                    <option value="14">14</option>
+                    <option value="16">16</option>
+                    <option value="18">18</option>
+                    <option value="20">20</option>
+                    <option value="22">22</option>
+                    <option value="24">24</option>
+                    <option value="26">26</option>
+                    <option value="28">28</option>
+                    <option value="30">30</option>
+                  </select></td>
+
+<td>
+
+<select name="hangju" id="hangju" style="height:20px;" onChange="if(this.value!='--')printer_editor.setLineHeight(this.value);">
+                    <option value="--" selected="selected"><{t}>行距<{/t}></option>
+                    <option value="-4">-4</option>
+                    <option value="-2">-2</option>
+                    <option value="0">0</option>
+                    <option value="2">2</option>
+                    <option value="4">4</option>
+                    <option value="6">6</option>
+                    <option value="8">8</option>
+                    <option value="10">10</option>
+                    <option value="12">12</option>
+                    <option value="14">14</option>
+                    <option value="16">16</option>
+                    <option value="18">18</option>
+                    <option value="20">20</option>
+                    <option value="22">22</option>
+                    <option value="24">24</option>
+                    <option value="26">26</option>
+                    <option value="28">28</option>
+                    <option value="30">30</option>
+                  </select>
+
+</td>
+
+
+                <td><span id="cuti"  style="background:#f0f0f0; border-color:#f0f0f0;" class="sysiconBtnNoIcon" onClick="printer_editor.setBorder(1);changeb(this)"><strong>B</strong></span></td>
+                <td><span id="xieti" style="background:#f0f0f0; border-color:#f0f0f0;" class="sysiconBtnNoIcon" onClick="printer_editor.setItalic(1);changei(this)"><em><strong>I</strong></em></span></td>
+                
+                <td style="padding:0 2px 0 2px;" >&nbsp;&nbsp;<{img class="itemalign" src="images/bundle/mceico_29.gif" onClick="printer_editor.setAlign('left')"}></td>
+                <td style="padding:0 2px 0 2px;" ><{img class="itemalign" src="images/bundle/mceico_30.gif" onClick="printer_editor.setAlign('center')"}></td>
+                <td style="padding:0 2px 0 2px;" ><{img class="itemalign" src="images/bundle/mceico_31.gif" onClick="printer_editor.setAlign('right')"}></td>
+                
+                <td style="padding:0 2px 0 2px;" >&nbsp;&nbsp;显示定位符：<input id="dingwei" name="" type="checkbox" value="" onClick="printer_editor.setLocation(this.checked);"; /></td>
+                
+              </tr>
+            </table></td>
+</tr></tbody></table></div></table>
+          </div></td>
+      </tr>
+      
+    </tbody>
+  </table>
+</div>
+<table bgcolor="#DDDDDD">
+<tr>
+<td>
+<div style="height:1px; overflow:hidden;">&nbsp;</div>
+<div id="dly_printer_editor" style="height:<{$tmpl.prt_tmpl_height*$dpi/25.4}>px;width:<{$tmpl.prt_tmpl_width*$dpi/25.4}>px;border:1px solid #999;border-solid:1px 1px 0 0">
+</div>
+</td>
+</tr> 
+</table>
+<script>
+
+
+
+
+var printer_editor = {
+    screenDPI:96,
+    init:function(options,xmldata,bgimg){
+
+        this.screenDPI = options.dpi;
+        $('main').setStyle('overflow-x','auto');
+        this.swf = new Swiff('images/printer.swf?<{$smarty.now}>', {
+            width:  '100%',
+            height: '100%',
+            id:'dly_printer_editor_flash',
+            container: $('dly_printer_editor'),
+            params:{
+                wMode:'opaque'
+            },
+            vars:{data:xmldata,bg:bgimg,copyright:'shopex'}
+        });
+        new DropMenu($('btn-dropMenu'),{height:400});
+    },
+    setBorder:function(){
+        $('dly_printer_editor_flash').setBorder();
+    },
+	
+	setLocation:function() {
+		
+	printer_editor.resizeWidth($("ipt_prt_tmpl_width").value);
+	printer_editor.resizeHeight($("ipt_prt_tmpl_height").value);
+		
+		$('dly_printer_editor_flash').setLocation(arguments[0]);
+		},
+	
+    setItalic:function(){
+        $('dly_printer_editor_flash').setItalic();
+    },
+    setFontSize:function(){        
+        $('dly_printer_editor_flash').setFontSize(arguments[0]);
+    },
+    setAlign:function(){
+        $('dly_printer_editor_flash').setAlign(arguments[0]);
+    },
+    setFontSpace:function(){
+        $('dly_printer_editor_flash').setFontSpace(arguments[0]);
+    },
+     setLineHeight:function(){
+    
+        $('dly_printer_editor_flash').setLineHeight(arguments[0]);
+    },
+	
+	resizeWidth:function() {
+		
+		 $('dly_printer_editor_flash').resizeWidth(arguments[0]*this.screenDPI/25.4);
+		
+		},
+		
+	resizeHeight:function() {
+		 $('dly_printer_editor_flash').resizeHeight(arguments[0]*this.screenDPI/25.4);
+		
+		},
+    
+     setOffestX:function(){
+        
+        $('dly_printer_editor_flash').setOffestX(arguments[0]*this.screenDPI/25.4);
+        
+    },
+    
+     setOffestY:function(){
+        $('dly_printer_editor_flash').setOffestY(arguments[0]*this.screenDPI/25.4);
+    },
+    
+        delItem:function(){
+                $('dly_printer_editor_flash').delItem();
+        },
+    setPicture:function(url){
+        $('dly_printer_editor_flash').setBg(url);
+    },
+    resize:function(){
+		
+		
+        var size = {width:$('ipt_prt_tmpl_width').value.toInt()*printer_editor.screenDPI/25.4,height:$('ipt_prt_tmpl_height').value.toInt()*printer_editor.screenDPI/25.4};
+        $('dly_printer_editor').setStyles(size);
+    },
+    addElement:function(){
+		
+	callItemInfo(12,'',0,0,0,0,'left');
+		
+        $('dly_printer_editor_flash').addElement(arguments[0],arguments[1]);
+    },
+    save:function(){
+        $('prt_tmpl_title').value = $('prt_tmpl_title').value.trim();
+        if(!$('prt_tmpl_title').value){
+            alert('请填写单据名称');
+            return;
+        }
+        var data = encodeURIComponent($('dly_printer_editor_flash').getData());
+        
+        W.page('index.php?ctl=order/delivery_printer&act=save',{method:'post',data:$('dly_printer_form').toQueryString()+'&prt_tmpl_data='+data});
+    },
+    setFont:function(){
+        $('dly_printer_editor_flash').setFont(arguments[0]);
+    },
+    lockbg:function(t){
+        $('dly_printer_editor_flash').lockBg();
+    },
+    delBg:function(){
+        if($('dly_printer_bg')){
+            $('dly_printer_bg').value='__none__';
+        }else{
+            new Element("input",{id:"dly_printer_bg",type:"hidden",name:"tmp_bg",value:"__none__"}).inject("dly_printer_form");
+        }
+        $('dly_printer_editor_flash').delBg();
+    },
+    uploadBg:function(t){
+        var url = 'index.php?ctl=order/delivery_printer&act=upload_bg';
+        if(t){
+            url+='&p[0]='+t;
+        }
+        printer_editor.dlg = new Dialog(url,{model:true,title:'上传物流单据（快递单）扫描图',height:200});
+    }
+};
+printer_editor.init({dpi:'<{$dpi}>'},'<{$tmpl.prt_tmpl_data}>'<{if $tmpl_bg}>,'<{$tmpl_bg}>'<{/if}>);
+
+
+
+$$(".itemalign").addEvent("click",function() {
+      $$(".itemalign").setStyle("border","none");
+      this.setStyle("border","1px solid #bec6ce");
+    
+    });
+
+var itemb=0;
+var itemi=0;
+
+var callItemInfo=function(size,font,spacing,border,italic,lineheight,aligntype) {
+       // alert(size+","+font+","+spacing+","+border+","+italic+","+lineheight+","+aligntype);
+ var sizesel=0;
+ var fontsel=0;
+ var spacingsel=0;
+ var lineheightsel=0;
+    
+ for(var i=0;i<$('jianju2').length;i++) {
+      if($('jianju2')[i].value==size) { $('jianju2')[i].selected=true; sizesel=1; }
+    }
+    
+    for(var i=0;i<$('ziti').length;i++) {
+      if($('ziti')[i].value==font) { $('ziti')[i].selected=true;  fontsel=1; }
+  }
+    
+    for(var i=0;i<$('jianju').length;i++) {
+       if($('jianju')[i].value==spacing) { $('jianju')[i].selected=true; spacingsel=1; }
+    }
+    
+    for(var i=0;i<$('hangju').length;i++) {
+       if($('jianju')[i].value==lineheight) { $('hangju')[i].selected=true; lineheightsel=1; }
+    }
+    
+if(sizesel==0) $('jianju2')[0].selected =true;
+if(fontsel==0) $('ziti')[0].selected =true;
+if(spacingsel==0) $('jianju')[0].selected =true;
+if(lineheightsel==0) $('hangju')[0].selected =true;
+
+if(border==1) {
+    $('cuti').setStyle('border-color','#BEC6CE #FFFFFF #FFFFFF #BEC6CE');
+    itemb=1;
+    }
+else {
+    $('cuti').setStyle('border-color','#f0f0f0');
+    itemb=0;
+}
+
+if(italic==1) {
+    $('xieti').setStyle('border-color','#BEC6CE #FFFFFF #FFFFFF #BEC6CE');
+    itemi=1;
+    }
+else {
+    $('xieti').setStyle('border-color','#f0f0f0');
+    itemi=0;
+}
+
+
+ $$(".itemalign").setStyle("border","none");
+ switch(aligntype) {
+     case "left":
+       $$(".itemalign")[0].setStyle("border","1px solid #bec6ce");
+     break;
+     case "center":
+       $$(".itemalign")[1].setStyle("border","1px solid #bec6ce");
+     break;
+     case "right":
+       $$(".itemalign")[2].setStyle("border","1px solid #bec6ce");
+     break;
+     }
+
+}
+
+function changeb(el) {
+    if(itemb==0) {
+      el.setStyle('border-color','#BEC6CE #FFFFFF #FFFFFF #BEC6CE');
+      itemb=1;
+    }
+    else {  
+      el.setStyle('border-color','#f0f0f0');
+      itemb=0;
+    }
+}
+
+
+function changei(el) {
+    if(itemi==0) {
+      el.setStyle('border-color','#BEC6CE #FFFFFF #FFFFFF #BEC6CE');
+      itemi=1;
+    }
+    else {  
+      el.setStyle('border-color','#f0f0f0');
+      itemi=0;
+    }
+}
+
+
+		
+
+</script>
+
+<style>
+.itemalign { cursor:pointer;}
+</style>

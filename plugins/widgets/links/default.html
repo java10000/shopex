@@ -1,0 +1,26 @@
+<{counter start=1 assign="result" print=false }>
+<div class="LinkList">
+    <table>
+      <{foreach from=$data item=data key=key}>
+      <{if ($result mod $setting.colums) eq 1}>
+        <tr>
+            <td>
+        <a href="<{$data.href}>" target="_blank"><{if $setting.showPic=='show' && $data.image_url}>
+        <img src="<{$data.image_url|storager}>"><{/if}><{$data.link_name}></a></a>
+            </td>
+            <{elseif ($result mod $setting.colums) eq 0}>
+           <td>
+        <a href="<{$data.href}>" target="_blank"><{if $setting.showPic=='show' && $data.image_url}><img src="<{$data.image_url|storager}>"><{/if}><{$data.link_name}></a></a>
+            </td>
+        </tr>
+      <{else}>
+          <td>
+        <a href="<{$data.href}>" target="_blank"><{if $setting.showPic=='show' && $data.image_url}><img src="<{$data.image_url|storager}>"><{/if}><{$data.link_name}></a></a>
+            </td>
+    
+    <{/if}>
+    <{counter assign="result" print=false }>
+    <{/foreach}>
+    </table>
+
+</div>

@@ -1,0 +1,40 @@
+<form action='index.php?ctl=system/appmgr&act=setting_save&p[0]=<{$app.prop.ident}>' target="{update:'messagebox'}" method='post' class="settingform" id="site_basic" enctype="multipart/form-data">
+  <div class="tableform">
+    <table width="100%" border="0" cellpadding="0" cellspacing="0" ><tr><td>
+    <h4><{t}><{$app.prop.name}><{/t}></h4>
+       </td>
+       <td style="text-align:right; padding-right:10px;"><{if $app.prop.s_help_link}><a title="点击查看帮助" style="margin: 0pt; padding: 0pt;" target="_blank" href="<{$app.prop.s_help_link}>"> <img title="点击查看帮助" style="cursor: pointer;" src="images/tips_help.gif"> </a><{else}><{help docid="65" type="link"}><{t}>点击查看帮助<{/t}><{/help}><{/if}></td>
+       
+       </tr></table>
+    <div class="division">
+      <table width="100%" border="0" cellpadding="0" cellspacing="0"  class="shopping_setting">
+        <{foreach from=$app.setting item="item" key="key"}>    
+        <tr>
+          <th><{t}><{$item.name}>：<{/t}></th>
+          <td ><{setting key=$key namespace="setting" size=$item.size|default:8 style="width:120px" display=$item.display}>  &nbsp; <{help}><{t}><{$item.desc}><{/t}><{/help}></td>
+        </tr>
+        <{/foreach}>
+      </table>
+    </div>
+<{if $app.prop.help_tip}><div class='notice'><{$app.prop.help_tip}></div><{/if}>
+    <div class="table-action">
+    <{button type="submit" id="on_submit" label="保存"}>
+</div>
+</form>
+<script>
+(function(){
+    app_ident = '<{$app.prop.ident}>';
+	app_version = '<{$app.prop.ver}>';
+    list = $$("#site_basic a");
+
+    list.each(function(item, index){
+        item.addEvent('click',function(){
+            new Request().post("index.php?ctl=system/appmgr&act=appkey_count", {app_key:app_ident,type:'config_help',version:app_version});
+        });
+    });
+
+    $('on_submit').addEvent('click',function(){
+        new Request().post("index.php?ctl=system/appmgr&act=appkey_count", {app_key:app_ident,type:'config_save',version:app_version});
+    });
+})();
+</script>

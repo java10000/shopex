@@ -1,0 +1,103 @@
+<div style="border: 1px solid #efefef;" class="table-grid">  
+<div class="clearfix">
+	<div style="float:left; padding:2px;">
+   商品操作：<input type="button" class="but-delivery btn wd2" name="but_delivery"<{if $order.po.local_ship_status==1}>disabled="disabled"<{/if}> value="<{t}>发货<{/t}>">
+   <input type="button" class="but-save btn wd2" style="display:none" name="but_save" value="<{t}>保存<{/t}>">
+   </div>
+   <div style="float:right;padding:2px;">
+   <span class="sysiconBtn viewRefresh Refreshon but-refresh" style="display:none; "><{t}>撤销操作<{/t}></span>
+   <input type="hidden" name="order_id" value="<{$order.order_id}>">
+   </div>
+</div>
+  <table width="100%" border="0" cellspacing="0" cellpadding="2" class="finderInform">
+  <colgroup class="Colsn"></colgroup>
+  <colgroup></colgroup>
+  <colgroup class="Colamount"></colgroup>
+  <colgroup class="span-2"></colgroup>
+  <colgroup class="Colamount"></colgroup>
+  <colgroup class="Coloption_1b x-edit-model" style="display:none"></colgroup>
+    <thead>
+      <tr>
+        <th><{t}>货号<{/t}></th>
+        <th><{t}>商品名称<{/t}></th>
+        <th><{t}>销售价格<{/t}></th>
+        <th><{t}>购买量<{/t}><{if $order.pay_status==0 && $order.po.local_ship_status==0}><span class="but-edit" style="cursor:pointer;color:blue;"><{t}>修改<{/t}></span><{/if}></th>
+        <th><{t}>已发货量<{/t}></th>
+        <th class="x-edit-model" style="display:none"><{t}>删除<{/t}></th>
+      </tr>
+    </thead>
+    <tbody>
+    <{foreach from=$order.po.local item=aItems key=iLoop}>
+    <{assign var="itemid" value=$aItems.item_id}>
+    <{assign var="itemprice" value=$aItems.price}>
+    <{assign var="itemnums" value=$aItems.nums}>
+    <tr>
+      <input type="hidden" name="aItems[item_id][]" value="<{$aItems.item_id}>">
+      <input type="hidden" name='aItems[product_id][]' value='<{$aItems.product_id}>'>
+      <input type="hidden" name='aItems[dealer_bn][]' value='<{$aItems.dealer_bn}>'>
+      <td><{$aItems.bn}></td>
+      <td><a <{if $aItems.is_type == 'goods'}>href="../index.php?ctl=product&act=index&p[0]=<{$aItems.goods_id}>"<{else}>href="../index.php?ctl=package&act=index"<{/if}> target="_blank"><{$aItems.name}></a></td>
+      <td><input type="positive" vtype="positive" required="true" style="background-color: #ccc" readonly=readonly class="itemPrice-$iLoop itemrow _x_ipt" name=aItems[price][] value=<{$itemprice}> size=8 ></td>
+      <td><input type="positive" vtype="positive" required="true" style="background-color: #ccc" readonly=readonly class="itemNum-$iLoop itemrow _x_ipt" name=aItems[nums][] value=<{$itemnums}> size=4 ></td>
+      <td class="itemSub-<{$iLoop}> itemCount Colamount"><{$aItems.sendnum}></td>
+      <td class="x-edit-model" style="display:none"><span class="sysiconBtnNoIcon" onClick="delgoods(this)"><{t}>删除<{/t}></span></td>
+    </tr>
+    <{/foreach}>
+    </tbody>
+  </table>
+<{$order.alertJs}>
+</div>
+<script>
+if($E('.but-edit', 'x-order-items'))
+    $E(".but-edit", "x-order-items").addEvent('click',function(e){
+        var divb = this.getParent('.table-grid');
+        $ES('.x-edit-model', divb).each(function(item){item.style.display = '';});
+        $ES('.itemrow', divb).each(function(item){
+            item.removeProperty('readonly');
+            item.style.cssText = 'background-color:#fff';
+            });
+        this.style.display = 'none';
+        if($E('.but-makepo', divb)) $E('.but-makepo', divb).style.cssText = 'display:none';
+        $E('.but-save', divb).style.cssText = 'display:';
+        $E('.but-refresh', divb).style.cssText = 'display:';
+        });
+
+$E(".but-refresh", "x-order-items").addEvent('click',function(e){
+	/*
+    W.page('index.php?ctl=order/order&act=refresh_local&p[0]=<{$order.order_id}>',{data:$('x-local-items'), update:'x-local-items', method: 'post'});
+    */
+	location.href = 'index.php?ctl=order/order&act=edit_po&p[0]=<{$order.order_id}>';
+	/*
+	maindiv = $('workground');
+    W.page('index.php?ctl=order/order&act=edit_po&p[0]=<{$order.order_id}>',{
+          data:maindiv, method: 'get'
+    });*/
+ });
+
+if($E('.but-delivery', 'x-order-items'))
+    $E(".but-delivery", "x-order-items").addEvent('click',function(e){
+        new Dialog("index.php?ctl=order/order&act=consignLocal&p[0]=<{$order.order_id}>", {title:'订单[<{$order.order_id}>]发货操作',
+            width:window.getSize().x*0.85,
+            height:window.getSize().y*0.85,
+            onLoad:function(e){
+                var dialog=this.dialog;
+                dialog.getElement('form').removeEvents('submit').addEvent('submit',function(e){
+                        new Event(e).stop();
+                        this.send({onComplete:function(){
+                                dialog.retrieve('instance').close();
+                                $ES(".but-refresh", "x-order-items").fireEvent('click');
+                            }});
+                    });
+                }
+            });
+        });
+
+$E(".but-save", "x-order-items").addEvent('click',function(e){
+    W.page('index.php?ctl=order/order&act=savePo&p[0]=<{$order.order_id}>',{
+        data:$('x-local-items'), update:'messagebox', method: 'post',
+        onSuccess:function(re){
+            $E(".but-refresh", "x-order-items").fireEvent('click');
+        }
+        });
+    });
+</script>

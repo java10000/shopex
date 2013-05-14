@@ -1,0 +1,194 @@
+<{area inject='.mainHead'}>
+<div class="finder-detail-tabs clearfix">
+    <{foreach from=$expseo item=item key=key}>
+        <{if $name == $key}>
+            <span class="tab cur"><span><{$item}></span></span>
+        <{else}>
+            <{if $key == "seo"}>
+                <span class="tab"><span><a href="index.php?ctl=sale/tools&act=seo"><{$item}></a></span></span>
+            <{else}>
+                <span class="tab"><span><a href="index.php?ctl=sale/tools&act=exceptseo&p[0]=<{$key}>"><{$item}></a></span></span>
+            <{/if}>
+        <{/if}>
+    <{/foreach}>
+</div>
+<{/area}>
+
+<form action='index.php?ctl=sale/tools&act=seoedit'  method='post' class="settingform" id="site_basic" enctype="multipart/form-data" target="{update:'messagebox'}">
+<div class="tableform">
+    <table width="100%" border="0" cellpadding="0" cellspacing="0" >
+        <tr>
+            <td><h4><{t}>文章栏目列表页<{/t}></h4></td>
+            <td style="text-align:right; padding-right:10px;"><{help docid="64" type="link"}><{t}>点击查看帮助<{/t}><{/help}><input type="hidden" name="pagetype" value="article"></td>
+        </tr>
+    </table>
+    <div class="division" style="position:static;">
+        <table width="100%" border="0" cellpadding="0" cellspacing="0"  class="shop-setting">
+            <tr>
+                <th><{t}>TITLE(页面标题)：<{/t}></th>
+                <td>
+                    <{setting key="site.article_list_title" namespace="setting" style="width:360px" display='false'}>
+                    <div class="seo-tip" style=" border:1px solid #c7deff; background:#f5f9ff; display:none; padding:5px; line-height:25px; margin:5px 0px; width:350px;">
+                        <{foreach from=$article_list_defTag item=ald key=key}>
+                        
+                            <button class="span1" title="<{$ald.name}>" type="button" svalue="<{$ald.value}>" style="color:#1b4d91; border:1px solid #98bbd2;line-height:20px; height:24px;margin:2px; cursor:pointer; background:#d6edf4;"><{$ald.name}></button>
+                        <{/foreach}>
+                        <div class="tipline" style="height:1px; background:#98bbd2; overflow:hidden; margin:5px 2px;"></div>
+                        <{button style='font-size:12px;' type="button" label="恢复默认值" }>
+                       <span value="<{$article_list_title_default}>"><{$article_list_title_default_name}></span>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th>META_KEYWORDS<br /><{t}>(关键词)：<{/t}></th>
+                <td>
+                    <{setting key="site.article_list_meta_key_words" namespace="setting" style="width:360px" display='false'}>
+                    <div class="seo-tip" style=" border:1px solid #c7deff; background:#f5f9ff; display:none; padding:5px; line-height:25px; margin:5px 0px; width:350px;">
+                        <{foreach from=$article_list_defTag item=ald key=key}>
+                            <button class="span1" title="<{$ald.name}>" type="button" svalue="<{$ald.value}>" style="color:#1b4d91; border:1px solid #98bbd2;line-height:20px; height:24px; margin:2px; cursor:pointer; background:#d6edf4;"><{$ald.name}></button>
+                        <{/foreach}>
+                        <div class="tipline" style="height:1px; background:#98bbd2; overflow:hidden; margin:5px 2px;"></div>
+                        <{button style='font-size:12px;' type="button"  label="恢复默认值" }>
+                        <span value="<{$article_list_meta_key_words_default}>"><{$article_list_meta_key_words_default_name}></span>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th>META_DESCRIPTION<br /><{t}>(页面描述)：<{/t}></th>
+                <td>
+                    <{setting key="site.article_list_meta_desc" namespace="setting" style="width:360px" display='false'}>
+                    <div class="seo-tip" style=" border:1px solid #c7deff; background:#f5f9ff;display:none;  padding:5px; line-height:25px; margin:5px 0px; width:350px;">
+                        <{foreach from=$article_list_defTag item=ald key=key}>
+                            <button class="span1" title="<{$ald.name}>" type="button" svalue="<{$ald.value}>" style="color:#1b4d91; border:1px solid #98bbd2; line-height:20px; height:24px; margin:2px; cursor:pointer; background:#d6edf4;"><{$ald.name}></button>
+                        <{/foreach}>
+                        <div class="tipline" style="height:1px; background:#98bbd2; overflow:hidden; margin:5px 2px;"></div>
+                        <{button style='font-size:12px;' type="button" label="恢复默认值" }>
+                        <span value="<{$article_list_meta_desc_default}>"><{$article_list_meta_desc_default_name}></span>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <table width="100%" border="0" cellpadding="0" cellspacing="0" >
+        <tr>
+            <td><h4><{t}>文章页<{/t}></h4></td>
+            <td style="text-align:right; padding-right:10px;"><{help docid="64" type="link"}><{t}>点击查看帮助<{/t}><{/help}></td>
+        </tr>
+    </table>
+    <div class="division" style="position:static;">
+        <table width="100%" border="0" cellpadding="0" cellspacing="0"  class="shop-setting">
+            <tr>
+                <th><{t}>TITLE(页面标题)：<{/t}></th>
+                <td>
+                    <{setting key="site.article_title" namespace="setting" style="width:360px" display='false'}>
+                    <div class="seo-tip" style=" border:1px solid #c7deff; background:#f5f9ff;display:none; padding:5px; line-height:25px; margin:5px 0px; width:350px;">
+                        <{foreach from=$article_defTag item=adt key=key}>
+                            <button class="span1" title="<{$adt.name}>" type="button" svalue="<{$adt.value}>" style="color:#1b4d91;  border:1px solid #98bbd2; line-height:20px; height:24px;margin:2px; cursor:pointer; background:#d6edf4;"><{$adt.name}></button>
+                        <{/foreach}>
+                        <div class="tipline" style="height:1px; background:#98bbd2; overflow:hidden; margin:5px 2px;"></div>
+                        <{button style='font-size:12px;' type="button" label="恢复默认值" }>
+                        <span value="<{$article_title_default}>"><{$article_title_default_name}></span>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th>META_KEYWORDS<br /><{t}>(关键词)：<{/t}></th>
+                <td>
+                    <{setting key="site.article_meta_key_words" namespace="setting" style="width:360px" display='false'}>
+                    <div class="seo-tip" style=" border:1px solid #c7deff; background:#f5f9ff;display:none;  padding:5px; line-height:25px; margin:5px 0px; width:350px;">
+                        <{foreach from=$article_defTag item=adt key=key}>
+                            <button class="span1" title="<{$adt.name}>" type="button" svalue="<{$adt.value}>" style="color:#1b4d91;border:1px solid #98bbd2;line-height:20px; height:24px; margin:2px; cursor:pointer; background:#d6edf4;"><{$adt.name}></button>
+                        <{/foreach}>
+                        <div class="tipline" style="height:1px; background:#98bbd2; overflow:hidden; margin:5px 2px;"></div>
+                        <{button style='font-size:12px;' type="button" label="恢复默认值" }>
+                        <span value="<{$article_meta_key_words_default}>"><{$article_meta_key_words_default_name}></span>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th>META_DESCRIPTION<br /><{t}>(页面描述)：<{/t}></th>
+                <td>
+                    <{setting key="site.article_meta_desc" namespace="setting" style="width:360px" display='false'}>
+                    <div class="seo-tip" style=" border:1px solid #c7deff; background:#f5f9ff;display:none; padding:5px; line-height:25px; margin:5px 0px; width:350px;">
+                        <{foreach from=$article_defTag item=adt key=key}>
+                            <button class="span1" title="<{$adt.name}>" type="button" svalue="<{$adt.value}>" style="color:#1b4d91; border:1px solid #98bbd2;line-height:20px; height:24px; margin:2px; cursor:pointer; background:#d6edf4;"><{$adt.name}></button>
+                        <{/foreach}>
+                        <div class="tipline" style="height:1px; background:#98bbd2; overflow:hidden; margin:5px 2px;"></div>
+                        <{button style='font-size:12px;' type="button"  label="恢复默认值" }>
+                       <span value="<{$article_meta_desc_default}>"><{$article_meta_desc_default_name}></span>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="table-action">
+        <{button type="submit" label="保存" }>
+    </div>
+</div>
+</form>
+<script type="application/javascript">
+(function(){
+textareaEditor =new Object();
+$extend(textareaEditor,{
+  element:$ES('#site_basic input[type=text]')[0],
+   initRange:function(){
+   		  this.element.focus();
+		  if(!!document.selection) {
+	 	   var range=this.element.createTextRange();
+		   range.moveStart('character',this.element.value.length);
+		   range.collapse(true);
+		   range.select();}
+   },
+   replaceSelection:function (text) {
+		var scrollTop=this.element.scrollTop;
+        if(!!document.selection) {
+		   this.element.focus();			
+           var range=this.range||document.selection.createRange();			
+           range.text=text;			
+		}else if(!!this.element.setSelectionRange) {
+			var selection_start=this.element.selectionStart;			
+            this.element.value=this.element.value.substring(0,selection_start)+text+this.element.value.substring(this.element.selectionEnd);	
+			this.element.setSelectionRange(selection_start+text.length,selection_start+text.length);
+		}
+        this.element.focus();
+		this.element.scrollTop=scrollTop;
+	 }
+ }); 
+$ES("#site_basic .seo-tip").each(function(el,key){
+	var getInput=el.getPrevious("input")||el.getPrevious("textarea");
+	getInput.addEvents({
+		'click':function(e){
+			  e.stopPropagation();
+			  el.setStyle('display','');
+  			  var tempel=$('site_basic').retrieve('openel',$ES("#site_basic .seo-tip")[0]);	 
+			  if(tempel==el)return;
+			  $('site_basic').store('openel',el);
+		      tempel.setStyle('display','none');
+		},'focus':function(e){
+			textareaEditor.element=$(this);			
+		}
+	});		
+	el.getLast('button[class=btn]').addEvents({
+		'click':function(e){
+			e.stop();
+			var defaultValue=this.getNext('span').getAttribute('value');
+			getInput.set('value',defaultValue);
+		 }
+	},this);        
+	el.getElements('button[class=span1]').addEvent('click',function(e){
+		e.stop();
+		var ipt=this.getParent('.seo-tip').getPrevious("input")||this.getParent('.seo-tip').getPrevious("textarea");
+		if(ipt)ipt.fireEvent('focus');
+		var text=this.getAttribute('svalue');		
+		textareaEditor.replaceSelection(text);
+	},this);	
+	if(key==0){el.setStyle('display','');textareaEditor.initRange();}	
+});
+	document.body.addEvent('click',function(){
+		 $ES("#site_basic .seo-tip").each(function(el){
+			el.setStyle('display','none');
+		});
+		$ES("#site_basic .x-input").removeEvent('click');	
+	});	
+})();	
+</script>

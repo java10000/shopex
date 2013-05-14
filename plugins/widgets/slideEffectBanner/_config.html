@@ -1,0 +1,98 @@
+
+<div id="picAddress" class="tableform widgetconfig"> 
+  <h4>基本设置</h4>
+  <div class="division">
+    <table width="100%" cellpadding="0" cellspacing="0">
+      <tr>
+        <th>鼠标触发类型</th>
+        <td><label><input type="radio" name="mousetype" value="click" <{if $setting.mousetype=="click"}>checked="checked"<{/if}>>鼠标点击</label> &nbsp; &nbsp; <label><input type="radio" name="mousetype" value="mouseover" <{if $setting.mousetype!="click"}>checked="checked"<{/if}>>鼠标移过</label></td>
+        <th>&nbsp;</th>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <th>广告宽度</th>
+        <td><input name='width' value="<{$setting.width|default:200}>" size="4">px</td>
+        <th>广告高度</th>
+        <td><input name='height' value="<{$setting.height|default:200}>" size="4">px</td>
+      </tr>
+      <tr>
+        <th>滑动方向</th>
+        <td><select name='direction'>
+			<option value="Left" <{if $setting.direction=='Left'}>selected<{/if}>>左右</option>
+			<option value="Top" <{if $setting.direction=='Top'}>selected<{/if}>>上下</option>
+			</select>
+		
+        <th>滑动速度</th>
+        <td><select name='stayTime'>
+			<option value="3000" <{if $setting.stayTime==2}>selected<{/if}>>快</option>
+			<option value="5000" <{if $setting.stayTime==5}>selected<{/if}>>普通</option>
+			<option value="10000" <{if $setting.stayTime==10}>selected<{/if}>>慢</option>
+			</select>
+		</td>
+      </tr>
+      <tr>
+        <th>普通数字背景</th>
+        <td>#<input name='oriBackground' value="<{$setting.oriBackground|default:'efefef'}>" size="6"></td>
+        <th>普通数字颜色</th>
+        <td>#<input name='orifontcolor' value="<{$setting.orifontcolor|default:'0e0e0e'}>" size="6"></td>
+      </tr>
+      <tr>
+        <th>焦点数字背景</th>
+        <td>#<input name='curBackground' value="<{$setting.curBackground|default:'ff6600'}>" size="6"></td>
+        <th>焦点数字颜色</th>
+        <td>#<input name='curfontcolor' value="<{$setting.curfontcolor|default:'ffffff'}>" size="6"></td>
+      </tr>
+    </table>
+  </div>
+  <h4>已添加的图片</h4>
+  <div class="division">
+  <{foreach from=$setting.pic item=data key=key}>
+  <table id="pic_<{$data.id}>" width="100%" cellpadding="0" cellspacing="0">
+  <input type=hidden name=pic[<{$data.id}>][id] value="<{$data.id}>">
+  <tr>
+  <th>图片地址:</th>
+  <td><input name=pic[<{$data.id}>][link] id=pic[<{$data.id}>][link]  value="<{$data.link}>"><input type=button value=上传图片 onClick=load_photo_collect($('pic[<{$data.id}>][link]'))></td>
+  <th>图片链接:</th>
+  <td><input name=pic[<{$data.id}>][linktarget] value="<{$data.linktarget}>"> </td><td><span onclick="delLink('pic_<{$data.id}>');"><{img src="images/bundle/delecate.gif" style="cursor:pointer;" alt="删除" title="删除"}></span></td>
+  </tr>
+  </table>
+<{/foreach}> 
+<div class="addpiccontent">
+</div>
+<span class="sysiconBtn addorder" onCLick="addPic()">添加图片</span><br />
+    </div>
+</div>
+<script>
+function addPic(){
+	var d=new Date();
+	var i=d.getTime();
+	var content='\
+			  <table id="pic_'+i+'" width="100%" cellpadding="0" cellspacing="0">\
+			  <input type=hidden name=pic['+i+'][id] value="'+i+'">\
+			  <tr>\
+				  <th>图片地址:</th>\
+				  <td><input name=pic['+i+'][link] id=pic['+i+'][link]></td><input type=button value=上传图片 onClick=load_photo_collect($(\'pic['+i+'][link]\'))>\
+				  <th>图片链接:</th>\
+				  <td><input name=pic['+i+'][linktarget]></td><td><span onclick="delLink(\'pic_'+i+'\');"><{img src="images/bundle/delecate.gif" style="cursor:pointer;" alt="删除" title="删除"}></span></td>\
+			  </tr>\
+			  </table>\
+			  ';
+			  $E('#picAddress .addpiccontent').adopt(new Element('div').set('html',content).getFirst());
+
+
+}
+delLink=function(o){
+  $(o).remove();
+}
+
+function load_photo_collect(target){
+			return new Dialog('index.php?ctl=editor&act=image&p[0]=0',{title:'插入<img>',onShow:function(){
+			var dialog=this;
+			this.dialog.store('callback',function(src){
+              target.value=src;
+              dialog.close();
+           });
+        }});
+}
+
+</script>

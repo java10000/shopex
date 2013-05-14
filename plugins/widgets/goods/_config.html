@@ -1,0 +1,426 @@
+<style>
+.goodsadvconfig .descconfig div{
+  float:left;
+  width:33%;
+  text-align:center;
+}
+.goodsadvconfig .input_style{
+  width:90%;
+}
+</style>
+<div id="cat-config" style="display:none;"></div>
+
+<div class="tableform widgetconfig">
+  <div id="showList">
+  标签数：<select name="columNum" onChange="columsNum()" id="columNum"><option value=1 <{if $setting.columNum==1}>selected<{/if}> >1</option><option value=2 <{if $setting.columNum==2}>selected<{/if}>>2</option><option value=3 <{if $setting.columNum==3}>selected<{/if}>>3</option><option value=4 <{if $setting.columNum==4}>selected<{/if}>>4</option><option value=5 <{if $setting.columNum==5}>selected<{/if}>>5</option></select>
+  切换标签方式：<select name="changeEffect"  id="changeEffect"><option value=1 <{if $setting.changeEffect==1}>selected<{/if}>>点击</option><option value=2 <{if $setting.changeEffect==2}>selected<{/if}>>滑动</option></select>
+  </div>
+  <h4>商品显示范围</h4>
+  <div class="division" id="listArea1" name="listArea1">
+    默认停留:<input type="radio" name="onSelect" value=0 <{if $setting.onSelect== 0}>checked<{/if}>>
+    列表说明：<{input name="explain[0]" value=$setting.explain[0]}>
+  </div>
+  <{filter type="goods/products" name="filter1" from=$setting.filter1}>
+  
+  <div class="division" id="listArea2" style="display:none">
+    <h4>商品显示范围</h4>
+    默认停留:<input type="radio" name="onSelect" value=1 <{if $setting.onSelect== 1}>checked<{/if}>>
+    列表说明：<{input name="explain[1]" value=$setting.explain[1]}>
+    <{filter type="goods/products" name="filter2" from=$setting.filter2}>
+  </div>
+  
+  
+  <div class="division" id="listArea3" style="display:none">
+    <h4>商品显示范围</h4>
+    默认停留:<input type="radio" name="onSelect" value=2 <{if $setting.onSelect== 2}>checked<{/if}>>
+    列表说明：<{input name="explain[2]" value=$setting.explain[2]}>
+
+    <{filter type="goods/products" name="filter3" from=$setting.filter3}>
+  </div>
+  
+  <div class="division" id="listArea4" style="display:none">
+    <h4>商品显示范围</h4>
+    默认停留:<input type="radio" name="onSelect" value=3 <{if $setting.onSelect== 3}>checked<{/if}>>
+    列表说明：<{input name="explain[3]" value=$setting.explain[3]}>
+
+    <{filter type="goods/products" name="filter4" from=$setting.filter4}>
+  </div>
+
+  <div class="division" id="listArea5" style="display:none">
+    <h4>商品显示范围</h4>
+    默认停留:<input type="radio" name="onSelect" value=4 <{if $setting.onSelect== 4}>checked<{/if}>>
+    列表说明：<{input name="explain[4]" value=$setting.explain[4]}>
+
+    <{filter type="goods/products" name="filter5" from=$setting.filter5}>
+  </div>
+
+  
+  <div class="division">
+	
+    <table width="100%" cellpadding="0" cellspacing="0">
+      <tr> 
+        <th>列数：</th>
+        <td><{input name="column" value=$setting.column|default:'4' required="true" 
+          type="digits"}></td>
+      </tr>
+      <tr> 
+        <th>商品数：</th>
+        <td><{input name="limit" value=$setting.limit|default:'4' required="true" 
+          type="digits"}></td>
+      </tr>
+
+	<tr> 
+        <th>排序设定：</th>
+        <td><select name="goods_orderby"> 
+		<{foreach from=$data item=orderby key=key}>
+		<option value="<{$key}>" <{if $setting.goods_orderby==$key}>selected<{/if}>><{$orderby.label}></option>
+		<{/foreach}>
+		</select>
+		</td>
+     </tr>
+
+      <tr> 
+        <th>是否显示更多：</th>
+        <td> <input type="radio" name="showMore" value="on" <{if $setting.showMore!="off"}>checked="checked"<{/if}> 
+          >是 <input type="radio" name="showMore" value="off" <{if $setting.showMore=="off"}>checked="checked"<{/if}>>否  
+        </td>
+      </tr>
+      <tr id="showGoodsPicArea"> 
+        <th>显示商品图片：</th>
+        <td><input type="radio" name="showGoodsImg" id="showGoodsImg" value="on" <{if 
+          $setting.showGoodsImg!="off"}>checked="checked"<{/if}> >是 <input type="radio" name="showGoodsImg" value="off" <{if 
+          $setting.showGoodsImg=="off"}>checked="checked"<{/if}>>否 </td>
+      </tr>
+      <tr >
+        <th>商品名最长显示长度：</th>
+        <td><{input name="max_length" value=$setting.max_length|default:'35'}></td>
+      </tr>
+    </table>
+  </div>
+  <div class="division" id="showGoodsImg-view" <{if $setting.showGoodsImg=="off"}>style="display:none"<{/if}>>
+  
+  <h4>商品图片设置</h4>
+    <table width="100%" cellpadding="0" cellspacing="0">
+      <tr>
+        <th>图片位置：</th>
+        <td><select name="goodsImgPosition">
+  <option value="top" <{if $setting.goodsImgPosition=="top"}>selected="selected"<{/if}>>上方</option>
+  <option value="left" <{if $setting.goodsImgPosition=="left"}>selected="selected"<{/if}>>左侧</option>
+  <option value="center" <{if $setting.goodsImgPosition=="center"}>selected="selected"<{/if}>>中间</option>
+  <option value="right" <{if $setting.goodsImgPosition=="right"}>selected="selected"<{/if}>>右侧</option>
+  <option value="bottom" <{if $setting.goodsImgPosition=="bottom"}>selected="selected"<{/if}>>下方</option>
+</select></td>
+      </tr>
+    </table>
+  </div>
+   <div class="division">
+  <table width="100%" cellpadding="0" cellspacing="0">
+    <tr id="showGoodsNameArea">
+      <th>显示商品名：</th>
+      <td><input type="radio" name="showGoodsName" value="on" <{if $setting.showGoodsName!="off"}>checked="checked"<{/if}>>是  <input type="radio" name="showGoodsName" value="off" <{if $setting.showGoodsName=="off"}>checked="checked"<{/if}>>否 </td>
+    </tr>
+    <tr>
+      <th>显示商品描述(包括价格、简介等)：</th>
+      <td><input type="radio" name="showGoodsDesc" value="on" <{if $setting.showGoodsDesc!="off"}>checked="checked"<{/if}>>是  <input type="radio" name="showGoodsDesc" value="off" <{if $setting.showGoodsDesc=="off"}>checked="checked"<{/if}>>否 </td>
+    </tr>
+  </table>
+  </div>
+  <div class="division">
+  <span id="btn-adv-config" class="lnk">更多设置&gt;&gt;</span>
+  <div id="adv-config" style="display:none;">
+<div class="division" id="showGoodsDesc-view" <{if $setting.showGoodsDesc=="off"}>style="display:none"<{/if}>>
+<h4>商品描述设置</h4>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="goodsadvconfig">
+  <tr>
+    <th scope="col" width="15%"></th>
+  <th scope="col" width="17%" style="text-align:center">是否显示</th>
+    <th scope="col" width="17%" style="text-align:center">显示为</th>
+  <th scope="col" width="17%" style="text-align:center">分隔符</th>
+  </tr>
+  <tr>
+    <th scope="row">市场价：</th>
+    <td colspan="5" class="descconfig">
+  <div><input type="radio" name="showGoodsMktPrice" value="on" <{if $setting.showGoodsMktPrice!="off"}>checked="checked"<{/if}>>是  <input type="radio" name="showGoodsMktPrice" value="off" <{if $setting.showGoodsMktPrice=="off"}>checked="checked"<{/if}>>否</div>
+  
+  
+<table width="100%" border="0" cellspacing="0" cellpadding="0" id="showGoodsMktPrice-view" <{if $setting.showGoodsMktPrice!='on'}>style="display:none"<{/if}>>
+  <tr>
+    <td><input name="mktPriceText" class="input_style" value="<{$setting.mktPriceText|default:'市场价'}>"></td>
+    <td><input name="mktPriceSep" class="input_style" value="<{$setting.mktPriceSep|default:':'}>"></td>
+  </tr>
+  <tr>
+    <td colspan="2">字体设置：<{input type="color" name="color1" value=$setting.color1|default:'default' }>&nbsp;<{input name="mark_font" type="fontset" value=$setting.mark_font|default:'0'}></td>
+  </tr>
+</table>
+
+  
+  </td>
+  </tr>
+  <tr>
+    <th scope="row">销售价：</th>
+    <td colspan="5" class="descconfig">
+  <div><input type="radio" name="showGoodsPrice" value="on" <{if $setting.showGoodsPrice!="off"}>checked="checked"<{/if}>>是  <input type="radio" name="showGoodsPrice" value="off" <{if $setting.showGoodsPrice=="off"}>checked="checked"<{/if}>>否</div>
+  
+  <table width="100%" cellspacing="0" cellpadding="0" id="showGoodsPrice-view" <{if $setting.showGoodsPrice=="off"}>style="display:none"<{/if}>>
+  <tr>
+    <td><input name="priceText" class="input_style" value="<{$setting.priceText|default:'销售价'}>"></td>
+    <td><input name="priceSep" class="input_style" value="<{$setting.priceSep|default:':'}>"></td>
+  </tr>
+  <tr>
+    <td colspan="2">字体设置：<{input type="color" name="color2" value=$setting.color2|default:'default'}>&nbsp;<{input name="member_font" type="fontset" value=$setting.member_font|default:'0'}></td>
+  </tr>
+</table>
+
+  
+  
+  </td>
+  </tr>
+  <tr>
+    <th scope="row">节省：</th>
+    <td colspan="5" class="descconfig">
+  <div><input type="radio" name="showGoodsSave" value="on" <{if $setting.showGoodsSave!="off"}>checked="checked"<{/if}>>是  <input type="radio" name="showGoodsSave" value="off" <{if $setting.showGoodsSave=="off"}>checked="checked"<{/if}>>否</div>
+  <table width="100%" cellspacing="0" cellpadding="0" id="showGoodsSave-view" <{if $setting.showGoodsSave=="off"}>style="display:none"<{/if}>>
+  <tr>
+    <td><input name="saveText" class="input_style" value="<{$setting.saveText|default:'节省'}>"></td>
+    <td><input name="saveSep" class="input_style" value="<{$setting.saveSep|default:':'}>"></td>
+  </tr>
+  <tr>
+    <td colspan="2">字体设置：<{input type="color" name="color3" value=$setting.color3|default:'default'}>&nbsp;<{input name="save_font" type="fontset" value=$setting.save_font|default:'0'}></td>
+  </tr>
+
+
+
+
+</table>
+
+   <tr>
+    <th scope="row">折扣：</th>
+    <td colspan="5" class="descconfig">
+  <div><input type="radio" name="showCount" value="on" <{if $setting.showCount!="off"}>checked="checked"<{/if}>>是  <input type="radio" name="showCount" value="off" <{if $setting.showCount=="off"}>checked="checked"<{/if}>>否</div>
+  <table width="100%" cellspacing="0" cellpadding="0" id="showCount-view" <{if $setting.showCount=="off"}>style="display:none"<{/if}>>
+  <tr>
+    <td><input name="countText" class="input_style" value="<{$setting.countText|default:'折扣'}>"></td>
+    <td><input name="countSep" class="input_style" value="<{$setting.countSep|default:'%'}>"></td>
+  </tr>
+  <tr>
+    <td colspan="2">字体设置：<{input type="color" name="color5" value=$setting.color5|default:'default'}>&nbsp;<{input name="count_font" type="fontset" value=$setting.count_font|default:'0'}></td>
+  </tr>
+
+  
+  </td>
+</table>
+
+  
+
+  </td>
+  </tr>
+  
+  
+  <tr>
+    <th scope="row">显示购买区：</th>
+    <td colspan="5" class="descconfig">
+  <div><input type="radio" name="showBuyArea" value="on" <{if $setting.showBuyArea=="on"}>checked="checked"<{/if}>>是  <input type="radio" name="showBuyArea" value="off" <{if $setting.showBuyArea!="on"}>checked="checked"<{/if}>>否</div>
+  </span></td>
+  </tr>
+</table>
+</div>
+
+<table width="100%" cellpadding="0" cellspacing="0">
+      <tr>
+        <th>商品图片宽：</th>
+        <td><{input name="goodsImgWidth" value=$setting.goodsImgWidth type="digits"}></td>
+      </tr>
+      <tr>
+        <th>商品图片高：</th>
+        <td><{input name="goodsImgHeight" value=$setting.goodsImgHeight type="digits"}></td>
+      </tr>
+	  	   <tr >
+        <th>图片设定：</th>
+        <td><input type="radio" name="restrict" value="off" <{if $setting.restrict=="off"}>checked="checked"<{/if}> 
+          >强制大小 <input type="radio" name="restrict" value="on" <{if $setting.restrict!="off"}>checked="checked"<{/if}>>超出截断  
+		  </td>
+      </tr>
+
+</table>
+
+<table width="100%" cellpadding="0" cellspacing="0" id="showTypePic">
+  <tr>
+    <th>显示分类图片：</th>
+    <td><input type="radio" name="showTitleImg" id="showTitleImg" value="on" <{if $setting.showTitleImg=="on"}>checked="checked"<{/if}>>是  <input type="radio" name="showTitleImg" value="off" <{if $setting.showTitleImg!="on"}>checked="checked"<{/if}>>否 </td>
+  </tr>
+</table>
+
+<table width="100%" cellpadding="0" cellspacing="0" id="showGoodsInfo">
+  <tr>
+    <th>显示商品简介：</th>
+    <td><input type="radio" name="showGoodsInfo" id="showGoodsInfo" value="on" <{if $setting.showGoodsInfo=="on"}>checked="checked"<{/if}>>是  <input type="radio" name="showGoodsInfo" value="off" <{if $setting.showGoodsInfo!="on"}>checked="checked"<{/if}>>否 </td>
+  </tr>
+</table>
+
+<div class="division" id="showTitleImg-view" <{if $setting.showTitleImg!="on"}>style="display:none"<{/if}>>
+<h4>分类图片设置</h4>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr>
+    <th>图片地址：</th>
+    <td><{input name="titleImgSrc" value=$setting.titleImgSrc}>
+    </td>
+  </tr>
+  <tr>
+    <th>图片链接：</th>
+    <td><{input name="titleImgHref" value=$setting.titleImgHref}>
+    </td>
+  </tr>
+  <tr>
+    <th>图片位置：</th>
+    <td><select name="titleImgPosition">
+  <option value="top" <{if $setting.titleImgPosition=="top"}>selected="selected"<{/if}>>上方</option>
+  <option value="left" <{if $setting.titleImgPosition=="left"}>selected="selected"<{/if}>>左侧</option>
+  <option value="center" <{if $setting.titleImgPosition=="center"}>selected="selected"<{/if}>>中间</option>
+  <option value="right" <{if $setting.titleImgPosition=="right"}>selected="selected"<{/if}>>右侧</option>
+  <option value="bottom" <{if $setting.titleImgPosition=="bottom"}>selected="selected"<{/if}>>下方</option>
+</select></td>
+  </tr>
+  <tr>
+    <th>图片描述：</th>
+    <td><{input name="titleImgAlt" value=$setting.titleImgAlt}>
+    </td>
+  </tr>
+</table>
+</div>
+
+<table width="100%" cellpadding="0" cellspacing="0" id="showTypeDescript">
+  <tr>
+    <th>显示分类描述：</th>
+    <td><input type="radio" name="showTitle" value="on" <{if $setting.showTitle=="on"}>checked="checked"<{/if}>>是  <input type="radio" name="showTitle" value="off" <{if $setting.showTitle!="on"}>checked="checked"<{/if}>>否</td>
+  </tr>
+  <tr id="showTitle-view" <{if $setting.showTitle!="on"}>style="display:none"<{/if}>>
+    <th>分类描述：</th>
+    <td><{input name="titleDesc" value=$setting.titleDesc}></td>
+  </tr>
+</table>
+  </div>
+</div>
+
+
+
+
+
+<script>
+
+function columsNum(){
+  for(i=2;i<=5;i++){
+    if(i<=$('columNum').value){
+      $('listArea'+i).style.display="";
+    }else{
+      $('listArea'+i).style.display="none";
+    }
+  }
+  
+}
+
+function doCheck(){
+    
+    if($('showGoodsImg').checked==true){
+      $('showGoodsImg-view').style.display="";
+    }
+    if($('showTitleImg').checked==true){
+      $('showTitleImg-view').style.display="";
+    }
+    
+}
+function setToggler(togglers){
+  togglers.each(function(toggler){
+    var view = toggler.getProperty('name')+'-view';
+    toggler.addEvent('click',function(){
+      if(this.value=="on"){
+        $(view).show();
+      }else{
+        $(view).hide();
+      }
+    });
+  });
+}
+
+var togglers = $$('input[name="showGoodsImg"]','input[name="showGoodsDesc"]','input[name="showTitleImg"]','input[name="showTitle"]','input[name="showGoodsMktPrice"]','input[name="showGoodsPrice"]','input[name="showGoodsSave"]','input[name="showCount"]');
+setToggler(togglers);
+
+$('btn-adv-config').addEvent('click',function(){
+  if(this.hasClass('show')){
+    this.removeClass('show');
+    $('adv-config').hide();
+  }else{
+    this.addClass('show');
+    $('adv-config').show();
+  }
+});
+columsNum();
+
+function getCfgForm(id){
+  var config = $(id);
+  while(config.tagName != 'FORM'){
+    config = config.getParent();
+  }
+  return config;
+}
+
+function onRest(){
+  $('columNum').selectedIndex=0;
+  $('listArea1').style.display="none";
+  $('showList').style.display="none";
+  columsNum();
+}
+
+
+
+function setCfgView(view){
+  switch(view){
+    case 'default.html':
+      onRest();
+      $('showTypePic').style.display="";
+      $('showTypeDescript').style.display="";
+      $('showGoodsNameArea').style.display="";
+      $('showGoodsPicArea').style.display="";
+      doCheck();
+    break;
+    case 'morediv.html':
+    case 'morediv2.html':
+      $('showList').style.display="";
+      $('listArea1').style.display="";
+      $('showTypePic').style.display="none";
+      $('showTypeDescript').style.display="none";
+      $('showGoodsNameArea').style.display="none";
+      $('showGoodsPicArea').style.display="none";
+      $('showGoodsImg-view').style.display="none";
+      $('showTitleImg-view').style.display="none";
+    break;
+    case 'list2.html':
+      onRest();
+      $('showTypePic').style.display="none";
+      $('showTypeDescript').style.display="none";
+      $('showGoodsNameArea').style.display="none";
+      $('showGoodsPicArea').style.display="none";
+      $('showGoodsImg-view').style.display="none";
+      $('showTitleImg-view').style.display="none";
+    break;
+  }
+}
+
+function getWgtTpl(){
+  var sels = getCfgForm('cat-config').getElements('select');
+  var wgtTpl = '';
+  sels.each(function(sel){
+    if(sel.getProperty('name') == '__wg[tpl]') wgtTpl = sel;
+  });
+  return wgtTpl;
+}
+
+
+
+var catTpl = getWgtTpl();
+setCfgView(catTpl.value);
+
+catTpl.addEvent('change',function(){
+  setCfgView(this.value);
+});
+
+</script>

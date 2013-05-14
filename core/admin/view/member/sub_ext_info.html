@@ -1,0 +1,33 @@
+
+  <div class="span-5">
+    <label><{t}>工作行业：<{/t}></label>
+    <{$mem.industry|escape:'html'}></div>
+
+  <div class="span-5">
+    <label><{t}>职 业：<{/t}></label>
+    <{$mem.vocation|escape:'html'}></div>
+  <div class="span-5">
+    <label><{t}>教育程度：<{/t}></label>
+    <{$mem.education|escape:'html'}>
+   </div>
+  <div class="span-5">
+    <label><{t}>月收入：<{/t}></label>
+    <{$mem.salary}>
+    </div>
+  <div class="span-5"><label><{t}>婚姻状况：<{/t}></label>
+    <{if $mem.wedlock}>已婚<{else}>未婚<{/if}></div>
+  <div class="span-5">
+    <label><{t}>兴趣爱好：<{/t}></label>
+  </div>
+  <div class="span-5">
+    <label><{$mem.interest|escape:'html'
+}></label>
+  </div>
+  <hr class="clear" />
+    <div class="span-10">
+    <label><{t}>公司单位：<{/t}></label>
+    <{$mem.company|escape:'html'}></div>
+  <div class="span-10">
+    <label><{t}>公司地址：<{/t}></label>
+    <{$mem.co_addr|escape:'html'}></div>
+

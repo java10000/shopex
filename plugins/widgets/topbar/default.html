@@ -1,0 +1,120 @@
+<span id="foobar_<{$widgets_id}>" style="position: relative;">
+
+    <{t}>您好,<{/t}><span id="uname_<{$widgets_id}>"></span>&nbsp;
+     
+    <{if !$env.cookie.MEMBER}>
+      <span id="loginBar_<{$widgets_id}>">
+          <a href="<{link ctl=passport act=login}>"><{t}>[请登录]<{/t}></a>&nbsp;&nbsp;
+          
+          <a href="<{link ctl=passport act=signup}>"><{t}>[免费注册]<{/t}></a>
+      </span>
+    <{else}>
+      <span id="memberBar_<{$widgets_id}>">
+        <a href="<{link ctl=member act=index}>"><{t}>[会员中心]<{/t}></a>&nbsp;&nbsp;
+        <a href="<{link ctl=passport act=logout}>"><{t}>[退出]<{/t}></a>
+      </span>
+    <{/if}>
+
+    <{if $setting.show_cur}>&nbsp;
+      <span id="Cur_sel_<{$widgets_id}>" style="cursor: default;">
+          <strong></strong>
+          <{img src="statics/bundle/arrow-down.gif"}>
+      </span>
+    <{/if}>
+
+    <{if $setting.show_cart}>&nbsp;
+      <a href="<{link ctl=cart act=index}>" target="_blank" class="cart-container">
+        <span class="inlineblock CartIco"><{t}>购物车<{/t}></span>
+        [<span id="Cart_<{$widgets_id}>" class="cart-number">0</span>]
+        <{img  src="statics/bundle/arrow-down.gif"}>
+      </a>
+    <{/if}>
+</span>
+
+<style id='thridpartystyle'>
+.trustlogin { background:url(statics/icons/thridparty1.gif) no-repeat left; padding-left:18px; height:20px; line-height:20px; }
+#accountlogin{visibility:hidden;cursor:pointer;padding-top:0px; }
+</style>
+
+<script>
+
+/*
+*foobar update:2009-9-8 13:46:55 modify by rocky@shopex 2013.1.27
+*@author litie[aita]shopex.cn
+*-----------------*/
+window.addEvent('domready',function(){
+    var coinBar,cartCountBar;
+    
+    var barId ="<{$widgets_id}>",bar = $('foobar_'+barId), barOptions = {
+        MID:Cookie.get('S[MEMBER]'),
+        uname:Cookie.get('S[UNAME]'),
+        name:Cookie.get('S[NAME]'),
+        coin:<{$data.cur|default:'null'}>,
+        curCoin:Cookie.get('S[CUR]'),
+        cartViewURl:'<{link ctl="cart" act="view"}>',
+        stick:<{if $setting.stick}>true<{else}>false<{/if}>
+    };
+
+    /* 调取cookie显示登陆用户名*/
+    if(barOptions.MID){
+        $('uname_'+barId).setText(barOptions.name ? barOptions.name : barOptions.uname);
+    }
+    
+    // 选择货币
+    if (coinBar = $('Cur_sel_'+barId)) {
+        var coinMenu = new Element('div',{'class':'coinmenu fmenu','styles':{'display':'none'}}).inject(document.body);
+
+        barOptions.coin.each(function(item){
+            if(item['cur_code']==barOptions['curCoin']){
+                coinBar.getElement('strong').set('text',[item.cur_sign,item.cur_name].join(''));
+            }
+            coinMenu.adopt(new Element('div',{'class':'item',text:[item.cur_sign,item.cur_name].join(''),events:{
+                click:function(){
+                    Cookie.set('S[CUR]',item.cur_code);
+                    window.location.reload();
+                }
+            }}));
+        });
+
+        coinBar.addEvents({
+            'mouseenter':function(){
+                coinMenu.setStyles({
+                    top:coinBar.getPosition().y+coinBar.getSize().y,
+                    left:coinBar.getPosition().x,
+                    display:'block',
+                    visibility:'visible'
+                });
+            }
+        });
+        
+        new QMenu(coinBar,coinMenu);
+    }
+    
+    // 购物车
+    if( cartCountBar = $('Cart_'+barId) ) {
+        cartCountBar.setText(Cookie.get('S[CART_COUNT]')?Cookie.get('S[CART_COUNT]'):0);
+        var cartViewMenu = new Element('div',{'class':'cartviewmenu fmenu','styles':{'display':'none'}}).inject(document.body);
+        cartCountBar.addEvents({
+            'mouseenter': function(){
+                cartViewMenu.setStyles({
+                    top:bar.getPosition().y+bar.getSize().y,
+                    left:bar.getPosition().x,
+                    width:bar.getSize().x,
+                    display:'block',
+                    visibility:'visible'
+                }).set('html','<div class="note">加载购物车信息...</div>');
+                
+                this.retrieve('request',{cancel:$empty}).cancel();
+                this.store('request',new Request.HTML({update:cartViewMenu}).get(barOptions.cartViewURl));
+            }
+        });
+        new QMenu(cartCountBar,cartViewMenu);
+     }
+    
+});
+</script>
+<script>
+if((null!=Cookie.get('S[NAME]'))||(null!=Cookie.get('S[UNAME]'))){
+    $('uname_<{$widgets_id}>').setText('：'+(Cookie.get('S[NAME]') ? Cookie.get('S[NAME]'):Cookie.get('S[UNAME]')));
+}
+</script>

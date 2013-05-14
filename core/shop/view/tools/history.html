@@ -1,0 +1,26 @@
+<div id="x-pdt-history" class="GoodsSearchWrap">
+</div>
+
+<script>
+withBroswerStore(function(broswerStore){
+    broswerStore.get('history',function(v){
+            v=JSON.decode(v);
+           if(v && v.length && v.length>0){
+              v.reverse();
+              var dt=[];
+              $('x-pdt-history').innerHTML='数据载入中...';
+              v.each(function(i){dt.push(i['goodsId'])});
+              new Ajax('<{link ctl=tools act=products}>',{method:'post',update:$('x-pdt-history'),data:'goods='+dt.join(','),onComplete:function(){
+                   
+              
+              
+              }}).request();
+             
+            }else{
+               $('x-pdt-history').innerHTML='浏览记录为空.';
+            }
+       
+       });
+  }
+ );
+</script>

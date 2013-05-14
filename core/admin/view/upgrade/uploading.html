@@ -1,0 +1,22 @@
+<style>
+#lost-files{height:250px;overflow-y:auto;background:#fff;margin-bottom:10px}
+#lost-files div{font-size:11px;padding:2px}
+</style>
+<h2><{t}>等待以下文件正确上传完成...<{/t}></h2>
+<div><{t}>注意！使用二进制上传php文件<{/t}></div>
+<div id="lost-files" style="height:250px;overflow-y:auto;background:#fff">
+<{foreach from=$files item=item name="list"}>
+	<{if $smarty.foreach.list.iteration is odd}>
+		<div style="background:#F1F5FA">
+	<{else}>
+		<div>
+	<{/if}>
+	<{$item}></div>
+<{/foreach}>
+</div>
+<table width="100%" border="0">
+	<tr>
+		<td><button style="font-weight:bold;padding:5px" onclick="window.location.reload()"><{t}>(F5)刷新,重新检查<{/t}></button></td>
+		<td valign="top" align="right"><button style="color:red;" onclick="window.location='index.php?ignore_lost=1<{if $smarty.get.force_ver}>&force_ver=<{$smarty.get.force_ver}><{/if}>'"><{t}>忽略错误，强行运行升级脚本 &raquo;<{/t}></button></td>
+	</tr>
+</table>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<{strip}>
+<theme>
+	<name><{$name|escape:"html"}></name>
+	<id><{$id|escape:"html"}></id>
+	<version><{$version|escape:"html"}></version>
+	<info><{$info|escape:"html"}></info>
+	<author><{$author|escape:"html"}></author>
+	<site><{$site|escape:"html"}></site>
+	<update_url><{$update_url|escape:"html"}></update_url>
+
+	<borders>
+		<{foreach from=$config.borders item=borders}>
+		<set key="<{$borders.key|escape:"html"}>" tpl="<{$borders.tpl|escape:"html"}>" />
+		<{/foreach}>
+	</borders>
+	<views>
+		<{foreach from=$config.views item=views}>
+		<{if $views.regex!=''}>
+		<view regex="<{$views.regex|escape:"html"}>" tpl="<{$views.tpl|escape:"html"}>" />
+		<{else}>
+		<view controller="<{$views.controller|escape:"html"}>" action="<{$views.action|escape:"html"}>" tpl="<{$views.tpl|escape:"html"}>" />
+		<{/if}>
+		<{/foreach}>
+	</views>
+	<config>	  
+		<{foreach from=$config.config item=configs}>
+		<set key="<{$configs.key|escape:"html"}>" value="<{$configs.value|escape:"html"}>" label="<{$configs.label|escape:"html"}>" />
+		<{/foreach}>
+	</config>
+
+	<widgets>
+		<{foreach from=$widgets item=widget}>
+		<widget file="<{$widget.base_file|escape:"html"}>" slot="<{$widget.base_slot|escape:"html"}>" type="<{$widget.widgets_type|escape:"html"}>" order="<{$widget.widgets_order|escape:"html"}>" title="<{$widget.title|escape:"html"}>" domid="<{$widget.domid|escape:"html"}>" border="<{$widget.border|escape:"html"}>" classname="<{$widget.classname|escape:"html"}>" tpl="<{$widget.tpl|escape:"html"}>" baseid="<{$widget.base_id|escape:"html"}>">
+		<{$widget.params|escape:'html'}>
+		</widget>
+		<{/foreach}>
+	</widgets>
+</theme><{/strip}>

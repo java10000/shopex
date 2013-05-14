@@ -1,0 +1,3 @@
+<{if $_finder.viewParams.target}>
+<{button label="新建规则" wrapimg="true" class="btn-large" icon="finder_add.gif" type="button" onclick="new Dialog('index.php?ctl=system/trigger&act=addNew&p[0]={$_finder.viewParams.target}',{modal:1,height:500,width:550,title:'新建规则',onClose:{$_finder.var}.refresh.bind({$_finder.var})})" }>
+<{/if}>

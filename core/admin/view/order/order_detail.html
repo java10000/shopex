@@ -1,0 +1,420 @@
+<{if !$_is_singlepage}>
+<div class="action-bar">
+    <div class="order-ctls" order_id="<{$order.order_id}>">
+        <{if $_plugin_actbar_}>
+            <{include file=$_plugin_actbar_}>
+        <{else}>
+            <{include file="order/actbar.html"}>
+        <{/if}>
+        <{assign var="order_id" value=$order.order_id}>
+    </div>
+</div>
+<{/if}>
+
+<{if $order.refer_id}>
+  <h5>
+    <{t}>(订单来源ID：<{/t}>
+    <{refer id=$order.refer_id url=$order.refer_url show='id'}>
+    <{t}>订单来源网址：<{/t}>
+    <{refer id=$order.refer_id url=$order.refer_url show='url'}>)
+  </h5>
+<{/if}>
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td style="vertical-align:top">
+      <div>
+        <{if $goodsItems}>
+        <div class="division gridlist">
+          <table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <thead>
+              <tr><th><{t}>订单商品 (购买量)<{/t}></th></tr>
+            </thead>
+            <tbody>
+              <{foreach from=$goodsItems item=aGoods}>
+              <tr>
+                <td style=" white-space:normal; text-align:left;">
+                  <a <{if $aGoods.is_type == 'goods'}>href="../index.php?ctl=product&act=index&p[0]=<{$aGoods.goods_id}>"<{else}>href="../index.php?ctl=package&act=index"<{/if}> target="_blank"><{$aGoods.name}></a>
+
+                  <{if $aGoods.minfo}>（
+                  <{foreach from=$aGoods.minfo item=minfo key=name}>
+                    <{$minfo.label}>：<{$minfo.value}>；
+                  <{/foreach}>）
+                  <{/if}>
+
+                  <span class="fontcolorOrange fontbold">×(<{$aGoods.nums}>)</span>
+                </td>
+              </tr>
+              <{/foreach}>
+            </tbody>
+          </table>
+        </div>
+        <{/if}>
+
+        <{if count($giftItems) > 0}>
+        <div class="division gridlist">
+          <table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <thead>
+              <tr><th><{t}>赠品名称与购买量<{/t}></th></tr>
+            </thead>
+            <tbody>
+              <{foreach from=$giftItems item=aGift}>
+              <tr>
+                <td style=" white-space:normal; text-align:left;">
+                  <{$aGift.name}><sup>x <{$aGift.nums}></sup>
+                </td>
+              </tr>
+              <{/foreach}>
+            </tbody>
+          </table>
+        </div>
+        <{/if}>
+      </div>
+
+      <div class="tableform">
+        <table border="0" cellpadding="0" cellspacing="0" class="orderdetails_basic" style="width:auto;">
+          <tr>
+            <td style="vertical-align:top;" >
+              <h5><{t}>商品价格<{/t}></h5>
+              <div class="division">
+                <table border="0" cellpadding="0" cellspacing="0" >
+                  <tr>
+                    <th style="width:80px;" ><{t}>商品总额：<{/t}></th>
+                    <td><{$order.cost_item|cur}></td>
+                  </tr>
+                  <tr>
+                    <th style="width:80px;" ><{t}>配送费用：<{/t}></th>
+                    <td><{$order.cost_freight|cur}></td>
+                  </tr>
+                  <{if $order.is_protect == 'true'}>
+                  <tr>
+                    <th style="width:80px;" ><{t}>保价费用：<{/t}></th>
+                    <td><{$order.cost_protect|cur}></td>
+                  </tr>
+                  <{/if}>
+                  <{if $order.cost_payment > 0}>
+                  <tr>
+                    <th style="width:80px;" ><{t}>支付手续费：<{/t}></th>
+                    <td><{$order.cost_payment|cur}></td>
+                  </tr>
+                  <{/if}>
+                  <{if $order.is_tax == 'true'}>
+                  <tr>
+                    <th style="width:80px;" ><{t}>税金：<{/t}></th>
+                    <td><{$order.cost_tax|cur}></td>
+                  </tr>
+                  <{/if}>
+
+                  <{if $order.pmt_amount > 0}>
+                  <tr>
+                    <th style="width:80px;" ><{t}>使用优惠方案名称：<{/t}></th>
+                    <td><{$order.use_pmt}></td>
+                  </tr>
+                  <tr>
+                    <th style="width:80px;" ><{t}>优惠券抵扣金额：<{/t}></th>
+                    <td><{$order.pmt_amount|cur}></td>
+                  </tr>
+                  <{/if}>
+
+                  <{if $order.discount != 0}>
+                  <tr>
+                    <th style="width:80px;" >
+                      <{if $order.discount lt 0 }>
+                        <{t}>订单减免：<{/t}>
+                      <{else}>
+                      <{t}>订单涨价：<{/t}>
+                      <{/if}>
+                    </th>
+                    <td><{$order.discount|abs|cur}></td>
+                  </tr>
+                  <{/if}>
+
+                  <tr>
+                    <th style="width:80px;" ><{t}>订单总额：<{/t}></th>
+                    <td style="font-size:16px; color:#f90; font-weight:700;">
+                      <{$order.total_amount|amount}>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th style="width:80px;" ><{t}>已支付金额：<{/t}></th>
+                    <td><{$order.payed|cur:$order.currency}></td>
+                  </tr>
+
+                  <{if $order.cur_rate != 1}>
+                  <tr>
+                    <th style="width:80px;" ><{t}>货币：<{/t}></th>
+                    <td><{$order.cur_name}></td>
+                  </tr>
+                  <tr>
+                    <th style="width:80px;" ><{t}>汇率：<{/t}></th>
+                    <td><{$order.cur_rate}></td>
+                  </tr>
+                  <tr>
+                    <th style="width:80px;" ><{t}>结算货币金额：<{/t}></th>
+                    <td><{$order.final_amount|cur:$order.currency:false:true}></td>
+                  </tr>
+                  <{/if}>
+                </table>
+              </div>
+            </td>
+
+            <td style="vertical-align:top;" >
+              <h5><{t}>订单其他信息<{/t}></h5>
+              <div class="division">
+                <table border="0" cellpadding="0" cellspacing="0" >
+                  
+                  <tr>
+                    <th style="width:80px;" ><{t}>配送方式：<{/t}></th>
+                    <td><{$order.shipping}></td>
+                  </tr>
+                  <tr>
+                    <th style="width:80px;" ><{t}>配送保价：<{/t}></th>
+                    <td><{if $order.is_protect == 'true'}><{t}>是<{/t}><{else}><{t}>否<{/t}><{/if}></td>
+                  </tr>
+                  <tr>
+                    <th style="width:80px;" ><{t}>商品重量：<{/t}></th>
+                    <td><{$order.weight+0}> g</td>
+                  </tr>
+                  <tr>
+                    <th style="width:80px;" ><{t}>支付方式：<{/t}></th>
+                    <td>
+                     <{$order.payment}>
+                     &nbsp;
+                     <{foreach from=$order.extendCon item=item key=key}>
+                        <{$item}>&nbsp;&nbsp;
+                     <{/foreach}>
+                  </td>
+                  </tr>
+                  <tr>
+                    <th style="width:80px;" ><{t}>是否开票：<{/t}></th>
+                    <td><{if $order.is_tax == 'true'}><{t}>是<{/t}><{else}><{t}>否<{/t}><{/if}></td>
+                  </tr>
+                  <{if $order.is_tax == 'true'}>
+                  <tr>
+                    <th style="width:80px;" ><{t}>发票抬头：<{/t}></th>
+                    <td><{$order.tax_company}></td>
+                  </tr>
+                  <{/if}>
+                  <tr>
+                    <th style="width:80px;" ><{t}>可得积分：<{/t}></th>
+                    <td><{$order.score_g+0}></td>
+                  </tr>
+                </table>
+              </div>
+            </td>
+
+            <td style="vertical-align:top;" >
+              <h5><{t}>购买人信息<{/t}></h5>
+              <div class="division">
+                <table border="0" cellpadding="0" cellspacing="0" >
+                  <{if $order.member_id > 0}>
+                  <tr>
+                    <th style="width:80px;" ><{t}>用户名：<{/t}></th>
+                    <td>
+                    <a href="index.php?ctl=member/member&act=detail&p[0]=<{$order.member_id}>" target="_blank"><{$order.member.uname}></a></td>
+                  </tr>
+                  <tr>
+                    <th style="width:80px;" ><{t}>姓名：<{/t}></th>
+                    <td><{$order.member.name|escape:'html'}></td>
+                  </tr>
+                  <tr>
+                    <th style="width:80px;" ><{t}>电话：<{/t}></th>
+                    <td><{$order.member.tel}></td>
+                  </tr>
+                  <tr>
+                    <th style="width:80px;" ><{t}>地区：<{/t}></th>
+                    <td ><{$order.member.area|region}></td>
+                  </tr>
+                  <tr>
+                    <td>Email：</td><td><{$order.member.email}></td></tr>
+                    <tr><td><{t}>省份：<{/t}></td><td><{$order.member.province}></td></tr>
+                    <tr><td><{t}>邮编：<{/t}></td><td><{$order.member.zip}></td></tr>
+                  <tr>
+                    <th style="width:80px;" ><{t}>地址：<{/t}></th>
+                    <td><{$order.member.addr|escape:'html'}></td>
+                  </tr>
+                  <tr>
+                    <th style="width:80px;">Email：</th>
+                    <td><a target="_self" href="mailto:<{$order.member.email}>"><{$order.member.email}></a></td>
+                  </tr>
+
+                  <{foreach from=$tree item=contact name=contact}>
+                  <tr>
+                    <th style="width:80px;" ><{$contact.attr_name}>:</th>
+                    <td>
+                      <{if $contact.attr_tyname eq 'QQ' && $contact.value !=''}>
+                      <a target="_self" href="tencent://message/?uin=<{$contact.value}>&&Site=www.shopex.cn&&Menu=yes">
+                        <img border="0" SRC='http://wpa.qq.com/pa?p=1:<{$contact.value}>:1' title='<{$contact.value}>'>
+                      </a>
+                      <{/if}>
+
+                      <{if $contact.attr_tyname eq '旺旺' && $contact.value !=''}>
+                      <a target="_blank" href="http://amos1.taobao.com/msg.ww?v=2&uid=<{$contact.value}>&s=1">
+                        <img border="0" src="http://amos1.taobao.com/online.ww?v=2&uid=<{$contact.value}>&s=1" title='<{$contact.value}>'/>
+                      </a>
+                      <{/if}>
+                      <{if $contact.attr_tyname eq 'Skype' && $contact.value !=''}>
+                      <a href="skype:<{$contact.value}>?call"  target="_self"onclick="return skypeCheck();">
+                        <img src="http://mystatus.skype.com/smallclassic/<{$contact.value}>" style="border: none;" alt="Call me!" title='<{$contact.value}>'/>
+                      </a>
+                      <{/if}>
+                    </td>
+                  </tr>
+                  <{/foreach}>
+                  <{else}>
+                  <tr>
+                    <th style="width:80px;" ><{t}>非会员顾客<{/t}></th><td></td>
+                  </tr>
+                  <{/if}>
+                </table>
+              </div>
+            </td>
+
+            <td style="vertical-align:top" >
+              <{if $order.is_delivery == 'Y'}>
+              <h5 colspan="2"><{t}>收货人信息<{/t}>
+                <span class="sysiconBtnNoIcon" style="cursor:pointer" id="order_receiver_copy" status="Y" info="<{$order.ship_area|region}>,<{$order.ship_addr|escape:'html'}>,<{$order.ship_name|escape:'html'}><{if $order.ship_tel}>,<{$order.ship_tel}><{/if}><{if $order.ship_mobile}>,<{$order.ship_mobile}><{/if}>,<{$order.ship_zip|escape:'html'}>"><{t}>复制收货人信息<{/t}></span>&nbsp; 
+
+                <{help}>
+                  <{t}>此功能按照将收货人信息整合后复制到剪贴板，方便店主粘贴至目标位置，如：给顾客确认地址的邮件<{/t}><br /><br />
+                  <{t}>复制格式：<{/t}><br />
+                  <{t}>地区,地址,姓名,电话,手机,邮编<{/t}>
+                <{/help}>
+              </h5>
+
+              <div class="division">
+                <table border="0" cellpadding="0" cellspacing="0" >
+                  <tr>
+                    <th style="width:80px;" ><{t}>发货日期：<{/t}></th>
+                    <td><{$order.ship_time}></td>
+                  </tr>
+                  <tr>
+                    <th style="width:80px;" ><{t}>姓名：<{/t}></th>
+                    <td><{$order.ship_name|escape:'html'}></td>
+                  </tr>
+                  <tr>
+                    <th style="width:80px;" ><{t}>电话：<{/t}></th>
+                    <td><{$order.ship_tel}></td>
+                  </tr>
+                  <tr>
+                    <th style="width:80px;" ><{t}>手机：<{/t}></th>
+                    <td><{$order.ship_mobile}></td>
+                  </tr>
+                  <tr>
+                    <th style="width:80px;" ><{t}>地区：<{/t}></th>
+                    <td><{$order.ship_area|region}></td>
+                  </tr>
+                  <tr>
+                    <th style="width:80px;" ><{t}>地址：<{/t}></th>
+                    <td style="white-space:normal; line-height:18px;"><{$order.ship_addr|escape:'html'}></td>
+                  </tr>
+                  <tr>
+                    <th style="width:80px;" ><{t}>邮编：<{/t}></th>
+                    <td><{$order.ship_zip|escape:'html'}></td>
+                  </tr>
+                  <{if !$order.member_id}>
+                  <tr>
+                    <th style="width:80px;" >Email：</th>
+                    <td><{$order.ship_email}></td>
+                  </tr>
+                  <{/if}>
+                </table>
+              </div>
+              <{/if}>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      <div class="division">
+        <div class="table-grid">
+          <table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tbody>
+              <tr>
+                <td style="text-align:left;">
+                  <strong><{t}>会员备注：<{/t}></strong>
+                  <{$order.member.remark|escape:'html'}>
+                </td>
+              </tr>
+              <tr>
+                <td style="text-align:left;">
+                  <strong><{t}>订单备注：<{/t}></strong>
+                  <{$order.mark_text|escape:'html'}>
+                </td>
+              </tr>
+              <tr>
+                <td style="text-align:left;">
+                  <strong><{t}>订单附言：<{/t}></strong>
+                  <{$order.memo|escape:'html'}>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </td>
+  </tr>
+</table>
+
+<script>  
+var openHandler={};
+OrderMgr = {act:{
+  run:function(method,el,tag){
+    var order_id=$(el).getParent('div[order_id]').get('order_id');
+    OrderMgr.currentInfo = el.getContainer();
+    if(tag>0){
+      openHandler = new Dialog('index.php?ctl=order/order&act='+method+'&p[0]='+order_id+'t='+$time(), {title:'订单['+order_id+']'+el.value+'操作',
+          width:window.getSize().x*0.85,
+          height:window.getSize().y*0.85,
+          onLoad:function(){
+              <{if $env.get._finder_name}>
+                this.dialog.getElement('form').store('target',{
+                   update:'messagebox',
+                   onComplete:function(){
+                      openHandler.close();
+                      finderGroup['<{$env.get._finder_name}>'].refresh();
+                   }
+                });
+              <{/if}>
+          }
+      });
+    }else{
+      $(el).setProperty('disabled','disabled');
+      W.page('index.php?ctl=order/order&act='+method+'&p[0]='+order_id,{method:'post',data:{_o:'_'},update:'messagebox',
+        onComplete:function(){
+        
+         if(!window.finderGroup)return location.reload();
+        
+          finderGroup['<{$env.get._finder_name}>'].refresh();}},el
+        
+        );
+    }
+  }
+}};
+
+if($('order_receiver_copy')){
+  $('order_receiver_copy').addEvent('click',function(e){
+      if($(this).get('status') == "Y"){
+          copy_code($(this).get('info'));
+          $(this).set('status','N');
+      }
+  });
+}
+
+function copy_code(copyText){
+    if (window.clipboardData){
+        window.clipboardData.setData("Text", copyText);
+    }else{
+        prompt('请复制收货人信息：',copyText);
+    }
+    $('order_receiver_copy').setText('信息已经复制到剪切板中');
+    (function(){
+        if(!$('order_receiver_copy'))return;
+        $('order_receiver_copy').setText('复制收货人信息').set('status','Y');
+    }).delay(2000);
+}
+</script>

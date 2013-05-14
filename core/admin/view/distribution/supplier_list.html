@@ -1,0 +1,205 @@
+
+ <table class="finderInform pp" border="0" cellpadding="0" cellspacing="0" width="100%" id='supplier-list'>
+
+<!--<colgroup class="auto"></colgroup>
+
+<colgroup class="span-3"></colgroup>
+<colgroup class="span-3" style="text-align: center;"></colgroup>
+<colgroup class="span-3" style="text-align: center;"></colgroup>
+<colgroup class="span-3"></colgroup>
+<colgroup class="span-2"></colgroup>
+
+<colgroup class="span-2"></colgroup>
+<colgroup class="span-3" ></colgroup>-->
+<div id="UpdateProgess" align='center'></div>
+<thead>
+    <tr>
+
+      <th>供应商</th>
+      <th>更新列表</th>
+      <th>商品同步状态</th>
+      <th>图片同步状态</th>
+      <th>最后同步时间</th>
+  
+
+    </tr>
+  </thead>
+  <tbody>
+    
+  <{foreach from=$supplier item=sitem}>
+  <tr supplierid="<{$sitem.supplier_id}>">
+     <td class="<!--<{if $sitem.status == 1}>ColColorGreen<{else}>ColColorRed<{/if}>-->"><{$sitem.supplier_brief_name}> <!--(<{$status[$sitem.status]}>)--><input type='hidden' class='supplier-id' value="<{$sitem.supplier_id}>"/></td>
+
+     <td style="text-align:center">
+     
+     <{if $sitem.sync_time_for_plat == false}>
+     -
+     <{else}>
+     <a href="javascript:void(0)" class='supplier-data-detail' onclick=show_detail('<{$sitem.supplier_id}>')><{img src="images/bundle/notebook_pencil.gif " title="进入更新列表"}></a>
+     <span style="margin-left:10px;" id="sync_update"><button class="btn" onclick="syncUpdate('<{$sitem.supplier_id}>','')" type="button"><span><span>更新所有商品图片</span></span></button></span>
+     <{/if}>
+
+     </td>
+    <td style="text-align:center" class='supplier-sync-status' has_new="<{$sitem.has_new}>">
+     <{if $sitem.status}>
+          <span style="color:red">正在同步中</span>
+     <{else}>
+          <span>同步已完成，请进商品列表查看更新商品！</span>
+     <{/if}>
+    </td>
+    <td style="text-align:center" class='supplier-sync-status' has_new="<{$sitem.has_new}>">
+     <{if $sitem.sync_time_for_plat == false}>
+     -
+     <{else}>
+        <span><{$sitem.platform_sync_task_status}></span>
+     <{/if}>
+    </td>
+    
+	<td style="text-align:center">
+     <{if $sitem.sync_time_for_plat == false}>
+        -
+     <{else}>
+        <{if $sitem.sync_time == 0}>
+            还未同步
+        <{else}>
+                <{$sitem.sync_time_for_plat|usertime}>
+        <{/if}>
+     <{/if}>
+
+    </td>
+  
+  </tr>
+  <{/foreach}>
+  
+  
+    </tbody>
+  
+</table>
+<input type="hidden" name="sname" value="<{$sname}>" id='sname'/>
+
+<div class="mainFoot" id="finder-foot-supplier-<{$otype}>">
+<table class="footer" style="clear:both" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+  <td align="center"><{pager data=$pager}></td>
+  <td width="5%" style="white-space:nowrap;text-align:right"><{t}>共<{/t}><{$pager.total}><{t}>页<{/t}></td>
+  </tr>
+</table>
+</div>
+
+<script>
+
+(function(){
+    $ES('#supplier-list .data-download').addEvent('click',function(){
+        new Request({url:'index.php?ctl=distribution/supplier&act=checkSync',method:'post',data:'supplier_id='+this.getParent('tr').getElement('.supplier-id').getValue(),onSuccess:function(responseText){
+                if(responseText == 'invalid'){
+                    alert('您没有任何商品代理权限，请联系客服。');
+                }else{                    
+                    new Dialog('index.php?ctl=distribution/supplier&act=productLine',
+                    {title:'商品数据下载',
+                    ajaxoptions:{data:'supplier_id='+this.getParent('tr').getElement('.supplier-id').getValue(), method:'post'}
+                    });
+                }
+            }.bind(this),
+            onFailure:function(){
+                if(this.xhr.status == 501 && this.getHeader('notify_msg')){
+                	alert(decodeURIComponent(this.getHeader('notify_msg')));
+                }
+            }
+            }).send();
+    });
+    $ES('#supplier-list .data-sync').addEvent('click',function(){
+    	new Request({url:'index.php?ctl=distribution/supplier&act=checkSync',method:'post',data:'supplier_id='+this.getParent('tr').getElement('.supplier-id').getValue(),onSuccess:function(responseText){
+    		if(responseText == 'invalid'){
+                alert('您没有任何商品代理权限，请联系客服。');
+            }else{                    
+                var e = $(this);
+                var eSupplierid = e.getParent('tr').getElement('.supplier-id').getValue();
+                new Request.HTML({data:'supplier_id='+eSupplierid,
+                     onRequest:function(){
+                        e.removeEvents('click').set({'src':'images/sync_loading.gif','title':'正在同步','class':'data-sync-loading','styles':{'background-image':''}});
+                     },
+                     onComplete:function(){
+                    	doSupplierApiListJob(eSupplierid,'getGoodsIdByPline','distribution/datasync|filterUpdateList_1');
+                        doDataSync();
+                        doAutoSync(eSupplierid);
+                     },
+                     onFailure:function(){
+                         if(this.xhr.status == 501 && this.getHeader('notify_msg')){
+                        	 alert(decodeURIComponent(this.getHeader('notify_msg')));
+                         }
+                     }
+                }).post('index.php?ctl=distribution/supplier&act=datasync');
+            }
+    	}.bind(this),
+        onFailure:function(){
+            if(this.xhr.status == 501 && this.getHeader('notify_msg')){
+            	alert(decodeURIComponent(this.getHeader('notify_msg')));
+            }
+        }}).send();
+    });
+    
+     $ES('#supplier-list .cost-sync').addEvent('click',function(){
+    	new Request({url:'index.php?ctl=distribution/supplier&act=checkSync',method:'post',data:'supplier_id='+this.getParent('tr').getElement('.supplier-id').getValue(),onSuccess:function(responseText){
+    		if(responseText == 'invalid'){
+                alert('您没有任何商品代理权限，请联系客服。');
+            }else{                 
+                var e = $(this);
+                var eSupplierid = e.getParent('tr').getElement('.supplier-id').getValue();
+                new Request({data:'supplier_id='+eSupplierid,
+                     onRequest:function(){
+                        e.removeEvents('click').set({'src':'images/sync_loading.gif','title':'正在同步','class':'data-cost-sync-loading','styles':{'background-image':''}});
+                     },
+                     onSuccess:function(txt){
+                         txt = $H(JSON.decode(txt));
+                         
+                         doCostSync(eSupplierid,txt.count);
+                     },
+                     onFailure:function(){
+                         if(this.xhr.status == 501 && this.getHeader('notify_msg')){
+                        	 alert(decodeURIComponent(this.getHeader('notify_msg')));
+                         }
+                     }
+                }).post('index.php?ctl=distribution/supplier&act=doCostSync');
+            }
+    	}.bind(this),
+        onFailure:function(){
+            if(this.xhr.status == 501 && this.getHeader('notify_msg')){
+            	alert(decodeURIComponent(this.getHeader('notify_msg')));
+            }
+        }}).send();
+    });
+    
+     
+})();
+
+function syncUpdate(supplier_id,url){
+	  if(!url) {
+	    $('UpdateProgess').innerHTML = '正在更新第一个商品图片，请勿进行其他页面操作。';
+	    $('sync_update').innerHTML = '';
+	  }
+	  if(!url){
+	     url = 'index.php?ctl=distribution/supplier&act=syncImgUpdate&supplier_id='+supplier_id;
+	  }else{
+	     $('sync_images_'+supplier_id).setHTML(parseInt($('sync_images_'+supplier_id).get('html'))-1);
+	  }
+	  new Ajax(url,{update:'UpdateProgess',data:'a=a',evalScripts:true}).request();
+}
+
+function show_detail(supplier_id){
+	W.page('index.php?ctl=distribution/supplier&act=syncPlatformDataList&supplier_id='+supplier_id);
+	/*
+	new Request({url:'index.php?ctl=distribution/supplier&act=checkSync',method:'post',data:'supplier_id='+supplier_id,onSuccess:function(responseText){
+		if(responseText == 'invalid'){
+            alert('您没有任何商品代理权限，请联系客服。');
+        }else{
+            W.page('index.php?ctl=distribution/supplier&act=syncDataList&supplier_id='+supplier_id);
+        }
+	},
+    onFailure:function(){
+        if(this.xhr.status == 501 && this.getHeader('notify_msg')){
+        	alert(decodeURIComponent(this.getHeader('notify_msg')));
+        }
+    }}).send();
+	*/
+}
+</script>

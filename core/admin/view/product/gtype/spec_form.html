@@ -1,0 +1,90 @@
+<div class="division" style=" padding:3px; margin:0;" id="form_style_spec">
+   <span class="sysiconBtn add addSpec"><{t}>新增规格<{/t}></span>
+  <div id="form_style_spec_header" class="row gridlist-head"<{if !$gtype.spec}> style="display:none"<{/if}>>
+    <div class="p_name span-3" style="text-align:center"><{t}>规格<{/t}></div>
+    <div class="p_type span-5" style="text-align:center"><{t}>商品列表页显示方式<{/t}></div>
+    <div class="p_optionalias span-5" style="text-align:center"><{t}>操作<{/t}></div>
+  </div>
+
+  <div id="spec_box" class="gridlist" style=" height:300px; overflow:auto;border:1px solid #efefef; margin-bottom:10px;">
+    <{if $gtype.spec}>
+    <{foreach from=$gtype.spec item=spec key=spec_id}>
+    <div class="row">
+      <div class="p_name span-3" style="text-align:center"><{$spec.name}><{if $spec.spec_memo}>（<{$spec.spec_memo}>）<{/if}><input type="hidden" name="spec_id[]" value="<{$spec_id}>"></div>
+      <div class="p_type span-5" style="text-align:center"><select name="spec_type[]">
+                  <option value="flat"<{if $spec.spec_style=="flat"}> selected<{/if}>><{t}>可筛选-平铺显示<{/t}></option>
+                  <option value="select"<{if $spec.spec_style=="select"}> selected<{/if}>><{t}>可筛选-下拉显示<{/t}></option>
+                  <option value="disabled"<{if $spec.spec_style=="disabled"}> selected<{/if}>><{t}>不作为筛选项<{/t}></option>
+                </select></div>
+        <div class="p_optionalias span-5" style="text-align:center">
+            <img style='cursor:pointer;' onclick="move_p(this,'up')" src="../statics/icons/icon_asc.gif" alt="向上" class="operater"/>&nbsp;&nbsp; &nbsp;&nbsp;
+	        <img style='cursor:pointer;' onclick="move_p(this,'down')" src="../statics/icons/icon_desc.gif" alt="向下" class="operater"/>&nbsp;&nbsp; &nbsp;&nbsp;
+	        <img style='cursor:pointer;' onclick="if(confirm('规格删除后将会影响商品列表页显示效果，确认要删除吗？')){$(this).getParent('.row').remove();}" src="../statics/icons/icon_delete.gif" alt="删除" class="operater"/>
+        </div>
+        <div style="clear:both"></div>
+    </div>
+    <{/foreach}>
+    <{else}>
+      <span id="form_style_spec_msg_none" style="color:#666666;"><{t}>请点击下方按钮添加该类型所需规格<{/t}></span>
+    <{/if}>
+  </div>
+ 
+</div>
+
+<script>
+void function(){
+       var tmpl_spec = '<div class="row">'+
+      '<div class="p_name span-3"  style="text-align:center">{name}<input type="hidden" name="spec_id[]" value="{id}"></div>'+
+      '<div class="p_type span-5" style="text-align:center"><select name="spec_type[]">'+
+        '<option value="flat"<{if $spec.spec_style=="flat"}> selected<{/if}>><{t}>可筛选-平铺显示<{/t}></option>'+
+        '<option value="select"<{if $spec.spec_style=="select"}> selected<{/if}>><{t}>可筛选-下拉显示<{/t}></option>'+
+        '<option value="disabled"<{if $spec.spec_style=="disabled"}> selected<{/if}>><{t}>不作为筛选项<{/t}></option>'+
+        '</select></div>'+
+        '<div class="p_optionalias span-5" style="text-align:center">'+
+            '<img style="cursor:pointer;" src="../statics/icons/icon_asc.gif" alt="向上" onclick="move_p(this,\'up\')" class="operater"/>&nbsp;&nbsp; &nbsp;&nbsp; <img style="cursor:pointer;" src="../statics/icons/icon_desc.gif" onclick="move_p(this,\'down\')" alt="向下" class="operater"/>&nbsp;&nbsp; &nbsp;&nbsp; <img style="cursor:pointer;" onclick="$(this).getParent(\'.row\').remove();" src="../statics/icons/icon_delete.gif" alt="删除" class="operater"/>'+
+        '</div>'+
+        '<div style="clear:both"></div>'+
+    '</div>';
+       $E('#form_style_spec .addSpec').addEvent('click',function(){
+              
+              new Dialog('index.php?ctl=goods/spec&act=addSpec',{title:'选择规格',
+                 onShow:function(){
+                    this.dialog.store('callback',function(id,name){
+                        var sign_id = false;
+                        $('spec_box').getElements('input[type=hidden]').each(function(item){
+                            if(item.value == id){
+                                sign_id = true;
+                            }
+                        });
+                        if(sign_id) return;
+                        
+                        $('form_style_spec_header').style.display = '';
+                        if($('form_style_spec_msg_none')) $('form_style_spec_msg_none').style.display = 'none';
+
+                        var js_obj = {'id':id,'name':name};
+                        var obj = tmpl_spec.substitute(js_obj);
+                        var e = new Element('div').setHTML(obj).getFirst();
+                        $E('select',e).selectedIndex=0;
+                        $('spec_box').adopt(e);
+                    });
+                 }
+              })
+       });
+}();
+
+function move_p(item,actdo){
+    var item=$(item);
+    if(!item)return;
+    var div=item.getParent('div.row');
+    var divp=div.getPrevious('div.row');
+    var divn=div.getNext('div.row');
+    switch (actdo) {
+        case 'up':
+            if(divp)div.injectBefore(divp);
+              return ;
+        case 'down':
+            if(divn)div.injectAfter(divn);
+            return;
+    }
+}
+</script>

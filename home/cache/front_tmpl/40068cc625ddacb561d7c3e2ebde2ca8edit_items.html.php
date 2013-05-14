@@ -1,0 +1,13 @@
+<?php if(!function_exists('tpl_input_default')){ require(CORE_DIR.'/include_v5/smartyplugins/input.default.php'); } ?><div style="border: 1px solid #efefef;" class="table-grid"> <input type="hidden" name="order_id" value="<?php echo $this->_vars['order']['order_id']; ?>"> <table width="100%" id="order_items" border="0" cellspacing="0" cellpadding="2" class="gridlist"> <col class="Colsn"></col> <col></col> <col class="Colamount"></col> <col class="Colamount"></col> <col class="Colamount"></col> <col class="Coloption-1b"></col> <thead> <tr> <th>货号</th> <th>商品名称</th> <th>价格</th> <th>购买数量</th> <th>小计</th> <th></th> </tr> </thead> <?php echo tpl_input_default(array('type' => "hidden",'id' => 'itemgoodnums','value' => $this->_vars['goodnums']), $this);?> <tbody> <?php foreach ((array)$this->_vars['order']['items'] as $this->_vars['iLoop'] => $this->_vars['aItems']){  $this->_vars["itemid"]=$this->_vars['aItems']['item_id'];  $this->_vars["itemprice"]=$this->_vars['aItems']['price'];  $this->_vars["itemnums"]=$this->_vars['aItems']['nums']; ?> <tr> <input type="hidden" name='aItems[<?php echo $this->_vars['itemid']; ?>]' value='<?php echo $this->_vars['aItems']['product_id']; ?>'> <td><?php echo $this->_vars['aItems']['bn']; ?></td><td><?php echo $this->_vars['aItems']['name']; ?></td> <td> <?php echo tpl_input_default(array('class' => "itemrow",'name' => "aPrice[{$this->_vars['itemid']}]",'value' => $this->_vars['itemprice'],'size' => 8,'readonly' => 'yes'), $this);?> </td> <td><?php echo tpl_input_default(array('class' => "itemrow",'name' => "aNum[{$this->_vars['itemid']}]",'required' => "true",'value' => $this->_vars['itemnums'],'size' => 4), $this);?></td> <td class="itemSub_<?php echo $this->_vars['itemid']; ?> itemCount Colamount"><?php echo $this->_vars['aItems']['amount']; ?></td> <td><span class="sysiconBtnNoIcon" onClick="delgoods(this)">删除</span></td> </tr> <?php } ?> </tbody> </table> <table width="100%" border="0" cellspacing="0" cellpadding="2" class="gridlist"> <tr> <td style="text-align:left"> 输入商品货号：<?php echo tpl_input_default(array('type' => "text",'name' => newbn), $this);?> <input type="button" id="newbtn" value="添加" /> </td> </tr> </table> <?php echo $this->_vars['order']['alertJs']; ?> </div> <script type="text/javascript">
+$('newbtn').addEvent('click', function(){
+  new Request({
+    onComplete:function(rs){
+      if(rs.substr(0,3)!='<tr'){
+        alert(rs); return;
+      }
+
+      $E('table#order_items tbody').adopt((new Element('tbody',{html:rs})).getChildren());
+      countF();
+    }}).post('index.php?ctl=order/order&act=addItem',$('orderItemList'));
+});
+</script> 

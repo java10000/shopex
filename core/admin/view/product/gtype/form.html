@@ -1,0 +1,22 @@
+<style>
+body{
+background:#fff;
+}
+</style>
+<div style="padding:20px;">
+<table width="100%" border="0" cellpadding="0" cellspacing="0" ><tr><td>
+    <h4 style="border-bottom:1px solid #efefef;"><{t}>新类型：<{/t}><{$schema.name}></h4>
+       </td><td style="text-align:right;"><{help docid="72" type="link"}><{t}>点击查看帮助<{/t}><{/help}></td></tr></table>
+<table border="0" cellspacing="0" cellpadding="0" style="border-collapse:collapse; width:100%">
+  <tr>
+    <td style="width:80px; vertical-align:top; text-align:center; padding:5px; margin-right:10px;border:1px solid #C7DBE5;"><img border="0" width="48" height="48" src="index.php?ctl=system/sfile&act=goodsicon&p[0]=<{$schema.id}>" /></td>
+    <td style="padding:10px; border:1px solid #C7DBE5; background:#ECF2F5"><{include file=$_TPL_}><{$_debugger}><br><{$data.message}></td>
+  </tr>
+</table>
+<script>
+eMain=window.parent.document.getElementById('main');
+TotalHeight=window.parent.document.getElementById('sidecontent').getSize().size.y;
+eMain.setStyle('height',TotalHeight).setStyle('overflow','auto');
+</script>
+
+</div>

@@ -1,0 +1,65 @@
+<form id="Form_Cur_Setting" method="POST" action="index.php?ctl=system/cur&act=<{if $currency.cur_code == ''}>curAdd<{else}>curEdit<{/if}>">
+  <div class="tableform">
+    <div class="division">
+    <table width="100%" border="0" cellpadding="0" cellspacing="0">
+      <tr>
+        <th><{t}>货币名称:<{/t}></th>
+        <td><{input id="curName" type="text" required="true" name="cur_name" style="width:120px" value=$currency.cur_name}></td>
+      </tr>
+    </table>
+    </div>
+    <div class="division">    
+    <table width="100%" border="0" cellpadding="0" cellspacing="0">
+      <tr>
+        <th><{t}>货币:<{/t}></th>
+        <td>
+            <{input type="select" required="true" id="curCode" name="cur_code" options=$currency.selcur value=$currency.cur_code}>
+			<input type='hidden' name='old_cur_code' value='<{$currency.cur_code}>'/>
+          </td>
+      </tr>
+      <tr>
+        <th><{t}>货币符号:<{/t}></th>
+        <td><{input type="text" required="true" style="width:50px" name="cur_sign" value=$currency.cur_sign}><span class="notice-inline"><{t}>如：美元货币符号为 $<{/t}></span></td>
+      </tr>
+      <tr>
+        <th><{t}>相对汇率:<{/t}></th>
+        <td><{input type="text" required="true" name="cur_rate" style="width:50px" value=$currency.cur_rate}><span class="notice-inline"><{t}>该货币与默认货币的比率。如果是默认货币，汇率必须为1<{/t}></span></td>
+      </tr>
+      <tr>
+        <th><{t}>是否为默认货币:<{/t}></th>
+        <td><{input name="def_cur" type="radio" options=$currency.defopt value=$currency.def_cur}><br /><span class="fontcolorGray"><{t}>注意：更换默认货币会影响到用户下订单以及所有商品支付币种<{/t}></span></td>
+      </tr>
+    </table>
+    </div>
+      <div class="table-action">
+	<{button type="submit"  label="保存"}>
+</div>
+  </div>
+</form>
+<script>
+  $('curCode').addEvent('change',function(e){
+    e = new Event(e);
+    var obj = e.target;
+    $('curName').value = obj.options[obj.selectedIndex].text;
+  });
+  $('curCode').addEvent('keyup',function(e){e=new Event(e);
+    if(e.key=='up'||e.key=='down')
+    this.fireEvent('change',e)});
+  
+  $('Form_Cur_Setting').getElements('input[name=def_cur]').addEvent('click',function(e){
+    var obj = e.target;
+    if(obj.value == 'true'){
+        $('Form_Cur_Setting').getElement('input[name=cur_rate]').set({'readonly':true,'styles':{'opacity':.3}});
+        $('Form_Cur_Setting').getElement('input[name=cur_rate]').value = 1;
+    }else{
+        $('Form_Cur_Setting').getElement('input[name=cur_rate]').set('styles',{'opacity':1});
+        $('Form_Cur_Setting').getElement('input[name=cur_rate]').removeProperty('readonly');
+    }
+  });
+  if($('Form_Cur_Setting').getElements('input[name=def_cur]').some(function(e){
+        return e.value=='true' && e.checked;
+    })){
+        $('Form_Cur_Setting').getElement('input[name=cur_rate]').set({'readonly':true,'styles':{'opacity':.3}});
+        $('Form_Cur_Setting').getElement('input[name=cur_rate]').value = 1;
+  }
+</script>

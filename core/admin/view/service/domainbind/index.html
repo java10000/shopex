@@ -1,0 +1,63 @@
+<div class="tableform notice"><{t}>通过此功能，您可以为您的商店绑定一个独立域名（如www.abcshop.com），您的顾客也就可以通过独立域名访问您的商店。<{/t}><br><{t}>请按照下面三个步骤使用此功能：<{/t}></div>
+<div class="guidestep division">
+  <ul class="step">
+    <li><span class="num num1"></span><{t}>域名备案：根据<{/t}><a href="http://www.miibeian.gov.cn"><{t}>国家信产部<{/t}></a><{t}>文件通知，只有备案通过的域名才可以开店。所以您需要先将您想要绑定的域名进行备案<{/t}><{help docid="34" type="link"}><{t}>查看如何备案<{/t}><{/help}><br /><a href="#"><{t}>点击这里立刻去备案>><{/t}></a><br />
+
+    </li>
+    <li><span class="num num2"></span><{t}>域名解析：在域名通过备案后，您需要进入您的域名管理后台，将域名的cname指向到您的二级域名<{/t}><strong class="fontcolorBlue"><{$host_name}></strong><{help docid="34" type="link"}><{t}>查看如何设置cname<{/t}><{/help}></li>
+    <li><span class="num num3"></span>在完成上面两步后，您可以开始绑定域名。您可以为商店绑定两个独立域名，例如www.abc.com和abc.com
+    
+    
+    <table cellspacing="0" cellpadding="0" border="0" class="gridlist">
+<col class="Colamount"></col>
+<col class="Colamount"></col>
+<col class="Colamount"></col>
+<thead>
+  <tr>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+  </thead>
+  <tbody>
+  <{if $err_msg}>
+   <tr>
+   <td colspan='3'><{$err_msg}></td>
+   </tr>
+   <{else}>
+    <tr>
+    <td><{t}>第一个域名：<{/t}></td>
+    <td><{if $result1.alias}><{$result1.alias}><{else}><a href="javascript:void(0)" onclick ="$(this).store('dialog',new Dialog('index.php?ctl=service/domainbind&act=adddomainBinding',{width:630,height:370,title:'绑定域名'}))";style="margin-right:5px;"><{t}>未绑定，请点此设置<{/t}></a><{/if}></td>
+    <td><{if $result1.alias}><span style="margin-right:5px;" class="fontcolorGreen"><{$result1.status}></span>
+    <{if $result1.status != '待审核'}>
+    <a href="javascript:void(0)" style="margin-right:5px;" onclick="javascript:if(confirm('确认取消绑定吗')){W.page('index.php?ctl=service/domainbind&act=canceldomainBinding&p[0]=<{$result1.alias}>',{method:'get'});}"><{t}>取消此域名绑定<{/t}></a>
+    <{/if}>
+    <{if $result1.status eq '未通过验证'}>
+    <a href="javascript:void(0)" style="margin-right:5px;" onclick="$(this).store('dialog',new Dialog('index.php?ctl=service/domainbind&act=adddomainBinding&p[0]=<{$result1.alias}>',{width:630,height:370,title:'重新申请'}))"><{t}>重新绑定<{/t}></a>
+    <{/if}>
+    <{else}>
+    <{/if}>
+    </td>
+  </tr>
+    <tr>
+    <td><{t}>第二个域名：<{/t}></td>
+    <td><{if $result2.alias}><{$result2.alias}><{else}><a href="javascript:void(0)" onclick ="$(this).store('dialog',new Dialog('index.php?ctl=service/domainbind&act=adddomainBinding',{width:630,height:370,title:'绑定域名'}))";style="margin-right:5px;"><{t}>未绑定，请点此设置<{/t}></a><{/if}></td>
+    <td><{if $result2.alias}><span style="margin-right:5px;" class="fontcolorGreen"><{$result2.status}></span>
+    <{if $result1.status != '待审核'}>
+    <a href="javascript:void(0)" style="margin-right:5px;" onclick="javascript:if(confirm('确认取消绑定吗')){W.page('index.php?ctl=service/domainbind&act=canceldomainBinding&p[0]=<{$result1.alias}>',{method:'get'});}"><{t}>取消此域名绑定<{/t}></a>
+    <{/if}>
+    <{if $result2.status eq '未通过验证'}>
+    <a href="javascript:void(0)" style="margin-right:5px;" onclick="$(this).store('dialog',new Dialog('index.php?ctl=service/domainbind&act=adddomainBinding&p[0]=<{$result2.alias}>',{width:630,height:370,title:'重新申请'}))"><{t}>重新绑定<{/t}></a>
+    <{/if}>
+    <{else}>
+    <{/if}>
+    </td>
+  </tr>
+  <{/if}>
+  </tbody>
+</table>
+
+
+    </li>
+  </ul>
+</div>

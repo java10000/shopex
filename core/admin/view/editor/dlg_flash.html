@@ -1,0 +1,137 @@
+<table width="100%" id='upSWFFrom'>
+<tr>
+  <td width="120px"><input type="radio" name="from"  id="swfFromLocal" checked><label for="swfFromLocal"><{t}>来自本地计算机<{/t}></label></td>
+  <td width="120px"><input type="radio" name="from"  id="swfFromNet"><label for="swfFromNet"><{t}>来自网络<{/t}></label></td>
+  <td><input type="radio" name="from" id="swfFromLib"><label for="swfFromLib"><{t}>来自资源库<{/t}></label></td>
+</tr>
+</table>
+<iframe id="swf-uploader" style="display:none;width:100%" src='about.html' name="swf-uploader"></iframe>
+<form id="swfFromSomeWhere" target="swf-uploader" action="index.php?ctl=editor&act=uploader" method="post" enctype="multipart/form-data">
+<div id="swfViewLocal">
+<FIELDSET >
+<LEGEND><{t}>从您的电脑中挑选一个Flash（.SWF）文件：<{/t}></LEGEND>
+  <div style="margin-bottom:5px"> 
+  <input name="file" type="file" style="width:80%" /></div>
+  <span onclick="$(this).getNext().toggleDisplay()" class="sysiconBtn addorder"><{t}>设置标签<{/t}></span>
+<div class="division" style='display:none'>
+  
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <th><{t}>请输入标签名称：<{/t}></th>
+    <td><input type="text" id="tagTextarea" name="tags"/></td>
+  </tr>
+    <tr>
+    <th><{t}>请选择标签名称：<{/t}></th>
+    <td><div id="tagLibs" class="tagEditor" style='height:50px'>
+      <{foreach from=$swftags item=tag}>
+      <span><{$tag.tag_name}></span>
+      <{/foreach}>
+  </div></td>
+  </tr>
+</table>
+  </div>
+  <div class='upload_view note'><{t}>建议为其设置标签,以方便管理Flash库.<{/t}></div>
+</FIELDSET>
+</div>
+</form>
+<div style='display:none' id="swfViewNet">
+<FIELDSET >
+<LEGEND><{t}>输入一个网络Flash文件的网址：<{/t}></LEGEND>
+  <input type="text" style="width:80%" id="swfViewUrl" value="http://" />
+
+  </FIELDSET>
+</div>
+<div style="display:none" id="swfViewLib">
+<FIELDSET >
+<LEGEND><{t}>从网店资源库中挑选一个Flash：<{/t}></LEGEND>
+  <div style='padding:2px;background:#ccc;'>
+    <span><{t}>按标签过滤:<{/t}></span>
+    <select style="width:200px;" onchange="showSWFLib(this.value,0)">
+    <option value="1"><{t}>显示所有<{/t}></option>
+    <{foreach from=$swftags item=tag}>
+      <option value="<{$tag.tag_name}>">- <{$tag.tag_name}> (<{$tag.rel_count|default:0}>)</option>
+    <{/foreach}>
+    </select>
+  </div>
+  <div id="swfViewLibBox"><{t}>读取库，请稍侯...<{/t}></div>
+</FIELDSET>
+</div>
+
+<div class="mainFoot">
+<div class="table-action">
+	<{button label="确定" id="mce_dlg_ok"}>
+	<{button label="取消" isclosedialogbtn="true"}>
+</div>
+
+</div>
+<script>
+(function(){
+  //  if(!window.ie)$('swfOptionsHide').hide();
+     
+  new tagInputer($('tagTextarea'),$ES('span','tagLibs'));
+    
+ 
+  $('swfFromLocal').addEvent('click',function(){
+    $('swfViewLocal').setStyle('display','');
+    $('swfViewNet').setStyle('display','none');
+    $('swfViewLib').setStyle('display','none');
+  });
+
+  $('swfFromNet').addEvent('click',function(){
+    $('swfViewNet').setStyle('display','');
+    $('swfViewLocal').setStyle('display','none');
+    $('swfViewLib').setStyle('display','none');
+  });
+
+  $('swfFromLib').addEvent('click',function(){
+    if(!this.initLib){
+      this.initLib=true;
+      showResLib();
+    }
+
+    $('swfViewNet').setStyle('display','none');
+    $('swfViewLocal').setStyle('display','none');
+    $('swfViewLib').setStyle('display','');
+    
+  });
+   
+    var upForm=$('swfFromSomeWhere');
+    var upView=$E('.upload_view',upForm);
+    upForm.addEvent('submit',function(){
+        upView.setHTML('<font color="red"><{t}>正在上传...<{/t}></font>');
+    });
+      window.uploadCallback = function(value){
+          if(!value)return upView.empty();
+		  if(!value.url)return upView.empty().setHTML(value);
+          var swf=value.url;
+          if(!swf||!swf.contains('.swf'))return alert('没有要插入的FLASH源.');
+          dlgCallback(swf);
+     };
+  
+  var dlgCallback=$('upSWFFrom').getParent('.dialog').retrieve('callback')||$empty;
+  
+  
+  
+  
+
+  $('mce_dlg_ok').addEvent('click',function(){
+    if($('swfFromLocal').checked){
+      $('swfFromSomeWhere').submit();
+    }else if($('swfFromNet').checked){
+       var swf=$('swfViewUrl').get('value');
+       if(!swf||!swf.contains('.swf'))return alert('没有要插入的FLASH源.');
+       dlgCallback(swf);
+    }else{
+       if(!$E('.swf-item-selected','swfViewLibBox'))return alert('没有要插入的FLASH源.');
+       var swf=$E('.swf-item-selected','swfViewLibBox').get('href');
+       if(!swf||!swf.contains('.swf'))return alert('没有要插入的FLASH源.');
+       dlgCallback(swf);
+    }
+  });
+})();
+
+function showResLib(tag_id,page_id){
+  page_id = page_id?page_id:1;
+  W.page('index.php?ctl=editor&act=gallery_SWF&p[0]={0}&p[1]={1}'.format(tag_id,page_id),{method:'get',update:$('swfViewLibBox')});
+}
+</script>

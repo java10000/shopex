@@ -1,0 +1,69 @@
+    <div class="division total-item" id='cart-total-item' style='display:none'>
+        <table width="100%" cellpadding="3" cellspacing="0" class="liststyle_data">
+         <col class="span-auto"></col>
+         <col class="span-2"></col>
+         <tbody>
+        <{if $trading.totalPrice!=$trading.pmt_b.totalPrice}>
+        <tr>
+          <th align='right'><{t}>原始总价：<{/t}></th>
+          <td><span class="mktprice1" style="color:#f00;"><{$trading.pmt_b.totalPrice|cur}></span></td>
+        </tr>
+        <{/if}>
+
+        <{if count($trading.pmt_o.list)>0 || count($trading.gift_p)>0 || count($trading.coupon_p)>0}>
+        <{if count($trading.pmt_o.list)>0 }>            
+        <tr>
+          <th align='right'><{t}>当前享受的订单优惠：<{/t}></th>
+          <td>
+               <ol>
+                    <{if $trading.discount>0}><li><{t}>金额减免<{/t}> <{$trading.discount}></li><{/if}>
+                   <{if $trading.advance>0}><li><{t}>返点 <{/t}><{$trading.advance|cur}> <{t}>到预存款账户<{/t}></li><{/if}>
+                   <{if $trading.score>0}><li><{t}>您将获得<{/t}><{$trading.score}><{t}>点积分<{/t}>,<a href="<{link ctl=gift act=index}>"><{t}>看看有什么可以换的&raquo;<{/t}></a></li><{/if}>
+                   <{foreach from=$trading.pmt_o.list item=item}>  
+                   <li><{$item.pmt_describe}></li>
+                   <{/foreach}>   
+               </ol>
+        </tr>            
+        <{/if}>
+        <{/if}>
+        <{if count($trading.gift_p)>0}>
+        <tr>
+          <th align='right'><{t}>将获得赠品：<{/t}></th>
+          <td><ol>
+             <{foreach from=$trading.gift_p item="item" key="key"}>
+             <li <{if $item.storage==0}>class="mktprice1"<{/if}>><{$item.name}><strong><{$item.nums}></strong><{t}>件<{/t}><{if $item.storage==0}>（无货）<{/if}></li>
+             <{/foreach}>
+           </ol></td>
+        </tr>
+        <{/if}>
+        <{if count($trading.coupon_p)>0}> 
+        <tr>
+          <th align='right'><{t}>将获得优惠券：<{/t}></th>
+          <td><ol>
+                   <{foreach from=$trading.coupon_p item="item" key="key"}>
+                   <li><{$item.cpns_name}> <{$item.nums}> <{t}>张<{/t}></li>
+                  <{/foreach}>
+                   </ol></td>
+        </tr>
+        <{/if}>
+        </tbody>
+        </table>
+    </div>
+    <script>
+          if($$('#cart-total-item tr').length){
+              $('cart-total-item').setStyle('display','');
+          }
+    </script>
+
+    <table width="100%" cellpadding="3" cellspacing="0" class="liststyle_data">
+      <col class="span-auto"></col>
+ <col class="span-2"></col>
+    <tbody>
+    <tr>
+      <th align='right'><span style="font-size:14px; color:#000;"><{t}>商品总额：<{/t}></span></th>
+      <td><span class="totalprice price1" style="padding-right:15px;"><{$trading.totalPrice|cur}></span></td>
+    </tr>
+    </tbody>
+    </table>
+
+

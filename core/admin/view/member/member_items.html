@@ -1,0 +1,60 @@
+<div class="division clearfix"> <{if $mem.refer_id}>
+	<div><{t}>注册来源：<{/t}><{refer id=$mem.refer_id url=$mem.refer_url}></div>
+	<{/if}>
+	<div class="span-6">
+		<label><{t}>用户姓名：<{/t}></label>
+		<{$mem.name|escape:'html'}></div>
+	<div class="span-6">
+		<label><{t}>当前积分：<{/t}></label>
+		<{$mem.point}></div>
+	<div class="span-6">
+		<label><{t}>当前预存款：<{/t}></label>
+		<{$mem.advance|cur}></div>
+	<div class="span-6">
+		<label><{t}>地区：<{/t}></label>
+		<{$mem.area|region}></div>
+	<div class="span-6">
+		<label>E-mail：</label>
+		<{$mem.email|escape:'html'}></div>
+	<div class="span-6">
+		<label><{t}>固定电话：<{/t}></label>
+		<{$mem.tel}></div>
+	<div class="span-6">
+		<label><{t}>手机：<{/t}></label>
+		<{$mem.mobile}></div>
+	<div class="span-6">
+		<label><{t}>邮编：<{/t}></label>
+		<{$mem.zip|escape:'html'}></div>
+	<div class="span-6">
+		<label><{t}>性别：<{/t}></label>
+		<{if $mem.sex == 1}>男<{else}>女<{/if}></div>
+	<div class="span-6">
+		<label><{t}>出生日期：<{/t}></label>
+		<{$mem.b_year}>-<{$mem.b_month}>-<{$mem.b_day}></div>
+	<div class="span-6">
+		<label><{t}>注册日期：<{/t}></label>
+		<{$mem.regtime|cdate:FDATE}></div>
+	<div class="span-6">
+		<label><{t}>注册IP：<{/t}></label>
+		<{$mem.reg_ip}></div>
+	<div class="span-6">
+		<label><{t}>地址：<{/t}></label>
+		<{$mem.addr|escape:'html'}></div>
+	<{foreach from=$custom item=custom}>
+	<div class="span-6">
+		<label><{t}><{$custom.attr_name}>：<{/t}></label>
+		<{if $custom.attr_group eq 'contact'}>
+		<{if $custom.attr_tyname eq 'QQ' && $custom.value !=''}> <a target="_self" href="tencent://message/?uin=<{$custom.value}>&&Site=www.shopex.cn&&Menu=yes"><img border="0" SRC='http://wpa.qq.com/pa?p=1:<{$custom.value}>:1' title='<{$custom.value}>'></a> <{/if}><{if $custom.attr_tyname eq 'MSN' && $custom.value !=''}> <a  target="_self" href="msnim:chat?contact=<{$custom.value}>"><img width="30" height="30" border="0" src="http://im.live.com/Messenger/IM/Images/Icons/Messenger.Logo.gif" title='<{$custom.value}>'/></a> <{/if}>
+		<{if $custom.attr_tyname eq '旺旺' && $custom.value !=''}> <a target="_blank" href="http://amos1.taobao.com/msg.ww?v=2&uid=<{$custom.value}>&s=1" ><img border="0" src="http://amos1.taobao.com/online.ww?v=2&uid=<{$custom.value}>&s=1"  title='<{$custom.value}>'/></a> <{/if}>
+		
+		<{if $custom.attr_tyname eq 'Skype' && $custom.value !=''}> <a href="skype:mengsajewel?call"  target="_self"onclick="return skypeCheck();"><img src="http://mystatus.skype.com/smallclassic/<{$custom.value}>" style="border: none;" alt="Call me!" title='<{$custom.value}>'/></a> <{/if}>
+		<{else}>
+		<{$custom.value}>
+		<{/if}> </div>
+	<{/foreach}>
+	<div style='clear:both'>
+		<div class="span-6">
+			<label><{t}>备注：<{/t}></label>
+			<{$mem.remark}></div>
+	</div>
+</div>

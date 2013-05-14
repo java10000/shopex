@@ -1,0 +1,10 @@
+<div class="LinkList clearfix"> <{foreach from=$data item=data key=key}>
+  <ul class="LinkListItem" style="margin-right:<{$setting.seperate_x}>px;margin-bottom:<{$setting.seperate_y}>px;">
+    <{if $setting.show_type=='showPic' || $setting.show_type=='showPicFont'}>
+	<{if $data.image_url}>
+    <li style="margin-bottom:<{$setting.PictoFont}>px;"><a style="display:block; overflow:hidden;width:<{$setting.width}>px;height:<{$setting.height}>px;" href="<{$data.href}>" target="_blank"><img src="<{$data.image_url|storager}>"></a></li>
+	<{/if}>
+    <{/if}>
+    <{if $setting.show_type=='showFont' || $setting.show_type=='showPicFont'}><li><a href="<{$data.href}>" target="_blank"><{$data.link_name}></a></li><{/if}>
+  </ul>
+  <{/foreach}> </div>

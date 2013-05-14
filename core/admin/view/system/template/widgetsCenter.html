@@ -1,0 +1,92 @@
+<{area inject='.mainHead'}>
+<div class='wgtcenter mainHead'>
+      <div class="topbar">
+          <div class="titleimg">&nbsp;</div>
+            <div class="content">
+                <div class="wgtsearch clearfix" style="display:none">
+                <span class="lft"></span>
+                  <form class="cnt">
+                       <input type="text" value="搜索内容" class="wgtinput" onClick="this.value=''"/>
+                      <select id="wg_list">
+                        <option value=''><{t}>版块<{/t}></option>
+                        <{foreach from=$widgetsLib.list item=widgets key=key}>
+                        <option><{$widgets}></option>
+                        <{/foreach}>
+                      </select>
+                        <select>
+                            <option><{t}>所有颜色<{/t}></option>
+                        </select>
+                    <input type="submit" class="wgtsearchbtn" value="搜索">
+                  </form>
+                  <span class="rht"></span>
+                </div>
+            </div>
+        </div>
+ </div>
+<{/area}>
+ 
+<div id="wgtcenter" class='wgtcenter'>
+       <div class="span-4 wgtcat">
+        <ul>
+            <{foreach from=$widgetsLib.list item=widgets key=key}>
+            <li>
+                <a catalog='<{$widgets}>' href='index.php?ctl=system/template&act=addWidgetsPageExtend&p[0]=<{$themes}>' target='_blank'>
+                   <{$widgets}>
+                </a>
+            </li>
+            <{/foreach}>
+        </ul>
+       </div>
+
+      <div class='span-14 wgtcontent'>
+                <h2><{t}>欢迎来到版块中心<{/t}><span><a href="http://www.shopex.cn/bbs/read.php?tid-64535.html" target="_blank"><{t}>什么是版块？<{/t}></a></span></h2>
+                <p><{t}>您可以点击左侧版块分类找到您需要的版块，加入到您正在编辑的页面中，以丰富页面表现。<{/t}><br /><{t}>如您在使用过程中需要帮助或者有相关意见和建议，请访问<{/t}><a href="http://www.shopex.cn/bbs/thread.php?fid-135.html" target="_blank"><{t}>ShopEx版块(widgets)交流专区<{/t}></a>。</p><hr />
+          <h2><{t}>常用版块:<{/t}></h2>
+                <ul class="commenwgt">
+                      <{foreach from=$widgetsLib.usual item=widgets key=key}>
+                        <li isCloseDialogBtn='true' onClick='_addWeigets(eval([<{json from=$widgets}>,"<{$themes}>"]));'>
+                          <div class="quickaddwgt" title='添加<{$widgets.label}>版块到页面.'>&nbsp;</div>
+                          <span><{$widgets.label}></span>
+                          <div class='desc'>
+                           <a href='index.php?ctl=system/template&act=getWidgetsInfo&widgets=<{$widgets.name}>&themes=<{$themes}>' onclick='new Event(event).stop();new Dialog(this.href,{title:"<{$env.post.catalog}>&raquo;<{$widgets.label}>"});' target='_blank'>
+                             板块说明&raquo;&raquo;
+                          </a>
+                          </div>
+                        </li>
+                      <{/foreach}>
+                </ul>
+        </div>
+   
+
+</div>
+
+<script>
+void function(){
+    var wgtCenter = $('wgtcenter');
+    var wgtCat = wgtCenter.getElement('.wgtcat');
+    var wgtcontent = wgtCenter.getElement('.wgtcontent');
+    
+    
+    wgtCat.getElements('a').addEvent('click',function(e){
+        e.stop();
+        
+        new Request.HTML({update:wgtcontent,onRequest:function(){
+               
+               wgtcontent.set('html','正在载入板块信息...');
+        
+        
+        },onComplete:initContent}).post(this.href,$H({catalog:this.get('catalog')}));
+    
+    });
+    var initContent = (function (){
+        
+       wgtcontent.getElements('.commenwgt li').addEvents({
+        'mouseenter':function(){this.addClass('current');},
+        'mouseleave':function(){this.removeClass('current');}
+       });
+       
+       return arguments.callee;
+   })();
+}();
+
+</script>

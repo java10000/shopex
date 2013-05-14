@@ -1,0 +1,24 @@
+<{if count($diff)}>
+<{area inject=".mainHead"}>
+<div class="notice">
+数据库存在错误. <{button href="index.php?ctl=system/debug&act=fix_database" icon="mceico_43.gif" label="立即修复"}>
+</div>
+<{/area}>
+<{foreach from=$diff key="tbname" item="diffsql"}>
+<fieldset>
+<legend><{$tbname}></legend>
+<pre>
+<{foreach from=$diffsql item=sql}>
+<{$sql|escape:'html'}>
+<{/foreach}>
+</pre>
+</fieldset>
+<{/foreach}>
+</div>
+<{else}>
+<div class="tableform">
+<p class="notice">
+数据库结构一切正常
+</p>
+</div>
+<{/if}>

@@ -1,0 +1,73 @@
+<!-- right-->
+  <div class="MemberMain">
+  <div style="margin-right:175px;">
+
+ <div class="title"><{t}>我的积分<{/t}></div>
+ 
+ <div class="points">
+ <table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="200">
+    
+    <div class="currentpoints">
+    <div style="padding-top:30px;">
+    <strong>您当前的有效积分：</strong><br />
+    
+    <span style="font-size:20px; font-weight:bold; color:#fd6b00; "><{$total}></span>
+    </div>
+    </div>    </td>
+    <td style="line-height:20px;">
+    
+   <strong>积分规则：</strong><br />
+
+
+1. 当积分已达到某一兑换积分标准时，顾客可将累计积分依照网站相应积分及兑换标准兑换回馈商品，网站将即时从用户会员积分中扣减相应积分。<br />
+
+2. 各项回馈项目（包含各项商品、服务或抵用券等）及兑换标准及兑换规则均以兑换当时最新回馈活动公告或目录为准。<br />
+
+3. 部分兑换商品有数量限制的，兑完为止。<br />
+
+4. 公告或目录如有有效期限的，逾期即不得兑换。<br />
+
+5. 积分兑换区的商品为只可用积分兑换的商品（如积分价格：100积分）。
+  
+    
+    </td>
+  </tr>
+</table>
+
+
+ </div>
+ 
+ 
+ <br /><br />
+
+<table class="memberlist" width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+        <th>日期</th>
+        <th>积分</th>
+        <th>摘要</th>
+    </tr>
+    <tbody>
+    <{if count($historys)>0}>
+    <{foreach from=$historys item="logs"}>
+    <tr>
+      <td><{$logs.time|cdate:FDATE_STIME}></td>
+       <td class="point"><{$logs.point}></td>
+       <td class="textleft"><{$logs.describe|escape:'html'}></td>
+    </tr>
+    <{/foreach}>
+    <{else}>
+    <tr>
+      <td height="60" colspan="3"><{t}>尚无积分历史<{/t}></td>
+    </tr>
+    <{/if}>
+    </tbody>
+
+</table>
+ 
+ 
+ 
+  </div>
+  </div>
+<!-- right-->

@@ -1,0 +1,21 @@
+
+当<{$target_name}>
+<select id="trigger_event_changer" name="trigger[trigger_event]">
+<{foreach from=$events key='key' item='item'}>
+<option value="<{$target}>:<{$key}>" <{if $trigger.event eq $key}>selected="selected"<{/if}>><{$item.label}></option>
+<{/foreach}>
+</select>
+时，如果该<{$target_name}>：<br>
+<div class="gridlist-head">
+<input type="radio" onclick="$('trigger_filter_box').setStyle('visibility','visible')" <{if !$trigger.trigger_define.filter_mode || $trigger.trigger_define.filter_mode eq 'all'}>checked="checked"<{/if}> name="trigger[trigger_define][filter_mode]" value="all" id="trigger_filter_mode_all" />
+<label for="trigger_filter_mode_all"><{t}>满足所有以下条件<{/t}></label>
+&nbsp;&nbsp;
+<input type="radio" onclick="$('trigger_filter_box').setStyle('visibility','visible')" <{if $trigger.trigger_define.filter_mode eq 'any'}>checked="checked"<{/if}> name="trigger[trigger_define][filter_mode]" value="any" id="trigger_filter_mode_any" />
+<label for="trigger_filter_mode_any"><{t}>满足所有任一条件<{/t}></label>
+&nbsp;&nbsp;
+<input type="radio" onclick="$('trigger_filter_box').setStyle('visibility','hidden')" <{if $trigger.trigger_define.filter_mode eq 'every'}>checked="checked"<{/if}> name="trigger[trigger_define][filter_mode]" value="every" id="trigger_filter_mode_every" /><label for="trigger_filter_mode_every"><{t}>匹配所有<{/t}><{$target_name}></label>
+</div>
+
+<div class="gridlist" style="height:150px; overflow:auto;<{if $trigger.trigger_define.filter_mode eq 'every'}>visibility:hidden;<{/if}>" id="trigger_filter_box">
+<{include file="system/trigger/filter.html"}>
+</div><br />

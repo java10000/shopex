@@ -1,0 +1,28 @@
+<div id="<{$widgets_id}>_body" style="background:<{$setting.color1}>;height:<{$setting.height|default:300}>px">
+</div>
+<script>
+
+window.addEvent('domready', function(){
+  var obj = new Swiff('images/style1.swf', {
+    width:  '100%',
+    height: <{$setting.height|default:300}>,
+    container: $('<{$widgets_id}>_body'),
+    events: {
+      load:function() {
+        alert("Flash is loaded!");
+      }
+    },
+    vars:{
+      data:"<{$data.xml|replace:'"':'\"'}>",
+      link:"<{link ctl=search act=index arg0=$data.haystack}>?<{$setting.filter|replace:'"':'\"'}>",
+      xmlurl:"<{link ctl=search act=index arg0=$data.haystack extname="xml"}>?<{$setting.filter|replace:'"':'\"'}>",
+      goodslink:"<{link ctl=product act=index arg0=$data.haystack}>",
+      haystack:'<{$data.haystack}>',
+      totalPage:'<{math equation="floor(x/20)+1" x=$data.count}>',
+      color1:"<{$setting.color1}>",
+      color2:"<{$setting.color2}>",
+      height:<{$setting.height|default:300}>
+    }
+  });
+});
+</script>

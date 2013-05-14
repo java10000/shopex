@@ -1,0 +1,17 @@
+  <form method='post' action='index.php?ctl=content/content&act=saveType' class="tableform">
+  <input type='hidden' name='cat_id' value='<{$type.cat_id}>'>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td><{t}>文章分类ID：<{/t}></td>
+      <td><{input type='text' name='pid' value=$type.pid}><{t}>//请输入一个数字作为排序依据！<{/t}></td>
+    </tr>
+    <tr>
+      <td><{t}>文章分类：<{/t}></td>
+      <td><{input type='text' name='cat_info' value=$type.cat_info}></td>
+    </tr>
+  </table>
+        <div class="table-action">
+	<{button type="submit" label="修改"}>
+</div>
+  </form>
+

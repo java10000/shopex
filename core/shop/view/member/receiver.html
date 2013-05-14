@@ -1,0 +1,41 @@
+<!-- right-->
+  <div class="MemberMain">
+  <div style="margin-right:175px;">
+
+<div class="title"><{t}>收货地址<{/t}></div>
+
+<{if !$receiver}>
+<div class="noinfo">暂无收货地址，<a href="<{link ctl=member act=addReceiver}>" class="lnk"><span class="point">点此添加</span></a></div>
+<{else}>
+<span><a href="<{link ctl=member act=addReceiver}>" class="lnk"><img src="statics/btn-addaddress.gif" /></a></span>
+<table class="memberlist" width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+        <th><{t}>收货人<{/t}></th>
+        <th><{t}>地址<{/t}></th>
+        <th><{t}>电话<{/t}></th>
+        <th><{t}>手机<{/t}></th>
+        <th><{t}>邮编<{/t}></th>
+        <th><{t}>默认<{/t}></th>
+        <th><{t}>操作<{/t}></th>
+    </tr>
+   
+    <tbody>
+    <{foreach from=$receiver item=items key=key}>
+    <tr>
+      <td><a href="<{link ctl=member act=modifyReceiver arg0=$items.addr_id}>"><{$items.name|escape:'html'}></a></td>
+        <td class="textwrap" style="text-align:left;"><{$items.addr|escape:'html'}></td>
+      <td><{$items.tel|escape:'html'}></td>
+      <td><{$items.mobile|escape:'html'}></td>
+      <td><{$items.zip|escape:'html'}></td>
+      <td><{if $items.def_addr == 1}><{t}>是<{/t}><{else}><{t}>否<{/t}><{/if}></td>
+      <td><a href="<{link ctl=member act=modifyReceiver arg0=$items.addr_id}>" ><{t}>修改<{/t}></a>&nbsp;&nbsp;<a href="<{link ctl=member act=delRec arg0=$items.addr_id}>" ><{t}>删除<{/t}></a><{if $items.def_addr == 1}>&nbsp;&nbsp;<a href="<{link ctl=member act=setDefault arg0=$items.addr_id arg1=1}>" ><{t}>取消默认<{/t}><{else}>&nbsp;&nbsp;<a href="<{link ctl=member act=setDefault arg0=$items.addr_id arg1=2}>" ><{t}>设为默认<{/t}><{/if}></a></td>
+    </tr>
+    <{/foreach}>
+    </tbody>
+ 
+</table>
+<{/if}>
+
+</div>
+</div>
+<!-- right-->

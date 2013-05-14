@@ -1,0 +1,6 @@
+<{if $item.is_has_remote_pdts!=='true' && $item.pay_stat==0 && $item.ship_stat==0 && $item.stat=='active' }>
+<a href="index.php?ctl=<{$env.get.ctl}>&act=showEdit&p[0]=<{$item.order_id}>" target="_blank"><{img src="images/bundle/btn_edit.gif"}><{t}>编辑<{/t}></a>
+<{/if}>
+<{if $item.is_has_remote_pdts=='true' && $item.stat=='active' }>
+<a href="index.php?ctl=<{$env.get.ctl}>&act=edit_po&p[0]=<{$item.order_id}>" target="_blank"><{img src="images/bundle/btn_edit.gif"}><{t}>采购并编辑<{/t}></a>
+<{/if}>

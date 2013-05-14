@@ -1,0 +1,13 @@
+<table width="100%">
+<tr>
+  <td style="width:180px" valign="top">
+  <div style="height:300px;overflow:scroll">
+<{foreach from=$widgetsLib item=widgets key=key}>
+  <a class="item" target="{update:'wginfo'}" href="index.php?ctl=content/pages&act=widgetinfo&p[0]=<{$widgets.name}>" ><{$widgets.label}></a>
+<{/foreach}> <!-- onclick='window.pagemgr.addWidget.bind(window.pagemgr)(<{json from=$widgets}>,<{$theme|default:'null'}>)' -->
+  </div>
+  </td>
+  <td valign="top" id="wginfo">
+  </td>
+</tr>
+</table>

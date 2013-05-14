@@ -1,0 +1,21 @@
+<div>
+
+<h5 style='margin:80px auto'>
+数据已下载完毕，<span id='open-supplier-cat' class='lnk'>打开<{$cat_name}>分类</span>
+</h5>
+
+<script>
+void function(){
+    $('open-supplier-cat').addEvent('click',function(e){
+        
+        W.page('index.php?ctl=goods/product&act=index&p[0]=<{$cat_id}>',{onComplete:function(){
+            
+
+        this.getParent('.dialog').getElement('.dialog-btn-close').fireEvent('click');
+        }.bind(this)});
+        
+
+    });
+}();
+</script>
+</div>

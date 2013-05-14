@@ -1,0 +1,162 @@
+<script>var <{$var}>;</script>
+<div id="mce_handle_<{$var}>" class="mce_style_1" style='opacity:0.4;FILTER:alpha(opacity=40);'>
+<ul>
+   <li><{img class="x-align" src="images/bundle/mceico_29.gif" title="左对齐" onclick="{$var}.set.bind({$var})('justifyLeft')"}></li>
+   <li><{img class="x-align" src="images/bundle/mceico_30.gif" title="居中" onclick="{$var}.set.bind({$var})('justifyCenter')"}></li>
+   <li><{img class="x-align" src="images/bundle/mceico_31.gif" title="右对齐" onclick="{$var}.set.bind({$var})('justifyRight')"}></li>
+   <li><{img src="images/bundle/mceico_33.gif" title="添加链接" onclick="{$var}.mklink.bind({$var})()"}></li>
+   <li><{img src="images/bundle/mceico_38.gif" title="插入表格" onclick="{$var}.dialog.bind({$var})('table',{title:'插入表格'})"}></li>
+   <li><{img src="images/bundle/mceico_36.gif" title="插入图片" onclick="{$var}.dialog.bind({$var})('image',{title:'插入图片'})"}></li>
+   <li><{img src="images/bundle/mceico_39.gif" title="插入横线" onclick="{$var}.set.bind({$var})('insertHTML','<hr />')"}></li>
+   <li><{img class="x-enable" value="Bold" title="加粗" src="images/bundle/mceico_19.gif" onclick="{$var}.set.bind({$var})('Bold')"}></li>
+   <li><{img class="x-enable" value="Italic" title="斜体" src="images/bundle/mceico_20.gif" onclick="{$var}.set.bind({$var})('Italic')"}></li>
+   <li><{img class="x-enable" value="Underline" title="下划线" src="images/bundle/mceico_21.gif" onclick="{$var}.set.bind({$var})('Underline')"}></li>
+   <li><{img class="x-enable" value="strikeThrough" title="中划线" src="images/bundle/mceico_22.gif" onclick="{$var}.set.bind({$var})('strikeThrough')"}></li>
+   <li><{img class="x-enable" value="subscript" title="脚注" src="images/bundle/mceico_23.gif" onclick="{$var}.set.bind({$var})('subscript')"}></li>
+   <li><{img class="x-enable" value="superscript" title="标注" src="images/bundle/mceico_24.gif" onclick="{$var}.set.bind({$var})('superscript')"}></li>
+   <li><{img class="x-enable" value="insertOrderedList" title="排序列表" src="images/bundle/mceico_25.gif" onclick="{$var}.set.bind({$var})('insertOrderedList')"}></li>
+   <li><{img class="x-enable" value="insertUnorderedList" title="无序列表" src="images/bundle/mceico_26.gif" onclick="{$var}.set.bind({$var})('insertUnorderedList')"}></li>
+   <li><{img src="images/bundle/mceico_27.gif" title="减少缩进" onclick="{$var}.set.bind({$var})('outdent')"}></li>
+   <li><{img src="images/bundle/mceico_28.gif" title="增加缩进" onclick="{$var}.set.bind({$var})('indent')"}></li>
+   <li><select class='ft_select'>
+      <option><{t}>字体<{/t}></option>
+      <option value='仿宋_GB2312'><{t}>仿宋<{/t}></option>
+      <option value='宋体'><{t}>宋体<{/t}></option>
+      <option value='黑体'><{t}>黑体<{/t}></option>
+      <option value='楷体_GB2312'><{t}>楷体<{/t}></option>
+      <option value='新宋体'><{t}>新宋体<{/t}></option>
+      <option value='Microsoft Yahei'><{t}>雅黑<{/t}></option>
+      <option value='Tahoma'>Tahoma</option>
+      <option value='Times New Roman'>Times</option>
+      <option value='Arial'>Arial</option>
+      <option value='IMPACT'>IMPACT</option>
+      <option value='Verdana'>Verdana</option>
+      
+    </select></li>
+   <li><select class='fs_select'>
+      <option><{t}>字号<{/t}></option>
+      <option value='1'>1</option>
+      <option value='2'>2</option>
+      <option value='3'>3</option>
+      <option value='4'>4</option>
+      <option value='5'>5</option>
+      <option value='6'>6</option>
+      <option value='7'>7</option>
+    </select></li>
+   <li><{img class="fontColorPicker" title="文字颜色" src="images/bundle/mceico_44.gif" }></li>
+   <li><{img class="fontBGColorPicker" title="背景颜色" src="images/bundle/mceico_45.gif" }></li>
+   <li onclick="<{$var}>.editHTML.call(<{$var}>)" style='color:#660000'><{t}>HTML源码<{/t}></li>
+</ul>
+<br style='clear:both;display:none'/>
+</div>
+<div id='mce_handle_htmledit_<{$var}>' style='display:none' class='mce_style_1'>
+<span class='arrow-left'>&nbsp;</span>
+<span class='returnwyswyg' style='color:#000;cursor:pointer;'><{t}>返回可视化编辑<{/t}></span>
+<span class='sysiconBtnNoIcon' title='粗体' htmltp='b'><strong>B</strong></span>
+<span class='sysiconBtnNoIcon' title='斜体' htmltp='i'><i>i</i></span>
+<span class='sysiconBtnNoIcon' title='下划线' htmltp='u'><u>U</u></span>
+<span class='sysiconBtnNoIcon' title='超链接' htmltp='link'>LINK</span>
+<span class='sysiconBtnNoIcon' title='DIV层' htmltp='div'>DIV</span>
+<span class='sysiconBtnNoIcon' title='段落' htmltp='p'>P</span>
+<span class='sysiconBtnNoIcon' title='LI' htmltp='li'>li</span>
+<span class='sysiconBtnNoIcon' title='BR' htmltp='br'><{t}>换行<{/t}></span>
+<span class='sysiconBtnNoIcon' title='HR' htmltp='hr'><{t}>分割线<{/t}></span>
+<span class='sysiconBtnNoIcon' title='图片' htmltp='img'><{t}>插入图片<{/t}></span>
+</div>
+<script>
+       
+        mceHandler.implement(editor_style_1);
+        <{$var}>=new mceHandler($('mce_handle_<{$var}>'),new mceInstance('<{$for}>',{includeBase:<{$includeBase}>}));
+     
+    
+</script>
+
+<script>
+void function(){
+var textareaEditor_<{$var}>=new Abstract({
+     element:$E('#mce_body_<{$var}> textarea'),
+     getRange:function(){
+       if(!!document.selection){
+          return document.selection.createRange();
+       }
+       return false;
+     },
+     getSelection:function () {
+		if(!!document.selection){
+                 if(this.range){
+                    return this.range.text;
+                }
+            return document.selection.createRange().text;
+        }else if(!!this.element.setSelectionRange){
+            return this.element.value.substring(this.element.selectionStart,this.element.selectionEnd);		
+        }else{return false};
+	 },replaceSelection:function (text) {
+		var scrollTop=this.element.scrollTop;
+        if(!!document.selection) {
+			this.element.focus();			
+           var old=document.selection.createRange().text;			
+           var range=this.range||document.selection.createRange();			
+           range.text=text;			
+           range-=old.length-text.length;
+		}else if(!!this.element.setSelectionRange) {
+			var selection_start=this.element.selectionStart;			
+            this.element.value=this.element.value.substring(0,selection_start)+text+this.element.value.substring(this.element.selectionEnd);			this.element.setSelectionRange(selection_start+text.length,selection_start+text.length);
+		}
+        this.element.focus();
+		this.element.scrollTop=scrollTop;
+	 },wrapSelection:function (before,after) {
+		this.replaceSelection(before+this.getSelection()+after);
+        this.range=null;
+	 }
+  });
+  
+ $E('#mce_body_<{$var}> textarea').addEvent('mouseup',function(){
+     textareaEditor_<{$var}>.range=textareaEditor_<{$var}>.getRange();
+ });
+  
+ $$('#mce_handle_htmledit_<{$var}> span[htmltp]').addEvent('click',function(e){
+ 
+     var htmltp=this.get('htmltp');
+     var B="";
+     var A="";
+     
+     if(htmltp=='img'){
+         
+        return new Dialog('index.php?ctl=editor&act=image',{title:'插入<img>',onShow:function(){
+           var dialog=this;
+           this.dialog.store('callback',function(src,imgtag){
+              textareaEditor_<{$var}>.wrapSelection(imgtag,A);
+              dialog.close();
+           });
+        }});
+         
+     }
+     
+     
+     switch (htmltp){
+                 case 'b':
+                     B="<b>";A="</b>";break;                     
+                 case 'i':
+                     B="<i>";A="</i>";break;  
+                 case 'u':
+                     B="<u>";A="</u>";break;         
+                 case 'img':
+                     B="<img src='#'/>";break;
+                 case 'link':
+                     B="<a href='#'>";A="</a>";break;      
+                 case 'div':
+                      B="<div>";A="</div>";break;      
+                 case 'p':
+                      B="<p>";A="</p>";break;      
+                 case 'br':
+                      B="<br/>";break;      
+                 case 'hr':
+                       B="<hr/>";break;
+                 case 'li':
+                       B="<li>";A="</li>";break;                         
+     };
+     textareaEditor_<{$var}>.wrapSelection(B,A);
+ });
+}();
+    
+</script>

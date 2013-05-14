@@ -1,0 +1,111 @@
+<div class="ItemsWarp clearfix">
+<{assign var='zindex' value='1000'}>
+<{foreach from=$products item="product"}>
+  <div class="items-list <{$mask_webslice}>" product="<{$product.goods_id}>" id="pdt-<{$product.goods_id}>">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td class="goodpic" valign="middle" style='<{if $env.conf.site.thumbnail_pic_width !=0 && $env.conf.site.thumbnail_pic_height !=0}> width:<{$env.conf.site.thumbnail_pic_width}>px;<{/if}>'>
+  
+  <a target="_blank" style='<{if $env.conf.site.thumbnail_pic_width !=0 && $env.conf.site.thumbnail_pic_height !=0}> width:<{$env.conf.site.thumbnail_pic_width}>px;height:<{$env.conf.site.thumbnail_pic_height}>px;<{/if}>' href="<{link ctl="product" act="index" arg0=$product.goods_id}>">
+    <img src="<{$product.thumbnail_pic|default:$env.conf.site.default_thumbnail_pic|storager}>"  alt="<{$product.name|escape:html}>"/>
+    <{*<span class='zoom-handle' pic='<{$product.big_pic|default:$env.conf.site.default_big_pic|storager}>'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>*}>
+  </a>
+  </td>
+  <td width='10px;'>&nbsp;</td>
+    <td class="goodinfo">
+      <h6><a href="<{link ctl="product" act="index" arg0=$product.goods_id}>" title="<{$product.name|escape:html}>" class="entry-title" target="_blank"><{$product.name|escape:"html"}></a></h6>
+      <{$product.brief}>
+    </td>
+    <td class="price_button" width="250">
+          <ul>
+            <li><span class="price1"><{$product.price|cur}></span><{if $product.mktprice && $setting.mktprice}><span class="mktprice1"><{t}>市场价: <{/t}><{$product.mktprice|cur}></span><{/if}></li>
+            <{if $product.mktprice > $product.price && $setting.mktprice && $setting.saveprice > 0}>
+            <li style="padding-left:4px; padding-top:8px;"><span class="saveprice1"> <{if $setting.saveprice == 1}>节省：<{$product.mktprice-$product.price|cur}>
+                    <{elseif $setting.saveprice == 2}>优惠:<{$product.price/$product.mktprice*100|number:'2'}>%
+                    <{elseif $setting.saveprice == 3}><{$product.price/$product.mktprice*10|number:'1'}>折
+					<{/if}></span></li>
+            <{/if}>
+            <!--<li class="intro rank-<{$product.rank|default:3}>">Rank <{$product.rank|default:3}></li>-->
+          </ul>    
+    
+        <ul class="button">
+      
+            <{goodsmenu product=$product setting=$setting login=$LOGIN zindex=$zindex--}>
+      
+            <li class="btncmp">
+                       <a href="javascript:void(0)" onclick="gcompare.add({gid:'<{$product.goods_id}>',gname:'<{$product.name|addslashes|escape:html}>',gtype:'<{$product.type_id}>'});" class="btncmp" title="商品对比">
+              <{t}>商品对比<{/t}>
+             </a>
+            </li>
+        </ul>    
+    
+    </td>
+  </tr>
+</table>
+
+  </div>
+<{/foreach}>
+</div>
+
+<{*
+<script>
+/*void function(){
+橱窗放大镜
+  author:litie[A]shopex.cn
+  [c]  ShopEx
+  last update : 2009年9月25日14:51:20
+
+    var getAmongPos = function(size,to){
+                 var elpSize = $(to).getSize();
+                 return {
+                    'top':Math.abs((elpSize.y/2).toInt()-(size.height/2).toInt()+to.getPosition().y+elpSize.scroll.y),
+                    'left':Math.abs((elpSize.x/2).toInt()-(size.width/2).toInt()+to.getPosition().x+elpSize.scroll.x)
+                 };
+            };
+
+   $$('.items-list .goodpic .zoom-handle').addEvent('click',function(e){
+            e.stop();
+            if(this.retrieve('active'))return;
+            var _this = this;
+            _this.store('active',true);
+            var tpic = this.getPrevious('img');
+            var bpic_src = this.get('pic');
+           
+            var loading = new Element('div',{
+                 styles:{'background':'#fff url(<{$base_url}>statics/loading.gif) no-repeat 50% 50%',
+                         'width':40,
+                         'height':40,
+                         'border':'1px #e9e9e9 solid',
+                         'opacity':.5}}).inject(document.body).amongTo(tpic);
+            
+            new Asset.image(bpic_src,{onload:function(img){
+                  
+                  loading.remove();
+                  var winsize = window.getSize();
+                  var imgSize = $(img).zoomImg(winsize.x,winsize.y,1);
+                  var fxv = $extend(getAmongPos(imgSize,window),imgSize);
+                  var imgFx = new Fx.Morph(img,{link:'cancel'});
+                  img.setStyles($extend(tpic.getCis(),{opacity:0.5})).inject(document.body).addClass('img-zoom').addEvent('click',function(){
+                      imgFx.start(tpic.getCis()).chain(function(){this.element.remove();_this.store('active',false);});
+                  });
+                  imgFx.start($extend(fxv,{opacity:1}));
+                  document.addEvent('click',function(){
+                       
+                       img.fireEvent('click');
+                       document.removeEvent('click',arguments.callee);
+                  
+                  });
+            
+            },onerror:function(){
+                _this.store('active',false);
+                loading.remove();
+            }});
+            
+   
+   });
+   
+   
+   }();*/
+</script>
+
+*}>

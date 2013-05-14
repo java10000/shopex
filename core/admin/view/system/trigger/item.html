@@ -1,0 +1,222 @@
+<form id="trigger_editor" action="index.php?ctl=system/trigger&act=save" method="post" >
+<input type='hidden' name='filter_str' value=''/>
+<input type='hidden' name='action_str' value=''/>
+<{if $trigger.trigger_id}>
+<input type="hidden" name="trigger_id" value="<{$trigger.trigger_id}>" />
+<{/if}>
+<{if $target eq 'system'}>
+<{include file="system/trigger/system_trigger.html"}>
+<{else}>
+<{include file="system/trigger/normal_trigger.html"}>
+<{/if}>
+
+<div class="gridlist-head">
+执行动作：</div>
+<div class="gridlist" style="height:150px; overflow:auto;">
+<{foreach from=$trigger.trigger_define.actions key=key item=item}>
+<div class="act-row row clearfix">
+	<div style="float:right">
+		<button type="button" class="new">+</button>
+		<button type="button" class="remove">-</button>
+	</div>
+	
+	<div class="span-4">
+		<select name="actions[]">
+			<{foreach from=$actions item='acts' key='grpname'}>
+			<optgroup label="<{$grpname}>">
+				<{foreach from=$acts item="act" key="k"}>
+				<option value="<{$k}>" <{if $k eq $item.act}>selected="selected"<{assign var="args" value=$act.args}><{/if}>><{$act.label}></option>
+				<{/foreach}>
+			</optgroup>
+			<{/foreach}>
+		</select>&nbsp;
+	</div>
+	<div class="span-7 act-args">
+	<{include file='system/trigger/action_row.html'}>
+	</div>
+</div>
+<{/foreach}>
+</div>
+<div class="footer textleft">
+状态: <input type="radio" name="active" value="true" <{if $trigger.active == "true"}>checked<{/if}>>启用&nbsp;&nbsp;<input type="radio" name="active" value="false" <{if $trigger.active == "false"}>checked<{/if}>>停用
+&nbsp;&nbsp;备注: <input type="text" value="<{$trigger.trigger_memo}>" name="trigger[trigger_memo]" />
+</div>
+
+<div class="table-action" style="margin:5px 0 0">
+<{button label="保存规则" type="submit"}>
+</div>
+</form>
+
+<div style="display:none" id="filter_dtype_all">
+<{foreach from=$filter_types item=item key=key}>
+	<select id="filter_dtype_all_<{$key}>" name="filter_type[]" style="margin:0 2px">
+	<{foreach from=$item key=k item=v}>
+	<option value="<{$k}>" <{if $v.input}>input="<{$v.input}>"<{/if}>><{$v.label}></option>
+	<{/foreach}>
+	</select>
+<{/foreach}>
+</div>
+<script>
+void function(){
+   
+   var filterStrHidden=$E('input[name=filter_str]','trigger_editor');
+   var actionStrHidden=$E('input[name=action_str]','trigger_editor');
+   
+   $('trigger_editor').store('target',{
+        
+        update:'messagebox',
+        onComplete:function(re){
+            if(re.contains('error'))return;
+                $('trigger_editor').getParent('.dialog').retrieve('instance').close();
+            }
+    
+    });
+   
+   
+   var initTrigger=function(){
+       var rows=$('trigger_editor').getElements('.filter-row');
+       if(rows.length){
+         rows.each(initFilterRow);
+       }
+       rows=$('trigger_editor').getElements('.act-row');
+       if(rows.length){
+         rows.each(initActionRow);
+       }
+   };
+
+  var  initActionRow=function(r){
+		var btnNew=r.getElement('.new');
+		var btnRremove=r.getElement('.remove');
+		var sel=r.getElement('select');
+		$$(btnNew,btnRremove).addEvent('click',function(e){
+			  e.stop();    
+			  var row=this.getParent('.act-row');
+			  var next=row.getNext('.act-row');
+			  var pre=row.getPrevious('.act-row');
+			  if(this.hasClass('remove')){
+				if(next||pre){
+					row.remove();
+				 }
+			  }else{
+				initActionRow(row.clone().injectAfter(row));
+			  }
+
+		});
+
+		sel.addEvent('change',function(e){
+			W.page('index.php?ctl=system/trigger&act=showAction&p[0]='+this.value,{update:this.getParent().getNext('.act-args')});
+		});
+  }
+  
+  var  initFilterRow=function(r){
+       
+       var btnNew=r.getElement('.new');
+       var btnRremove=r.getElement('.remove');
+       var sel=r.getElement('select');
+       
+		$$(btnNew,btnRremove).addEvent('click',function(e){
+			  e.stop();    
+			  var row=this.getParent('.filter-row');
+			  var next=row.getNext('.filter-row');
+			  var pre=row.getPrevious('.filter-row');
+			  if(this.hasClass('remove')){
+				if(next||pre){
+					row.remove();
+				 }
+			  }else{
+				initFilterRow(row.clone().injectAfter(row));
+			  }
+
+		});
+
+
+		sel.addEvent('change',function(e){
+			this.getAllNext().each(Element.remove);
+			var ep = $('filter_dtype_all_'+this.getSelected()[0].getAttribute('type'))
+			.clone()
+			.injectAfter(this)
+			.addEvent('change',function(e){
+				this.getAllNext().each(Element.remove);
+				if(this.getSelected()[0].getAttribute('input')){
+					new Element('input',{'name':'filter_value[]', size:8}).injectAfter(this);
+				}
+			});
+			ep.fireEvent('change',{target:ep});
+	});
+	return r;
+    
+   }
+   initTrigger();
+
+	if($('trigger_event_changer')){
+	   $('trigger_event_changer').addEvent('change',function(e){
+		   W.page('index.php?ctl=system/trigger&act=showfilter&p[0]='+this.value,{update:$('trigger_filter_box'),onComplete:initTrigger});
+	   });
+   }
+   
+    var getRowsDefineStrBuffer=function(rows){
+        var strBuffer=[];
+        rows.each(function(r){
+                  var strArr=[];
+                  var fels=$$(r.getElements('select'),r.getElements('input'));
+
+				  var lbl=r.getElement('.label');
+				  var ipt=r.getElement('input[name^=act_args[]');
+
+                  fels.each(function(fel){
+                       if(fel.match('select') && fel.getSelected()[0]){
+                           strArr.push(fel.getSelected()[0].text);
+                       }else{
+						   var v=(ipt&&lbl&&ipt.value==fel.value)?lbl.get('html'):fel.value;
+						   strArr.push(v);
+                       }
+                  });
+                  strBuffer.push(strArr.join(''));
+             });
+             
+        return strBuffer;
+    };
+    
+    
+    $('trigger_editor').store('target',{update:'messagebox',onComplete:function(re){
+         if(re.contains('error'))return;
+         $('trigger_editor').getParent('.dialog').retrieve('instance').close();
+    }});
+    $E('#trigger_editor button[type=submit]').addEvent('click',function(e){
+        filterStrHidden.set('value',(function(){
+            if($('system_trigger_url')){
+				return '访问系统网店机器人'+$('system_trigger_url').value;
+			}else{
+                var rows=$('trigger_editor').getElements('.filter-row');
+                var strBuffer=getRowsDefineStrBuffer(rows);
+                if($('trigger_filter_mode_every').checked){
+					return ('所有');
+                }else if($('trigger_filter_mode_all').checked){
+					return strBuffer.join(' 并且 ');
+                }else if($('trigger_filter_mode_any').checked){
+					return strBuffer.join(' 或者 ');
+                }
+			 }
+        })());
+
+        actionStrHidden.set('value',(function(){
+             var rows=$('trigger_editor').getElements('.act-row');
+             var strBuffer=getRowsDefineStrBuffer(rows);
+             
+             return strBuffer.join(',');
+        })());   
+
+		this.getElements('.act-row').each(function(r,idx){
+			r.getFormElements().filter(function(e){return e.get('name')!='actions[]'}).setProperty('name','args['+idx+'][]');
+		});
+		
+		/*W.page($('trigger_editor').action,{data:$('trigger_editor'),method:$('trigger_editor').method,
+		    update:'messagebox',
+            onComplete:function(re){
+                if(re.contains('error'))return;
+                $('trigger_editor').getParent('.dialog').retrieve('instance').close();
+            }});*/
+    });
+}();
+
+</script>

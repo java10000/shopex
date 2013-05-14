@@ -1,0 +1,104 @@
+<div class="success clearfix">
+  <div class="span-1 pic"/></div>
+  <div class="span-10"><h3><{t}>恭喜您已注册本店会员<{/t}></h3></div>
+</div>
+
+<div class="FormWrap">
+<div class="customMessages">{reg_succ_mess}</div>
+
+<form method="post" action="<{link ctl="member" act="saveMember"}>" id='form_saveMember_info' class="section">
+    <input type="hidden" name="is_register" value=1>
+    
+<div class="division" id='crateAdmin'>
+  <table width="100%" border="0" cellpadding="0" cellspacing="0" class="forform">
+  <{foreach from=$tree item=item name="item" key='row'}>
+  <tr>
+  <th><{if $item.attr_required eq 'true'}><em>*</em><{/if}><{$item.attr_name}></th>
+    <td>
+    <{if $item.attr_type =='date'}>
+    <{input class="cal" type='date' name='birthday'}>
+    <{/if}>
+
+    <{if $item.attr_type =='text'}>
+    <input class='inputstyle _x_ipt' name='<{$item.attr_id}>' vtype='<{if $item.attr_required eq 'true'}>required&&<{/if}><{$item.attr_valtype}>' type='text'/>
+    <{/if}>
+
+    <{if $item.attr_type =='cal'}>
+    <{input class="cal" type='date' name=$item.attr_id required=$item.attr_required}>
+    <{/if}>
+
+    <{if $item.attr_group =='defalut' && $item.attr_type != 'area' && $item.attr_type != 'sex' && $item.attr_type != 'date'}>
+    <input type='text' name='<{$item.attr_type}>' class="inputstyle _x_ipt" required='<{$item.attr_required}>'>
+    <{/if}>
+
+    <{if $item.attr_type =='area'}> 
+    <{input type="region" name='area' vtype='area2'}>
+    <{/if}>
+
+    <{if $item.attr_type =='sex'}>
+        <input type='radio' name='sex' value='1'><label><{t}>男<{/t}></label>
+        <input type='radio' name='sex' value='0'><label><{t}>女<{/t}></label>
+    <{/if}>
+
+    <{if $item.attr_type =='select'}>
+        <select name='<{$item.attr_id}>' <{if $item.attr_required eq 'true'}>class='_x_ipt' vtype='required'<{/if}>>
+            <option value=''><{t}>- 请选择 -<{/t}></option>
+            <{foreach from=$item.attr_option item=option name="option"  }>
+            <option value='<{$option}>'><{$option}></option>
+            <{/foreach}>
+        </select>
+    <{/if}>
+
+    <{if $item.attr_type =='checkbox'}>
+        <{foreach from=$item.attr_option item=checkbox name="checkbox" }>
+        <input type='checkbox' name=<{$item.attr_id}>[]" value='<{$checkbox}>' ><label><{$checkbox}></label><br/>
+        <{/foreach}>
+        <{if $item.attr_required eq 'true'}><input type='hidden' class='_x_ipt' vtype='selectc'/><{/if}>
+    <{/if}>
+    </td>
+  </tr>
+  <{/foreach}>
+  
+    <tr>
+    <th></th><td><input  type="submit" class="buttonstyle" value="确认" />
+    </tr>
+    
+    </table>
+    </div>
+</form>
+</div><!-- end div.FormWrap -->
+
+<script>
+window.addEvent('domready',function(){
+    validatorMap.set('selectc',['本项必填',function(element,value){
+        var checkboxelement = element.getParent('td').getElements('input[name$=]]'),
+            flag=checkboxelement.some(function(i){return !!i.checked;});
+            
+        checkboxelement.addEvent('change',function(){
+            validator.removeCaution(element);
+            validator.test($('crateAdmin'),element);
+            checkboxelement.removeEvent('change',arguments.callee);
+        });
+        
+        return flag;
+    }]);
+    
+    validatorMap.set('area2',['你没选择完整的地区',function(el,v){
+        var els=el.getElements('select');
+        if( els.length==1&&(els[0].getValue()==''||els[0].getValue()=='_NULL_') ) {
+            return true;
+        }
+        
+        return els.every(function(sel){
+            var selValue = sel.getValue();
+            if( selValue == '' && selValue == '_NULL_' ){
+                sel.focus();
+                return false;
+            }
+            
+            return true;
+        });
+    }
+
+});
+</script>

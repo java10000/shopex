@@ -1,0 +1,32 @@
+<div id="view-comment" style="padding-top:10px;">
+<table>
+  <tr>
+    <td><{t}>评论者:<{/t}></td>
+    <td><{$info.author}></td>
+  </tr>
+  <tr>
+    <td><{t}>他的E-mail:<{/t}></td>
+    <td><{$info.email}></td>
+  </tr>
+  <tr>
+    <td><{t}>他的网址:<{/t}></td>
+    <td><a href="http://<{$info.url}>" target="_blank"><{$info.url}></a></td>
+  </tr>
+  <tr>
+    <td><{t}>评论时间:<{/t}></td>
+    <td><{$info.time}></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><{t}>如果你要查看该评论具体所在的页面请<{/t}><a href="#" target="_blank"><{t}>点击这里<{/t}></a>。</td>
+  </tr>
+  <tr>
+    <td><{t}>评论内容:<{/t}></td>
+    <td><{$info.comment}></td>
+  </tr>
+  <tr>
+    <td><input type="button" value="关闭窗口" onclick="MList.reviewDialog.fireEvent('onHide');"></td>
+    <td></td>
+  </tr>
+</table>
+</div>

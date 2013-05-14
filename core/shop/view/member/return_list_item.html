@@ -1,0 +1,39 @@
+<table cellspacing="0" cellpadding="3" width="100%" class="liststyle">
+  <col class="span-1 ColColorGray">
+  </col>
+  <col class="span-2">
+  </col>
+  <col class="span-auto">
+  </col>
+  <col class="span-2">
+  </col>
+  <col class="span-1">
+  </col>
+  <thead>
+	<tr>
+	  <th>&nbsp;</th>
+	  <th><{t}>货号<{/t}></th>
+	  <th><{t}>商品名称<{/t}></th>
+	  <th><{t}>单价<{/t}></th>
+	  <th><{t}>数量<{/t}></th>
+	</tr>
+  </thead>
+  <tbody>
+	<{foreach from=$order.items item=item key=key}>
+	<tr>
+	  <td><input class="x-pdt-chk-<{$item.product_id}>" type="checkbox" value="<{$item.product_id}>" /></td>
+	  <td class="x-pdt-bn"><{$item.bn}></td>
+	  <td class="x-pdt-name"><{$item.name}></td>
+	  <td><{$item.price|cur}></td>
+	  <td class="x-pdt-num"><{$item.nums}></td>
+	</tr>
+	<{/foreach}>
+  </tbody>
+    <tfoot>
+	<tr>
+	  <td colspan="5">
+		<{pager data=$pager}>
+	  </td>
+	</tr>
+  </tfoot>
+</table>

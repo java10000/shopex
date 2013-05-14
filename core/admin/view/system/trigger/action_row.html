@@ -1,0 +1,4 @@
+<{foreach from=$args key="act_arg_name" item="act_arg" name="act_args"}> 
+<{assign var="iteration" value=$env.foreach.act_args.iteration-1}>
+<{input params=$act_arg value=$item.args emptytext="请输入{$act_arg_name}" name="act_args[]"}>
+<{/foreach}> 

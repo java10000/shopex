@@ -1,0 +1,16 @@
+<form action="<{link ctl=search act=result}>" method="post" class="SearchBar">
+  <table cellpadding="0" cellspacing="0">
+    <tr>
+      <td class="search_label"> <span>关键字：</span>
+        <input name="name[]" size="10" class="inputstyle keywords" value="<{$setting.search}>" x-webkit-speech/>
+      </td>
+      <{if $setting.searchopen}>
+      <td class="search_price1">价格从 <{input name="price[0]" type="number" size="4" class="inputstyle gprice_from" }></td>
+      <td class="search_price2">到<{input name="price[1]" type="number" size="4" class="inputstyle gprice_to"}></td>
+      <{/if}>
+      <td><input type="submit" value="搜索" class="btn_search" onfocus='this.blur();'/>
+      </td>
+      <td><a href="<{link ctl="search" act="index"}>" class="btn_advsearch">高级搜索</a> </td>
+    </tr>
+  </table>
+</form>

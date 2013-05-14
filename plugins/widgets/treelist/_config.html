@@ -1,0 +1,22 @@
+<div class="tableform widgetconfig">
+<div class="division">
+<table>
+<tr>
+<th>站点目录：</th>
+<td><select name="treelistnum">
+<option value="">选择</option>
+<{foreach from=$data item=item name="sitemap"}>
+<option style="padding-left:<{math equation="20+x*20" x=$item.depth-1}>px; " value="<{$item.node_id}>" <{if $setting.treelistnum==$item.node_id}>selected<{/if}>><{$item.title}></option>
+ <{/foreach}>
+</select>
+</td>
+</tr>
+<tr>
+<th>显示当前路径：</th><td><input type="checkbox" name="showroot" value="true" <{if $setting.showroot=='true'}>checked<{/if}>></td>
+</tr><tr>
+<th>显示层级：</th>
+<td><{input name="treenum" value=$setting.treenum|default:'3' size=5}></td>
+</tr>
+</table>
+</div>
+</div>

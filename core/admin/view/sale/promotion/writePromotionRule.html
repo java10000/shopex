@@ -1,0 +1,179 @@
+<form id='writePromotionRuleForm' method='post' action='index.php?ctl=sale/promotion&act=doWritePromotionRule' extra='promotion'>
+<div class="tableform">
+<h4><{t}>优惠方式<{/t}></h4>
+<div class="division">
+<table>
+<{if $solution.type == "order"}>
+<tr>
+<th><{t}>订单优惠条件：<{/t}></th>
+<td><{input type='unsigned' value=$pmt.orderMoney_from name='orderMoney_from' maxlength='10' size=10 required='true' }><b>≤</b><{t}>订单金额<{/t}> ＜ <{input type='unsigned' size=10 maxlength='10' value=$pmt.orderMoney_to name='orderMoney_to' required='true'}>
+<input type='hidden' class='_x_ipt' vtype='m_check'>
+</td>
+</tr>
+<{elseif $solution.type == "product"}>
+<tr>
+<th></th>
+<td><input type='radio' checked='checked'/><{t}>购买促销商品进行优惠<{/t}></td>
+</tr>
+<{/if}>
+<{if $solution.condition.mLev}>
+<tr>
+<th><{t}>允许参加会员等级：<{/t}></th>
+<td id="x-member-lv-sel">
+<input type ='checkbox' name="mLev[]" id="mLev" value="<{$env.const.MLV_NOLOGIN}>"<{if in_array(constant('MLV_NOLOGIN'),$pmt.mLev)}>checked=true<{/if}>/><{t}>非会员顾客<{/t}>
+<{foreach from=$mLev item=memlev key=key}>
+<input type ='checkbox' name="mLev[]" id="mLev" value="<{$key}>"<{foreach from=$pmt.mLev item=pmtmemlv}> <{if($pmtmemlv==$key)}>checked=true<{/if}><{/foreach}>/><{$memlev}>
+<{/foreach}>
+<input type='hidden' class='x-input' vtype='requiredcheckbox'/>
+</td>
+</tr>
+<{/if}>
+</table>
+</div>
+</div>
+
+<div class="tableform">
+<h4><{t}>其他设置<{/t}></h4>
+<div class="division"><table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <th><{t}>活动期间是否允许使用优惠券:<{/t}></th>
+    <td><{t}>是<{/t}><input type='radio' name='pmt_ifcoupon' value=1 <{if $pmt.pmt_ifcoupon == '1'}>checked='checked'<{/if}>>
+      否<input type='radio' name='pmt_ifcoupon' value=0 <{if $pmt.pmt_ifcoupon == '0'}>checked='checked'<{/if}>></td>
+  </tr>
+  <tr>
+    <th><{t}>活动规则开始时间:<{/t}></th>
+    <td><{input type='date' name='pmt_time_begin' value=$pmt.pmt_time_begin class='cal' required='true'}></td>
+  </tr>
+  <tr>
+    <th><{t}>活动规则结束时间:<{/t}></th>
+    <td><{input type='date' name='pmt_time_end' value=$pmt.pmt_time_end class='cal' required='true'}></td>
+  </tr>
+</table>
+</div>
+</div>
+<div class="tableform">
+<h4><{t}>优惠内容<{/t}></h4>
+
+
+<{if $solution.method.moreScore}>
+<div class="division" style="float:left;">
+<h5><{t}>请输入需要赠送多少倍积分<{/t}></h5>
+<{input value=$pmt.moreScore name='moreScore' required='true' type='positive'}>
+</div>
+<{/if}>
+
+
+<{if $solution.method.exemptFreight}>
+<div class="division" style="float:left;">
+<h5><{t}>运费<{/t}></h5>
+
+        是否免运费:<input type='checkbox' value='1' name='exemptFreight' <{if $pmt.exemptFreight}>checked='checked'<{/if}> />
+
+</div>
+<{/if}>
+
+<{if $solution.method.discount}>
+<div class="division" style="float:left;">
+<h5><{t}>请输入给予多少折扣<{/t}></h5>
+<{input value=$pmt.discount name='discount' required='true' type='discount_check'}> 如果打9折，请输入0.9；
+</div>
+<{/if}>
+
+
+<{if $solution.method.lessMoney}>
+<div class="division" style="float:left;">
+<h5><{t}>请输入减多少金额<{/t}></h5>
+<{input type='digits' value=$pmt.lessMoney name='lessMoney' required='true'}>
+</div>
+<{/if}>
+<hr class="clear" />
+<{if $solution.method.giveGift}>
+<div class="division">
+<h5><{t}>送赠品<{/t}></h5>
+<{input cols='name' filter=$pmt.gift_filter value=$pmt.giveGift type="object:trading/gift" name="giveGift" multiple="1"}>
+</div>
+<{/if}>
+<{if $solution.method.generateCoupon}>
+<div class="division">
+<h5><{t}>送优惠券<{/t}></h5>
+<{input cols='cpns_name' filter=$pmt.coupon_filter  value=$pmt.generateCoupon type="object:trading/coupon" name="generateCoupon" multiple="1"}>
+</div>
+<{/if}>
+</div>
+<div class="tableform">
+<h4><{t}>规则描述<{/t}></h4>
+    <{input type='textarea' name='pmt_describe'  cols='60' rows='6' value=$pmt.pmt_describe required='true'}><br /><span class="fontcolorGray">此描述会显示在前台相关页面展示给顾客
+</div>
+
+
+<div class="table-action">
+<{button label="上一步" href="index.php?ctl=sale/promotion&act=selectPromotionRule"}>
+<{button label="下一步" type="submit" id="x-tonext-btn"}>
+<{button label="取消" }>
+</div>
+
+
+<div style="display:none"><{input type="checkMoney"}></div>
+</form>
+
+
+<script>
+//初始化日期选择控件
+$ES('.cal','writePromotionRuleForm').each(function(i){i.makeCalable()});
+var extra_validator={};
+if(!extra_validator['promotion']){
+
+  extra_validator['promotion'] ={
+    'pointnum':['请录入大于0的数',function(f,i){
+        return i==null || i=='' || /^\+?[0-9]+(\.[0-9]+)?$/.test(i);
+      }]
+    };
+
+  extra_validator['promotion'] ={
+    'discount':['请录入小于等于1的数',function(f,i){
+        return i==null || i=='' || (/^\+?[0-9]+(\.[0-9]+)?$/.test(i) && i<=1 );
+      }]
+    };
+  extra_validator['promotion'] ={
+    'checkMoney':['',function(f,i){
+        if($E('input[name=orderMoney_from]','writePromotionRuleForm')&&
+           $E('input[name=orderMoney_to]','writePromotionRuleForm')&&
+           ($E('input[name=orderMoney_from]','writePromotionRuleForm').get('value').toFloat()
+           >=$E('input[name=orderMoney_to]','writePromotionRuleForm').get('value').toFloat())
+          )
+        {
+            alert('订单优惠条件价格不合理');
+            return false;
+        }else{
+            return true;
+        }
+      }]
+    };
+}
+    /*function m_check(){
+	    var max = parseInt($('d_max').value);
+		var min = parseInt($('d_min').value);
+        if(min>max){
+            $('alertbox').show();
+			reutrn false;
+		}else{
+            $('alertbox').hide();
+			return true;
+		}
+	}*/
+	validatorMap.set('m_check',['订单优惠条件价格不合理	',function(element,value){
+	    var p_element = element.getParent('td').getElements('input[name^=order]');
+		p_element[0].focus();
+		return parseInt(p_element[0].value)< parseInt(p_element[1].value);
+    }]);
+	validatorMap.set('discount_check',['请输入小于1的数值',function(element,value){
+	    return value<=1&&value>0;
+    }]);
+    $ES('.btn[type=button]','#writePromotionRuleForm').getLast().addEvent('click',function(e){
+		if($E('body[id=shopadmin]')){
+			W.page('index.php?ctl=sale/activity&act=index');
+		}else{
+			window.close();
+		}	
+	})
+</script>

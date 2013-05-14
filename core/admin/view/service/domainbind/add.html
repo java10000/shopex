@@ -1,0 +1,42 @@
+<form action="index.php?ctl=service/domainbind&act=result" method='POST' class="tableform">
+<div class="tableform">
+<div class="division">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+    <td colspan='2'>&nbsp;&nbsp;&nbsp;&nbsp;根据信息产业部文件通知，只有备案通过的域名才可以正式开店。我们将会对您提交绑定的域名进行审核，请确认您在进行此步操作的时候已经为此域名进行过备案。
+    </td>
+    <tr>
+        <th><{t}>请输入要绑定的域名：<{/t}></th>
+        <td>http://<input type="text" name='domain'value="<{$url}>" <{if $url!=''}>readonly='true'<{/if}>/></td>
+    </tr>
+</table>
+</div>
+</div>
+
+<table cellspacing="0" cellpadding="0" border="0" align="center" class="table-action">
+<tr>
+<td>
+  <div class="table-action">
+	<{button type="submit"  label="绑定"}>&nbsp;&nbsp;
+    <{button type="button"  label="取消" isCloseDialogBtn='true'}>&nbsp;&nbsp;
+</div>
+  
+</td>
+</tr>
+<{if $url!=''}><input type='hidden' name='edit' value='true'><{/if}>
+</table>
+</form>
+
+
+
+<!--以下是反馈页面-->
+
+<!--div class="success">
+    域名绑定已经提交审核，请等待相关部门审核域名是否备案成功，此过程大概需要1-2个工作日。审核通过后，域名绑定将会自动生效。<br />请点击”确定“按钮返回商店管理后台。
+</div>
+
+<table cellspacing="0" cellpadding="0" border="0" align="center" class="table-action">
+<tr>
+<td><b class="submitBtn"><input type="submit" id="on_submit" value="确定"/></b></td>
+</tr>
+</table-->

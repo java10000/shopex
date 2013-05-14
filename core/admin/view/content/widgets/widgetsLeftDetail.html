@@ -1,0 +1,12 @@
+<div class="wgtcat"><span class="lnk" onClick="W.page('index.php?ctl=system/template&act=addWidgetsPage',{update:$('dialogContent'),onComplete:function(){$E('.mainHead','dialogContent').remove()}})"><{t}>返回版块分类<{/t}></span> 
+<ul class="catdepth1" >
+<{foreach from=$widgetsLib.list item=widgets key=key}> 
+<li id="headerLeft_<{$key}>" onMouseMove="$('toAdd_<{$key}>').style.visibility='';" onMouseOut="$('toAdd_<{$key}>').style.visibility='hidden';this.className='';" style="cursor:pointer;">
+<span id="toAdd_<{$key}>" style="visibility:hidden;" class="quickaddwgt"  onClick='_addWeigets(eval([<{json from=$widgets}>,"<{$themes}>"]))' ></span>
+<span onClick="W.page('index.php?ctl=system/template&act=getWidgetsInfo',{update:$('pageRight'),data:'widgets=<{$widgets.name}>&themes=<{$themes}>','method':'get'})" title="添加<{$widgets.name}>版块"><{$widgets.label}></span>
+</li>
+<{/foreach}> 
+</ul>
+</div>
+
+

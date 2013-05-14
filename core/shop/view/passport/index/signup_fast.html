@@ -1,0 +1,97 @@
+<form method="post" action='<{link ctl="passport" act="create"}>' class='mini-signupform' id='mini-signupform'>
+<input type='hidden' name='from_minipassport' value=1 />
+<div class="RegisterWrap">
+  <iframe id="iframemask" style="position:absolute;top:0;left:0;" frameborder="0" ></iframe>
+
+      <div class="form" style="display:block; position:relative">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+         <tr>
+            <td colspan=2>
+               <h4><{t}>用户注册<{/t}></h4>
+               <i>{register_message}</i>
+            </td>
+            <td class='row-span' rowspan='<{if $valideCode}>8<{else}>7<{/if}>'>
+               <div class='span-auto' style='width:160px'>&nbsp;</div><div class='span-auto close' style='width:25px'>X</div>
+               <div class='clear'></div><br /><br /><br /><br /><br />
+               已有账号？现在<a href='<{link ctl="passport" act="login"}>' class='lnk'>登陆</a></div>
+  
+			   <{foreach from=$regist_content item=con}> <{$con}> <{/foreach}>
+			   
+            </td>
+         </tr>
+
+         <tr>
+            <th><i>*</i><{t}>用户名：<{/t}></th>
+            <td><{input class="inputstyle" name="uname" required="true" id="reg_user" maxlength="50" onchange="nameCheck(this)"}><span></span></td>
+          </tr>
+          <tr>
+            <th><i>*</i><{t}>密码：<{/t}></th>
+            <td><{input class="inputstyle" name="passwd" type="password" required="true" id="reg_passwd"}></td>
+          </tr>
+          <tr>
+            <th><i>*</i><{t}>确认密码：<{/t}></th>
+            <td><{input class="inputstyle" name="passwd_r" type="password" required="true" id="reg_passwd_r"}></td>
+          </tr>
+          <tr>
+            <th><i>*</i><{t}>电子邮箱：<{/t}></th>
+            <td><{input class="inputstyle" name="email" type="email" required="true" id="reg_email" maxlength="200"}></td>
+          </tr>
+          <{if $valideCode}>
+          <tr>
+            <th><i>*</i><{t}>验证码：<{/t}></th>
+            <td><{input size="8" class="inputstyle"  type="digits" required="true" name="signupverifycode" id="iptsingup"}>
+                <span class='verifyCode' style='display:none;'><img src="#" border="1" codesrc='<{link ctl="passport" act="verifyCode" arg0="s"}>'/><a href="javascript:void(0)"><{t}>&nbsp;看不清楚?换个图片<{/t}></a>
+               </span>
+             </td>
+          </tr>
+          <{/if}>
+          <tr>
+            <th></th>
+            <td><label for="license" class="nof" style="width:auto; text-align:left; font-weight:normal;">
+          <input type="checkbox" id="license" name="license" value="agree" checked="checked"/>
+          我已阅读并同意 <a href="<{link ctl=page act=license}>" id="terms_error" class="lnk" target='_blank'><span class="FormText" id="terms_error_sym"><{t}>会员注册协议<{/t}></span></a><{t}>和<{/t}><a href="<{link ctl=page act=privacy}>" id="privacy_error" class="lnk" target='_blank'><span class="FormText" id="privacy_error_sym"><{t}>隐私保护政策<{/t}></span></a>。
+          </label></td>
+          </tr>          
+          <tr>
+            <th></th>
+            <td>
+                <input class="actbtn btn-register" type="submit" value="注册新用户" />
+              </td>
+          </tr>
+        </table>
+        </div>
+  </div>
+  <{if $to_buy}><input type='hidden' name='regType' value='buy'> <{/if}>
+  <{if $isfastbuy}><input type='hidden' name='isfastbuy' value='yes'><{/if}>
+</form>
+<script>
+
+
+window.addEvent('domready',function() {
+$('iframemask').width= $('mini-signupform').getCoordinates().width;
+$('iframemask').height= $('mini-signupform').getCoordinates().height;
+
+});
+<{if $valideCode}>
+
+   void function(formclz){
+         var vcodeBox = $E('.'+formclz+' .verifyCode');
+         var vcodeImg  =vcodeBox.getElement('img');
+         var refreshVcodeBtn  = vcodeBox.getElement('a').addEvent('click',function(e){
+              e.stop();
+              vcodeImg.src = vcodeImg.get('codesrc')+'?'+$time();
+         });
+         $$('.'+formclz+' input').addEvent('focus',function(){
+             if (this.form.retrieve('showvcode',false))return;
+             vcodeBox.show();
+             refreshVcodeBtn.fireEvent('click',{stop:$empty});
+             this.form.store('showvcode',true);
+         });
+   
+   }('mini-signupform');
+
+<{/if}>
+function nameCheck(input){
+  new Request.HTML({update:$(input).getNext(),data:'name='+encodeURIComponent(input.value=input.value.trim())}).post('<{link ctl=passport act=namecheck}>');
+}
+</script>

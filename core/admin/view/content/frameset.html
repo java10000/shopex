@@ -1,0 +1,30 @@
+<div class="frame-selector">
+<{foreach from=$frames item=item}>
+  <a class="<{if $base eq $item}>current<{/if}>" onclick="setCurrent(this)" href="index.php?ctl=content/pages&act=view&p[0]=<{$item}>" target="_page_view"><img border="0" width="60" src="images/layout/<{$item}>.png" /></a>
+<{/foreach}>
+</div>
+<iframe name="_page_view" style="width:100%;border:none" id="page-editor" src="index.php?ctl=content/pages&act=view&p[0]=<{$base}>">
+</iframe>
+
+<script>
+$('page-editor').setStyle('height',window.mainHeight-90);
+function setCurrent(obj){
+  $(obj).addClass('current');
+  $(obj.parentNode).getChildren().each(function(o){
+    if(o.tagName==obj.tagName && o!=obj){
+      $(o).removeClass('current');
+    }
+  });
+}
+</script>
+<style>
+.frame-selector{
+  height:61px;padding:5px
+}
+.frame-selector a{
+  border-bottom:10px solid #ccc;
+}
+.frame-selector a.current{
+  border-color:#060;
+}
+</style>

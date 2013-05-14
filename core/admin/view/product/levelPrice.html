@@ -1,0 +1,32 @@
+<table id="levelPriceEditor" class="gridlist" cellpadding="0" cellspacing="0">
+<thead>
+<tr>
+  <th><{t}>会员等级<{/t}></th>
+  <th><{t}>价格<{/t}></th>
+  <th><{t}>留空默认<{/t}></th>
+</tr>
+</thead>
+<tbody>
+<{foreach name=item from=$mPrice item=level key=level_id}>
+<tr>
+  <td><{$level.name}></td>
+  <td><{input type="money" value=$level.price name=$level_id vtype="positive"}></td>
+  <td><{$level.default|cur}></td>
+</tr>
+<{/foreach}>
+</tbody>
+</table>
+<div class="mainFoot">
+	<div class="table-action">
+		<{button label="确定"  onclick="member()" }>
+	</div>
+</div>
+
+<script>
+var member=function(e){
+	var inp=$ES('input[vtype=positive]','levelPriceEditor');		
+    if(!$('levelPriceEditor').bindValidator('x-input'))return;
+	window.fbox.onSelect(inp);	
+	window.fbox.hide();
+}
+</script>

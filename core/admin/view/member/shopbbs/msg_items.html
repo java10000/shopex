@@ -1,0 +1,138 @@
+<div class="tableform">
+<h4><{t}>会员信息<{/t}></h4>
+<div class="division">
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+<{if $member.member_id}>
+<tr>
+   <th ><{t}>用户名：<{/t}></th>
+  <td><{if $member.member_id}><a href="index.php?ctl=member/member&act=detail&p[0]=<{$member.member_id}>" target="_blank"><{$member.uname}>[<{$member.levelname}>]</a><{else}><{t}>非会员顾客<{/t}><{/if}></td> 
+</tr>
+<tr>
+  <th ><{t}>姓名：<{/t}></th>
+  <td><{$message.msg_from|escape:'html'}></td>
+</tr>
+<tr>
+  <th><{t}>电话：<{/t}></th>
+  <td><{$member.tel}></td>
+</tr>
+<tr>
+  <th><{t}>性别：<{/t}></th>
+  
+  <td><{if $member.sex == 1}><{t}>男<{/t}><{elseif $member.sex == ''}> <{else}><{t}>女<{/t}><{/if}></td>
+</tr>
+<tr>
+  <th>E-mail：</th>
+  <td><a target='_self' href="mailto:<{$member.email|escape:'html'}>"><{$member.email|escape:'html'}></a></td>
+</tr>
+
+ <{foreach from=$tree item=contact name=contact}>
+        
+     <tr>
+         <th><{t}><{$contact.attr_name}>：<{/t}></th>
+     <td><{if $contact.attr_tyname eq 'QQ' && $contact.value !=''}>
+     <a target="_self" href="tencent://message/?uin=<{$contact.value}>&&Site=www.shopex.cn&&Menu=yes"><img border="0" SRC='http://wpa.qq.com/pa?p=1:<{$contact.value}>:1' title="<{$contact.value}>"></a><{$contact.value}>
+      
+     
+      
+      <{/if}><{if $contact.attr_tyname eq 'MSN' && $contact.value !=''}>
+      <a  target="_self" href="msnim:chat?contact=<{$contact.value}>"><img width="30" height="30" border="0" src="http://im.live.com/Messenger/IM/Images/Icons/Messenger.Logo.gif" title="<{$contact.value}>"/></a><{$contact.value}>
+      
+    
+      <{/if}>
+      <{if $contact.attr_tyname eq '旺旺' && $contact.value !=''}>
+     <a target="_blank" href="http://amos1.taobao.com/msg.ww?v=2&uid=<{$contact.value}>&s=1" ><img border="0" src="http://amos1.taobao.com/online.ww?v=2&uid=<{$contact.value}>&s=1" title="<{$contact.value}>" /></a><{$contact.value}>
+  
+      <{/if}>
+      
+      <{if $contact.attr_tyname eq 'Skype' && $contact.value !=''}>
+     <a href="skype:<{$contact.value}>?call"  target="_self"onclick="return skypeCheck();"><img src="http://mystatus.skype.com/smallclassic/<{$contact.value}>" style="border: none;" alt="Call me!" title="<{$contact.value}>"/></a><{$contact.value}>
+  
+      <{/if}>
+     
+        </td>
+     </tr>
+ 
+        <{/foreach}>   
+		<tr>
+  <th><{t}>时间：<{/t}></th>
+  <td><{$message.date_line|cdate:SDATE_STIME}></td>  
+</tr>
+<tr>
+  <th><{t}>留言IP：<{/t}></th>
+  <td><{$message.msg_ip}></td>  
+</tr>
+<tr>
+  <th><{t}>标题：<{/t}></th>
+  <td><{$message.subject|escape:'html'}></td>
+</tr>
+<tr>
+  <th><{t}>内容：<{/t}></th>
+  <td><{$message.message|escape:'html'}></td>
+</tr>
+
+<{else}>
+
+<tr>
+<th><{t}>联系方式：<{/t}></th>
+ <td><{$message.email}></td>
+</tr>
+	<tr>
+  <th><{t}>时间：<{/t}></th>
+  <td><{$message.date_line|cdate:SDATE_STIME}></td>  
+</tr>
+<tr>
+  <th><{t}>留言IP：<{/t}></th>
+  <td><{$message.msg_ip}></td>  
+</tr>
+<tr>
+  <th><{t}>标题：<{/t}></th>
+  <td><{$message.subject|escape:'html'}></td>
+</tr>
+<tr>
+  <th><{t}>内容：<{/t}></th>
+  <td><{$message.message|escape:'html'}></td>
+</tr>
+		<{/if}>
+		
+</table>
+</div>
+<{foreach item=rvt key=key from=$revert}>
+<div class="division">
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+<tr>
+  <th><{t}>回复时间：<{/t}></td>
+  <td><{$rvt.date_line|cdate:SDATE_STIME}></td>
+</tr>
+<tr>
+  <th><{t}>回复标题：<{/t}></th>
+  <td><{$rvt.subject|escape:'html'}><span><a href="index.php?ctl=member/shopbbs&act=delete&msg_id[]=<{$rvt.msg_id}>&f_id=<{$message.msg_id}>"><{t}>删除此回复<{/t}></a></span></td>
+</tr>
+<tr>
+  <th><{t}>回复内容：<{/t}></th>
+  <td><{$rvt.message|escape:'html'}></td>
+</tr>
+</table>
+</div>
+<{/foreach}>
+
+<h4><{t}>快速回复：<{/t}></h4>
+<div id="message-revert-area-<{$message.msg_id}>" class="division">
+<input type="hidden" name="for_id" value="<{$message.msg_id}>">
+<input type="hidden" name="to_id" value="<{$message.from_id}>">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <th><{t}>标题：<{/t}></thd>
+    <td><input type="text" name="subject" size="50" value="Re: <{$message.subject|escape:'html'}>" ></td>
+  </tr>
+  <tr>
+    <th><{t}>内容：<{/t}></th>
+    <td><textarea name="message" rows="5" cols="50"></textarea></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td class="table-action">
+      <input type="button" onclick="W.page('index.php?ctl=member/shopbbs&act=revert', {data:$('message-revert-area-<{$message.msg_id}>'),method:'post'}, this)" value="回复"></b></td>
+  </tr>
+</table>
+</div>
+</div>

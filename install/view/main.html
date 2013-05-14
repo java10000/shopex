@@ -1,0 +1,76 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="robots" content="index,follow,noarchive" />
+<meta name="googlebot" content="noarchive" />
+<title>ShopEx 安装向导</title>
+<link rel="shortcut icon" href="../favicon.gif" type="image/gif" />
+<link href="images/png.css" rel="stylesheet" type="text/css"  />
+<link href="images/install.css" rel="stylesheet" type="text/css" />
+<style media="screen" type="text/css">
+  <!--
+  html{
+  margin:0;
+  padding:0;}
+  -->
+  body{
+  font-family:Georgia;
+  font-size:12px;
+  background:#c3ccd3 url(images/install-bodybg.gif) repeat-x;
+  text-align:center;
+  margin:0;
+  padding:0;
+  overflow:hidden;
+  overflow-y:auto;
+  }
+  .success{
+    color:#090;
+  }
+  
+  
+  #now_installing{
+    padding-left:30px;
+    background:url(images/ajax-loader.gif) no-repeat left center;
+    text-align:left;
+    font-weight:bold;
+    
+  }
+  #footer a{color:#333;}
+  
+  </style>
+</head>
+<script type='text/javascript'>  
+   var XHR=(function(){
+       
+       var _xhr=false;
+       
+       try{
+          _xhr=new ActiveXObject('MSXML2.XMLHTTP');
+          
+       }catch(e){
+           _xhr=new XMLHttpRequest();
+           
+       }
+       
+       return _xhr
+       
+   })();
+   
+   var _$,$;
+    _$=$=function(id){
+       return  document.getElementById(id);
+   } ;
+</script>
+<body>
+<div class="main" id='main'>
+<h1 class="png title"></h1>
+<div class="content">
+<div class="content-inner">
+<{include file=$PAGE}>
+</div>
+</div>
+</div><br/>
+<div id="footer" style="clear:both"><a href="http://www.shopex.cn/">ShopEx - The future of shopping. </a><br /><b>版本：<{$version}></b></div>
+</body>
+</html>

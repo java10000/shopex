@@ -1,0 +1,23 @@
+<div class="finder">
+<div class="actionItemsSingleLine"><a class="sysiconBtn addorder" href='index.php?ctl=content/menus&act=menusDetailAddPage&id=<{$id}>'><{t}>添加菜单项<{/t}></a>
+    
+  </div>
+</div>
+<div class="finder-list table-grid">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <thead>
+      <tr>
+        <th><{t}>名称<{/t}></th>
+        <th><{t}>操作<{/t}></th>
+      </tr>
+    </thead>
+    <tbody>
+  <{foreach key=key item=item from=$menus}>
+      <tr>
+        <td><a href='index.php?ctl=content/menus&act=menusDetailEditPage&id=<{$item.menu_id}>'><{$item.label}></a></td>
+        <td><a href='index.php?ctl=content/menus&act=menusDetailDel&menu_grp_id=<{$id}>&id=<{$item.menu_id}>'><{t}>删除<{/t}></a></td>
+      </tr>
+   <{/foreach}> 
+    </tbody>
+  </table>
+</div>

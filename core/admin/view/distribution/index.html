@@ -1,0 +1,55 @@
+
+<div class="division">
+<div class="fontbold font14px" style="padding: 5px 0pt; float: left;">供应商列表</div>
+<div style="float: left;display:none;">
+<span class="sysiconBtn viewRefresh Refreshon" style="float:none; display:inline;" id='refresh-supplier'>刷新</span><span class="fontcolorGray" style="padding-left:10px;">点此刷新供应商商品更新信息</span>
+</div>
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tbody>
+        <tr>
+          
+          <td valign="middle">输入供应商名称：<input size="20" type="text" name="supplier_brief_name" id='supplier_brief_name'> <span class="sysiconBtnNoIcon " style="padding:3px 8px;" id='suppliersearch'>搜索</span></td>
+         
+        </tr>
+      </tbody>
+     </table>
+<div id='supplier_list'>
+<{include file='/distribution/supplier_list.html'}>
+</div>
+
+<script>
+var turnp = function(p){
+W.page('index.php?ctl=distribution/supplier&act=supplierList', {update:$('supplier_list'), data:'page='+p+'&'+$('supplier_list').toQueryString(), method:'post',onComplete:function(){
+            $('finder-foot-supplier-list').set('html',$('finder-foot-supplier-list').get('html'));
+        }.bind(this)
+    });
+    
+};
+    
+window.addEvent('domready',function(){
+	(function(){
+		$('suppliersearch').addEvent('click',function(){
+			$('sname').set('value',$('supplier_brief_name').get('value'));
+			turnp(1);
+		});
+		$('refresh-supplier').addEvent('click',function(){
+			new Request.HTML({
+				 onRequest:function(){
+					 $('loadMask').show();
+				 },
+				 onComplete:function(){
+					 $('loadMask').hide();
+					 $('supplier_brief_name').set('value','');
+					 $('suppliersearch').fireEvent('click');
+				 },
+				 onFailure:function(){
+					 if(this.xhr.status == 501 && this.getHeader('notify_msg')){
+						 alert(decodeURIComponent(this.getHeader('notify_msg')));
+					 }
+				 }
+			 }).post('index.php?ctl=distribution/supplier&act=refreshSupplier');
+		});
+	})();
+});
+</script>
+</div>

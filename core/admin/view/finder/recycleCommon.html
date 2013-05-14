@@ -1,0 +1,84 @@
+<script>
+  <{$_finder.var}> = new Finder("<{$_finder._name}>",<{json from=$_finder}>);
+</script>
+
+<div class="finder" id="finder-<{$_finder._name}>">
+  <div class="action-bar mainHead" style="padding-left:0" id="finder-action-bar-<{$_finder._name}>">
+    <table cellspacing="0" cellpadding="0">
+      <tr>
+        <{if $_finder.searchOptions&&false}>
+        <td>
+          <div class="actionItems">
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                          <tr>
+                            <td colspan="2" class="functop"><h3><{t}>搜索查询<{/t}><{if $_finder.finder_filter_tpl}><span class="lnk" onclick="$('finder-filterBody-<{$_finder._name}>').toggleDisplay()" style="margin-left:10px"><{t}>[高级搜索]<{/t}></span><{/if}></h3></td>
+                          </tr>
+                          <tr>
+                            <td class="func"><input type="text" class="keywords" /></td>
+                            <td style="vertical-align:middle; padding-top:2px;"><{if $_finder.searchOptions}>
+              <span class="sysiconBtnNoIcon" id="finder-keyBtn-<{$_finder._name}>" onclick="<{$_finder.var}>.refresh.call(<{$_finder.var}>)"></span>
+
+              <{/if}></td>
+                            <td style="vertical-align:middle; padding-top:2px;">
+                            <{if $_finder.searchOptions}>
+                            <span class="sysiconBtnNoIcon arrow-down " style="margin-left:0;background-position:50%; width:10px; padding:4px 4px 2px 4px; _padding:2px 4px 3px 4px;" dropmenu="finder-keys-<{$_finder._name}>" dropfor="finder-keyBtn-<{$_finder._name}>">&nbsp;</span>
+              <div id="finder-keys-<{$_finder._name}>" class="x-drop-menu" style="display:none;">
+                <{foreach from=$_finder.searchOptions key=key item=item}>
+                <div class="item" value="<{$key}>" onclick="<{$_finder.var}>.setSearchKey.call(<{$_finder.var}>,this)" ><{$item}></div>
+                <{/foreach}>
+              </div>
+                            <{/if}>
+                            
+                            </td>
+                          </tr>
+                    </table>
+        </div></td>
+        <{/if}>  
+                
+        <td>
+              <div class="actionItems">
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                          <tr>
+                            <td class="functop"><h3><{t}>回收站操作<{/t}></h3></td>
+                          </tr>
+                          <tr>
+                            <td class="func">
+      <{if $_finder.deleteAble}>
+        <span class="sysiconBtn delete" target="refresh" confirm="确定清除吗？清除后将不可恢复。" submit="index.php?ctl=<{$_finder.controller}>&act=delete"><{t}>清除<{/t}></span>
+        <span class="sysiconBtn BtnviewRefresh" target="refresh" confirm="确定还原吗？" submit="index.php?ctl=<{$_finder.controller}>&act=active"><{t}>还原<{/t}></span>
+        <!-- <a class="sysiconBtnNoIcon"  href="index.php?ctl=<{$_finder.controller}>&act=index"><img src="images/bundle/return.gif" border="0"><{t}>返回<{/t}></a> -->
+      <{/if}>
+      
+
+</td>
+                          </tr>
+                    </table>
+        </div>        
+
+        </td>
+
+      </tr>
+    </table>
+  </div>
+  <form method="post" view="<{$_finder.filter}>" id="finder-filter-<{$_finder._name}>" class="finder-filter mainHead" target="_finder" action="index.php?ctl=<{$_finder.controller}>&act=finder&p[0]=<{$_finder.type}>&p[1]=<{$_finder.view}>&p[2]=<{$_finder.cols}>&p[3]=<{$_finder.var}>&p[4]=<{$_finder.plimit}>">
+    <input name="_finder[select]" value="<{$_finder.select}>" type="hidden" />
+    <input name="_finder[id]" value="<{$_finder.id}>" type="hidden" />
+    <input name="_finder[type]" value="<{$_finder.type}>" type="hidden" />
+    <input name="_finder[disabledMark]" value="<{$_finder.disabledMark}>" type="hidden" />
+    <input name="_finder[withTools]" value="<{$_finder.withTools}>" type="hidden" />
+    <input id="finder-editMode-<{$_finder._name}>" name="_finder[editMode]" value="<{$_finder.editMode}>" type="hidden" />
+    <input type="hidden" class="keywords" />
+    <{toinput from=$_finder.params}>
+    <{if $_finder.finder_filter_tpl}>
+    <div id="finder-filterBody-<{$_finder._name}>" class="finder-filter-body"<{if !$_finder.extfilter}> style="display:none"<{/if}>>
+      <{include file=$_finder.finder_filter_tpl }>
+    </div>
+    <{/if}>
+  </form>
+  <div id="finder-listForm-<{$_finder._name}>">
+  <{include file=$_finder.listView}>
+  </div>
+</div>
+<{if $_finder.footView}>
+<{include file=$_finder.footView}>
+<{/if}>

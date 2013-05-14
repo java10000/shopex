@@ -1,0 +1,18 @@
+<table width="100%" cellspacing="0" cellpadding="0" class="liststyle data purchase">
+  <tbody>
+    <{foreach from=$order.delivery item=dItem}>
+    <tr>
+      <th><label style="width: auto;">
+          <input id="make-po-delivery-<{$dItem.dt_id}>" type="radio" name="delivery[shipping_id]" pad="<{$dItem.pad}>" value="<{$dItem.dt_id}>" price_show="<{$dItem.price|cur}>" class="toCheck" onclick="chg_delivery(this, <{$dItem.price}>)" price = '<{$dItem.price}>' />
+          <{$dItem.dt_name}>(<span class="fontcolorRed">+<{$dItem.price|cur}></span>)</label>
+          <br/></th>
+          <td><span class="fontcolorGray"><{$dItem.detail|default:'&nbsp;'}></span>
+            <{if $dItem.protect == 1}>
+            <div style="border-bottom: 1px solid rgb(204, 204, 204); margin: 0pt 0pt 5px; padding: 5px 0pt; color: rgb(0, 0, 0);">
+            <input type="checkbox" onclick="chg_protect(this,<{$dItem.protect_fee}>)" name="delivery[is_protect][<{$dItem.dt_id}>]" price_show="<{$dItem.protect_fee|cur}>" value="<{$dItem.dt_id}>" id="make-po-protect-<{$dItem.dt_id}>"/>
+            <strong><{t}>保价 +<{/t}><{$dItem.protect_fee|cur}></strong></div>
+            <{/if}>
+          </td>
+    </tr>
+    <{/foreach}>
+</tbody></table>

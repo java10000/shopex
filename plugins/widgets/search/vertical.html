@@ -1,0 +1,24 @@
+<form action="<{link ctl=search act=result}>" method="post" class="SearchBar">
+  <table width="100%" cellpadding="0" cellspacing="0">
+    <tr>
+      <td colspan="3" class="search_label"> <span>关键字：</span> </td>
+    </tr>
+    <tr>
+      <td colspan="3"><input name="name[]" class="inputstyle keywords" value="<{$setting.search}>" x-webkit-speech style="width:95%;"/></td>
+    </tr>
+	<{if $setting.searchopen}>
+    <tr>
+      <td colspan="3" class="search_label"><span>价格筛选：</span></td>
+    </tr>
+    <tr>
+      <td class="search_price1">价格从 <{input name="price[0]" type="number" size="8" class="inputstyle" }></td>
+      <td class="search_price2">到 <{input name="price[1]" type="number" size="8" class="inputstyle"}></td>
+    </tr>
+  <{/if}>
+    <tr>
+      <td colspan="3" class="search_btnbar">
+      <input type="submit" value="搜索" class="btn_search"/>
+      <a href="<{link ctl="search" act="index"}>" class="btn_advsearch">高级搜索</a></td>
+    </tr>
+  </table>
+</form>

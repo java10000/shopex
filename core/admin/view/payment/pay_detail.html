@@ -1,0 +1,57 @@
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+	<tr>
+		<th><{t}>支付方式名称：<{/t}></th>
+		<td>
+			<{input type="text" name="custom_name" value=$sPayName}>
+		</td>
+    </tr>
+	<tr>
+		<th><{t}>支持交易货币：<{/t}></th>
+		<td>
+			<{$curName}>
+		</td>
+	</tr>
+	<{foreach from=$PayPlugItem item=item key=key}>
+	<tr>
+		<th><{t}><{$item.labelName}>：<{/t}></th>
+		<td>
+			<{input params=$item.params}>
+		</td>
+	</tr>
+		<{if $item.extendContent}>
+			<{foreach from=$item.extendContent item=eitem key=ekey}>
+				<tr id=<{$eitem.property.extconId}>>
+					<th></th>
+					<td>
+						<ul >
+						<{foreach from=$eitem.value item=evitem key=evkey}>
+						<li style="width:10em;float:left;">
+							<input <{$evitem.checked}> type=<{$eitem.property.type}> name=<{$eitem.property.name}>[] value=<{$evitem.value}>><{$evitem.imgname}>
+						</li>
+						<{/foreach}>
+						</ul>
+					</td>
+				</tr>
+			<{/foreach}>
+		<{/if}>
+	<{/foreach}>
+    <tr id="setfee">
+		<th><{t}>支付手续费设置：<{/t}></th>
+			<td>
+				<input type="radio" name="paymethod" value="1" <{$checked.0}>>按比例收费&nbsp;&nbsp;&nbsp;<input type="radio" name="paymethod" value="2" <{$checked.1}>>固定费用&nbsp;&nbsp;&nbsp;
+			</td>
+	</tr>
+    <tr id="rate">
+		<th></th>
+		<td>
+			费率：<{input type="text" name="fee" value=($fee.0)*100 size=3}>&nbsp;%&nbsp;&nbsp;&nbsp;&nbsp;说明：顾客将支付订单总金额乘以此费率作为手续费；</td>
+	</tr>
+    <tr id="fix">
+		<th></th>
+		<td>
+			金额：<{input type="text" vtype="unsigned" size=3 name="fee" value=$fee.1}>&nbsp;&nbsp;&nbsp;&nbsp;说明：顾客每笔订单需要支付的手续费；
+		</td>
+	</tr>
+	<span style="display:none;" id="hiddenmethod"><{$hiddenmethod}></span>
+</table>
+<{$eventScripts}>

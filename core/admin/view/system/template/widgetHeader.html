@@ -1,0 +1,30 @@
+<div class="tableform">
+<div class="division widgetconfig" style="margin:-5px 0 0 0">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <th><{t}>版块标题：<{/t}></th>
+    <td colspan="3"><input name="__wg[title]" value="<{$widgets_title}>" /></td>
+  </tr>
+  <tr>
+    <th width="20%"><{t}>版块模板：<{/t}></th>
+    <td width="30%"><select name="__wg[tpl]"><{html_options options=$widgetEditor.tpls selected=$widgets_tpl}></select></td>
+  <th width="20%"><{t}>版块 ID：<{/t}></th>
+  <td width="30%"><input name="__wg[domid]" value="<{$widgets_domid}>" size="8"/><span class="notice-inline"><{t}>选填<{/t}></span></td>
+  </tr>
+  <tr>
+    <th><{t}>版块边框：<{/t}></th>
+    <td><select name="__wg[border]">
+        <{html_options options=$widgetEditor.borders selected=$widgets_border}>
+      </select></td>
+  <th><{t}>版块 className：<{/t}></th>
+  <td><input name="__wg[classname]" value="<{$widgets_classname}>"  size="8"/><span class="notice-inline"><{t}>选填<{/t}></span></td>
+  </tr>
+</table>
+</div>
+</div>
+  <{if $widgetEditor.html}>
+  <{$widgetEditor.html}>
+  <{else}>
+  <p  class='note' style="line-height:150px;text-align:center"><{t}>本版块没有特殊参数需要设置。<{/t}></p>
+  <{/if}>
+  

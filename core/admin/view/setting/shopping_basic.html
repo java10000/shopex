@@ -1,0 +1,207 @@
+<form action='index.php?ctl=system/setting&act=shoppingBasicEdit' target="{update:'messagebox'}" method='post' class="settingform" id="site_basic" enctype="multipart/form-data">
+  <div class="tableform">
+    <table width="100%" border="0" cellpadding="0" cellspacing="0" ><tr><td>
+    <h4><{t}>购物设置<{/t}></h4>
+       </td><td style="text-align:right; padding-right:10px;"><{help docid="65" type="link"}><{t}>点击查看帮助<{/t}><{/help}></td></tr></table>
+    <div class="division">
+      <table width="100%" border="0" cellpadding="0" cellspacing="0"  class="shopping_setting">
+        <tr>
+          <th><{t}>是否支持非会员购物：<{/t}></th>
+          <td><{setting key="security.guest.enabled" namespace="setting" display='false'}><span class="notice-inline"><{t}>启用后顾客无需注册会员就可以直接下订单购买商品<{/t}></span></td>
+        </tr>
+        <tr>
+          <th><{t}>顾客点击加入购物车按钮后：<{/t}></th>
+          <td><{setting key="site.buy.target" namespace="setting" display='false'}></td>
+        </tr>
+        <tr>
+          <th><{t}>前台商品价格精确到：<{/t}></th>
+          <td><{setting key="system.money.operation.decimals" namespace="setting" display='false'}></td>
+        </tr>
+        <tr>
+          <th><{t}>商品价格进位方式：<{/t}></th>
+          <td><{setting key="system.money.operation.carryset" namespace="setting" display='false'}></td>
+        </tr>
+		<tr>
+          <th><{t}>订单金额取整位数：<{/t}></th>
+          <td><{setting key="site.decimal_digit" namespace="setting" display='false'}></td>
+        </tr> 
+		<tr>
+          <th><{t}>订单金额取整方式：<{/t}></th>
+          <td><{setting key="site.decimal_type" namespace="setting" display='false'}></td>
+        </tr> 
+		<!--
+        <tr>
+          <th><{t}>订单金额显示位数：<{/t}></th>
+          <td><{setting key="system.money.decimals" namespace="setting" display='false'}><span class="fontcolorGray"></td>
+        </tr>
+	     !-->
+		<tr>
+          <th><{t}>是否设置含税价格：<{/t}></th>
+          <td><{setting key="site.trigger_tax" namespace="setting" class='is_tax' display='false'}><span class="notice-inline"><{t}>说明：启用后顾客将承担订单发票税金<{/t}></span></td>
+        </tr>
+		<tr id='taxrate'>
+          <th><{t}>税率：<{/t}></th>
+          <td ><{setting key="site.tax_ratio" namespace="setting" size='2' style="width:40px" display='false'}>%  &nbsp; <{help}><{t}>顾客索取发票时将根据购买的商品总价乘以此税率来计算税金<{/t}><{/help}></td>
+        </tr>
+		<tr>
+          <th><{t}>默认备货时间 ：<{/t}></th>
+          <td ><{setting key="site.delivery_time" namespace="setting" size='2' style="width:40px" display='false'}><{t}>天<{/t}> &nbsp; <{help}><{t}>指店主的备货周期，顾客在下订单并选择指定送货时间时默认延后的天数<{/t}><{/help}></td>
+        </tr>
+         <tr>
+			<th><{t}>优化商店运营数据：<{/t}></th>
+			<td><{setting key="site.rsc_rpc" namespace="setting" display="false"}>&nbsp; <{help}><{t}>此功能开启后，您的前台用户购物行为数据将通过官方云计算中心进行分析，分析结果未来可以为网店运营提供数据参考，开启本功能不会影响前台任何性能。<{/t}><{/help}></td>
+		</tr>
+        <tr>
+          <th><{t}>是否支持商品直接购买：<{/t}></th>
+          <td><{setting key="system.goods.fastbuy" namespace="setting" display='false'}><span class="notice-inline"><{t}>说明：如果支持则前台商品详细页会出现“立即购买”按钮，实现单个商品直接购买<{/t}></span></td>
+        </tr>
+		<tr>
+			<th><{t}>会员等级自动调整方式：<{/t}></th>
+			<td><{setting key="site.level_switch" namespace="setting" display="false"}>  &nbsp;<{help}><{t}>会员等级可依据积分和经验值的累计自动调整。经验值为每次订单付款的数额累计相加所得。<{/t}><{/help}></td>
+		</tr>
+        <tr>
+          <th><{t}>未付款订单过期时间设置：<{/t}></th>
+          <td><{setting key="system.order_canceltime" namespace="setting" display='false' style="width:40px"}>小时&nbsp;<{help}><{t}>默认为72小时<{/t}><{/help}></td>
+        </tr>
+
+      </table>
+    </div>
+    <h4><{t}>显示设置<{/t}></h4>
+    <div class="division">
+      <table width="100%" border="0" cellpadding="0" cellspacing="0" class="shopping_setting" >
+        <tr>
+          <th><{t}>顾客登录方式：<{/t}></th>
+          <td><{setting key="site.login_type" namespace="setting" display='false'}></td>
+        </tr>
+        <tr>
+          <th><{t}>会员注册是否需启用验证码：<{/t}></th>
+          <td><{setting key="site.register_valide" namespace="setting" display='false'}></td>
+        </tr>
+        <tr>
+          <th><{t}>会员登录是否需启用验证码：<{/t}></th>
+          <td><{setting key="site.login_valide" namespace="setting" display='false'}></td>
+        </tr>
+        <tr>
+          <th><{t}>商品列表默认展示方式：<{/t}></th>
+          <td><{setting key="gallery.default_view" namespace="setting" display='false'}></td>
+        </tr>
+        <tr>
+          <th><{t}>商品列表页显示设置：<{/t}></th>
+          <td><{setting key="system.category.showgoods" namespace="setting" display='false'}></td>
+        </tr>
+		</table>
+	 <table width="100%" border="0" cellpadding="0" cellspacing="0" class="shopping_setting"  id='savePrice'>
+		<tr>
+            <th><{t}>前台是否显示库存数量：<{/t}></th>
+            <td><{setting key="site.show_storage" namespace="setting" id='show_storage' name='show_storage' display='false'}> &nbsp; <{help}><{t}>库存显示启用后，您的商店前台商品详细页基本信息区域会显示商品的库存数量<{/t}><{/help}></td>
+        </tr>
+        <tr>
+          <th><{t}>前台是否显示市场价：<{/t}></th>
+          <td><{setting key="site.show_mark_price" namespace="setting" class='show_mark_price' name='show_mark_price'}>
+		  </td>
+        </tr>
+	<table>
+ 		<table width="100%" border="0" cellpadding="0" cellspacing="0" class="shopping_setting" id='showprice'>
+		<tr id="marketPrice_tr">
+          <th><{t}>如果不输入市场价，则：<{/t}></th>
+          <td><{t}>市场价 = 销售价 <{/t}><{setting key="site.market_price" namespace="setting" id='marketPrice' display='false'}><span><{setting key="site.market_rate" namespace="setting" size='2' style="width:40px" display='false' value="0"}></span></td>
+        </tr>
+		<table>
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0" class="shopping_setting" >
+		<tr id="savetPrice_tr">
+          <th><{t}>优惠额度显示方式：<{/t}></th>
+          <td><{setting key="site.save_price" namespace="setting" display='false'}></td>
+        </tr>
+		</table>
+	 <table width="100%" border="0" cellpadding="0" cellspacing="0" class="shopping_setting" >
+	    <tr>
+          <th><{t}>零售会员可见价格设定：<{/t}></th>
+          <td><{setting key="site.retail_member_price_display" namespace="setting" display='false'}><span class="notice-inline"><{t}>本设置作用于商品详细页<{/t}></span></td>
+        </tr>
+		<tr>
+          <th><{t}>批发会员可见价格设定：<{/t}></th>
+          <td><{setting key="site.wholesale_member_price_display" namespace="setting" display='false'}><span class="notice-inline"><{t}>本设置作用于商品详细页<{/t}></span></td>
+        </tr>
+		<tr>
+          <th><{t}>前台是否显示销售记录：<{/t}></th>
+          <td><{setting key="selllog.display.switch" namespace="setting" class="is_selllog" display='false'}></td>
+        </tr>
+		</table>
+		
+	  <table width="100%" border="0" cellpadding="0" cellspacing="0"  class="shopping_setting" id="selllloglimit">
+        <tr>
+		<th><{t}>销售记录低于多少条不显示：<{/t}></th>
+		<td><{setting key="selllog.display.limit" namespace="setting" size='2' display='false'}><span class="notice-inline"><{t}>说明：0为不做限定<{/t}></span></td>
+		</tr>
+		<tr>
+		<th><{t}>商品详细页显示销售记录数：<{/t}></th>
+		<td><{setting key="selllog.display.listnum" namespace="setting" size='2' display='false'}></td>
+		</tr>
+	  </table>
+
+	  <table width="100%" border="0" cellpadding="0" cellspacing="0"  class="shopping_setting" >
+        <tr>
+		<th><{t}>是否启用商品编号：<{/t}></th>
+		<td><{setting key="goodsbn.display.switch" namespace="setting" size='2' display='false'}>  &nbsp; <{help}><{t}>启用后商品添加页面将出现“商品编号”的输入项，同时前台商品详细页会出现该项内容<{/t}><{/help}></td>
+		</tr>
+        <tr>
+		<th><{t}>是否启用商品货位：<{/t}></th>
+		<td><{setting key="storeplace.display.switch" namespace="setting" size='2' display='false'}>  &nbsp; <{help}><{t}>勾选后在商品编辑和添加界面会出现填写货位的输入区，您可以记录每个商品的取货位置或者其它相关信息，提高商店的运营效率<{/t}><{/help}></td>
+		</tr>
+	    <tr> 
+	        <th><{t}>商品详细页启用属性链接：<{/t}></th> 
+                <td><{setting key="goodsprop.display.switch" namespace="setting" size='2' display='false'}>  &nbsp; <{help}><{t}>启用后商品详细页的属性值会自动增加超链接，顾客可以点击查询包含该属性值的相关商品，同时也有利于SEO推广<{/t}><{/help}></td> 
+ 	                </tr> 
+	 	        <tr> 
+ 	            <th><{t}>商品详细页属性显示位置：<{/t}></th> 
+ 	            <td><{setting key="goodsprop.display.position" namespace="setting" display="false"}></td> 
+ 	        </tr> 
+
+        <tr>
+    		<th><{t}>每页显示产品数：<{/t}></th>
+	    	<td><{setting key="gallery.display.listnum" namespace="setting" size='2' display='false' required='true' vtype='unsignedint' class='inputstyle'}>  </td>
+        </tr>
+        
+        <tr>
+    		<th><{t}>橱窗显示每行显示数：<{/t}></th>
+	    	<td><{setting key="gallery.display.grid.colnum" namespace="setting" size='2' display='false' required='true' vtype='unsignedint' class='inputstyle'}>  </td>
+        </tr>
+
+      </table>
+    </div>
+
+    <div class="table-action">
+	<{button type="submit" id="on_submit" label="保存"}>
+</div>
+</form>
+<script>
+(function(){
+	var arr=['.is_selllog','.is_tax','.show_mark_price'];
+	var disArr=['selllloglimit','taxrate','showprice'];
+	
+	arr.each(function(el,key){
+		var dis=($ES(el)[0].get('checked'))?"":"none";
+		$(disArr[key]).setStyle('display',dis);	
+		$ES(el).addEvent('click',function(e){
+			if(this.get('value')=='true'){
+				$(disArr[key]).setStyle('display','');
+			}else{$(disArr[key]).setStyle('display','none');}		
+		});		
+	});
+	
+})();
+
+/*
+  $('on_submit').addEvent('click', function(e){  	
+  
+    if($E('input[name^=setting[site.market_rate]').value<=0 &&$defined($('marketRate'))&& $('marketRate').style.display!='none'){
+        $E('input[name^=setting[site.market_rate]').focus();
+        alert('请正确输入请输入比例值或增额值');
+        return false
+    }
+  
+  });
+
+*/
+</script>

@@ -1,0 +1,49 @@
+<{if $status=='sans' || !$status}>
+<script>
+new Dialog('index.php?ctl=sale/tools&act=wltx_exp_pop',{width:850,height:630});
+</script>
+<div class='division notice'>
+  <ul class='list'>
+    <li>您尚未开通网络天下免费版服务. 您可以尝试 <a href='index.php?ctl=sale/tools&act=wltx_exp_apply&p[0]=1' ><span class='fontcolorGreen'>立即开通</span></a></li>
+    
+  </ul>
+</div>
+<{/if}>
+<{if $status=='fail'}>
+<script>
+new Dialog('index.php?ctl=sale/tools&act=wltx_exp_pop',{width:850,height:630});
+</script>
+<div class='division notice'>
+  <ul class='list'>
+   <li>您原来提交的申请未通过，您可以尝试<a href='index.php?ctl=sale/tools&act=wltx_exp_apply' ><span class='fontcolorGreen'>再次申请<span></a></li>
+  </ul>
+</div>
+<{/if}>
+
+
+
+
+<div class='tableform' id='wltx_exp'>
+
+ <h4>网络天下免费版</h4>
+   <div class='division note'>
+      <ul class='list'>
+          <li>免费版本最多可以投放<em class='fontcolorRed'><{$max_count}></em>个商品.<a href='#' class='fontcolorBlue'>[?]</a></li>
+          <li>您当前还可以投放<em class='fontcolorGreen'><{$max_count-$goods_count}></em>个商品.</li>
+          <!--<li><a href='index.php?ctl=sale/tools&act=wltx' class='lnk'>立即购买专业版网络天下服务</a></li>-->
+      </ul>
+   </div>
+
+  <div class='division'>
+     <h4>请选择要投放的商品：</h4>
+     <form action='index.php?ctl=sale/tools&act=save_wltx_exp'  method='post'>
+     <{input type="object:goods/products" multiple="true" rowselect="true" value=$selected_goods name="goods_id"  }>
+     </form>
+  </div>
+</div>
+<{area inject='.mainFoot'}>
+<center>
+<{button icon="ok.gif" label="确认投放" id="wltx_exp_submit" onclick="_SE('#wltx_exp form').fireEvent('submit');"}>
+</center><br/>
+<{/area}>
+

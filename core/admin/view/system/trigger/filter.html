@@ -1,0 +1,23 @@
+<div class="gridlist">
+<{foreach from=$trigger.trigger_define.filter key=key item=item}>
+<div class="row filter-row clearfix">
+	<div style="float:right">
+		<button type="button" class="new">+</button>
+		<button type="button" class="remove">-</button>
+	</div>
+	<div class="span-11">
+		<select name="filter[]">
+		<{foreach from=$current_event.params item='row' key='k'}>
+			<option value="<{$k}>" type="<{$row.type}>" <{if $k eq $item.key}>selected="selected"<{assign var="item_type" value=$row.type}><{/if}>><{$row.label}></option>
+		<{/foreach}>
+		</select>
+		<select type="<{$key}>" name="filter_type[]">
+		<{foreach from=$filter_types[$item_type] item=v key=k}>
+		<option value="<{$k}>" <{if $k eq $item.test}>selected="selected"<{/if}> <{if $v.input}>input="<{$v.input}>"<{/if}>><{$v.label}></option>
+		<{/foreach}></select>
+		<{assign var="item_type" value=$filter_types[$item_type][$item.test]}>
+		  <{if $item_type.input}><input type="text" vtype="<{$item_type.input}>" name="filter_value[]" size="8" value="<{$item.val}>" /><{else}><input type="hidden" name="filter_value[]" value="<{$item.val}>" /><{/if}>
+	</div>
+</div>
+<{/foreach}>
+</div>

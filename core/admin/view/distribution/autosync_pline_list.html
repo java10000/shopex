@@ -1,0 +1,6 @@
+<select name="rule[pline_id][]">
+    <option value="0">所有</option>
+    <{foreach from=$pline_list item=pline key=key}>
+        <option value="<{$key}>"><{$pline.pline_name|escape:'html'}></option>
+    <{/foreach}>
+</select>

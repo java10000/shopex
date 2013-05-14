@@ -1,0 +1,282 @@
+<script>
+
+new Swiff.Uploader({
+  allowDuplicates:true,
+  verbose: true,
+  url:'<{$url}>/index.php?ctl=goods/product&act=newPic&p[0]=<{$goods.id}>&p[1]=add&sess_id='+sess_id,
+  path: 'images/uploader.swf',
+  typeFilter: {
+      'Images (*.jpg, *.jpeg, *.gif, *.png, *.bmp)': '*.jpg; *.jpeg; *.gif; *.png; *.bmp'
+  },
+  fileSizeMax:<{$max_upload.size}>,
+  target:'fix_fl10upload_panel',
+  onSelectFail:function(rs){
+      rs.each(function(v){
+          if(v.validationError=='sizeLimitMax'){
+              alert(v.name+'\n\n文件超出大小');
+          };
+      });            
+  },
+  onSelectSuccess:function(rs){
+      var PID='up_';
+      var _this=this;
+      rs.each(function(v,i){
+           new Element('div',{'class':'gpic-box','id':PID+v.id}).inject($('all-pics'));
+      });
+      this.start();        
+  },
+  onFileOpen:function(e){
+      $('up_'+e.id).setHTML('<span><em style="font-size:13px;font-family:Georgia;">0%</em></span>',
+                          '<div class="picdelete"><div class="progress-bar" style="width:45px"><i>&nbsp;</i></div></div>');
+  },
+  onFileProgress:function(e){
+      var pt=Number(e.progress.bytesLoaded*100/e.size).toFixed()+'%';  
+      $('up_'+e.id).getElement('i').setStyle('width',pt);
+      $('up_'+e.id).getElement('em').set('text',pt);
+  },        
+  onFileComplete: function(res){        
+      if(res.response.error){
+          return  new MessageBox('文件'+res.name+'上传失败',{type:'error',autohide:true});
+      }
+      $('up_'+res.id).setHTML(res.response.text);
+      if(!$('x-main-pic').retrieve('cururl')){
+        $E('#all-pics .gpic-box span').onclick();
+      }
+  }
+});
+
+     
+$('gEditor').retrieve('setTabs',function(){
+         var gtabs=$ES('#single-page-sidebar .spage-side-nav li.l-handle');
+          
+        var SpageItemAgg = new Class({
+            Extends: ItemAgg,
+            initialize: function(tabs, items, options){
+                this.setOptions(options);
+                 this.items=$$(items);
+                 this.tabs=$$(tabs);
+                
+                 var tempTabs = items.map(function(item,index){
+                    if(index == 0) return this.tabs[index];
+                    return this.tabs.filter(function(tab){
+                        if(tab.getElement('span').get('text') == item.getElement('h3').get('text')) return tab;
+                    })[0];
+                }, this);
+                this.tabs = tempTabs;
+                 this.items.setStyle('display','none');
+                 this.tempCurIndex=this.options.show||0;
+
+                 if(this.options.firstShow){
+                    this.show(this.tempCurIndex);
+                 }
+                 this.tabs.each(function(item,index){
+                    if(!item) return;
+                    item.addEvent(this.options.eventName,function(e){
+                      e=new Event(e).stop();
+                      this.tabs[index].blur();
+                      if(this.tempCurIndex!=index){
+                          this.show(index);
+                          this.hide(this.tempCurIndex);
+                          this.tempCurIndex=index;
+                      }
+                    }.bind(this));
+                 },this);
+            }
+        });
+                
+         new SpageItemAgg(gtabs,$ES('#gEditor .spage-main-box'),{
+            activeName:'cur',
+            onActive:function(tab,item){    
+                     var anotherItems=$$($A(this.items).remove(item));
+                  if(tab.hasClass('all')){
+                     anotherItems.show();
+                  }else{
+                     anotherItems.hide();
+                  }
+            },
+            onBackground:function(tab){
+                 tab.style.cssText='';
+                 tab.removeClass('');
+            }
+    });
+}());
+
+function finish_gtask_edit(){
+    if($('g_taskman_box_end')){
+        $('goods_task_area').empty();
+        var ipts = $ES('input','g_taskman_box');
+        if(ipts.length>0){
+            ipts.inject($('goods_task_area'));
+            var a = $E('tr.row','g_taskman_box').getElements('td');
+            $('goods_task_area').innerHTML += '下次'+a[0].getText().trim() + a[1].getText().trim();
+            $('goods_task_btn').setText('定时器管理');
+        }else{
+            $('goods_task_btn').setText('定时上下架');
+        }
+    }
+}
+</script>
+
+<h3><{t}>基本信息<{/t}></h3>
+<div id="x-g-basic" class="goods-detail">
+<{if $commandtype}>
+<input type='hidden' name='commandType' value='<{$commandtype}>'/>
+<{/if}>
+
+<{if $supplier_id}>
+<input type='hidden' name='command_id' value='<{$command_id}>'/>
+<input type='hidden' name='object_id' value='<{$object_id}>'/>
+<input type='hidden' name='supplier_id' value='<{$supplier_id}>'/>
+<{/if}>
+
+        <div class="division">
+            <table border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                    <th><{t}>所属分类：<{/t}></th>
+                    <td>
+                      <select name="goods[cat_id]" id="gEditor-GCat-input" class="x-input">
+                        <{if $goods.cat_id < 1}>
+                          <option value="0" ><{t}>请选择所属分类<{/t}></option>
+                        <{/if}>
+                        <{foreach from=$cats item=cat}>
+                          <option class="optionlevels optionlevel_<{math equation="x" x=$cat.step|default:1}>
+                        " value="<{$cat.cat_id}>"  depth="<{$cat.step}>" type_id="<{$cat.type}>" <{if $cat.cat_id==$goods.cat_id}>selected<{/if}>> <{$space|paddingleft:$cat.step:'　'}>
+                          <{$cat.cat_name}>
+                        </option>
+                        <{/foreach}>
+                      </select>
+                    </td>
+                    <td rowspan="10" style="width:300px;"><div class="goods-pic-area division" id="action-pic-bar">
+                      <div class="action-bar clearfix">
+                        <{uploader  button_text="上传新图片"}>
+                         <div class="span-4 last" style="*padding:5px 0;"><input type="checkbox" id="pic-up-btn" style="vertical-align:middle;" onclick="$('imageuparea').toggleDisplay();$('udfimg').value = ($('udfimg').value=='false')?'true':'false'" <{if $goods.udfimg=='true'}>checked="checked"<{/if}>/>
+                          <label for="pic-up-btn" style="color:#000;"><span><span><{img src="images/bundle/btn_edit.gif" class="icon"}><{t}>商品列表页图片设置<{/t}></span></span></label>
+                          </div>
+                        </div>
+                        <div class="pic-area"><{include file="product/gimage_goods.html"}></div>
+                        </div>
+                      </td>
+                </tr>
+                <tr>
+                    <th><{t}>所属类型：<{/t}></th>
+                    <td><select name="goods[type_id]" id="gEditor-GType-input">
+                            <!--<option value='1'><{t}>通用商品类型<{/t}></option>-->
+                            <{foreach from=$gtype item=type}> <{if $type.type_id==$goods.type_id}>selected<{/if}>><{$type.name}>
+                            <{if $type.type_id==$goods.type_id}>selected<{/if}>><{$type.name}>
+                            <option class="optionlevels" value='<{$type.type_id}>' <{if $type.type_id==$goods.type_id}>selected<{/if}>><{$type.name}>
+                            </option>
+                            <{/foreach}>
+                        </select>
+                    <input type="hidden" name="oldTypeId" value="<{$goods.type_id}>"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th><{t}>商品名称：<{/t}></th>
+                    <td>
+                      <{input type="text" id="id_gname" name="goods[name]" required="true" size=70 value=$goods.name }>
+                      <em><font color="red">*</font></em>
+                    </td>
+                </tr>
+                <{if $goodsbn_display_switch}>
+                <tr>
+                    <th><{t}>商品编号：<{/t}></th>
+                    <td><{input type="text" name="goods[bn]" value=$goods.bn }></td>
+                </tr>
+                <{else}>
+                <input type='hidden' name="goods[bn]" value="<{$goods.bn}>">
+                <{/if}>
+                <tr>
+                    <th><{t}>商品关键词：<{/t}></th>
+                    <td><{input type="text" name="keywords[keyword]" value=$goods.keywords size=70}>
+                      <span class="notice-inline ">
+                        <{t}>仅用于在前台、后台筛选商品，多个关键词用半角竖线"|"分开<{/t}>
+                      </span>
+                      <{help docid="73" type="link-small"}><{t}>点击查看帮助<{/t}><{/help}>
+                    </td>
+                </tr>
+                <{if $prototype.setting.use_brand}>
+                <tr>
+                    <th><{t}>品牌：<{/t}></th>
+                    <td><{input type="select" name="goods[brand_id]" nulloption="1" rows=$brandList valueColumn="brand_id" labelColumn="brand_name" value=$goods.brand_id}></td>
+                </tr>
+                <{/if}> 
+                <{if $prototype.is_physical}>
+                <tr>
+                    <th><{t}>计量单位：<{/t}></th>
+                    <td><{input type="text" value=$goods.unit name="goods[unit]" maxlength="25" }></td>
+                </tr>
+                <{/if}>
+                <tr>
+                    <th><{t}>简介：<{/t}></th>
+                    <td><{input type="textarea" value=$goods.brief name="goods[brief]" cols="50" rows="2" maxth="255" }><br />
+                        <span class="info"><{t}>简短的商品介绍,请不要超过255字节<{/t}></span></td>
+                </tr>
+                <tr>
+                    <th><{t}>是否上架销售：<{/t}></th>
+                     <td>
+                     <table><tr><td width="80px" style="border:none">
+                     <input type="radio" name="goods[marketable]"<{if $goods.marketable == 'true' || !$goods.marketable}> checked="checked"<{/if}> value="true" ><{t}>是<{/t}>
+                     <input type="radio" name="goods[marketable]"<{if $goods.marketable == "false"}> checked="checked"<{/if}> value="false" ><{t}>否<{/t}>
+                     </td>
+                     <td style="border:none">
+                     <{if $goods.scheduled}>
+                         <span id="goods_task_area" style="paddin-right:5px">下次<{if $goods.scheduled.0.action=='offline'}>下架<{else}>下架<{/if}><{$goods.scheduled.0.tasktime|cdate:'FDATE_FTIME'}>
+                         <{foreach from=$goods.scheduled item=task}>
+                         <input type="hidden" name="scheduled[<{$task.tasktime}>]" value="<{$task.action}>" />
+                         <{/foreach}>
+                         </span>
+                         <input id="goods_task_btn" type="button" class="sysiconBtnNoIcon" value="定时器管理" onclick="new Dialog('index.php?ctl=goods/product&act=taskman',{title:'定时器管理',width:450,height:300,ajaxoptions:{method:'post',data:_S('goods_task_area')},onClose:finish_gtask_edit})">
+                     <{else}>
+                         <span id="goods_task_area" style="paddin-right:5px"></span>
+                         <input id="goods_task_btn" type="button" class="sysiconBtnNoIcon" value="定时上下架" onclick="new Dialog('index.php?ctl=goods/product&act=taskman',{title:'定时上下架管理',width:450,height:300,ajaxoptions:{method:'post',data:_S('goods_task_area')},onClose:finish_gtask_edit})">
+                     <{/if}>
+                     </td></tr></table>
+                     </td>
+                </tr>
+                
+                <{if $point_setting == 2}>
+                  <tr>
+                    <th><{t}>积分：<{/t}></th>
+                    <td><{input type="digits" value=$goods.score name="goods[score]" maxlength="25" required="true"  }></td>
+                  </tr>
+                <{/if}>
+            </table>
+            
+            
+<div id="goods-spec">
+<{if $prototype.setting.use_spec&& count($goods.products)>0 }>
+  <{include file="product/spec.html"}>
+<{else}>
+  <{include file="product/nospec.html"}>
+<{/if}>
+
+<{if $goods.supplier_id}>
+  <{foreach from=$old_bn item=oldBnItem}>
+    <input type='hidden' name='src_bn[<{$oldBnItem}>]' value='1'/>
+  <{/foreach}>
+<{/if}>
+</div>
+
+<{if $prototype.setting.use_props}>
+<h4><{t}>扩展属性：<{/t}></h4>
+    <table border="0" cellpadding="0" cellspacing="0">
+        <{if $prototype.setting.use_props}>
+        <tbody id='goods_type_props'>
+        <{foreach from=$prototype.props key=key item=aProp}>
+        <tr class="prop">
+            <th><{$aProp.name}>：</th>
+            <td><{assign var="p_col" value="p_{$key}"}>
+                <{if $aProp.type eq 'select'}>
+                <{input name="goods[p_{$key}]" type="select" nulloption="1" options=$aProp.options value=$goods[$p_col] }>
+                <{else}>
+                <{input type="text" name="goods[p_{$key}]" maxlength="25" value=$goods[$p_col]}>
+                <{/if}></td>
+        </tr>
+        <{/foreach}>
+        </tbody>
+        <{/if}>
+    </table>
+<{/if}>
+</div>
+</div>
+

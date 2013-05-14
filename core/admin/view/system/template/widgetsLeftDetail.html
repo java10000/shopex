@@ -1,0 +1,26 @@
+<{*<div class="wgtcat"><span class="lnk" onClick="W.page('index.php?ctl=system/template&act=addWidgetsPage',{update:$('dialogContent'),onComplete:function(){$E('.mainHead','dialogContent').remove()}})"><{t}>返回版块分类<{/t}></span> 
+<ul class="catdepth1" >
+<{foreach from=$widgetsLib.list item=widgets key=key}> 
+<li id="headerLeft_<{$key}>" onMouseMove="$('toAdd_<{$key}>').style.visibility='';" onMouseOut="$('toAdd_<{$key}>').style.visibility='hidden';this.className='';" style="cursor:pointer;">
+<span id="toAdd_<{$key}>" style="visibility:hidden;" class="quickaddwgt"  onClick='_addWeigets(eval([<{json from=$widgets}>,"<{$themes}>"]))' ></span>
+<span onClick="W.page('index.php?ctl=system/template&act=getWidgetsInfo',{update:$('pageRight'),data:'widgets=<{$widgets.name}>&themes=<{$themes}>','method':'get'})" title="添加<{$widgets.name}>版块"><{$widgets.label}></span>
+</li>
+<{/foreach}> 
+</ul>
+</div>*}>
+<h2><{t}><{$env.post.catalog}><{/t}></h2>
+                <ul class="commenwgt">
+                      <{foreach from=$widgetsLib.list item=widgets key=key}>
+                        <li isCloseDialogBtn='true' onClick='_addWeigets(eval([<{json from=$widgets}>,"<{$themes}>"]));'>
+                          <div class="quickaddwgt" title='添加<{$widgets.label}>版块到页面.'>&nbsp;</div>
+                          <span><{$widgets.label}></span>
+                          <span class='desc'>
+                          <a href='index.php?ctl=system/template&act=getWidgetsInfo&widgets=<{$widgets.name}>&themes=<{$themes}>' onclick='new Event(event).stop();new Dialog(this.href,{title:"<{$env.post.catalog}>&raquo;<{$widgets.label}>"});' target='_blank'>
+                             板块说明&raquo;&raquo;
+                          </a>
+                          </span>
+                        </li>
+                      <{/foreach}>
+                </ul>
+
+

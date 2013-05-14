@@ -1,0 +1,147 @@
+/*---------------------------------------------------------------------------------------------------------------
+	按钮
+---------------------------------------------------------------------------------------------------------------*/
+.btn { background:#E2E8EB; border-style:solid; border-color:#FFFFFF #BEC6CE #BEC6CE #FFFFFF; border-width:1px 2px 2px 1px; *color:#333333; display:inline-block; display:-moz-inline-stack;  *display:inline; zoom:1; font-style:normal; font-variant:normal; font-weight:normal; margin:0 1px; padding:0; overflow:visible; text-decoration:none; cursor:pointer; }
+.btn span { display:block; padding:0 0 0 3px; height:18px; line-height:20px; white-space:nowrap; }
+.btn:hover span { background-position:0 -100px; }
+a.btn:hover span { _background-position:0 0; }
+.btn:active span { background-position:0 -200px; }
+.btn .droping span { background-position:0 -200px; _background:none;}
+.btn-drop-menu:hover span { background-position:0 -300px; }
+.btn-drop-menu:active span, .btn .btn-drop-menu.droping span { background-position:0 -400px;}
+.btn span span { padding:0 3px 0 0; }
+.btn:hover span span { background-position:right -100px; }
+.btn:active span span { background-position:right -200px; }
+a.btn:hover span span { _background-position:right 0; }
+.btn .droping span span { background-position:right -200px; }
+.btn-drop-menu:hover span span { background-position:right -300px; }
+.btn-drop-menu:active span span, .btn .btn-drop-menu.droping span span { background-position:right -400px;}
+.btn img { vertical-align:middle; }
+.btn .icon { margin:-3px 2px 0 0;  *margin:0 2px 0 0;}
+.btn .drop-handle { margin:0 -3px 0 2px; padding:0; background:url(../images/arrow-down.gif) no-repeat 4px 50%; width:14px; }
+/*
+有图标的按钮样式
+*/
+.sysiconBtn { background:#E2E8EB url(../images/sysicon.gif) no-repeat; margin:0; padding:0; margin:1px 3px 0 0; padding:4px 4px 2px 20px; line-height:24px; cursor: pointer; color: #000; text-decoration: none; border-top: 1px solid #fff; border-left: 1px solid #fff; border-right: 2px solid #bec6ce; border-bottom: 2px solid #bec6ce; outline:none; display:inline; font-weight: normal; cursor:pointer; }
+.btn-show-cate { background:#E2E8EB url(../images/sysicon.gif) no-repeat 2px -1177px; }
+.btn-hide-cate { background:#E2E8EB url(../images/sysicon.gif) no-repeat 2px -1217px; }
+/*
+树型菜单的图标样式
+*/
+.imgTree { cursor:pointer; }
+/*
+排序框的样式
+*/
+.orderTextStyle { width:22px; height:15px; padding:0 3px; }
+/*
+无图标的按钮样式
+*/
+.sysiconBtnNoIcon { margin:0; padding:0; background: #E2E8EB; margin-left: 3px; padding:4px 4px 2px 4px; cursor: pointer; color: #000; text-decoration: none; border-top: 1px solid #fff; border-left: 1px solid #fff; border-right: 2px solid #bec6ce; border-bottom: 2px solid #bec6ce; display:inline; font-weight: normal; }
+/*
+按钮被按下以后处于编辑状态，无图标样式。具体效果参看在“会员>信息发送管理”
+*/
+.sentmailsetting .editing { background:none; background:#fff; border-top: 1px solid #bec6ce; border-left: 1px solid #bec6ce; border-right: 2px solid #ccc; border-bottom: 2px solid #ccc; }
+.nowediting { background:none; background:#fff; border-top: 1px solid #bec6ce; border-left: 1px solid #bec6ce; border-right: 2px solid #ccc; border-bottom: 2px solid #ccc; }
+/*
+按钮被按下以后处于编辑状态，有图标样式。具体效果参看“finder”列表中的“列表编辑按钮”
+*/
+.edit.editing { background:#fff url(../images/sysicon.gif) no-repeat 2px -41px; border-top: 1px solid #bec6ce; border-left: 1px solid #bec6ce; border-right: 1px solid #fff; border-bottom: 1px solid #fff; }
+.sysiconBtn:active { border-top: 1px solid #bec6ce; border-left: 1px solid #bec6ce; border-right: 2px solid #fff; border-bottom: 2px solid #fff; }
+.edit { background:#E2E8EB url(../images/sysicon.gif) no-repeat 2px -41px; }
+.orderlistedit { background: #E2E8EB url(../images/sysicon.gif) no-repeat 5px -523px; }
+.delete { background:#E2E8EB url(../images/sysicon.gif) no-repeat 2px -83px; }
+img.delete { background:none; }
+.recyclebin { background:#E2E8EB url(../images/sysicon.gif) no-repeat 2px -786px; }
+.print { background:#E2E8EB url(../images/sysicon.gif) no-repeat scroll 2px -124px }
+.addorder { background:#E2E8EB url(../images/sysicon.gif) no-repeat 2px 0px; }
+.printtyle { background:#E2E8EB url(../images/sysicon.gif) no-repeat 2px -164px; }
+.cal { background: #E2E8EB url(../images/sysicon.gif) no-repeat 2px -200px; padding-left: 20px; }
+.disabled { background: #E2E8EB url(../images/sysicon.gif) no-repeat 2px -235px; text-indent: -99999px; padding: 0 5px; display: block; }
+.enable { background:#E2E8EB url(../images/sysicon.gif) no-repeat 2px -262px; text-indent: -99999px; padding: 0 5px; display: block; }
+.viewRefresh { background:#E2E8EB url(../images/sysicon.gif) no-repeat 2px -285px; display: block; float: right; margin: 2px 0 0 8px; height: 16px; padding-left: 20px; }
+.BtnviewRefresh { background:#E2E8EB url(../images/sysicon.gif) no-repeat 2px -285px; }
+.useorder { background:#E2E8EB url(../images/sysicon.gif) no-repeat 2px -319px; }
+.memberinfo { background:url(../images/sysicon.gif) no-repeat 2px -355px; padding:3px 8px }
+.bacthedit { background:#E2E8EB url(../images/sysicon.gif) no-repeat 2px -355px; }
+.buttonsave { background:#E2E8EB url(../images/sysicon.gif) no-repeat 2px -619px; }
+.sms { background:#E2E8EB url(../images/sysicon.gif) no-repeat 2px -877px; }
+.msgbox { background:#E2E8EB url(../images/sysicon.gif) no-repeat 1px -939px; }
+.email { background:#E2E8EB url(../images/sysicon.gif) no-repeat 3px -991px; }
+input.email { background:none; }
+.gridedit { background:#E2E8EB url(../images/sysicon.gif) no-repeat 2px -1040px; }
+.gridedit.editing { background:#fff url(../images/sysicon.gif) no-repeat 2px -1040px; border-top: 1px solid #bec6ce; border-left: 1px solid #bec6ce; border-right: 1px solid #fff; border-bottom: 1px solid #fff; }
+.searchico { background:#E2E8EB url(../images/sysicon.gif) no-repeat 2px -1091px; }
+.addwgt { background:#E2E8EB url(../images/sysicon.gif) no-repeat 5px -1141px; padding-left:25px; }
+.arrow-up,
+.arrow-down,
+.arrow-left,
+.arrow-right { padding-right:20px; background-position: 95% 50%; background-repeat: no-repeat; }
+.arrow-up { background-image:url(../images/arrow-up.gif) }
+.arrow-down { background-image:url(../images/arrow-down.gif) }
+.arrow-left { background-image:url(../images/arrow-left.gif) }
+.arrow-right { background-image:url(../images/arrow-right.gif) }
+/*
+
+*/
+.headContent .selectModeBar { display:none; }
+.headContent .x-ready,
+.headContent .x-all { display:block; }
+.headContent .mode { text-align:center; border-bottom:1px solid #ccc; }
+.headContent .selectAll { background:#ffc; display:none; }
+.headContent .deSelectAll { background:#ffff80; display:none; }
+.headContent .x-ready .selectAll { display:block; }
+.headContent .x-all .deSelectAll { display:block; }
+.x-colbody label { cursor:move; }
+/*
+订单区 打印按钮
+*/
+.p_prt,
+.p_prted { background:url(../images/p_prt.gif) no-repeat; cursor:pointer; width:17px; height:18px; display:inline-block; display:-moz-inline-stack;  *display:inline;
+ *zoom:1;
+ *width:15px;
+ *height:16px;
+ *padding:2px 0 0 2px;
+line-height:18px; vertical-align:top; text-align:center; margin:2px 0 0 0; color:#000000;font-weight:400; }
+.p_prt:hover,
+.p_prted:hover { background-position:0 -60px; }
+.p_prted { background-position:0 -30px; }
+.finder_order_tips { background:#FFFFEC; padding:5px; width:200px; position:absolute; margin-left:-220px; }
+.submitBtn { float: left; margin: 0 2px 0 0; padding:0; white-space: nowrap; text-decoration: none; background:#4E6A81; border-top: 2px solid #ddd; border-left: 2px solid #ddd; border-right: 2px solid #000; border-bottom: 2px solid #000; cursor:pointer; }
+.submitBtn.blue { background:#6A8AA5; }
+.submitBtn input,
+.submitBtn a,
+.submitBtn button,
+td .submitBtn a { height:24px; line-height:24px; color: #fff; font-size:14px; background:#4E6A81; display: block; float: left; font-family: Arial; text-align: center; border: 0; text-decoration:none; padding:0 5px; font-weight:700; cursor:pointer; margin:0; overflow:visible; }
+.submitBtn.blue input,
+.submitBtn.blue a,
+.submitBtn.blue button,
+td .submitBtn.blue a { background:#6A8AA5; }
+.submitBtn .iconbutton { background-repeat:no-repeat; background-position:0 0; padding-left:20px;}
+.submitBtn .iconbutton.savereturn { background-image:url(../images/savereturn.gif) }
+.submitBtn .iconbutton.savetolist { background-image:url(../images/savetolist.gif) }
+.submitBtn .iconbutton.savebutton { background:url(../images/sysicon.gif) no-repeat 0px -622px; }
+.submitBtn .iconbutton.saveaddsame { background-image:url(../images/saveaddsame.gif) }
+.tableAction td .submitBtn input { border: 0; }
+.t-del img { vertical-align:middle; }
+.table-action { text-align:center; clear: both;}
+.table-action .btn { margin: 0px; padding:0px; text-decoration: none; background:#4E6A81; border-top: 2px solid #ddd; border-left: 2px solid #ddd; border-right: 2px solid #000; border-bottom: 2px solid #000; cursor:pointer; height:28px; font-size:14px; color:#fff; font-weight:bold; }
+.table-action .btn span { background:none; }
+.table-action a { padding:6px 7px 2px 7px; white-space: nowrap; text-decoration: none; background:#4E6A81; border-top: 2px solid #ddd; border-left: 2px solid #ddd; border-right: 2px solid #000; border-bottom: 2px solid #000; cursor:pointer; font-size:14px; color:#fff; font-weight:bold; }
+.action-bar { line-height: 30px; border-top:1px solid #fff; border-bottom:1px solid #CCC; padding:2px 8px;  *padding:0 8px; background:#f0f0f0; }
+.action-bar td,
+.action-bar th { padding: 0; }
+.action-bar table { width:auto; margin:0; }
+.action-bar-btns { margin:0 15px 0 0; }
+.action-bar-info { margin-right:5px; }
+.action-bar-btns ul,
+.action-bar-btns li { margin:0; padding:0; display:inline; list-style:none; }
+.actionItems { border-top: 1px solid #fff; border-left: 1px solid #fff; border-right: 1px solid #bec6ce; margin: 0; height: 65px; padding: 0 3px; }
+.actionItems table td { width:auto; }
+.actionItemsSingleLine { padding: 6px 9px 3px 3px; border-left: 1px solid #fff; border-right: 1px solid #bec6ce; }
+.actionItems h3 { color: #969696; font-size: 12px; font-weight: normal; text-align: center; }
+.actionItems .functop { padding-top:3px; height:20px; line-height:28px;  *height:20px;
+_height:27px; }
+.actionItems .func { padding-top:0px; }
+.actionItems .func selete { margin-left:5px; }
+.actionItems .funcTopWrap .func { height: 30px; }
+.actionItems .keywords { border: 1px solid #ccc; width: 75px; height: 18px; }

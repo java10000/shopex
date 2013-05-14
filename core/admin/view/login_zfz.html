@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<{strip}>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US" dir="ltr">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title><{t}>ShopEx网上商店系统<{/t}></title>
+<link rel="shortcut icon" href="../favicon.gif" type="image/gif" />
+<link href="images/png_zfz.css" rel="stylesheet" type="text/css"  />
+<link href="images/login_zfz.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div class="content">
+  <h1 class="png" title="ChannelKing 分销王" <{if $shop_type}> style="background:url('images/loginlogo_zfz.png') no-repeat scroll 0 0 transparent;" <{/if}> ><{t}>ChannelKing 分销王<{/t}></h1>
+   <div class="body">
+    <form name="form1" action="index.php?ctl=passport&act=dologin" method="post" class="formstyle">
+      <{if $smarty.request.return}>
+      <input type="hidden" name="return" value="<{$smarty.request.return|escape:'html'}>" />
+      <{/if}>
+    <ul class="login-list">
+      <li>
+       <label>用户名：</label>
+        <input id="usrname" type="text" name="usrname" class="inputstyle" maxlength="50" autocomplete="off"
+            value="<{$username|default:'请输入用户名'}>"
+                onfocus="if(this.value=='请输入用户名') this.value='';this.className='inputstylefocus';return true;"
+                onblur="if(this.value=='') this.value='请输入用户名';this.className='inputstyle';return true;"
+        >
+      </li>
+      <li>
+      <label>密&nbsp;&nbsp;&nbsp;&nbsp;码：</label>
+        <input id="password" type="password" name="passwd" class="inputstyle" maxlength="20"
+        value="+_-_-_+"
+                onfocus="if(this.value=='+_-_-_+') this.value='';this.className='inputstylefocus';return true;"
+                onblur="if(this.value=='') this.value='+_-_-_+';this.className='inputstyle';return true;"
+        >
+      </li>
+      <{if $shop_type}>
+      <li>
+      <label>平&nbsp;&nbsp;&nbsp;&nbsp;台：</label>
+        <select name="shop_type" style="height:30px;line-height:30px;border:medium none" onchange="select_shop_type(this.value);">
+        <{foreach from=$shop_type item=item }>
+        <option value="<{$item.from_action}>"><{$item.text}></option>
+        <{/foreach}>
+        </select>
+      </li>
+      <{/if}>
+	  <{if $show_varycode}>
+      <li style="position:relative">
+      <label>验证码：</label>
+        <input class="inputstyle" autocomplete="off" size=8 name="verifycode" id="verifycode" value="请输入验证码"
+                onfocus="if(this.value=='请输入验证码') this.value=''; this.className='inputstylefocus';return true;"
+                onblur="if(this.value=='') this.value='请输入验证码'; this.className='inputstyle';return true;"
+        >
+
+        &nbsp; <img src="index.php?ctl=passport&act=verifycode&<{$smarty.now}>" align="top" class="verifycodeimg" id="verifycodeimg"></li>
+		<{/if }>
+		<li class="rem-usermame"><input type="checkbox" name="save_login_name" checked  class="rem-user" id="rem-user"><label for="rem-user">记住用户名</label></li>
+      <li class="btn png">
+        <input name="login" type="submit" class="loginbtn" value="点击登录 "
+    onmouseover="this.blur();return true;"
+    >
+      </li>
+       <{if $message}>
+        <li class="message">
+        <{$message}>&nbsp;
+      </li>
+  <{/if}>
+    </ul>
+    </form>
+  </div>
+  <div class="foot"></div>
+</div>
+<script>
+function select_shop_type(value){
+     document.form1.action = value+"/<{$env.const.SHOPADMIN_PATH}>/index.php?ctl=passport&act=dologin";
+     document.getElementById("verifycodeimg").src = value+"/<{$env.const.SHOPADMIN_PATH}>/index.php?ctl=passport&act=verifycode&<{$smarty.now}>";
+}
+</script>
+</body>
+</html>
+<{/strip}>

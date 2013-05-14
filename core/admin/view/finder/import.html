@@ -1,0 +1,30 @@
+<form method="post" action="index.php?ctl=<{$ctl}>&act=importer" class="tableform">
+<h2><{t}>导入数据<{/t}></h2>
+<p>
+<h3><{t}>1.选择导入的数据类型<{/t}></h3>
+<{assign var="i" value="0"}>
+<{foreach from=$importer item=item key=key}>
+  <div><input type="radio" name="type" value="<{$key}>" id="importer-<{$key}>" <{if $i==0}>checked<{/if}>><label for="importer-<{$key}>"><{$item.name}></label></div>
+  <{assign var="i" value=$i+1}>
+<{/foreach}>
+</p>
+
+<p>
+<h3><{t}>2.选择导入的数据来源<{/t}></h3>
+
+<label><{t}>选择上传的文件<{/t}></label>
+<{input type="file" name="upload"}>
+
+</p>
+
+<{if $optionsView}>
+<p>
+<h3><{t}>3.选项<{/t}></h3>
+<{include file=$optionsView}>
+</p>
+
+<{/if}>
+
+
+<input type="submit" value="开始导入">
+</form>

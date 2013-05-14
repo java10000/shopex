@@ -1,0 +1,262 @@
+<div id="cat-config" style="display:none;"></div>
+
+<div class="tableform widgetconfig">
+  <div class="division">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" id="showChange">
+  <tr>
+    <th width="55%">标签数：</th>
+    <td width="45%">  
+    <select name="columNum" onChange="columsNum()" id="columNum"><option value=1 <{if $setting.columNum==1}>selected<{/if}>>1</option><option value=2 <{if $setting.columNum==2}>selected<{/if}>>2</option><option value=3 <{if $setting.columNum==3}>selected<{/if}>>3</option></select></td>
+  </tr>
+  <tr>
+    <th>切换标签方式：</th>
+    <td>  <select name="changeEffect"  id="changeEffect"><option value=1 <{if $setting.changeEffect==1}>selected<{/if}>>点击</option><option value=2 <{if $setting.changeEffect==2}>selected<{/if}>>滑动</option></select></td>
+  </tr>
+  </table>
+  
+  <table width="100%">
+  <tr>
+  <td colspan="2">
+  <div style="float:left;">显示文章分类：<{input name="id1" options=$data.cat value=$setting.id1|default:'1' required="true" type="select"}>&nbsp;&nbsp;</div>
+  <div id="devide1">
+  
+  
+  
+    默认停留:<input type="radio" name="onSelect" value=0 <{if $setting.onSelect== 0}>checked<{/if}>>
+    列表说明：<{input name="explain[0]" value=$setting.explain[0] size=10}>
+  </div>
+
+  <div id="devide2"  style="display:none">
+  显示文章分类2：
+    <{input name="id2" options=$data.cat value=$setting.id2|default:'1' required="true" type="select"}>&nbsp;&nbsp;默认停留:<input type="radio" name="onSelect" value=1 <{if $setting.onSelect== 1}>checked<{/if}>>
+    列表说明：<{input name="explain[1]" value=$setting.explain[1] size=10}>
+    
+  </div>
+
+
+  <div id="devide3" style="display:none">
+    显示文章分类3：<{input name="id3" options=$data.cat value=$setting.id3|default:'1' required="true" type="select"}>&nbsp;&nbsp;默认停留:<input type="radio" name="onSelect" value=2 <{if $setting.onSelect== 2}>checked<{/if}>>
+    列表说明：<{input name="explain[2]" value=$setting.explain[2] size=10}>
+    
+  </div>
+  </td>
+  </tr>
+  </table>
+
+  <div class="division">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+
+  <tr>
+    <th>显示文章：</th>
+    <td><{input name="limit" value=$setting.limit|default:'5' required="true" type="digits" size=5}> 条</td>
+  </tr>
+  <tr>
+    <th>显示小图标：</th>
+    <td><div id="showPic"></div><{input type="select" name="smallPic" id="smallPic" options=$data.arrow value=$setting.smallPic onClick="choosePic()"}> <div id="pic_add" style="display: none">
+图片地址： <{input name="picaddress" value=$setting.picaddress}> </div></td>
+  </tr>
+  <tr>
+    <th>列数：</th>
+    <td><{input name="colums" value=$setting.colums|default:'1' required="true" type="digits" size=5}></td>
+  </tr>
+    <tr>
+    <th>字符最长长度：</th>
+    <td><{input name="max_length" value=$setting.max_length|default:'35' required="true" type="digits" size=5}></td>
+  </tr>
+    
+    <tr>
+    <th>是否显示更多：</th>
+    <td>
+    <input type="radio" name="showMore" value="on" <{if $setting.showMore=="on"}>checked="checked"<{/if}> >是  <input type="radio" name="showMore" value="off" <{if $setting.showMore!="on"}>checked="checked"<{/if}>>否
+  </tr>
+  <tr id="showTypePic">
+    <th>是否显示分类图片：</th>
+    <td><input type="radio" name="showTitleImg" id="showTitleImg" value="on" <{if $setting.showTitleImg=="on"}>checked="checked"<{/if}> onClick="showTypePic(this.value)">是  <input type="radio" name="showTitleImg" id="showTitleImg" value="off" <{if $setting.showTitleImg!="on"}>checked="checked"<{/if}> onClick="showTypePic(this.value)">否 </td>
+  </tr>
+
+</TD>
+</table>
+</div>
+
+  <div class="division" id="showTitleImg-view" <{if $setting.showTitleImg!="on"}>style="display:none"<{/if}>>
+  <h4>分类图片设置</h4>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <th>图片地址：</th>
+    <td><{input name="titleImgSrc" value=$setting.titleImgSrc|default:''}>
+    
+    </td>
+  </tr>
+  <tr>
+    <th>图片链接：</th>
+    <td><{input name="titleImgHref" value=$setting.titleImgHref|default:''}>
+    
+    </td>
+
+  </tr>
+  <tr>
+    <th>图片位置：</th>
+    <td><select name="titleImgPosition">
+  <option value="top" <{if $setting.titleImgPosition=="top"}>selected="selected"<{/if}>>上方</option>
+  <option value="left" <{if $setting.titleImgPosition=="left"}>selected="selected"<{/if}>>左侧</option>
+  <option value="center" <{if $setting.titleImgPosition=="center"}>selected="selected"<{/if}>>中间</option>
+  <option value="right" <{if $setting.titleImgPosition=="right"}>selected="selected"<{/if}>>右侧</option>
+  <option value="bottom" <{if $setting.titleImgPosition=="bottom"}>selected="selected"<{/if}>>下方</option>
+</select></td>
+  </tr>
+  <tr>
+    <th>图片描述：</th>
+    <td><{input name="titleImgAlt" value=$setting.titleImgAlt type="alphanum"}></td>
+  </tr>
+</table>
+  </div>
+
+  <div class="division"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr id="showDescript">
+    <th>显示分类描述：</th>
+    <td><input type="radio" name="showTitle" id="showTitle" value="on" <{if $setting.showTitle=="on"}>checked="checked"<{/if}> onClick="checkShowType(this.value)">是  <input type="radio" name="showTitle" id="showTitle" value="off" <{if $setting.showTitle!="on"}>checked="checked"<{/if}> onClick="checkShowType(this.value)">否</td>
+  </tr>
+  <tr id="showTitle-view" <{if $setting.showTitle!="on"}>style="display:none"<{/if}>>
+    <th>分类描述：</th>
+    <td><{input name="titleDesc" value=$setting.titleDesc}></td>
+  </tr>
+</table>
+  </div>
+</div>
+
+<script>
+var offCheck1="off";
+var offCheck2="off";
+function checkShowType(vol){
+  switch(vol){
+    case 'off':
+      $('showTitle-view').style.display='none';
+      offCheck1="off";
+    break;
+    case 'on':
+      $('showTitle-view').style.display='';
+      offCheck1="on";
+    break;
+  }
+}
+function showTypePic(vol){
+  switch(vol){
+    case 'off':
+      $('showTitleImg-view').style.display='none';
+      offCheck2="off";
+    break;
+    case 'on':
+      $('showTitleImg-view').style.display='';
+      offCheck2="on";
+    break;
+  }
+}
+function columsNum(){
+  
+  for(i=1;i<=3;i++){
+    if(i<=$('columNum').value){
+      
+      $('devide'+i).style.display="";
+    }else{
+      $('devide'+i).style.display="none";
+    }
+  }
+
+}
+
+function getCfgForm(id){
+  var config = $(id);
+  while(config.tagName != 'FORM'){
+    config = config.getParent();
+  }
+  return config;
+}
+
+function getWgtTpl(){
+  var sels = getCfgForm('cat-config').getElements('select');
+  var wgtTpl = '';
+  sels.each(function(sel){
+    if(sel.getProperty('name') == '__wg[tpl]') wgtTpl = sel;
+  });
+  return wgtTpl;
+}
+
+function setToggler(togglers){
+  togglers.each(function(toggler){
+    var view = toggler.getProperty('name')+'-view';
+    toggler.addEvent('click',function(){
+      if(this.value=="on"){
+        $(view).show();
+      }else{
+        $(view).hide();
+      }
+    });
+  });
+}
+
+function onRest(){
+  $('columNum').selectedIndex=0;
+  $('showChange').style.display="none";
+  $('devide1').style.display="none";
+  columsNum();
+}
+function setCfgView(view){
+  switch(view){
+    case 'default.html':
+    $('showTypePic').style.display="";
+    $('showDescript').style.display="";
+    onRest();
+    
+  
+    break;
+    case 'multi_list.html':
+    onRest();
+    $('showTitleImg-view').style.display="none";
+    $('showTitle-view').style.display="none";
+
+    $('showTypePic').style.display="none";
+    $('showDescript').style.display="none";
+
+    break;
+    case 'div_list.html':
+    $('showChange').style.display="";
+    $('devide1').style.display="";
+    $('showTitleImg-view').style.display="none";
+    $('showTitle-view').style.display="none";
+
+    $('showTypePic').style.display="none";
+    $('showDescript').style.display="none";
+    break;
+  }
+}
+
+
+var catTpl = getWgtTpl();
+setCfgView(catTpl.value);
+
+catTpl.addEvent('change',function(){
+  setCfgView(this.value);
+});
+
+
+
+choosePic=function(){
+  var vol=$('smallPic').value;
+  $('pic_add').style.display="none";
+  switch(vol){
+    case '':
+    $('showPic').innerHTML='';
+    break;
+    case '6':
+    $('pic_add').style.display="";
+    $('showPic').innerHTML="";
+    
+    break;
+    default:
+    $('showPic').innerHTML="<img src='../statics/icons/"+vol+"'>";
+    break;
+  }
+}
+choosePic();
+columsNum();
+</script>

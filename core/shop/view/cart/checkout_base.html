@@ -1,0 +1,82 @@
+
+
+<{foreach from=$minfo item="product" key=product_id}>
+<div class='FormWrap'>
+	<h3><{t}>填写购买&nbsp;&nbsp;<{/t}><{$product.name}><{if $product.nums>1}> x <{$product.nums}><{/if }><{t}>&nbsp;&nbsp;时所需信息<{/t}></h3>
+	<div class="field section">
+		<div class="division">
+		  <table width="100%" cellspacing="0" cellpadding="0" border="0" class="liststyle data">
+			  <col class="span-5"></col>
+			  <col></col>
+			  <tbody>
+					 <{foreach key=key from=$product.minfo item="info"}>
+					  <{assign var="infokey" value=$info.name}>
+					  <tr>
+					  <th>
+						<em style="color: red;">*</em><label for="misc_<{$key}>"><{$info.label}>：</label>
+						<input type="hidden" name="minfo[<{$product_id}>][<{$info.name}>][label]" value="<{$info.label}>">
+					  </th>
+					  <td>
+						<{if $info.type=='select'}>
+						<select class="inputstyle x-input" name="minfo[<{$product_id}>][<{$info.name}>][value]">
+						<{foreach from=$info.options item=opt}>
+						<option value="<{$opt}>"><{$opt}></option>
+						<{/foreach}>
+						</select>
+						<{elseif $info.type=='text'}>
+						<{input class="inputstyle x-input" type="textarea" rows="3" cols="40" id="misc_{$key}" name="minfo[{$product_id}][{$infokey}][value]" vtype="required"}>
+						<{else}>
+						<{input class="inputstyle" id="misc_{$key}" size="30" name="minfo[{$product_id}][{$infokey}][value]" type='required' }>
+						<{/if}>
+					  </td>
+					  </tr>
+					  <{/foreach}> 
+			  </tbody>
+		  </table>
+			 
+		  </div>
+	</div>
+</div>
+<{/foreach}>
+
+
+
+
+<div class="FormWrap checkoutbase" >
+
+  <table width="100%" cellpadding="0" cellspacing="0">
+   <tbody>
+     <tr>
+        <td width='100' style='vertical-align:middle;white-space:nowrap;'><h3><{t}>收货信息确认<{/t}></h3></td>
+        <td><{include file="shop:common/receiver.html"}></td>
+     </tr>
+   </tbody>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+   <tbody>
+     <tr>
+        <td width='100' style='vertical-align:middle;white-space:nowrap;'><h3><{t}>配送方式确认<{/t}><em style="color: red;">*</em></h3></td>
+        <td><div class='division' id='shipping'><div class="notice" ><{t}>请先“在收货人信息”中选择“收货地区”<{/t}></div></div></td>
+     </tr>
+   </tbody>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+       <tbody>
+         <tr>
+            <td width='100' style='vertical-align:middle;white-space:nowrap;'><h3><{t}>支付方式确认<{/t}><em style="color: red;">*</em></h3></td>
+            <td>
+               <div class='division'>
+                 <div id="_payment_currency" style='padding:5px;'>
+                   <{t}>货币类型：<{/t}><{input type="select" id="payment-cur" onchange="Order.setCurrency(this,event); Order.paymentChange(this);" name="payment[currency]" rows=$currencys valueColumn="cur_code" labelColumn="cur_name"  value=$currency class="inputstyle" required="true"}>
+                  </div>
+                    
+                    <div id='payment'>
+                        <{include file="shop:common/paymethod.html"}>
+                    </div>
+                </div>
+            </td>
+         </tr>
+       </tbody>
+    </table>
+
+</div>

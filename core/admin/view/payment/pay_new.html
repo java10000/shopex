@@ -1,0 +1,75 @@
+
+<div style="padding:10px">
+    <div style="text-align:right;">
+        <{help docid="68" type="link"}><{t}>点击查看帮助<{/t}><{/help}>
+    </div>
+    <div class="note"><{$html}></div>
+</div>
+
+<form method="POST" action="index.php?ctl=trading/payment&act=savePayment&p[0]=<{$pay_ident}>" class="tableform">
+    <div class="division">
+        <div id="paylist-item">
+            <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                    <th><{t}>支付方式名称：<{/t}></th>
+                    <td  class="note">
+                        <{input type="text" name="custom_name" size=20  required="true" value=$conf.custom_name}>&nbsp;&nbsp;(您可以自定义支付方式的名称)
+                    </td>
+                </tr>
+                
+                <tr>
+                    <th><{t}>支持交易货币：<{/t}></th>
+                    <td><{$curName}></td>
+                </tr>
+                
+                <{foreach from=$PayPlugItem item=item key=key}>
+                <tr class="tr-p-conf">
+                    <th><{t}><{$item.labelName}>：<{/t}></th>
+                    <td>
+                        <{input params=$item.params}>
+                        <strong><{$item.desc}></strong>
+                    </td>
+                </tr>
+                <{/foreach}>
+                
+                <tr>
+                    <th><{t}>支付手续费设置：<{/t}></th>
+                    <td>
+                        <input type="radio" name="paymethod" value="1" <{$checked.0}>>按比例收费&nbsp;&nbsp;&nbsp;
+                        <input type="radio" name="paymethod" value="2" <{$checked.1}>>固定费用&nbsp;&nbsp;&nbsp;
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>手续费金额/费率(%)：</th>
+                    <td>
+                        <{input type="text" vtype="unsigned" size=5 name="fee" value=0+$fee}>&nbsp;&nbsp;
+                        说明：顾客每笔订单需要支付的手续费，如果是百分比费率5%则填写0.05；
+                    </td>
+                </tr>
+
+                <tr>
+                    <th><{t}>排序：<{/t}></th>
+                    <td>
+                        <{input style="width:50px;" type="unsigned" name="orderlist" value=$conf.orderlist}> 大的排前面
+                    </td>
+                </tr>
+
+                <tr>
+                    <th><{t}>描述：<{/t}></th>
+                    <td>
+                        <{input type="html" name="des" value=$conf.des}>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="table-action">
+            <{button type="submit"  label="保存"}>
+            <{button type="button"  onclick="W.page('index.php?ctl=trading/payment&act=index')"  label="取消"}>
+        </div>
+    </div>
+</form>
+
+<{$eventScripts}>
+

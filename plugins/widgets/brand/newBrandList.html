@@ -1,0 +1,29 @@
+<div class="BrandListWrap newBrandListWrap">
+<div class="clearfix">
+      <{foreach from=$data item=data key=key name=brandlist}>
+      <{if $smarty.foreach.brandlist.iteration <= $setting.num}>
+     <div class="floatLeft" style="margin-right:<{$setting.brandLogoHSep}>px;margin-bottom:<{$setting.brandLogoVSep}>px">
+                <{if $setting.brandSet=='all' || $setting.brandSet=='logo'}>
+				<{if $data.brand_logo}>
+                <a style="display:block; width:<{$setting.brandLogoWidth}>px;height:<{$setting.brandLogoHeight}>px; margin-bottom:<{$setting.brandLogoFontSep}>px; overflow:hidden" href="<{link ctl=brand act=index arg0=$data.brand_id}>" title="<{$data.brand_name}>"><img src="<{$data.brand_logo|storager}>"></a>
+				<{/if}>
+                <{/if}>
+                <{if $setting.brandSet=='all' || $setting.brandSet=='write'}>
+                <a href="<{link ctl=brand act=index arg0=$data.brand_id}>" title="<{$data.brand_name}>"><{$data.brand_name}></a>
+                <{/if}>
+     </div>
+     <{/if}>
+        <{/foreach}></div>
+  <{if $setting.showMore == 'on'}><div class="more"><a href="<{link ctl=brand act=showList}>">更多品牌</a></div><{/if}>
+</div>
+
+<script>
+
+
+window.addEvent('load',function(){
+         var BrandListImgs=$$('.newBrandListWrap a img');
+        try{
+         fixProductImageSize($$(BrandListImgs),'a');
+         }catch(e){}
+    });
+</script>

@@ -1,0 +1,132 @@
+<div class="tableform">
+  <form name="onSearch" action="index.php?ctl=sale/salescount&act=salesguide" method="GET">
+    从 <{input class="cal" type="date" name="searchfrom" size=10 required="true"}>至 <{input class="cal" type="date" name="searchto" size=10 required="true"}>
+    <input type="submit" id="submit" name="submit" value="查找">
+  </form>
+</div>
+<div class="tableform">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td><h4><{t}>客户平均订单金额<{/t}></h4>
+  <div class="division">
+  
+<table border="0" cellspacing="0" cellpadding="0"  class="gridlist">
+<col class="Colamount"></col>
+<col class="Colamount"></col>
+<col class="Colamount"></col>
+<thead>
+  <tr>
+    <th><{t}>总订单金额<{/t}></th>
+    <th><{t}>总订单数<{/t}></th>
+    <th><{t}>平均订单金额<{/t}></th>
+  </tr>
+  </thead>
+  <tbody>
+    <tr>
+    <td><{$data.ordersales.sumMoney}></td>
+    <td><{$data.ordersales.orderTimes}></td>
+    <td><{math equation="x / y " x=$data.ordersales.sumMoney y=$data.ordersales.orderTimes format="%.0f"}></td>
+  </tr>
+  </tbody>
+</table>
+
+</div></td>
+    <td><h4><{t}>每次访问平均订单金额<{/t}></h4>
+  <div class="division">
+<table border="0" cellspacing="0" cellpadding="0" class="gridlist">
+<col class="Colamount"></col>
+<col class="Colamount"></col>
+<col class="Colamount"></col>
+<thead>
+  <tr>
+    <th><div align="center"><{t}>总订单金额<{/t}></div></th>
+    <th><div align="center"><{t}>总订单数<{/t}></div></th>
+    <th><div align="center"><{t}>平均订单金额<{/t}></div></th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td><div align="center"><{$data.ordersales.sumMoney}></div></td>
+    <td><div align="center"><{$data.ordersales.orderTimes}></div></td>
+    <td><div align="center"><{math equation="x / y " x=$data.ordersales.sumMoney y=$data.visit.allView format="%.0f"}></div></td>
+  </tr>  
+  </tbody>
+</table>
+</div></td>
+  </tr>
+  <tr>
+    <td><h4><{t}>订单转化率<{/t}></h4>
+  <div class="division">
+<table border="0" cellspacing="0" cellpadding="0" class="gridlist">
+<thead>
+  <tr>
+    <th><{t}>总订单量<{/t}></th>
+    <th><{t}>总访问次数<{/t}></th>
+    <th><{t}>订单转化率<{/t}></th>
+  </tr>
+  </thead>
+  <tbody>
+   <tr>
+     <td><{$data.ordersales.orderTimes}></td>
+     <td><{$data.visit.allView}></td>
+     <td><{math equation="x / y *100" x=$data.ordersales.orderTimes y=$data.visit.allView format="%.2f"}>%</td>
+  </tr> 
+  </tbody>
+</table>
+</div></td>
+    <td><h4><{t}>注册会员购买率<{/t}></h4>
+  <div class="division">
+<table border="0" cellspacing="0" cellpadding="0" class="gridlist">
+<thead>
+  <tr>
+    <th><{t}>有过订单的会员数<{/t}></th>
+    <th><{t}>总会员数<{/t}></th>
+    <th><{t}>注册会员购买率<{/t}></th>
+  </tr>
+  </thead>
+  <tbody>
+   <tr>
+     <td><{$data.ordermember.orderMember}></td>
+     <td><{$data.allmember.allMember}></td>
+     <td><{math equation="x / y *100" x=$data.ordermember.orderMember y=$data.allmember.allMember format="%.2f"}>%</td>
+   </tr> 
+  </tbody>
+</table>
+</div></td>
+  </tr>
+  <tr>
+    <td><h4><{t}>平均会员订单量<{/t}></h4>
+  <div class="division">
+<table border="0" cellspacing="0" cellpadding="0" class="gridlist">
+  <thead>
+  <tr>
+    <th><{t}>总订单数<{/t}></th>
+    <th><{t}>总会员数<{/t}></th>
+    <th><{t}>平均会员订单量<{/t}></th>
+  </tr></thead>
+  <tbody>
+  <tr>
+    <td><{$data.ordersales.orderTimes}></td>
+    <td><{$data.allmember.allMember}></td>
+    <td><{math equation="x / y *100" x=$data.ordersales.orderTimes y=$data.allmember.allMember format="%.2f"}>%</td>
+  </tr>  
+  </tbody>
+</table>
+</div></td>
+    <td></td>
+  </tr>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>

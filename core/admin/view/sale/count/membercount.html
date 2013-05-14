@@ -1,0 +1,41 @@
+<div class="tableform">
+
+<form id="onSearch" name="onSearch" action="index.php?ctl=sale/salescount&act=membercount" method="GET">
+从 <{input type="date" name="searchfrom" size=10 required="true" class="cal"}>至 <{input  class="cal" type="date" name="searchto" size=10 required="true"}>
+<input type="submit" id="submit" name="submit" value="查找">
+<input type="button" name="generatexml" value="生成报表" onClick="location.href='index.php?ctl=sale/salescount&act=membercount&genexml=1'"> 
+</form>
+
+</div>
+<div class="tableform">
+<div class="division">
+
+<table border="0" cellspacing="0" cellpadding="0" class="gridlist">
+<col class="Colsn"></col>
+<col></col>
+<col class="Colname"></col>
+<col class="Colamount"></col>
+<col class="Colamount"></col>
+<thead>
+  <tr>
+    <th><{t}>排名<{/t}></th>
+    <th><{t}>用户名<{/t}></th>
+    <th><{t}>姓名<{/t}></th>
+    <th><a href="index.php?ctl=sale/salescount&act=membercount<{$plug}>&ordertype=1&method=<{if $method==1}>2<{else}>1<{/if}>"><{t}>购物量<{/t}></a></th>
+    <th><a href="index.php?ctl=sale/salescount&act=membercount<{$plug}>&ordertype=2&method=<{if $method==1}>2<{else}>1<{/if}>"><{t}>购物额<{/t}></a></th>
+  </tr>
+  </thead>
+  <tbody>
+     <{foreach from=$data item=data key=key}>
+  <tr>
+    <td><{$key+1}></td>
+    <td><{if $data.username}><{$data.username}><{else}>&nbsp;<{/if}></td>
+   <td><{if $data.realname}><{$data.realname}><{else}>-<{/if}></td>
+    <td><{$data.saleTimes}></td>
+    <td><{$data.salePrice}></td>
+  </tr>
+  <{/foreach}>
+  </tbody>
+ </table>
+</div>
+</div>

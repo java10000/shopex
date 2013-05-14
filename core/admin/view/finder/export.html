@@ -1,0 +1,16 @@
+<{foreach from=$exporter item=item key=key name="exporter"}>
+<div>
+	<input name="_exporter" id="finder-exporter-<{$key}>" <{if $env.foreach.exporter.first}>checked="checked" <{assign var="default_plugin_id" value=$item.plugin_ident}><{/if}>
+		onclick="$('x-form-exporter').action='index.php?ctl=<{$env.get.ctl}>&act=do_export&p[0]=<{$item.plugin_ident}>'" type="radio" />
+	<label for="finder-exporter-<{$key}>"><{$item.plugin_name}></label>
+</div>
+<{/foreach}> 
+<iframe name="_export_frm" style="border:none;display:none"></iframe>
+<{area inject=".mainFoot"}>
+<center>
+<form action="index.php?ctl=<{$env.get.ctl}>&act=do_export&p[0]=<{$default_plugin_id}>" method="post" id="x-form-exporter" target="_export_frm">
+<{toinput from=$env.post}>
+<{button type="submit" icon="visible.gif" label="导出"}>
+</form>
+</center>
+<{/area}>

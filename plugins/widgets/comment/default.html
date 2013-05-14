@@ -1,0 +1,12 @@
+<div class="Comment">
+<ul>
+	<{foreach from=$data item=item key=key}>
+	<li>
+		<h6><a href="index.php?product-<{$item.goods_id}>.html" target="_blank"><{$item.name}></a></h6>
+		<a href="index.php?product-<{$item.goods_id}>.html" target="_blank" class="cmt_item" title="<{$item.comment|escape:'html'}>"><{$item.comment|escape:'html'|cut:$setting.content_length}></a>
+		<span class="cmt_member"><{$item.author}></span> <span class="cmt_time"><{$item.time|userdate}></span>
+	</li>
+	<{/foreach}>
+	&nbsp;
+</ul>
+</div>

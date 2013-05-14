@@ -1,0 +1,19 @@
+<div class="linksWrap clearfix"> <{foreach from=$data item=data}>
+<div class="span-4 items">
+  <dl>
+    <{if $data.image_url}>
+    <dd class="img textcenter"><a href="<{$data.href}>" title="<{$data.href}>" target="_blank"><img src="<{$data.image_url|storager}>"></a></dd>
+    <{/if}>
+    <dd class="intro textcenter"><a href="<{$data.href}>" title="<{$data.href}>" target="_blank"><{$data.link_name}></a></dd>
+  </dl>
+ </div> 
+  <{/foreach}>
+  <{pager data=$pager}> </div>
+<script>
+window.addEvent('load',function(){
+         var Imgs_1=$$('.items .img img');
+        try{
+         fixProductImageSize($$(Imgs_1),'a');
+         }catch(e){}
+    });
+</script>

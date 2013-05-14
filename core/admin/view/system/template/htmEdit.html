@@ -1,0 +1,11 @@
+
+<form action='index.php?ctl=system/template&act=editHtml' method='post'>
+  <input type='hidden' name='title' value='<{$title}>'/>
+  <p><{t}>标题<{/t}></p>
+  <input type='text' name='name' value='<{$name}>'/></li>
+   <p><{t}>内容:<{/t}></p>
+<{input type="html" value=$html width="80%" height="500px" name="html"}>
+    <br/><hr>
+  <input type='submit' value='保存' class='btn htmleditor_submit'/>
+</form>
+  

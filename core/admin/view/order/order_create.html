@@ -1,0 +1,25 @@
+<form action="index.php?ctl=order/order&act=docreate" method="post" id="order-create" extra="subOrder">
+
+
+<{include file="shop:cart/checkout_base.html"}>
+<{include file="admin:order/order_prom.html"}>
+
+<div class="FormWrap"><table cellspacing="0" cellpadding="0" width="100%">
+  <tbody>
+    <tr>
+      <td width="100" style="vertical-align: middle; white-space: nowrap;"><h3>支付订单确认<em>&nbsp;</em></h3></td>
+      <td>
+	<div class="division" id='amountInfo'><{include file="shop:cart/checkout_total.html"}></div>
+        </td>
+    </tr>
+  </tbody>
+</table></div>
+
+<div id="hiddenData">
+  <{foreach from=$hiddenInput key=key item=item}><input type="hidden" name="<{$key}>" value="<{$item}>"><{/foreach}>
+</div>
+<div style="display:none"><{input type="checkForm" }></div>
+<!--<div class="table-action">
+	<{button label="创建订单" type="submit"}>
+</div>-->
+</form>

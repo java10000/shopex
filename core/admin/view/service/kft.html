@@ -1,0 +1,105 @@
+<{if !$kft}>
+        <div class="tableform">
+        <h4><{t}>LICENSE错误<{/t}></h4>
+        <div class="division">
+        LICENSE 错误
+        </div>
+        </div>
+
+
+
+<div class="tableform">
+<h4><{t}>欢迎使用客服通<{/t}></h4>
+<{else}>
+
+
+<{if $action eq TOAPPLY}>
+<div class="division">
+    <form name="form1" action="index.php?ctl=service/kft&act=index" method="post" >
+  <input name="action" value="toapply" type="hidden">
+
+    
+      <div class="table-action">
+	<{button type="submit"  label="保存"}>
+</div>
+  </form>
+</div>
+
+
+<{elseif $action eq TOBIND}>
+    <div class="division">
+    客服通申请绑定成功
+    </div>
+    
+    
+<{elseif $action eq TOREG}>
+
+        <div class="division">
+            <form action="index.php?ctl=service/kft&act=index"  method="POST">
+            <input name="action" value="toreg" type="hidden">
+                <table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                <th><{t}>请填写您的EMAIL地址：<{/t}></th>
+                <td><input name="email"></td>
+              </tr>
+                <tr>
+                <th></th>
+                <td>
+                  <div class="table-action">
+	<{button type="submit"  label="保存"}>
+</div>       
+                
+                </td>
+              </tr>
+            </table>
+            
+            
+            </form>
+        </div>
+    
+    
+    
+    
+<{elseif $action eq TOPEN}>
+    <div class="division">
+  <form action="index.php?ctl=service/kft&act=index" method="POST">
+  <input name="action" value="topen" type="hidden">
+                
+                <div class="table-action">
+	<{button type="submit"  label="激活ShopEx客服通"}>
+</div>
+    
+  </form>  
+    </div>
+    
+    
+    
+    
+<{elseif $action eq TOBIND}>
+    
+    <div class="division"><{t}>客服通申请绑定成功<{/t}></div>
+  <{/if}></div>
+<{/if}>
+
+
+
+
+
+
+
+
+</div>
+
+<div class="tableform"><h4><{t}>ShopEx客服通清空<{/t}></h4>
+<div class="division">
+
+
+<form action="index.php?ctl=service/kft&act=index" method="POST">
+<input name="action" type="hidden" value="toclear">
+
+
+<div class="table-action">
+	<{button type="submit"  label="清除状态"}>
+</div>
+
+</form></div>

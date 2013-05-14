@@ -1,0 +1,29 @@
+
+<{capture name="header"}>
+    <{include file="common/header.meta.html"}>
+<{/capture}>
+
+<script>
+function member_submitg(){
+	var _form=$('member_form_name');
+	var _formActionURL=_form.get('action');
+	_form.set('action',_formActionURL).fireEvent('submit');
+}
+</script>
+
+<{capture name="title"}>
+<h1>
+    <{img src="images/bundle/spage_editing.gif"}><{t}>正在编辑:<{/t}></strong><{t}>会员 - <{/t}><{$member.uname}>
+</h1>
+<ul class="btn-bar">
+	<li>
+        <{button label="退出编辑" class="btn-quit" onclick="if(confirm('确定退出?'))window.close()"}>
+    </li>
+	<li>
+        <{button label="保　存" type="button" dropmenu="drop-save" class="btn-save" onclick='member_submitg()' }>
+    </li>
+</ul>
+<{/capture}>
+
+<{include file="member/sub_edit.html"}>
+

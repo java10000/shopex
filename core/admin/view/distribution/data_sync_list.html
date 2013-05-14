@@ -1,0 +1,261 @@
+<style type="text/css">
+.actionBar {
+background:#F0F0F0 none repeat scroll 0 0;
+border-bottom:3px solid #6F777A;
+border-top:1px solid #FFFFFF;
+line-height:30px;
+padding:0 8px;
+}
+.finderInform thead th {
+border-color:#FFFFFF #DBE2E7 #CCCCCC #FFFFFF;
+border-style:solid;
+border-width:1px;
+font-size:12px;
+font-weight:700;
+padding:1px 3px;
+text-align:center;
+white-space:nowrap;
+width:auto;
+background:#E2E8EB none repeat scroll 0 0;
+}
+
+.finderInform tbody td {
+white-space:normal;
+}
+
+.finderInform tbody td, .finderInform tbody th {
+border-color:#FFFFFF #DBE2E7 #DDDDDD #FFFFFF;
+border-style:solid;
+border-width:1px;
+}
+
+.finderInform td {
+text-align:center;
+}
+</style>
+
+<table cellspacing="0" cellpadding="0" width="100%" class="finderInform tongbu">
+<colgroup class="span-2"></colgroup>
+<colgroup class="span-4"></colgroup>
+<colgroup class="span-2"></colgroup>
+<colgroup class="span-2"></colgroup>
+<colgroup class="span-3"></colgroup>
+<colgroup class="span-3 ColColorOrange"></colgroup>
+<colgroup class="span-2"></colgroup>
+<colgroup class="auto ColColorBlue"></colgroup>
+    <thead>
+			<tr>
+				<th>商品图片</th>
+				<th>商品名称</th>
+                <th>商品分类</th>
+                <th>商品品牌</th>
+				<th>最后更新时间</th>
+				<th>更新内容</th>
+                <th>状态</th>
+			    <th style="text-align:left; padding-left:10px;">我的操作</th>
+			</tr>
+    </thead>
+   
+    <tbody id='data-sync-list-tbody' class='finder-list'>
+    <{if $sList}>
+    <{foreach from=$sList item=sitem}>
+			<tr class="row" item-id="<{$sitem.goods_id}>" commandid='<{$sitem.command_id}>' objectid='<{$sitem.object_id}>' supplierid='<{$sitem.supplier_id}>' commandtype='<{$sitem.command}>'>
+				<td><img src="<{$sitem.command_info.thumbnail_pic}>" width='50' height='50' alt="<{$sitem.command_info.name}>" /></td>
+				<td style="text-align:left;">
+                <{if $sitem.type == 'goods'}>
+                <a href='<{$supplier_domain}>index.php?product-<{$sitem.object_id}>.html' target='_blank'><{$sitem.command_info.name}></a> 
+                <{else}>
+                <{$sitem.command_info.name}>
+                <{/if}>
+
+                <{if $sitem.command == 6}><img src="images/new.gif" style="width:23px; height:11px;" /><{/if}>
+                </td>
+				<td>&nbsp;<{$sitem.cat_name}>&nbsp;</td>
+                <td>&nbsp;<{$sitem.brand_name}>&nbsp;</td>
+                <td><{$sitem.last_modify|usertime}></td>
+				<td><{if $sitem.command == 2 && $sitem.command_info.product_info.store === "0"}>货品库存为0<{else}><{$command[$sitem.command_type]}><{/if}></td>
+                <td><{$status[$sitem.status]}></td>
+				<td style="text-align:left;">
+
+            <{if $sitem.type == 'goods'}>
+                <{if $sitem.command == '6'}>
+                <!-- 新增商品 -->
+                    <{if $sitem.status == 'unoperated'}>
+                        <span class="sysiconBtn downloadico download-goods">下载商品</span> 
+                    <{/if}>
+                    <{if $sitem.img_down_failed == 'true'}>
+                        <span class="sysiconBtn BtnviewRefresh update-goods-img">重新下载图片</span>
+                    <{/if}>
+                        <span class="sysiconBtn edit update-goods-info" <{if $sitem.status == 'unoperated'}>style='display:none'<{/if}>>编辑并定价</span>
+                <{elseif $sitem.command == '4'}>
+                <!-- 更新商品 -->
+                    <{if $sitem.show_download == '1'}>
+                    
+                    <{if $sitem.status == 'unoperated'}>
+                        <span class="sysiconBtn downloadico update-goods">下载</span>
+                    <{/if}>
+                        <span class="sysiconBtn edit update-goods-info" <{if $sitem.status == 'unoperated'}>style='display:none'<{/if}>>对照编辑</span>
+
+                    <{else}>
+                        <span class="sysiconBtn edit update-goods-info">对照编辑</span>
+
+                    <{/if}>
+                <{elseif $sitem.command == '1'}>
+                    <{if $sitem.status == 'unoperated'}>
+                        <{if $sitem.command_info.goods_info.marketable == 'true'}>
+                            <span class="sysiconBtn arrupico sync-goods-marketable">上架</span>
+                        <{else}>
+                            <span class="sysiconBtn arrdownico sync-goods-unmarketable">下架</span>
+                        <{/if}>
+                    <{/if}>
+                <{elseif $sitem.command == '3'}>
+                <!-- 商品图片变化 -->
+                    <{if $sitem.status == 'unoperated'}>
+                        <span class="sysiconBtn BtnviewRefresh update-goods-img">更新商品图片</span>
+                    <{else}>
+                        <{if $sitem.img_down_failed == 'true'}>
+                            <span class="sysiconBtn BtnviewRefresh update-goods-img">重新下载图片</span>
+                        <{/if}>
+                    <{/if}>
+                <{elseif $sitem.command == '7'}>
+                <!-- 商品删除 -->
+                    <{if $sitem.status == 'unoperated'}>
+                        <span class="sysiconBtn arrdownico sync-goods-unmarketable">下架</span> <span class="sysiconBtn delete delete-goods">删除</span>
+                    <{/if}>
+                <{elseif $sitem.command == '5'}>
+                <!-- 货品更新 -->
+                    <{if $sitem.status == 'unoperated'}>
+                        <span class="sysiconBtn BtnviewRefresh update-goods-products">更新货品</span>
+                    <{/if}>
+                        <span class="sysiconBtn edit update-goods-info" <{if $sitem.status == 'unoperated'}>style='display:none'<{/if}>>编辑并定价</span>
+                <{/if}>
+            <{else}>
+                <{if $sitem.command == 2}>
+                    <{if $sitem.status != 'done'}>
+                        <span class="sysiconBtn BtnviewRefresh sync-store">同步库存</span>
+                    <{/if}>
+                <{/if}>
+            <{/if}>
+
+                </td>
+		  </tr>
+      <{/foreach}>
+      <{/if}>
+						
+			    </tbody>
+		</table>
+<script>
+(function(){
+    var doSyncListEvent = (function(e,posturl,callFunc){
+            new Request({data:'command_id='+e.getParent('tr').get('commandid')+'&object_id='+e.getParent('tr').get('objectid')+'&supplier_id='+e.getParent('tr').get('supplierid'),
+                 onRequest:function(){
+                    e.removeClass('downloadico').removeClass('download-goods').removeEvents('click').addClass('loadingico').set('text','正在下载');
+                 },
+                 onSuccess:function(rs){
+                    callFunc(rs);
+                 },
+                 onFailure:function(){
+                     if(this.xhr.status == 501 && this.getHeader('notify_msg')){
+                    	 alert(decodeURIComponent(this.getHeader('notify_msg')));
+                     }
+                 }
+             }).post(posturl);
+    });
+    $ES('#data-sync-list-tbody .download-goods').addEvent('click',function(){
+        var e = this;
+        doSyncListEvent(e,'index.php?ctl=distribution/supplier&act=downloadGoods',function(rs){
+                e.getParent('td').getPrevious('td').set('html','<span class="fontcolorRed">已下载未处理</span>');
+                doImagesSync(e.getParent('tr').get('commandid'));
+                e.removeClass('loadingico').removeClass('sysiconBtn').set('html','<span class="fontcolorRed">下载完成</span>');
+                rs = $H(JSON.decode(rs));
+                e.getParent('tr').set('item-id',rs.get('goods_id'));
+                e.getParent('td').getElement('.update-goods-info').set('styles',{'display':''});
+                if(rs.has('msg'))
+                    alert(rs.get('msg'));
+             });
+    });
+    $ES('#data-sync-list-tbody .update-goods').addEvent('click',function(){
+        var e = this;
+        doSyncListEvent(e,'index.php?ctl=distribution/supplier&act=updateGoods',function(rs){
+            e.getParent('td').getPrevious('td').set('html','<span class="fontcolorRed">已下载未处理</span>');
+                doImagesSync();
+                e.removeClass('loadingico').removeClass('sysiconBtn').set('html','<span class="fontcolorRed">下载完成</span>');
+                e.getParent('td').getElement('.update-goods-info').set('styles',{'display':''});
+                if(rs){
+                    rs = $H(JSON.decode(rs));
+                    alert(rs.get('msg'));
+                }
+                    
+             });
+    });
+    $ES('#data-sync-list-tbody .update-goods-img').addEvent('click',function(){
+        var e = this;
+        doSyncListEvent(e,'index.php?ctl=distribution/supplier&act=updateGoodsImage',function(){
+            doImagesSync(e.getParent('tr').get('commandid'));
+            e.getParent('td').getPrevious('td').set('html','<span class="fontcolorLightGray">操作完成</span>');
+            e.getParent('td').empty();
+        });
+    });
+    $ES('#data-sync-list-tbody .sync-store').addEvent('click',function(){
+        var e = this;
+        doSyncListEvent(e,'index.php?ctl=distribution/supplier&act=syncStore',function(){
+            e.getParent('td').getPrevious('td').set('html','<span class="fontcolorLightGray">操作完成</span>');
+                e.getParent('td').empty();
+             });
+    });
+    $ES('#data-sync-list-tbody .sync-goods-marketable').addEvent('click',function(){
+        var e = this;
+        doSyncListEvent(e,'index.php?ctl=distribution/supplier&act=syncMarketable',function(){
+            e.getParent('td').getPrevious('td').set('html','<span class="fontcolorLightGray">操作完成</span>');
+                e.getParent('td').empty();
+             });
+    });
+    
+    $ES('#data-sync-list-tbody .sync-goods-unmarketable').addEvent('click',function(){
+        var e = this;
+        doSyncListEvent(e,'index.php?ctl=distribution/supplier&act=syncUnMarketable',function(){
+            e.getParent('td').getPrevious('td').set('html','<span class="fontcolorLightGray">操作完成</span>');
+                e.getParent('td').empty();
+             });
+    });
+    
+    $ES('#data-sync-list-tbody .delete-goods').addEvent('click',function(){
+        var e = this;
+        doSyncListEvent(e,'index.php?ctl=distribution/supplier&act=deleteGoods',function(){
+            e.getParent('td').getPrevious('td').set('html','<span class="fontcolorLightGray">操作完成</span>');
+                e.getParent('td').empty();
+             });
+    });
+    $ES('#data-sync-list-tbody .update-goods-products').addEvent('click',function(){
+        var e = this;
+        doSyncListEvent(e,'index.php?ctl=distribution/supplier&act=updateGoodsProducts',function(){
+            e.getParent('td').getPrevious('td').set('html','<span class="fontcolorRed">已下载未处理</span>');
+                e.set('styles',{'display':'none'}).getParent('td').getElement('.update-goods-info').set('styles',{'display':''});
+             });
+    });
+
+    $ES('#data-sync-list-tbody .update-goods-info').addEvent('click',function(e){
+        var wsize = window.getSize();
+        var commandtype = $(this).getParent('tr').get('commandtype');
+        var command_id = $(this).getParent('tr').get('commandid');
+        var object_id = $(this).getParent('tr').get('objectid');
+        var supplier_id = $(this).getParent('tr').get('supplierid');
+        var local_goods_id = $(this).getParent('tr').get('item-id');
+        
+        var product_url = 'index.php?ctl=goods/product&act=edit&commandtype='+commandtype+'&command_id='+command_id+'&object_id='+object_id+'&supplier_id='+supplier_id;
+        var el= this;
+
+        product_url += ('&p[0]='+local_goods_id+'&pop=true');
+        _open(product_url);
+    });
+    
+})();
+</script>
+<div class="mainFoot" id="finder-foot-datasync-<{$otype}>">
+<table class="footer" style="clear:both" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+  <td align="center"><{pager data=$pager}></td>
+  <td width="5%" style="white-space:nowrap;text-align:right; "><{t}>共<{/t}><{$pager.total}><{t}>页<{/t}>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+  </tr>
+</table>
+</div>

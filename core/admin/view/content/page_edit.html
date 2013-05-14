@@ -1,0 +1,129 @@
+<{capture name="header"}>
+  <{include file="common/header.meta.html"}>
+<{/capture}>
+
+<{capture name="title"}>
+<div id="content-toolbar">
+	<h1><{img src="images/bundle/spage_editing.gif"}><strong><{t}>正在编辑：<{/t}></strong>单独页面 - <{$ident}></h1>
+	<div class="action-bar"> <span class="action-bar-btns" style="margin-right:3px;"><span>
+		<input type="button" class="btn-addwgt" value="添加版块" />
+		</span></span> <span class="action-bar-btns" ><span>
+		<input type="button" class="btn-chg-layout" value="选择布局" />
+		</span></span> <span class="action-bar-btns" ><span>
+		<input type="button" class="btn-savewgt" value="保存修改" />
+		</span></span> <span class="save-info" id="save_info" style="display:none;"><{t}>保存修改后，对页面的修改才会生效。<{/t}></span> </div>
+	<ul class="btn-bar">
+		<li><{button label="退出编辑" class="btn-quit" onclick='if(confirm("确定退出模板编辑吗?"))window.close();' }></li>
+		<li><{button label="浏览商店" type="link" class="btn-save" target="_blank" href="../"}></li>
+	</ul>
+</div>
+<{/capture}>
+<div id='wd_add_tip' class='success' style='visibility:hidden;position:absolute;zIndex:65535;'> <span class='message'> </span> <span onclick='_hideWidgets_tip()' style='cursor:pointer;'> <font color=red> <strong><{t}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关闭提示<{/t}></strong> </font> </span> <span>
+	<input name='noshownext' type='checkbox'/>
+	<{t}>下次不提示.<{/t}></span> </div>
+	
+<div style='height:100%' id='widgets_workground'>
+<iframe src="index.php?ctl=content/pages&act=editor&p[0]=<{$ident}>&theme=<{$themes}>&needCreatePage=<{$needCreatePage}>" width='100%' height='100%' frameborder=0 id="themeFrame" name="themeFrame"></iframe>
+</div>
+<input type="hidden" name="ident" value="<{$ident}>">
+<input type="hidden" name="node_id" value="<{$node_id}>">
+<script>
+		 var shopWidgetsOBJ=$('themeFrame').contentWindow.shopWidgets;
+		 var addWidget=$E('.btn-addwgt','content-toolbar');
+		 var cl=$E('.btn-chg-layout','content-toolbar');
+		 var saveBtn=$E('.btn-savewgt','content-toolbar');
+		 cl.addEvent('click',function(){
+			 if(confirm('选择布局前需要先保存当前页面编辑状态,保存吗?')){
+					_saveWidgets();
+			 }else{
+					return;
+			 }
+			 this.store('dialog',new Dialog('index.php?ctl=content/pages&act=layout&p[0]='+encodeURIComponent('<{$ident}>'),{title:'设置布局',modal:true,width:500,height:350}));
+		 });
+		 
+		 addWidget.addEvent('click',function(){
+			 _showWidgetsDialog('index.php?ctl=system/template&act=addWidgetsPage&p[0]=<{$themes}>');
+		 });
+		 
+		 saveBtn.addEvent('click',function(){
+			if(confirm('确定保存您对当前页面的修改吗?')) _saveWidgets();
+		 });
+		
+   function _addWeigets(args){
+
+      var themeFrame=$('themeFrame').contentWindow;
+      var shopWidgetsOBJ=themeFrame.shopWidgets;
+
+    _widgetsDialog?_widgetsDialog.close():'';
+
+    _widgetsDialog=null;
+
+    shopWidgetsOBJ.ghostDrop(args[0],args[1]);
+
+    themeFrame.focus();
+
+   }
+
+   function _showWidgets_tip(message){
+
+ 
+if($E('input[name=noshownext]','wd_add_tip').checked)return;
+     var tip=$('wd_add_tip');
+
+   var msg=$E('.message',tip);
+
+   msg.setText(message);
+
+   var pos=$("themeFrame").getPosition();
+
+   tip.setStyles({
+
+      left:pos.x,
+
+    top:pos.y
+
+   }).setStyle('visibility','visible');
+
+   }
+
+   function _showWidgetsDialog(url){
+
+    _widgetsDialog=new Dialog(url,{width:770,height:500,title:'增加页面版块',modal:true,resizeable:false,onShow:function(e){
+
+     this.dialog_body.id='dialogContent';
+
+  }});
+
+   }
+
+   function _hideWidgets_tip(){
+
+      return $('wd_add_tip').setStyle('visibility','hidden');
+
+   }
+
+   function _saveWidgets(){
+
+    return $("themeFrame").contentWindow.shopWidgets.saveWidgets();
+
+   }
+
+   
+
+   function _infoTrigger(){
+
+     var el = $('save_info');
+
+  if(el.getStyle('display') == 'none'){
+
+    el.setStyles('display', 'inline');
+
+  }else{
+
+    el.setStyle('display', 'none');
+
+  }
+
+   }
+
+</script>

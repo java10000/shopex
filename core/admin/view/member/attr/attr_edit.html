@@ -1,0 +1,127 @@
+<form method="POST" action="index.php?ctl=member/memberattr&act=addMemAttr" class="tableform">
+
+<div class="division"><table width="100%" border="0" cellpadding="0" cellspacing="0" id='attr_table'>        
+    <tr>
+    <th><{t}>注册项名称:<{/t}></th>
+    <td><{input type="text" name="attr_name" required="true" value=$memattr.attr_name}><em>*</em></td>
+  </tr>
+  <tr>
+    <th><{t}>是否必填:<{/t}></th>
+    <td><input type="checkbox" name="attr_required" value="true" <{if $memattr.attr_required eq 'true'}>checked='true'<{/if}></td>
+  </tr>
+  <tr>
+    <th><{t}>类型:<{/t}></th>
+    <td>
+    <select name='attr_tyname' id="attr_tyname">
+        <{if $memattr.attr_group eq 'input'}>
+        <optgroup label="输入项">
+            <option value="输入内容不限制" <{if $memattr.attr_tyname eq '输入内容不限制'}>selected='true'<{/if}>><{t}>&nbsp;&nbsp;输入内容不限制<{/t}></option>
+            <option value="仅限输入数字"<{if $memattr.attr_tyname eq '仅限输入数字'}>selected='true'<{/if}>><{t}>&nbsp;&nbsp;仅限输入数字<{/t}></option>
+            <option value="仅限输入字符"<{if $memattr.attr_tyname eq '仅限输入字符'}>selected='true'<{/if}>><{t}>&nbsp;&nbsp;仅限输入字符<{/t}></option>
+            <option value="仅限输入数字和字符" <{if $memattr.attr_tyname eq '仅限输入数字和字符'}>selected='true'<{/if}>><{t}>&nbsp;&nbsp;仅限输入数字和字符<{/t}></option>
+            <option value="email格式" <{if $memattr.attr_tyname eq 'email格式'}>selected='true'<{/if}>><{t}>&nbsp;&nbsp;email格式<{/t}></option>
+        </optgroup>
+        <{/if}>
+        
+        <{if $memattr.attr_group eq 'select'}>
+        <optgroup label="选择项">
+            <option value="单选项" <{if $memattr.attr_tyname eq '单选项'}>selected='true'<{/if}>><{t}>&nbsp;&nbsp;单选项<{/t}></option>
+            <option value="多选项"<{if $memattr.attr_tyname eq '多选项'}>selected='true'<{/if}>><{t}>&nbsp;&nbsp;多选项<{/t}></option>
+        </optgroup>
+        <{/if}>
+        
+        <{if $memattr.attr_group eq 'date'}>
+        <optgroup label="时间项">
+            <option value="日期(年月日)"<{if $memattr.attr_tyname eq '日期(年月日'}>selected='true'<{/if}>><{t}>&nbsp;&nbsp;日期(年月日)<{/t}></option>
+        </optgroup>
+        <{/if}>
+            
+        <{if $memattr.attr_group eq 'contact'}>
+        <optgroup label="即时通讯项">
+            <option value="QQ" <{if $memattr.attr_tyname eq 'QQ'}>selected='true'<{/if}>>&nbsp;&nbsp;QQ</option>
+            <option value="MSN"<{if $memattr.attr_tyname eq 'MSN'}>selected='true'<{/if}>>&nbsp;&nbsp;MSN</option>
+            <option value="旺旺"<{if $memattr.attr_tyname eq '旺旺'}>selected='true'<{/if}>><{t}>&nbsp;&nbsp;旺旺<{/t}></option>
+            <option value="Skype"<{if $memattr.attr_tyname eq 'Skype'}>selected='true'<{/if}>>&nbsp;&nbsp;Skype</option>
+        </optgroup>
+        <{/if}>
+    </select>
+</td>
+  </tr>
+  <{if $memattr.attr_option != ''}>
+  <tr>
+<th><{t}>后台可搜索:<{/t}></th>
+<td><input type='checkbox' name='attr_search' value='true' <{if $memattr.attr_search eq 'true'}>checked='true'<{/if}>/></td>
+</tr>
+  
+  
+<tr>
+<th><{t}>选项内容:<{/t}></th>
+<td><input type='text' name='attr_option[]' value='<{$memattr.attr_optionNo1}>' class='_x_ipt'  required='true'><span onclick='deleteAtoRow($(this))' style='cursor:pointer'><{img title="删除" alt="删除" style="cursor: pointer;" src="images/bundle/delecate.gif"}></span></td>
+</tr>
+
+<{foreach from=$memattr.attr_option item=option name="option"}>
+<tr>
+<th></th>
+<td><input type='text' name='attr_option[]' value='<{$option}>' class='_x_ipt'  required='true'/><span onclick='deleteAtoRow($(this))' style='cursor:pointer'><{img title="删除" alt="删除" style="cursor: pointer;" src="images/bundle/delecate.gif"}></span></td>
+</tr>
+<{/foreach}>
+<tr>
+<th></th>
+
+<td><input type='button' style='cursor:pointer'title='增大选项' onclick='toadd();' class='button-add'/>&nbsp;<input type='button'  onclick='todel();' style='cursor:pointer'title='删除选项' class='button-cut'/></td>
+
+</tr>
+
+
+
+
+
+<{/if}> 
+
+
+
+
+    </table></div>
+  
+<input type='hidden' name='attr_id' value="<{$memattr.attr_id}>"/> 
+<div class="table-action">
+	<{button label="保存" type="submit"}>
+	<{button label="取消" href="index.php?ctl=member/memberattr&act=index"}>
+</div>
+
+</form>
+
+
+<script>
+function toadd(){
+
+var nRow2=$('attr_table').rows.length;
+var objTheRow2=$('attr_table').insertRow(nRow2-1);
+var obj3 = $(objTheRow2).adopt([new Element('th'),new Element('td')]);
+var otr2=objTheRow2.getElements('*').filter(function(i){return i.getTag()=='th'||i.getTag()=='td';});
+ otr2[0].setText('');
+ otr2[1].setHTML('<input type="text" name="attr_option[]" class="_x_ipt"  required="true"><span onclick="deleteAtoRow($(this))" style="cursor:pointer"><{img title="删除" alt="删除" style="cursor: pointer;" src="images/bundle/delecate.gif"}></span>');
+
+
+}
+
+
+function todel(){
+
+
+var nRow2=$('attr_table').rows.length;
+if(nRow2!=6){
+
+$('attr_table').deleteRow(nRow2-2);
+}else{
+alert('至少要有一个选项');
+
+}
+}
+
+
+
+</script>
+
+
+

@@ -1,0 +1,91 @@
+<form id="x-op-info-form" class="tableform" method='post' action='index.php?ctl=admin/operator&act=save'>
+  <input type="hidden" name="op_id" value="<{$operator.op_id}>">
+  
+    <div class="division">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <th><{t}>用户名：<{/t}></th>
+    <td><{if !$operator.op_id}><{input type="text" name="username" style="width:120px" required="true" }><{else}><{$operator.username}><{/if}></td>
+  </tr>
+    </table></div>
+    
+    <{if $operator.op_id}>
+    <div style="padding-left:165px"><input type="checkbox" name="changepwd" value="1" id="x-ipt-changepwd" onclick="$('x-div-changepwd').setStyle('display',this.checked?'':'none')" /><label for="x-ipt-changepwd"><{t}>同时修改密码<{/t}></label></div>
+    <{/if}>
+     <div class="division" <{if $operator.op_id}>style="display:none"<{/if}> id="x-div-changepwd">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <th><{t}>密码：<{/t}></th>
+    <td><input type="password" name="userpass" style="width:120px" id="x-input-admin-pwd" /></td>
+  </tr>
+  <tr>
+    <th><{t}>确认密码：<{/t}></th>
+    <td><input type="password" name="userpass_comfirm" style="width:120px" /></td>
+  </tr>
+    </table>
+ </div>
+    
+<div class="division">       
+<table width="100%" border="0" cellspacing="0" cellpadding="0">  
+  <tr>
+    <th><{t}>类型：<{/t}></th>
+    <td><{input type="radio" onclick=";$('x-opt-roles').setStyle('display',this.value==1?'none':'')" name="super" options=$operator.select_super value=$operator.super separator=" "}> &nbsp; <{help}><{t}>超级管理员无需指定权限，即拥有商店管理的最高权限，可以进行所有操作<{/t}><{/help}></td>
+  </tr>
+  <tr id="x-opt-roles"<{if $operator.super}> style="display:none"<{/if}>>
+    <th><{t}>权限角色：<{/t}></th>
+    <td>
+      <div style="height:auto !important;height:200px;max-height:200px;overflow-y:auto">
+      <{foreach from=$adminroles item=item key=key}>
+      <div>
+        <input type="checkbox" name="roles[]" value="<{$item.role_id}>" id="x-roles-<{$key}>" <{if $roles[$item.role_id]}> checked="checked"<{/if}> />
+        <label for="x-roles-<{$key}>"><{$item.role_name}></label>
+      </div>
+      <{/foreach}>
+      </div>
+    </td>
+  </tr>
+</table>
+</div>
+<div class="division">       
+<table width="100%" border="0" cellspacing="0" cellpadding="0">  
+  <tr>
+    <th><{t}>状态：<{/t}></th>
+    <td><{input type="radio" name="status" options=$operator.select_status value=$operator.status separator=" "}> &nbsp; <{help}><{t}>注意：禁用后该用户名将无法登陆使用<{/t}><{/help}></td>
+  </tr>
+</table>
+</div>
+    <div class="division">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <th><{t}>姓名：<{/t}></th>
+    <td><input type="text" name="name" value="<{$operator.name}>"  maxlength="50" /></td>
+  </tr>
+  <tr>
+    <th><{t}>编号：<{/t}></th>
+    <td><input type="text" name="op_no" value="<{$operator.op_no}>"  maxlength="50" /></td>
+  </tr>
+  <tr>
+    <th><{t}>部门：<{/t}></th>
+    <td><input type="text" name="department" value="<{$operator.department}>" maxlength="50"  /></td>
+  </tr>
+  <tr>
+    <th><{t}>备注：<{/t}></th>
+    <td><textarea name="memo" style="height:50px;width:360px;"><{$operator.memo}></textarea></td>
+  </tr>    
+    </table></div>    
+
+
+<div class="table-action">
+	<{button id="x-op-info-form-btn" type="submit" label="保存"}>
+</div>
+
+</form>
+<script>
+$('x-op-info-form-btn').addEvent('click',function(e){
+  if($('x-div-changepwd').style.display!='none' && !$('x-input-admin-pwd').value){
+    if(!confirm('确定设置空密码？')){
+      new Event(e).stop();
+    }
+  }
+});
+</script>

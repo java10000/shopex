@@ -1,0 +1,85 @@
+<div id="wgtcenter" class='wgtcenter'>
+<div class='wgtcenter mainHead'>
+      <div class="topbar">
+          <div class="titleimg">&nbsp;</div>
+            <div class="content">
+                <div class="wgtsearch clearfix" style="display:none">
+                <span class="lft"></span>
+                  <form class="cnt">
+                       <input type="text" value="搜索内容" class="wgtinput" onClick="this.value=''"/>
+                      <select id="wg_list">
+                        <option value=''><{t}>版块<{/t}></option>
+                        <{foreach from=$widgetsLib.list item=widgets key=key}>
+                        <option><{$widgets}></option>
+                        <{/foreach}>
+                      </select>
+                        <select>
+                            <option><{t}>所有颜色<{/t}></option>
+                        </select>
+                    <input type="submit" class="wgtsearchbtn" value="搜索">
+                  </form>
+                  <span class="rht"></span>
+                </div>
+            </div>
+        </div>
+ </div>
+      <table width="100%" cellspacing="0" cellpadding="0">
+          <tr>
+            <td class="sidebar" height="400" width="160">
+                <div class="wgtcat" id="pageLeft">
+                    <ul class="catdepth0">
+                    <{foreach from=$widgetsLib.list item=widgets key=key}>
+                    <li onClick="W.page('index.php?ctl=system/template&act=addWidgetsPageExtend&p[0]=<{$themes}>',{update:$('pageLeft'),data:'catalog=<{$widgets}>','method':'post'})"><{$widgets}></li>
+                    <{/foreach}>
+                    </ul>
+              </div>
+            </td>
+            <td class="wgtcontent">
+        <div id="pageRight">
+                <h2><{t}>欢迎来到版块中心<{/t}><span><a href="http://www.shopex.cn/bbs/read.php?tid-64535.html" target="_blank"><{t}>什么是版块？<{/t}></a></span></h2>
+                <p><{t}>您可以点击左侧版块分类找到您需要的版块，加入到您正在编辑的页面中，以丰富页面表现。<{/t}><br /><{t}>如您在使用过程中需要帮助或者有相关意见和建议，请访问<{/t}><a href="http://www.shopex.cn/bbs/thread.php?fid-135.html" target="_blank"><{t}>ShopEx版块(widgets)交流专区<{/t}></a>。<br /></p><br /><br />
+          <h2><{t}>常用版块:<{/t}></h2>
+                <ul class="commenwgt" id='wgt-items'>
+                      <{foreach from=$widgetsLib.usual item=widgets key=key}>
+                        <li isCloseDialogBtn='true' onClick='_addWeigets(eval([<{json from=$widgets}>,"<{$themes}>"]));'>
+                          <div class="quickaddwgt">&nbsp;</div>
+                          <span><{$widgets.label}></span>
+                          <span class='desc'><{$widgets.description}></span>
+                        </li>
+                      <{/foreach}>
+                </ul>
+                <script>
+                     $ES('.desc','wgt-items').each(function(i){
+                        i.set('title',i.getText());
+                     });
+                     $ES('li','wgt-items').addEvents({
+                        'mouseenter':function(){this.addClass('current');},
+                        'mouseleave':function(){this.removeClass('current');}
+                     });
+                </script>
+        </div>
+            </td>
+          </tr>
+        </table>
+
+</div>
+<script>
+   function _addWeigets(args){
+      var themeFrame=$('themeFrame').contentWindow;
+      var shopWidgetsOBJ=themeFrame.shopWidgets;
+      if(_widgetsDialog){
+      _widgetsDialog.close();
+      }
+    _widgetsDialog=null;
+    shopWidgetsOBJ.ghostDrop(args[0],args[1]);
+    themeFrame.focus();
+   }
+   function _showWidgetsDialog(url){
+     _widgetsDialog=new Dialog(url,{width:770,height:500,title:'增加页面版块',modal:true,resizeable:false,onShow:function(e){
+         this.dialog_body.id='dialogContent';
+      }});
+   }
+   function _saveWidgets(){
+    return $("themeFrame").contentWindow.shopWidgets.saveWidgets();
+   }
+</script>

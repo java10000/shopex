@@ -1,0 +1,32 @@
+<div class="colfilter" style="display:nsone">
+<table>
+<tr>
+  <{if $filter.cat_id}>
+  <input type="hidden" name="cat_id" value="<{$filter.cat_id}>">
+  <{/if}>
+  <td><label for="f_brand"><{t}>品牌<{/t}></label><br />
+
+    <select id="f_brand" name="brand_id[]" size="5" multiple="multiple">
+      <option style="font-weight:bold" value="_ANY_" selected="selected"><{t}>任意品牌<{/t}></option>
+      <{foreach from=$filter.brands item=brand name="_s"}><option<{if $smarty.foreach._s.iteration is odd}> class="row2"<{/if}> value="<{$brand.brand_id}>"><{$brand.brand_name}></option><{/foreach}>
+    </select>
+  </td>
+  <{if count($filter.tags)>0}>
+  <td><label for="f_tag"><{t}>标签<{/t}></label><br />
+
+    <select id="f_tag" name="tag[]" size="5" multiple="multiple">
+      <option style="font-weight:bold" value="_ANY_" selected="selected"><{t}>全部商品<{/t}></option>
+      <{foreach from=$filter.tags item=tag name="_s"}><option<{if $smarty.foreach._s.iteration is odd}> class="row2"<{/if}> value="<{$tag.tag_id}>"><{$tag.tag_name}></option><{/foreach}>
+    </select>
+  </td>
+  <{/if}>
+  <td><label for="f_price"><{t}>价格<{/t}></label><br />
+
+    <select id="f_price" name="price[]" size="5" multiple="multiple">
+      <option style="font-weight:bold" value="_ANY_" selected="selected"><{t}>任意价格<{/t}></option>
+      <{foreach from=$filter.prices item=price name="_s"}><option<{if $smarty.foreach._s.iteration is odd}> class="row2"<{/if}> value="<{$price.0}>-<{$price.1}>"><{$price.0}>-<{$price.1}></option><{/foreach}>
+    </select>
+  </td>
+</tr>
+</table>
+</div>

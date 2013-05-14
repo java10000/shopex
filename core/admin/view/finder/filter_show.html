@@ -1,0 +1,120 @@
+<{assign var="obj_id" value=$env.get.id}>
+<{include file='editor/the_filter.html'}>
+
+<{area inject='.mainFoot'}>
+<center>
+<{button icon="ok.gif" label="开始筛选" id="finder-fshow-ok-{$env.get.id}"}>
+</center>
+<{/area}>
+
+<script>
+$('finder-fshow-ok-<{$obj_id}>').addEvent('click',function(e){
+    var data=[];
+ 
+    
+    $ES('.row','finder-fshow-<{$obj_id}>').each(function(tr){
+
+        if(tr.style.display=='none')return;
+            
+            
+            var el,value,allege,merge={'merge':[]};
+            
+
+            allege=tr.getElement('div[tp=allege] .x-input-select')||tr.getElement('div[tp=allege]');
+
+             
+            if(allege.match('select')){
+                 merge.merge.push({name:allege.name,value:allege.value});
+                 allege=allege.options[allege.selectedIndex].text;
+            }else{
+                 allege=allege.get('text');
+            }
+         
+                       
+            var label = tr.getElement('div[tp=label]').get('text');
+                       
+                label +=allege;
+            
+            var inputEl=$pick(tr.getElement('div[tp=input] input[type=text]'),
+                              tr.getElement('div[tp=input] select'),
+                              tr.getElement('div[tp=input] textarea'),
+                              tr.getElement('div[tp=input] input[checked]'),
+                              tr.getElement('div[tp=input] input[type=hidden]')
+                              );
+            
+            
+            if(inputEl.match('input')){            
+                
+                if(inputEl.hasClass('cal')){
+                   var td=inputEl.getParent('div[tp=input]');
+                   merge.merge.push(td.toQueryString());
+                   value = [];
+                   td.getElements('.cal').each(function(i){if(i.value.trim()!='')value.push(i.value.trim());});
+                   label +=':<b>'+value.join('...')+'<b/>';
+                   if(!value.length)value=null;
+                   
+                }else if(inputEl.type=='radio'){
+                    value = inputEl.getValue();    
+                    label += ":<b>"+inputEl.getNext('label').get('text')+"</b>";
+                }else if(inputEl.type=='hidden'){
+                    value = inputEl.getValue();
+                    label += ":<b>"+$pick(inputEl.getNext('.label'),inputEl.getPrevious('.label')).get('text')+"</b>";
+                }else{
+                    
+                    value = inputEl.getValue();    
+                    label += ":<b>"+value+"</b>";
+                  
+                }
+                
+                
+                    
+                
+            }else if(inputEl.match('select')){
+                
+                if(inputEl.getParent().get('package')=='mainland'){
+                   
+                    var td=inputEl.getParent('div[tp=input]');
+                   
+                     merge.merge.push(td.toQueryString());
+                    
+                }
+                
+                    value = [];
+                    var text=[];
+                    inputEl.getSelected().each(function(o){
+                        value.push(o.value);
+                        text.push(o.text);
+                    });
+                    
+                    if(value.length>1){
+                         value=value.join(',');
+                         text=text.join(',');
+                    }else{
+                       value=value.toString();
+                       text=text.toString();
+                    }
+                    
+                    label += "<b>"+text+"</b>";
+                    
+         
+            
+            
+            }else if(inputEl.match('textarea')){
+                value = inputEl.innerHTML;
+                label += "<b>"+value.sustr(3)+"</b>";
+            }
+    
+            
+            if(value&&value!='_NULL_'){
+                data.push($extend({'label':label,'name':tr.get('name'),'value':value},merge));    
+            }
+
+    });
+    
+
+    if(window.finderGroup['<{$env.get.id}>']){
+        window.finderGroup['<{$env.get.id}>'].filter.reset().attach(data);
+    }
+    window.finderDialog.close();
+});
+</script>

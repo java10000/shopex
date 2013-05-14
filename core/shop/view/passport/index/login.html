@@ -1,0 +1,131 @@
+<form method="post" action='<{link ctl="passport" act="verify"}>' class='loginform'>
+    <input type="hidden" name="isfastbuy" value="<{$env.post.isfastbuy}>">
+ <{if $mini}> <input type='hidden' name='from_minipassport' value=1 /><{/if}>
+  
+
+    <div class="RegisterWrap" style="width:420px; float:left; padding:5px;">
+    
+      <h4 style="float:left;"><{t}>已注册用户，请登录<{/t}></h4>
+      
+      <{if $openid_open}><{else}><{if $mini}> <div class="dialog-title clearfix" style="float:right; display:block; border-bottom:none;"><div class='dialog-close-btn close' id='dialog__close'>X</div></div>
+<{/if}><{/if}>
+      
+      <div style="clear:both;"></div>
+      <div class="intro" ><div class="customMessages">{login_message}</div></div>
+      
+      <{if $err_msg != ''}>
+      <div class="error"><{$err_msg}></div>
+      <{/if}>
+     
+      <div id="formlogin" class="form">
+        <input name="forward" type="hidden" value="<{$options.url}>">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <th><i>*</i><{t}>用户名：<{/t}></th>
+            <td><{input name="login" class="inputstyle"  required="true" id="in_login" tabindex="1" value=$loginName}><a style="margin-left:6px; " href="<{link ctl='passport' act='signup'}>"><{t}>立即注册<{/t}></a></td>
+          </tr>
+          <tr>
+            <th><i>*</i><{t}>密码：<{/t}></th>
+            <td><{input name="passwd" class="inputstyle" type="password" required="true" id="in_passwd" tabindex="2"}><a style="margin-left:6px;" href="<{link ctl='passport' act='lost'}>"><{t}>忘记密码？<{/t}></a></td>
+          </tr>
+          <{if $LogInvalideCode}>
+          <tr>
+            <th><i>*</i><{t}>验证码：<{/t}></th>
+            <td><{input size="8" class="inputstyle"  type="digits" required="true" name="loginverifycode" id="iptlogin"  tabindex="3"}>
+               <span class='verifyCode' style='display:none;'><img src="#" codesrc='<{link ctl="passport" act="verifyCode" arg0="l"}>'  border="1" /><a href="javascript:void(0)"><{t}>&nbsp;看不清楚?换个图片<{/t}></a>
+               </span>
+            </td>
+          </tr>
+          <{/if}>
+          <tr>
+            <th></th>
+            <td><input class="actbtn btn-login" type="submit" value="登录" tabindex="4" />
+                <input type="hidden" name="forward" value="<{$forward}>">
+              </td>
+          </tr>
+        </table>
+        <{$redirectInfo}> 
+     </div>
+  <input type='hidden' name='ref_url' value='<{$ref_url}>'/>
+    </div>
+
+
+
+<{if $openid_open}>
+<div class="RegisterWrap" style="width:420px; float:left; padding:5px;">
+
+
+ 
+ <table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td><h4 class="thridpartyicon">信任登录</h4> </td>
+    <td><{if $mini}> <div class="dialog-title clearfix" style="float:right; display:block; border-bottom:none;"><div class='dialog-close-btn close'>X</div></div>
+<{/if}></td>
+  </tr>
+</table>
+
+ 
+
+
+ <div class="intro">
+  <div class="customMessages">您还可以使用以下帐号登录：</div>
+</div> 
+
+ <div id="formthridlogin" class="form"> 
+  
+  <ul class="trustlogos">
+      <{foreach from=$openid_login item=item key=key}>
+        <li><{if $item.href neq ''}><a href="<{$item.href}>"><img src="statics/accountlogos/<{$key}>.gif"/></a><{else}><img src="statics/accountlogos/<{$key}>.gif"/><{/if}></li>
+        <{/foreach}>
+        <li class="more"><a href="#" style="margin-left:10px;">更多»</a></li>
+  </ul>
+  
+
+ <center><input type="button" tabindex="4" value="登录" class="actbtn btn-login trust__login"></center>
+</div> 
+
+</div>
+
+<{/if}>
+
+<div class="clearfix"></div>
+
+
+
+</form>
+
+    
+  <{foreach from=$login_content item=no}><{$no}><{/foreach}>
+
+<script>
+window.addEvent('domready',function() {
+    <{if $openid_open}> if(RemoteLogin){RemoteLogin.init();}<{/if}>
+
+    if(!$('iframemask'))return;
+$('iframemask').width= $('mini-loginform').getCoordinates().width;
+$('iframemask').height= $('mini-loginform').getCoordinates().height;
+    
+ 
+
+});
+
+<{if $LogInvalideCode}>
+   void function(formclz){
+         var vcodeBox = $E('.'+formclz+' .verifyCode');
+         var vcodeImg  =vcodeBox.getElement('img');
+         var refreshVcodeBtn  = vcodeBox.getElement('a').addEvent('click',function(e){
+              e.stop();
+              vcodeImg.src = vcodeImg.get('codesrc')+'?'+$time();
+         });
+         $$('.'+formclz+' input').addEvent('focus',function(){
+             if (this.form.retrieve('showvcode',false))return;
+             vcodeBox.show();
+             refreshVcodeBtn.fireEvent('click',{stop:$empty});
+             this.form.store('showvcode',true);
+         });
+   
+   }('loginform');
+<{/if}>
+</script>
+
+

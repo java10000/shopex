@@ -1,0 +1,19 @@
+<{if $sItem.spec_type == 'text'}>
+
+	<{foreach from=$sItem.options item=oItem}>
+		<li specValueId="<{$oItem.spec_value_id}>" specValue="<{$oItem.spec_value}>">
+			<span><{$oItem.spec_value}></span><label><{t}>增加<{/t}></label>
+			<input type="hidden" name="spec_value_image[<{$oItem.spec_value_id}>]" id="spec_value_image_<{$oItem.spec_value_id}>" value="<{$oItem.spec_image}>"/>
+		</li>
+	<{/foreach}>
+
+<{else}>
+
+	<{foreach from=$sItem.options item=oItem}>
+		<li specValueId="<{$oItem.spec_value_id}>" specValue="<{$oItem.spec_value}>">
+			<img src='<{if $oItem.spec_image}><{$oItem.spec_image|storager}><{else}><{$spec_default_pic|storager}><{/if}>' width=20 height=20 alt="<{$oItem.spec_value}>"><label><{t}>增加<{/t}></label>
+			<input type="hidden" name="spec_value_image[<{$oItem.spec_value_id}>]" id="spec_value_image_<{$oItem.spec_value_id}>" value="<{$oItem.spec_image|storager}>"/>
+		</li>
+	<{/foreach}>
+
+<{/if}>

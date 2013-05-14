@@ -1,0 +1,57 @@
+<{assign var="disabledElement" value=true}>
+<form id='PublishForm' method='post' action='index.php?ctl=sale/promotion&act=doPublish'>
+<div class="tableform">
+<h2><{t}>活动信息<{/t}></h2>
+<div class="division">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <th><{t}>促销活动:<{/t}></th>
+    <td><{input type='text' value=$pmta.pmta_name name='pmta_name' disabled='true'}></td>
+  </tr>
+  <tr>
+    <th><{t}>开始时间:<{/t}></th>
+    <td><{input type='date' value=$pmta.pmta_time_begin name='pmta_time_begin' disabled='true'}></td>
+  </tr>
+  <tr>
+    <th><{t}>结束时间:<{/t}></th>
+    <td><{input type='date' value=$pmta.pmta_time_end name='pmta_time_end' disabled='true'}></td>
+  </tr>     
+</table>
+</div>
+<h2><{t}>规则信息<{/t}></h2>
+<div class="division">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+
+  <tr>
+    <th><{t}>开始时间:<{/t}></th>
+    <td><{input type='date' value=$pmt.pmt_time_begin name='pmt_time_begin' disabled='true'}></td>
+  </tr>
+  <tr>
+    <th><{t}>结束时间:<{/t}></th>
+    <td><{input type='date' value=$pmt.pmt_time_end name='pmt_time_end' disabled='true'}></td>
+  </tr>     
+</table>
+</div>
+<div class="division">
+<h2><{t}>规则描述<{/t}></h2>
+
+<{input type='textarea' name='pmta_describe' cols="50" rows="10" value=$pmt.pmt_describe disabled='true'}></textarea>
+</div>
+<div class="table-action">
+<{button label="上一步" href="index.php?ctl=sale/promotion&act=selectProduct"}>
+<{button label="完成" type="submit"}>
+<{button label="取消"}>
+</div>
+</div>
+  
+</form>
+</fieldset>
+<script>
+	$ES('.btn[type=button]','#PublishForm').getLast().addEvent('click',function(e){
+		if($E('body[id=shopadmin]')){
+			W.page('index.php?ctl=sale/activity&act=index');
+		}else{
+			window.close();
+		}	
+	})
+</script>
